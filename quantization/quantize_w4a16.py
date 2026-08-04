@@ -15,6 +15,7 @@ import json
 import subprocess
 from pathlib import Path
 
+import torch
 from datasets import Dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -107,7 +108,7 @@ def main() -> int:
     with load_quantizable_moe(AutoModelForCausalLM):
         model = AutoModelForCausalLM.from_pretrained(
             model_path,
-            torch_dtype="bfloat16",
+            torch_dtype=torch.bfloat16,
             device_map="auto",
             low_cpu_mem_usage=True,
             trust_remote_code=True,
