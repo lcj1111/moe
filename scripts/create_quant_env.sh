@@ -26,7 +26,8 @@ printf '%s\n' \
   "transformers==5.10.1" \
   "tqdm==4.68.2" \
   "auto-round==0.13.0" \
-  py-cpuinfo
+  py-cpuinfo \
+  "fsspec==2026.4.0"
 
 # Do not prepend the serving environment through PYTHONPATH: doing so masks
 # the quant-venv's pinned packages. sitecustomize appends only the validated
@@ -48,6 +49,22 @@ for name in ("accelerate", "datasets", "safetensors", "llmcompressor", "compress
 print("cuda_available", torch.cuda.is_available(), "device_count", torch.cuda.device_count())
 PY
 
-"$QTOPOMOE_QUANT_ENV/bin/pip" check
+CHECK_LOG="$(mktemp)"
+if ! "$QTOPOMOE_QUANT_ENV/bin/pip" check >"$CHECK_LOG" 2>&1; then
+  cat "$CHECK_LOG"
+  # The venv intentionally inherits the serving venv's CUDA-enabled torch.
+  # pip check therefore also sees the serving-only sglang distribution, which
+  # pins Transformers 5.12.1. The quant stack itself is pinned to 5.10.1 as
+  # required by llmcompressor 0.12.0.1; reject every other inconsistency.
+  UNEXPECTED="$(grep -v '^sglang 0\.5\.16 has requirement transformers==5\.12\.1, but you have 5\.10\.1\.$' "$CHECK_LOG" || true)"
+  if [[ -n "${UNEXPECTED//[[:space:]]/}" ]]; then
+    echo "unexpected pip check errors" >&2
+    exit 1
+  fi
+  echo "pip_check=pass_with_expected_serving_boundary_conflict"
+else
+  echo "pip_check=pass"
+fi
+rm -f "$CHECK_LOG"
 mkdir -p "$ROOT/env/requirements-lock"
 "$QTOPOMOE_QUANT_ENV/bin/pip" freeze --all > "$ROOT/env/requirements-lock/quant.txt"
