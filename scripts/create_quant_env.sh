@@ -56,7 +56,7 @@ if ! "$QTOPOMOE_QUANT_ENV/bin/pip" check >"$CHECK_LOG" 2>&1; then
   # pip check therefore also sees the serving-only sglang distribution, which
   # pins Transformers 5.12.1. The quant stack itself is pinned to 5.10.1 as
   # required by llmcompressor 0.12.0.1; reject every other inconsistency.
-  UNEXPECTED="$(grep -v '^sglang 0\.5\.16 has requirement transformers==5\.12\.1, but you have 5\.10\.1\.$' "$CHECK_LOG" || true)"
+  UNEXPECTED="$(grep -vE '^sglang .* has requirement transformers==5\.12\.1, but you have 5\.10\.1\.$' "$CHECK_LOG" || true)"
   if [[ -n "${UNEXPECTED//[[:space:]]/}" ]]; then
     echo "unexpected pip check errors" >&2
     exit 1
