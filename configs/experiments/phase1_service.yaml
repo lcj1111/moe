@@ -1,0 +1,90 @@
+schema_version: 1
+phase: phase1_bf16_fp8_service_baseline
+backend_default: sglang
+nccl_env:
+  NCCL_IB_DISABLE: "1"
+models:
+  fp8:
+    path_env: QTOPOMOE_FP8_MODEL
+    served_name: qwen3.6-35b-a3b-fp8
+    serve_env: QTOPOMOE_SGLANG_VENV
+  bf16:
+    path_env: QTOPOMOE_BF16_MODEL
+    served_name: qwen3.6-35b-a3b-bf16
+    serve_env: QTOPOMOE_SGLANG_VENV
+topologies:
+  tp2_node_0_2:
+    gpu_ids: "0,2"
+    tp_size: 2
+    numa_bind: node0
+    group: [0, 2]
+    role: preferred
+  tp2_node_1_3:
+    gpu_ids: "1,3"
+    tp_size: 2
+    numa_bind: node0
+    group: [1, 3]
+    role: preferred
+  tp2_node_4_6:
+    gpu_ids: "4,6"
+    tp_size: 2
+    numa_bind: node1
+    group: [4, 6]
+    role: preferred
+  tp2_node_5_7:
+    gpu_ids: "5,7"
+    tp_size: 2
+    numa_bind: node1
+    group: [5, 7]
+    role: preferred
+  tp2_pix_0_1:
+    gpu_ids: "0,1"
+    tp_size: 2
+    numa_bind: node0
+    group: [0, 1]
+    role: negative_control
+  tp2_pix_2_3:
+    gpu_ids: "2,3"
+    tp_size: 2
+    numa_bind: node0
+    group: [2, 3]
+    role: negative_control
+  tp2_pix_4_5:
+    gpu_ids: "4,5"
+    tp_size: 2
+    numa_bind: node1
+    group: [4, 5]
+    role: negative_control
+  tp2_pix_6_7:
+    gpu_ids: "6,7"
+    tp_size: 2
+    numa_bind: node1
+    group: [6, 7]
+    role: negative_control
+  tp4_numa0:
+    gpu_ids: "0,1,2,3"
+    tp_size: 4
+    numa_bind: node0
+    group: [0, 1, 2, 3]
+    role: preferred
+  tp4_numa1:
+    gpu_ids: "4,5,6,7"
+    tp_size: 4
+    numa_bind: node1
+    group: [4, 5, 6, 7]
+    role: preferred
+  tp8_sys:
+    gpu_ids: "0,1,2,3,4,5,6,7"
+    tp_size: 8
+    numa_bind: interleave
+    group: [0, 1, 2, 3, 4, 5, 6, 7]
+    role: stress
+workloads:
+  - name: short
+    input_tokens: 256
+    output_tokens: 128
+  - name: medium
+    input_tokens: 2048
+    output_tokens: 256
+concurrency: [1, 8, 32]
+seed: 42
