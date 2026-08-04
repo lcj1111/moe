@@ -23,9 +23,12 @@ printf '%s\n' \
   "compressed-tensors==0.17.1" \
   "transformers==5.10.1" \
   "tqdm==4.68.2" \
-  auto-round
+  "auto-round==0.13.0" \
+  py-cpuinfo
 
-export PYTHONPATH="/data/models/test/.sglang_env/lib/python3.12/site-packages${PYTHONPATH:+:$PYTHONPATH}"
+# Do not prepend the serving environment through PYTHONPATH: doing so masks
+# the quant-venv's pinned packages. sitecustomize appends only the validated
+# torch/CUDA runtime path after the venv site-packages directory.
 "$QTOPOMOE_QUANT_ENV/bin/python" - <<'PY'
 import importlib.metadata as md
 import torch
