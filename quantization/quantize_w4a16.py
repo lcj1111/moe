@@ -16,8 +16,8 @@ import subprocess
 from pathlib import Path
 
 import torch
-from compressed_tensors.offload import from_accelerate
 from datasets import Dataset
+from accelerate.hooks import remove_hook_from_module
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from llmcompressor import oneshot
@@ -115,11 +115,13 @@ def main() -> int:
             trust_remote_code=True,
         )
         # Transformers/Accelerate installs functools.partial forward hooks for
-        # device_map="auto". Convert them to compressed-tensors offload hooks
-        # before llmcompressor wraps Linear.forward; otherwise compressed-
-        # tensors 0.17.1 cannot access __func__ on the partial.
+        # device_map="auto". Remove those hooks before llmcompressor wraps
+        # Linear.forward; compressed-tensors 0.17.1 expects a bound method and
+        # cannot access __func__ on Accelerate's partial. The calibration
+        # pipeline installs its own compressed-tensors offload hooks later.
         if hasattr(model, "hf_device_map"):
-            from_accelerate(model)
+            remove_hook_from_module(model, recurse=True)
+            delattr(model, "hf_device_map")
         oneshot(
             model=model,
             tokenizer=tokenizer,
