@@ -16,7 +16,14 @@ printf '%s\n' \
 # the serving environment without modifying that environment. Quant tooling
 # itself is installed into the independent quant venv.
 "$QTOPOMOE_QUANT_ENV/bin/pip" install --no-deps \
-  accelerate datasets safetensors llmcompressor compressed-tensors
+  "accelerate==1.13.0" \
+  "datasets==5.0.0" \
+  "safetensors==0.8.0" \
+  "llmcompressor==0.12.0.1" \
+  "compressed-tensors==0.17.1" \
+  "transformers==5.10.1" \
+  "tqdm==4.68.2" \
+  auto-round
 
 export PYTHONPATH="/data/models/test/.sglang_env/lib/python3.12/site-packages${PYTHONPATH:+:$PYTHONPATH}"
 "$QTOPOMOE_QUANT_ENV/bin/python" - <<'PY'
