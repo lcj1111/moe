@@ -56,6 +56,14 @@ bash scripts/create_quant_env.sh
 
 正式预检返回 `BLOCKED`，唯一门禁是 `QTOPOMOE_CALIBRATION_JSONL is not set`。环境-only 预检返回 `PASS`，用于证明工具链本身可用。
 
+另外使用现有 64 条 smoke seed 对正式入口做了守门测试，入口在加载 35B 权重前返回：
+
+```text
+refusing to quantize: calibration has 64 records, requires 256
+```
+
+因此当前没有产生任何 W4A16 checkpoint，也没有把 smoke 数据重复扩充为校准集。
+
 ## 已准备的正式入口
 
 `quantization/quantize_w4a16.py` 已提交，使用 llmcompressor 0.12.0.1 的：
