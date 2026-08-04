@@ -37,12 +37,14 @@ kernel config. `StrategySelector` first eliminates unsupported, quality-invalid
 and over-memory candidates. `CostModel` then evaluates:
 
 `compute(real_M_hist, kernel_db) + communication_bytes * measured mapping cost +
-imbalance(route_hist) + migration_bytes * migration cost`.
+imbalance(route_hist) + migration_bytes * migration cost`. Supply measured
+mapping rates through `CostModel.communication_us_per_gb_by_mapping`; the
+default rate is only a documented fallback for a pre-measurement dry run.
 
-`evaluate()` reports top-1 choice, median/p95 regret, decision overhead and
-invalid configuration rate. The Runbook gates (median regret <=5%, p95 <=10%,
-controller overhead <1%) are output as explicit fields; no RL is introduced
-until the transparent model fails those gates.
+`evaluate()` reports top-1 choice, median/p95 regret, decision overhead as a
+percentage of predicted p99, and invalid configuration rate. The Runbook gates
+(median regret <=5%, p95 <=10%, controller overhead <1%) are output as explicit
+fields; no RL is introduced until the transparent model fails those gates.
 
 ## CPU verification
 

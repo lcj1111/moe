@@ -6,7 +6,7 @@ from pathlib import Path
 from phase4.workload.generate_m_buckets import build_records, bucket
 from selector.backend_selector import BackendSelector
 from selector.kernel_db import KernelDatabase, KernelMeasurement
-from selector.strategy_selector import StrategyCandidate, StrategySelector, WorkloadObservation
+from selector.strategy_selector import CostModel, StrategyCandidate, StrategySelector, WorkloadObservation
 
 
 class SelectorTests(unittest.TestCase):
@@ -32,7 +32,8 @@ class SelectorTests(unittest.TestCase):
             StrategyCandidate("good", "bf16", "ckpt", 4, 1, 1, "numa0", "none", 0, "cutlass"),
             StrategyCandidate("bad-quality", "bf16", "ckpt", 4, 1, 1, "numa0", "none", 0, "triton", quality_valid=False),
         ]
-        chosen, score, meta = StrategySelector(candidates, db).select(WorkloadObservation({128: 1.0}))
+        model = CostModel(communication_us_per_gb_by_mapping={"numa0": 100.0})
+        chosen, score, meta = StrategySelector(candidates, db, cost_model=model).select(WorkloadObservation({128: 1.0}))
         self.assertEqual(chosen.candidate_id, "good")
         self.assertEqual(score, 0.01)
         self.assertEqual(meta["invalid_count"], 1)

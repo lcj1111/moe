@@ -41,6 +41,7 @@ class WorkloadObservation:
 class CostModel:
     """Transparent Phase 8 model; all coefficients are explicit and tunable."""
     communication_us_per_gb: float = 1000.0
+    communication_us_per_gb_by_mapping: Mapping[str, float] = field(default_factory=dict)
     imbalance_us_per_unit: float = 100.0
     migration_us_per_gb: float = 500.0
 
@@ -59,7 +60,9 @@ class CostModel:
             if row is None or row.score_us is None:
                 return None
             compute_us += float(weight) * row.score_us
-        comm_us = obs.communication_bytes / 1e9 * self.communication_us_per_gb
+        mapping_rate = self.communication_us_per_gb_by_mapping.get(
+            candidate.gpu_mapping, self.communication_us_per_gb)
+        comm_us = obs.communication_bytes / 1e9 * mapping_rate
         imbalance_us = self.imbalance_penalty(obs.route_hist) * self.imbalance_us_per_unit
         migration_us = obs.migration_bytes / 1e9 * self.migration_us_per_gb
         return (compute_us + comm_us + imbalance_us + migration_us) / 1000.0
@@ -101,21 +104,23 @@ class StrategySelector:
         rows = []
         for obs in observations:
             chosen, predicted, meta = self.select(obs)
-            measured = [c for c in self.candidates if c.measured_p99_ms is not None]
+            measured = [c for c in self.candidates if self._valid(c) and c.measured_p99_ms is not None]
             oracle = min((c.measured_p99_ms for c in measured), default=None)
             regret = None if oracle in (None, 0) else (predicted - oracle) / oracle * 100
+            overhead_pct = meta["decision_overhead_ms"] / predicted * 100 if predicted > 0 else None
             rows.append({"chosen": chosen.candidate_id, "predicted_p99_ms": predicted,
-                         "oracle_p99_ms": oracle, "regret_pct": regret, **meta})
+                         "oracle_p99_ms": oracle, "regret_pct": regret,
+                         "decision_overhead_pct_of_predicted_p99": overhead_pct, **meta})
         regrets = [r["regret_pct"] for r in rows if r["regret_pct"] is not None]
-        overhead = [r["decision_overhead_ms"] for r in rows]
+        overhead = [r["decision_overhead_pct_of_predicted_p99"] for r in rows if r["decision_overhead_pct_of_predicted_p99"] is not None]
         return {"rows": rows, "top1_accuracy": sum(r["regret_pct"] == 0 for r in rows) / len(rows) if rows else None,
                 "median_regret_pct": statistics.median(regrets) if regrets else None,
                 "p95_regret_pct": statistics.quantiles(regrets, n=20, method="inclusive")[18] if len(regrets) >= 2 else (regrets[0] if regrets else None),
-                "decision_overhead_ms_p95": statistics.quantiles(overhead, n=20, method="inclusive")[18] if len(overhead) >= 2 else (overhead[0] if overhead else None),
+                "decision_overhead_pct_p95": statistics.quantiles(overhead, n=20, method="inclusive")[18] if len(overhead) >= 2 else (overhead[0] if overhead else None),
                 "invalid_config_rate": sum(r["invalid_count"] for r in rows) / (len(rows) * len(self.candidates)) if rows and self.candidates else 0.0,
                 "gates": {"median_regret_le_5pct": (statistics.median(regrets) <= 5 if regrets else None),
                           "p95_regret_le_10pct": ((statistics.quantiles(regrets, n=20, method="inclusive")[18] if len(regrets) >= 2 else (regrets[0] if regrets else 0)) <= 10 if regrets else None),
-                          "controller_overhead_lt_1pct": None}}
+                          "controller_overhead_lt_1pct": (statistics.quantiles(overhead, n=20, method="inclusive")[18] if len(overhead) >= 2 else (overhead[0] if overhead else 0)) < 1 if overhead else None}}
 
 
 def candidate_from_dict(data: Mapping[str, Any]) -> StrategyCandidate:
