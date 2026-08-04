@@ -6,10 +6,12 @@ source "$ROOT/env/project.env"
 
 python3 -m venv "$QTOPOMOE_QUANT_ENV"
 SITE_DIR="$($QTOPOMOE_QUANT_ENV/bin/python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')"
+# The service venv owns the validated CUDA-enabled torch build. A .pth file is
+# processed after the quant venv site-packages directory is added, so it does
+# not mask the quant-venv's pinned transformers/datasets/compressed-tensors.
 printf '%s\n' \
-  'import sys' \
-  'sys.path.append("/data/models/test/.sglang_env/lib/python3.12/site-packages")' \
-  > "$SITE_DIR/sitecustomize.py"
+  '/data/models/test/.sglang_env/lib/python3.12/site-packages' \
+  > "$SITE_DIR/qtopomoe_service_runtime.pth"
 
 "$QTOPOMOE_QUANT_ENV/bin/python" -m pip install --upgrade pip
 # Reuse the already validated CUDA 13/Python 3.12 torch and Transformers from
