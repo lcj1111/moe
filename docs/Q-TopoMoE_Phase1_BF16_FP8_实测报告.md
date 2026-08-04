@@ -5,7 +5,7 @@
 ## 结论
 
 - FP8：10 个 TP2/TP4 拓扑均完成真实服务验收；每个配置完成短 workload（256/128）和中 workload（2048/256），并发 1/8/32 共 60 个筛选单元，410 个 smoke 请求全部成功。
-- BF16：未执行服务启动。当前 `QTOPOMOE_BF16_MODEL` 为空，服务器没有对应 BF16 checkpoint；记录为 `blocked/model_path_missing`，没有用 FP8 冒充 BF16。
+- BF16：已补齐 checkpoint 并完成真实服务矩阵。TP4-NUMA0、TP4-NUMA1、TP8-SYS 通过；全部 TP2 配置因 32 GB/卡容量不足而启动失败，保留 OOM 证据。
 - TP8-SYS：SGLang 和 vLLM 均在加载阶段失败，原因相同：FP8 权重块大小为 128，而 TP8 分片后的 expert 维度为 64，违反 kernel 的 block 对齐约束。该项保留为明确的兼容性失败证据，不报告为 OOM。
 
 ## 5.1 拓扑配置
@@ -28,7 +28,7 @@ FP8 推荐组 `TP2-NODE (GPU 0,2)` 的独立预检通过：
 - health、模型发现、真实 chat completion、metrics 全部通过；completion 返回 `42`。
 - 32 请求 smoke：32/32 成功、失败 0；短 workload 下 TTFT p50 约 1.43 s、p95 约 2.27 s，TPOT p50 约 6.38 ms。
 
-矩阵中 10 个 TP2/TP4 配置均重复通过四级验收和 6 个 workload/concurrency 单元。
+FP8 矩阵中 10 个 TP2/TP4 配置均重复通过四级验收和 6 个 workload/concurrency 单元。BF16 结果见 `Q-TopoMoE_Phase1_BF16_实测报告.md`。
 
 ## 5.6 筛选矩阵摘要
 
