@@ -16,6 +16,7 @@ import subprocess
 from pathlib import Path
 
 import torch
+from compressed_tensors.offload import from_accelerate
 from datasets import Dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -113,6 +114,12 @@ def main() -> int:
             low_cpu_mem_usage=True,
             trust_remote_code=True,
         )
+        # Transformers/Accelerate installs functools.partial forward hooks for
+        # device_map="auto". Convert them to compressed-tensors offload hooks
+        # before llmcompressor wraps Linear.forward; otherwise compressed-
+        # tensors 0.17.1 cannot access __func__ on the partial.
+        if hasattr(model, "hf_device_map"):
+            from_accelerate(model)
         oneshot(
             model=model,
             tokenizer=tokenizer,
