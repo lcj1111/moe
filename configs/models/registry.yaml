@@ -1,0 +1,26 @@
+schema_version: 1
+models:
+  qwen36_fp8:
+    repo_id: Qwen/Qwen3.6-35B-A3B-FP8
+    path_env: QTOPOMOE_FP8_MODEL
+    served_name: qwen3.6-35b-a3b-fp8
+    precision: fp8
+    status: existing_revalidate_before_formal_run
+  qwen36_nvfp4:
+    repo_id: RedHatAI/Qwen3.6-35B-A3B-NVFP4
+    path_env: QTOPOMOE_NVFP4_MODEL
+    served_name: qwen3.6-35b-a3b-nvfp4
+    precision: nvfp4
+    status: existing_requires_tp1_tp2_and_concurrency_gate
+  qwen36_bf16:
+    repo_id: Qwen/Qwen3.6-35B-A3B
+    path_env: QTOPOMOE_BF16_MODEL
+    served_name: qwen3.6-35b-a3b-bf16
+    precision: bf16
+    status: path_not_configured
+  qwen36_w4a16:
+    source: project_quantization_pipeline
+    path_env: QTOPOMOE_W4A16_MODEL
+    served_name: qwen3.6-35b-a3b-w4a16
+    precision: w4a16
+    status: not_generated

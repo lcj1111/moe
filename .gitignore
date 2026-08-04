@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environments and local caches
+.venv/
+.cache/
+env/local.env
+
+# Build outputs
+build/
+dist/
+*.so
+*.o
+*.a
+
+# Third-party repositories
+third_party/*
+!third_party/.gitkeep
+
+# Experiment artifacts: keep only directory placeholders
+artifacts/**
+!artifacts/**/.gitkeep
+
+# Runtime state
+*.pid
+*.log
+*.jsonl
+*.parquet
+*.npz
+core
+core.*

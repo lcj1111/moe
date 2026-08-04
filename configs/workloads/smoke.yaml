@@ -1,0 +1,23 @@
+schema_version: 1
+name: smoke
+seed: 42
+sampling:
+  temperature: 0
+  enable_thinking: false
+cases:
+  - input_tokens: 256
+    output_tokens: 128
+    concurrency: [1, 8, 32]
+    requests: 32
+  - input_tokens: 2048
+    output_tokens: 256
+    concurrency: [1, 8, 32]
+    requests: 32
+required_metrics:
+  - ttft
+  - tpot
+  - itl
+  - e2e_latency
+  - queue_time
+  - requests_per_second
+  - output_tokens_per_second

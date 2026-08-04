@@ -1,0 +1,21 @@
+schema_version: 1
+name: screening
+seed: 42
+repeats: 1
+cases:
+  - input_tokens: 256
+    output_tokens: 128
+    concurrency: [1, 8, 32, 128]
+  - input_tokens: 2048
+    output_tokens: 256
+    concurrency: [1, 8, 32]
+  - input_tokens: 8192
+    output_tokens: 256
+    concurrency: [1, 8, 16]
+  - input_tokens: 32768
+    output_tokens: 128
+    concurrency: [1, 4]
+arrival_modes:
+  - closed_loop
+  - poisson
+prefix_cache_hit_rates: [0.0, 0.5, 0.9]
