@@ -1,0 +1,1554 @@
+{
+  "schema_version": "qtopomoe.m_bucket.v1",
+  "seed": 42,
+  "m_buckets": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    32,
+    64,
+    128,
+    256,
+    512,
+    1024,
+    2048,
+    4096,
+    8192,
+    16384
+  ],
+  "records": [
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 256,
+      "decode_m": 1,
+      "prefill_m_bucket": 256,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "256": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 2746317213
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "poisson",
+      "prefill_m": 256,
+      "decode_m": 1,
+      "prefill_m_bucket": 256,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "256": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 1181241943
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "burst",
+      "prefill_m": 256,
+      "decode_m": 1,
+      "prefill_m_bucket": 256,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "256": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 958682846
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 256,
+      "decode_m": 1,
+      "prefill_m_bucket": 256,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "256": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 3163119785
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "poisson",
+      "prefill_m": 256,
+      "decode_m": 1,
+      "prefill_m_bucket": 256,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "256": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 1812140441
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "burst",
+      "prefill_m": 256,
+      "decode_m": 1,
+      "prefill_m_bucket": 256,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "256": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 127978094
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 256,
+      "decode_m": 1,
+      "prefill_m_bucket": 256,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "256": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 939042955
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "poisson",
+      "prefill_m": 256,
+      "decode_m": 1,
+      "prefill_m_bucket": 256,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "256": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 2340505846
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "burst",
+      "prefill_m": 256,
+      "decode_m": 1,
+      "prefill_m_bucket": 256,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "256": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 946785248
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 8,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 2048,
+      "decode_m": 8,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "2048": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 2530876844
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 8,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "poisson",
+      "prefill_m": 2048,
+      "decode_m": 8,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "2048": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 3460967357
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 8,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "burst",
+      "prefill_m": 2048,
+      "decode_m": 8,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "2048": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 2998485882
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 8,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 2048,
+      "decode_m": 8,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "2048": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 1461364854
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 8,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "poisson",
+      "prefill_m": 2048,
+      "decode_m": 8,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "2048": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 667779376
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 8,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "burst",
+      "prefill_m": 2048,
+      "decode_m": 8,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "2048": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 1445662585
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 8,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 2048,
+      "decode_m": 8,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "2048": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 398340369
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 8,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "poisson",
+      "prefill_m": 2048,
+      "decode_m": 8,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "2048": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 415393687
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 8,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "burst",
+      "prefill_m": 2048,
+      "decode_m": 8,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "2048": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 3639960595
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 32,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 8192,
+      "decode_m": 32,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "8192": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 2592983555
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 32,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "poisson",
+      "prefill_m": 8192,
+      "decode_m": 32,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "8192": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 3466589567
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 32,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "burst",
+      "prefill_m": 8192,
+      "decode_m": 32,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "8192": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 3134174160
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 32,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 8192,
+      "decode_m": 32,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "8192": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 2303082117
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 32,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "poisson",
+      "prefill_m": 8192,
+      "decode_m": 32,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "8192": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 1625792787
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 32,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "burst",
+      "prefill_m": 8192,
+      "decode_m": 32,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "8192": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 2370996465
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 32,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 8192,
+      "decode_m": 32,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "8192": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 3701002945
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 32,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "poisson",
+      "prefill_m": 8192,
+      "decode_m": 32,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "8192": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 2479708607
+    },
+    {
+      "workload_id": "W1",
+      "input_tokens": 256,
+      "output_tokens": 128,
+      "concurrency": 32,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "burst",
+      "prefill_m": 8192,
+      "decode_m": 32,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "8192": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 3026113008
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 2048,
+      "decode_m": 1,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "2048": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 433797840
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "poisson",
+      "prefill_m": 2048,
+      "decode_m": 1,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "2048": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 1193887545
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "burst",
+      "prefill_m": 2048,
+      "decode_m": 1,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "2048": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 1566942273
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 2048,
+      "decode_m": 1,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "2048": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 1589915144
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "poisson",
+      "prefill_m": 2048,
+      "decode_m": 1,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "2048": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 2783290795
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "burst",
+      "prefill_m": 2048,
+      "decode_m": 1,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "2048": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 3131575764
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 2048,
+      "decode_m": 1,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "2048": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 701808367
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "poisson",
+      "prefill_m": 2048,
+      "decode_m": 1,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "2048": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 1629748727
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "burst",
+      "prefill_m": 2048,
+      "decode_m": 1,
+      "prefill_m_bucket": 2048,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "2048": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 2392080953
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 16384,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 2940395823
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "poisson",
+      "prefill_m": 16384,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 3332894265
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "burst",
+      "prefill_m": 16384,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 1354860540
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 16384,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 1149938334
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "poisson",
+      "prefill_m": 16384,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 1351531223
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "burst",
+      "prefill_m": 16384,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 2815087637
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 16384,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 1970753705
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "poisson",
+      "prefill_m": 16384,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 1137651678
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "burst",
+      "prefill_m": 16384,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 2510777721
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 32,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 65536,
+      "decode_m": 32,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "16384": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 1715412119
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 32,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "poisson",
+      "prefill_m": 65536,
+      "decode_m": 32,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "16384": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 4284391408
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 32,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "burst",
+      "prefill_m": 65536,
+      "decode_m": 32,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "16384": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 2188398760
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 32,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 65536,
+      "decode_m": 32,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "16384": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 470939445
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 32,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "poisson",
+      "prefill_m": 65536,
+      "decode_m": 32,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "16384": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 2694860228
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 32,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "burst",
+      "prefill_m": 65536,
+      "decode_m": 32,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "16384": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 272849424
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 32,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 65536,
+      "decode_m": 32,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "16384": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 4278308761
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 32,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "poisson",
+      "prefill_m": 65536,
+      "decode_m": 32,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "16384": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 2272528809
+    },
+    {
+      "workload_id": "W2",
+      "input_tokens": 2048,
+      "output_tokens": 256,
+      "concurrency": 32,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "burst",
+      "prefill_m": 65536,
+      "decode_m": 32,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 32,
+      "real_M_hist": {
+        "16384": 0.75,
+        "32": 0.25
+      },
+      "stream_seed": 3095476665
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 8192,
+      "decode_m": 1,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "8192": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 2752909971
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "poisson",
+      "prefill_m": 8192,
+      "decode_m": 1,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "8192": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 479112937
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "burst",
+      "prefill_m": 8192,
+      "decode_m": 1,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "8192": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 1867302554
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 8192,
+      "decode_m": 1,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "8192": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 1948728483
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "poisson",
+      "prefill_m": 8192,
+      "decode_m": 1,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "8192": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 3919706735
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "burst",
+      "prefill_m": 8192,
+      "decode_m": 1,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "8192": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 2615507143
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 8192,
+      "decode_m": 1,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "8192": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 656439677
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "poisson",
+      "prefill_m": 8192,
+      "decode_m": 1,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "8192": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 3274958945
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 1,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "burst",
+      "prefill_m": 8192,
+      "decode_m": 1,
+      "prefill_m_bucket": 8192,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "8192": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 1392239675
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 65536,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 83651970
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "poisson",
+      "prefill_m": 65536,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 3990448177
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "burst",
+      "prefill_m": 65536,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 1320763135
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 65536,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 248786714
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "poisson",
+      "prefill_m": 65536,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 4067116918
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "burst",
+      "prefill_m": 65536,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 3289233844
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 65536,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 2361388464
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "poisson",
+      "prefill_m": 65536,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 1338811290
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 8,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "burst",
+      "prefill_m": 65536,
+      "decode_m": 8,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 8,
+      "real_M_hist": {
+        "16384": 0.75,
+        "8": 0.25
+      },
+      "stream_seed": 2791205006
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 16,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 131072,
+      "decode_m": 16,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 16,
+      "real_M_hist": {
+        "16384": 0.75,
+        "16": 0.25
+      },
+      "stream_seed": 2222971316
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 16,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "poisson",
+      "prefill_m": 131072,
+      "decode_m": 16,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 16,
+      "real_M_hist": {
+        "16384": 0.75,
+        "16": 0.25
+      },
+      "stream_seed": 519709079
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 16,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "burst",
+      "prefill_m": 131072,
+      "decode_m": 16,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 16,
+      "real_M_hist": {
+        "16384": 0.75,
+        "16": 0.25
+      },
+      "stream_seed": 965067727
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 16,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 131072,
+      "decode_m": 16,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 16,
+      "real_M_hist": {
+        "16384": 0.75,
+        "16": 0.25
+      },
+      "stream_seed": 1452066459
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 16,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "poisson",
+      "prefill_m": 131072,
+      "decode_m": 16,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 16,
+      "real_M_hist": {
+        "16384": 0.75,
+        "16": 0.25
+      },
+      "stream_seed": 945826486
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 16,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "burst",
+      "prefill_m": 131072,
+      "decode_m": 16,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 16,
+      "real_M_hist": {
+        "16384": 0.75,
+        "16": 0.25
+      },
+      "stream_seed": 2710566582
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 16,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 131072,
+      "decode_m": 16,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 16,
+      "real_M_hist": {
+        "16384": 0.75,
+        "16": 0.25
+      },
+      "stream_seed": 983297492
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 16,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "poisson",
+      "prefill_m": 131072,
+      "decode_m": 16,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 16,
+      "real_M_hist": {
+        "16384": 0.75,
+        "16": 0.25
+      },
+      "stream_seed": 3888749350
+    },
+    {
+      "workload_id": "W3",
+      "input_tokens": 8192,
+      "output_tokens": 256,
+      "concurrency": 16,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "burst",
+      "prefill_m": 131072,
+      "decode_m": 16,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 16,
+      "real_M_hist": {
+        "16384": 0.75,
+        "16": 0.25
+      },
+      "stream_seed": 3692105921
+    },
+    {
+      "workload_id": "W4",
+      "input_tokens": 32768,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 32768,
+      "decode_m": 1,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "16384": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 1022222125
+    },
+    {
+      "workload_id": "W4",
+      "input_tokens": 32768,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "poisson",
+      "prefill_m": 32768,
+      "decode_m": 1,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "16384": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 2873237671
+    },
+    {
+      "workload_id": "W4",
+      "input_tokens": 32768,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 0,
+      "arrival_mode": "burst",
+      "prefill_m": 32768,
+      "decode_m": 1,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "16384": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 2030106617
+    },
+    {
+      "workload_id": "W4",
+      "input_tokens": 32768,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 32768,
+      "decode_m": 1,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "16384": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 3369914783
+    },
+    {
+      "workload_id": "W4",
+      "input_tokens": 32768,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "poisson",
+      "prefill_m": 32768,
+      "decode_m": 1,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "16384": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 3468173213
+    },
+    {
+      "workload_id": "W4",
+      "input_tokens": 32768,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 50,
+      "arrival_mode": "burst",
+      "prefill_m": 32768,
+      "decode_m": 1,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "16384": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 817804383
+    },
+    {
+      "workload_id": "W4",
+      "input_tokens": 32768,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "closed_loop",
+      "prefill_m": 32768,
+      "decode_m": 1,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "16384": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 1851350739
+    },
+    {
+      "workload_id": "W4",
+      "input_tokens": 32768,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "poisson",
+      "prefill_m": 32768,
+      "decode_m": 1,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "16384": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 1819256337
+    },
+    {
+      "workload_id": "W4",
+      "input_tokens": 32768,
+      "output_tokens": 128,
+      "concurrency": 1,
+      "prefix_cache_pct": 100,
+      "arrival_mode": "burst",
+      "prefill_m": 32768,
+      "decode_m": 1,
+      "prefill_m_bucket": 16384,
+      "decode_m_bucket": 1,
+      "real_M_hist": {
+        "16384": 0.75,
+        "1": 0.25
+      },
+      "stream_seed": 3131356954
+    }
+  ],
+  "sha256": "f8daa0883a902361f765b645aa601b17b0429270d3986b40694a4501c16514d5"
+}
