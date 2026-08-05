@@ -145,6 +145,7 @@ def main() -> int:
     tokenizer_a = AutoTokenizer.from_pretrained(args.tokenizer_a, trust_remote_code=True)
     tokenizer_b = AutoTokenizer.from_pretrained(args.tokenizer_b, trust_remote_code=True)
     token_digest = hashlib.sha256()
+    token_lengths: list[int] = []
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8") as handle:
         for row in rows:
@@ -152,6 +153,7 @@ def main() -> int:
             ids_b = token_ids(tokenizer_b, row["messages"])
             if ids_a != ids_b:
                 raise RuntimeError(f"tokenizer mismatch for {row['id']}")
+            token_lengths.append(len(ids_a))
             token_digest.update(json.dumps(ids_a, separators=(",", ":")).encode())
             token_digest.update(b"\n")
             handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
@@ -167,6 +169,10 @@ def main() -> int:
         "fewshot": {"mmlu_pro": 5, "ceval": 5},
         "sampling": SAMPLING, "sha256": sha256_file(args.output),
         "prompt_token_ids_sha256": token_digest.hexdigest(),
+        "prompt_tokens": {
+            "min": min(token_lengths), "max": max(token_lengths),
+            "mean": sum(token_lengths) / len(token_lengths),
+        },
         "token_ids_equal": True,
         "note": "Protocol-aligned sampled reproduction; not an official full-set score.",
     }
