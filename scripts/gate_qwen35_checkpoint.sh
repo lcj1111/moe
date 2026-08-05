@@ -91,7 +91,6 @@ else
   nohup "$SERVE_ENV/bin/sglang" serve \
     --model-path "$MODEL_PATH" --served-model-name "$SERVED_NAME" \
     --host 127.0.0.1 --port "$PORT" --tp-size "$TP_SIZE" \
-    --language-only \
     --context-length "$MAX_MODEL_LEN" --mem-fraction-static "$MEM_FRACTION" \
     --cuda-graph-backend-decode disabled \
     --cuda-graph-backend-prefill disabled --enable-metrics \
