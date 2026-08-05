@@ -24,13 +24,24 @@ it is not evidence that GPTQ/W4A16 arithmetic is invalid.
 | vLLM | 0.26.0 | 5.14.1 | 0.17.0 | 2.11.0 | 0.6.14 |
 | SGLang | 0.5.16 | 5.12.1 | 0.17.2a20260728 | 2.11.0 | 0.6.14 |
 
-Both framework versions are the latest versions available from the configured
-PyPI index on 2026-08-05. Upstream `main` is newer and is pinned for the next
-clean-room Gate:
+Both framework versions are the latest stable versions available from the
+configured PyPI index on 2026-08-05. Upstream clean-room environments are now
+also frozen for the next Gate:
 
-- vLLM: `c416f15710bbaf3e1d843c9e08403ca19fa49427`
-- SGLang: `6c05aaae7e3966469b6c552aa11b545e5d27f8bf`
+- vLLM exact official nightly wheel/source commit:
+  `33c50587d2679ba9bacc2a51ae19901f7eb3a129`
+  (`0.26.1rc1.dev343+g33c50587d`, Torch `2.13.0+cu130`)
+- SGLang source commit: `6c05aaae7e3966469b6c552aa11b545e5d27f8bf`
+  (`0.5.17.dev0+g6c05aaae7e`, `sglang-kernel==0.4.5`,
+  FlashInfer `0.6.15.post1`, Torch `2.11.0+cu130`)
 - Transformers reference: `d24d79da55f7ee6e538a460d3025e41dcc41ab21`
+
+The initially recorded vLLM source reference had no matching precompiled wheel.
+It was therefore not overlaid on the released environment. The selected vLLM
+commit is the exact commit advertised by the official wheel index, avoiding a
+Python-source/CUDA-binary mismatch. SGLang is built from its pinned source with
+the upstream-supported `SGLANG_BUILD_RUST_EXTS=none`; its CUDA serving kernels
+remain the pinned packaged dependencies.
 
 ## Evidence-based status
 
