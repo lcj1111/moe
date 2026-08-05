@@ -46,6 +46,7 @@ export NCCL_IB_DISABLE="${NCCL_IB_DISABLE:-1}"
 export PYTHONNOUSERSITE=1
 export PYTHONUNBUFFERED=1
 export TOKENIZERS_PARALLELISM=false
+export PATH="$SERVE_ENV/bin:$PATH"
 unset PYTHONPATH
 
 nvidia-smi --query-gpu=index,uuid,memory.used,memory.free,utilization.gpu \
