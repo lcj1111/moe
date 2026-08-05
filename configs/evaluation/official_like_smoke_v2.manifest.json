@@ -1,0 +1,38 @@
+{
+  "schema_version": "qtopomoe.official_like_smoke.v2",
+  "path": "/data/models/test/qtopomoe_quality/frozen/official_like_smoke_v2.jsonl",
+  "records": 116,
+  "counts": {
+    "mmlu_pro": 64,
+    "ceval": 52
+  },
+  "seed": 42,
+  "revisions": {
+    "mmlu_pro": "b189ec765aa7ed75c8acfea42df31fdae71f97be",
+    "ceval_main": "617524a00b307ff6f9933702f724131fe12ca7ce",
+    "ceval_parquet": "8267189d6ba0d516d414a98919558032958c4466"
+  },
+  "fewshot": {
+    "mmlu_pro": 5,
+    "ceval": 5
+  },
+  "max_output_tokens": 32768,
+  "sampling": {
+    "temperature": 1.0,
+    "top_p": 0.95,
+    "top_k": 20,
+    "min_p": 0.0,
+    "presence_penalty": 1.5,
+    "repetition_penalty": 1.0,
+    "enable_thinking": true
+  },
+  "sha256": "549c1e3b3e131e8ff586dbf17ae666fb8468b75b57362e206cfbce2a4fcb6d0f",
+  "prompt_token_ids_sha256": "80eb1bc64c5261d6375362573130a2872f084945059819be9a5f386eb8793017",
+  "prompt_tokens": {
+    "min": 295,
+    "max": 2482,
+    "mean": 1019.9913793103449
+  },
+  "token_ids_equal": true,
+  "note": "Protocol-aligned sampled reproduction with the model-card recommended 32,768 output-token ceiling; not an official full-set score."
+}
