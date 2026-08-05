@@ -1,0 +1,44 @@
+{
+  "base_url": "http://127.0.0.1:31354/v1",
+  "model": "qtopomoe-w4a16-vllm-triton-quality-smoke",
+  "manifest": "/data/models/test/qtopomoe_quality/frozen/quality_smoke_v1.jsonl",
+  "seed": 42,
+  "requested": 148,
+  "completed": 148,
+  "failed": 0,
+  "benchmarks": {
+    "ceval": {
+      "records": 52,
+      "scored": 52,
+      "correct": 43,
+      "accuracy": 0.8269230769230769,
+      "latency_ms": {
+        "mean": 94625.21075915832,
+        "p50": 94774.12690082565,
+        "p95": 96489.501981996
+      }
+    },
+    "gsm8k": {
+      "records": 32,
+      "scored": 32,
+      "correct": 30,
+      "accuracy": 0.9375,
+      "latency_ms": {
+        "mean": 47653.15683183144,
+        "p50": 46991.34442117065,
+        "p95": 88452.36991206184
+      }
+    },
+    "mmlu_pro": {
+      "records": 64,
+      "scored": 64,
+      "correct": 24,
+      "accuracy": 0.375,
+      "latency_ms": {
+        "mean": 83042.38467886898,
+        "p50": 83438.04389424622,
+        "p95": 92081.54945028946
+      }
+    }
+  }
+}

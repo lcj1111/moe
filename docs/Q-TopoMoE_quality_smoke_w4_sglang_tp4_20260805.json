@@ -1,0 +1,44 @@
+{
+  "base_url": "http://127.0.0.1:31352/v1",
+  "model": "qtopomoe-w4a16-sglang-quality-smoke",
+  "manifest": "/data/models/test/qtopomoe_quality/frozen/quality_smoke_v1.jsonl",
+  "seed": 42,
+  "requested": 148,
+  "completed": 148,
+  "failed": 0,
+  "benchmarks": {
+    "ceval": {
+      "records": 52,
+      "scored": 52,
+      "correct": 41,
+      "accuracy": 0.7884615384615384,
+      "latency_ms": {
+        "mean": 86150.44161053195,
+        "p50": 86087.10343576968,
+        "p95": 88038.44337770715
+      }
+    },
+    "gsm8k": {
+      "records": 32,
+      "scored": 32,
+      "correct": 30,
+      "accuracy": 0.9375,
+      "latency_ms": {
+        "mean": 43663.023554414394,
+        "p50": 44036.541735287756,
+        "p95": 77100.05943942815
+      }
+    },
+    "mmlu_pro": {
+      "records": 64,
+      "scored": 64,
+      "correct": 26,
+      "accuracy": 0.40625,
+      "latency_ms": {
+        "mean": 75497.0919276675,
+        "p50": 76519.98399896547,
+        "p95": 83647.51415187493
+      }
+    }
+  }
+}
