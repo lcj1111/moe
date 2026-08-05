@@ -131,9 +131,22 @@ def humaneval_record(row: dict[str, Any], index: int) -> dict[str, Any]:
 
 
 def token_ids(tokenizer, messages: list[dict[str, str]]) -> list[int]:
-    return tokenizer.apply_chat_template(
+    encoded = tokenizer.apply_chat_template(
         messages, tokenize=True, add_generation_prompt=True, enable_thinking=False
     )
+    if hasattr(encoded, "keys"):
+        if "input_ids" not in encoded:
+            raise TypeError(f"chat template returned keys without input_ids: {encoded.keys()}")
+        encoded = encoded["input_ids"]
+    if hasattr(encoded, "tolist"):
+        encoded = encoded.tolist()
+    if encoded and isinstance(encoded[0], list):
+        if len(encoded) != 1:
+            raise ValueError(f"expected one prompt, got batch size {len(encoded)}")
+        encoded = encoded[0]
+    if not isinstance(encoded, list) or not all(isinstance(item, int) for item in encoded):
+        raise TypeError(f"unsupported input_ids return type: {type(encoded).__name__}")
+    return encoded
 
 
 def validate_tokenizers(
