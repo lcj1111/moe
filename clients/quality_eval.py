@@ -17,6 +17,8 @@ from typing import Any
 
 def parse_choice(text: str) -> str | None:
     patterns = [
+        r'"answer"\s*:\s*"?([A-J])"?',
+        r"[Tt]he answer is\s*\(?([A-J])\)?",
         r"(?:FINAL|Answer|答案)\s*[:：]\s*\(?([A-J])\)?",
         r"^\s*\(?([A-J])\)?(?:\s|$)",
     ]
@@ -81,12 +83,22 @@ async def run(args: argparse.Namespace) -> int:
 
     async with aiohttp.ClientSession(timeout=timeout) as session:
         async def one(index: int, row: dict[str, Any]) -> None:
+            sampling = row.get("sampling", {})
             payload = {
                 "model": args.model, "messages": row["messages"],
-                "temperature": 0, "seed": args.seed,
+                "temperature": sampling.get("temperature", 0),
+                "seed": sampling.get("seed", args.seed),
                 "max_tokens": int(row["max_tokens"]), "stream": False,
-                "chat_template_kwargs": {"enable_thinking": False},
+                "chat_template_kwargs": {
+                    "enable_thinking": sampling.get("enable_thinking", False)
+                },
             }
+            for key in (
+                "top_p", "top_k", "min_p", "presence_penalty",
+                "frequency_penalty", "repetition_penalty",
+            ):
+                if key in sampling:
+                    payload[key] = sampling[key]
             started = time.perf_counter()
             error = None
             response_json = None
@@ -126,6 +138,7 @@ async def run(args: argparse.Namespace) -> int:
     summary = {
         "base_url": args.base_url, "model": args.model,
         "manifest": str(args.manifest), "seed": args.seed,
+        "protocols": sorted({row.get("protocol", "regression_v1") for row in rows}),
         "requested": len(rows), "completed": sum(not row["error"] for row in results),
         "failed": sum(bool(row["error"]) for row in results), "benchmarks": {},
     }
