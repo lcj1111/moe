@@ -14,6 +14,11 @@ OUT_DIR="${OUT_DIR:?OUT_DIR is required}"
 MAX_MODEL_LEN="${MAX_MODEL_LEN:-4096}"
 MAX_NUM_SEQS="${MAX_NUM_SEQS:-8}"
 MEM_FRACTION="${MEM_FRACTION:-0.90}"
+SMOKE_REQUESTS="${SMOKE_REQUESTS:-0}"
+SMOKE_CONCURRENCY="${SMOKE_CONCURRENCY:-8}"
+SMOKE_INPUT_TOKENS="${SMOKE_INPUT_TOKENS:-256}"
+SMOKE_OUTPUT_TOKENS="${SMOKE_OUTPUT_TOKENS:-64}"
+SMOKE_SEED="${SMOKE_SEED:-42}"
 
 case "$BACKEND" in
   vllm)
@@ -104,20 +109,38 @@ grep -Ein \
   "$SERVER_LOG" > "$OUT_DIR/weight_coverage_warnings.txt" || true
 
 if [[ "$status" == healthy ]]; then
-  ROOT_URL="http://127.0.0.1:$PORT" SERVED_NAME="$SERVED_NAME" \
-    OUT_DIR="$OUT_DIR/acceptance" "$ROOT/serving/acceptance.sh"
-  if [[ -s "$OUT_DIR/weight_coverage_warnings.txt" ]]; then
-    status="rejected_weight_coverage_warning"
+  if ROOT_URL="http://127.0.0.1:$PORT" SERVED_NAME="$SERVED_NAME" \
+    OUT_DIR="$OUT_DIR/acceptance" "$ROOT/serving/acceptance.sh"; then
+    if [[ -s "$OUT_DIR/weight_coverage_warnings.txt" ]]; then
+      status="rejected_weight_coverage_warning"
+    elif (( SMOKE_REQUESTS > 0 )); then
+      if "$SERVE_ENV/bin/python" "$ROOT/clients/smoke.py" \
+        --base-url "http://127.0.0.1:$PORT/v1" --model "$SERVED_NAME" \
+        --input-tokens "$SMOKE_INPUT_TOKENS" \
+        --output-tokens "$SMOKE_OUTPUT_TOKENS" \
+        --concurrency "$SMOKE_CONCURRENCY" --requests "$SMOKE_REQUESTS" \
+        --seed "$SMOKE_SEED" --output "$OUT_DIR/smoke.jsonl" \
+        --summary "$OUT_DIR/smoke.summary.json"; then
+        status="accepted"
+      else
+        status="smoke_failed"
+      fi
+    else
+      status="accepted"
+    fi
   else
-    status="accepted"
+    status="acceptance_failed"
   fi
 fi
 
-python3 - "$STATUS_FILE" "$BACKEND" "$MODEL_PATH" "$status" "$server_pid" <<'PY'
+python3 - "$STATUS_FILE" "$BACKEND" "$MODEL_PATH" "$status" "$server_pid" \
+  "$SMOKE_REQUESTS" "$SMOKE_CONCURRENCY" "$SMOKE_SEED" <<'PY'
 import json, pathlib, sys
-path, backend, model, status, pid = sys.argv[1:]
+path, backend, model, status, pid, requests, concurrency, seed = sys.argv[1:]
 payload = {"backend": backend, "model_path": model, "status": status,
-           "server_pid": int(pid), "adapter_or_override_used": False}
+           "server_pid": int(pid), "adapter_or_override_used": False,
+           "smoke": {"requests": int(requests), "concurrency": int(concurrency),
+                     "seed": int(seed)}}
 pathlib.Path(path).write_text(json.dumps(payload, indent=2) + "\n")
 print(json.dumps(payload))
 PY
