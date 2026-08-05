@@ -19,6 +19,8 @@ SMOKE_CONCURRENCY="${SMOKE_CONCURRENCY:-8}"
 SMOKE_INPUT_TOKENS="${SMOKE_INPUT_TOKENS:-256}"
 SMOKE_OUTPUT_TOKENS="${SMOKE_OUTPUT_TOKENS:-64}"
 SMOKE_SEED="${SMOKE_SEED:-42}"
+QUALITY_MANIFEST="${QUALITY_MANIFEST:-}"
+QUALITY_CONCURRENCY="${QUALITY_CONCURRENCY:-8}"
 
 case "$BACKEND" in
   vllm)
@@ -120,7 +122,10 @@ if [[ "$status" == healthy ]]; then
     OUT_DIR="$OUT_DIR/acceptance" "$ROOT/serving/acceptance.sh"; then
     if [[ -s "$OUT_DIR/weight_coverage_warnings.txt" ]]; then
       status="rejected_weight_coverage_warning"
-    elif (( SMOKE_REQUESTS > 0 )); then
+    else
+      status="accepted"
+    fi
+    if [[ "$status" == accepted ]] && (( SMOKE_REQUESTS > 0 )); then
       if "$SERVE_ENV/bin/python" "$ROOT/clients/smoke.py" \
         --base-url "http://127.0.0.1:$PORT/v1" --model "$SERVED_NAME" \
         --input-tokens "$SMOKE_INPUT_TOKENS" \
@@ -132,8 +137,18 @@ if [[ "$status" == healthy ]]; then
       else
         status="smoke_failed"
       fi
-    else
-      status="accepted"
+    fi
+    if [[ "$status" == accepted && -n "$QUALITY_MANIFEST" ]]; then
+      if [[ ! -f "$QUALITY_MANIFEST" ]]; then
+        echo "QUALITY_MANIFEST does not exist: $QUALITY_MANIFEST" >&2
+        status="quality_manifest_missing"
+      elif ! "$SERVE_ENV/bin/python" "$ROOT/clients/quality_eval.py" \
+        --base-url "http://127.0.0.1:$PORT/v1" --model "$SERVED_NAME" \
+        --manifest "$QUALITY_MANIFEST" --concurrency "$QUALITY_CONCURRENCY" \
+        --seed "$SMOKE_SEED" --output "$OUT_DIR/quality.results.jsonl" \
+        --summary "$OUT_DIR/quality.summary.json"; then
+        status="quality_eval_failed"
+      fi
     fi
   else
     status="acceptance_failed"
@@ -141,13 +156,16 @@ if [[ "$status" == healthy ]]; then
 fi
 
 python3 - "$STATUS_FILE" "$BACKEND" "$MODEL_PATH" "$status" "$server_pid" \
-  "$SMOKE_REQUESTS" "$SMOKE_CONCURRENCY" "$SMOKE_SEED" <<'PY'
+  "$SMOKE_REQUESTS" "$SMOKE_CONCURRENCY" "$SMOKE_SEED" \
+  "$QUALITY_MANIFEST" "$QUALITY_CONCURRENCY" <<'PY'
 import json, pathlib, sys
-path, backend, model, status, pid, requests, concurrency, seed = sys.argv[1:]
+path, backend, model, status, pid, requests, concurrency, seed, quality, quality_c = sys.argv[1:]
 payload = {"backend": backend, "model_path": model, "status": status,
            "server_pid": int(pid), "adapter_or_override_used": False,
            "smoke": {"requests": int(requests), "concurrency": int(concurrency),
-                     "seed": int(seed)}}
+                     "seed": int(seed)},
+           "quality": {"manifest": quality or None,
+                       "concurrency": int(quality_c) if quality else None}}
 pathlib.Path(path).write_text(json.dumps(payload, indent=2) + "\n")
 print(json.dumps(payload))
 PY

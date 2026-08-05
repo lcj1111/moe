@@ -1,0 +1,320 @@
+{
+  "schema_version": "qtopomoe.quality_sets.v1",
+  "seed": 42,
+  "revisions": {
+    "gsm8k": "740312add88f781978c0658806c59bc2815b9866",
+    "mmlu_pro": "b189ec765aa7ed75c8acfea42df31fdae71f97be",
+    "ceval_main": "617524a00b307ff6f9933702f724131fe12ca7ce",
+    "ceval_parquet": "8267189d6ba0d516d414a98919558032958c4466",
+    "humaneval": "7dce6050a7d6d172f3cc5c32aa97f52fa1a2e544"
+  },
+  "raw_files": [
+    {
+      "path": "ceval_val/accountant.parquet",
+      "size_bytes": 20546,
+      "sha256": "f99296e281ce47302c8fe49d5d1b3dc870677a0d926a7bef8bcbbfcee16128bd"
+    },
+    {
+      "path": "ceval_val/advanced_mathematics.parquet",
+      "size_bytes": 7833,
+      "sha256": "e05ed87c1ea558e378838ec9c33ec6aba139a65546001d61d8822cfd3df7c819"
+    },
+    {
+      "path": "ceval_val/art_studies.parquet",
+      "size_bytes": 7531,
+      "sha256": "8d7f0e954f19a586d05c47ef6a3fe1c5851090e3db834e3c8f693b6483b0f5aa"
+    },
+    {
+      "path": "ceval_val/basic_medicine.parquet",
+      "size_bytes": 6107,
+      "sha256": "41395a18f51c704a7233046aca1961a999f784f05576de180bea58a5b2abbec0"
+    },
+    {
+      "path": "ceval_val/business_administration.parquet",
+      "size_bytes": 11765,
+      "sha256": "b897dc81b061d1468900b9b38f9d697e291bda5d7f5b33d5de2db12e59afc4bc"
+    },
+    {
+      "path": "ceval_val/chinese_language_and_literature.parquet",
+      "size_bytes": 6646,
+      "sha256": "50f20440e7a7893303db46c7eb0ec3612e3ea85d0cf841cfbdd5e9898f861c9c"
+    },
+    {
+      "path": "ceval_val/civil_servant.parquet",
+      "size_bytes": 22397,
+      "sha256": "7018958b189d8018836d990b139b5bc30d778ce572091f4f213ab0b7f9053e59"
+    },
+    {
+      "path": "ceval_val/clinical_medicine.parquet",
+      "size_bytes": 7549,
+      "sha256": "c8d691d83dc21f5e4de2356dcbef544dec7196c43af164e4d2b497c4eae15bb6"
+    },
+    {
+      "path": "ceval_val/college_chemistry.parquet",
+      "size_bytes": 7916,
+      "sha256": "7da3751d4784480a07b91bd9433440f109b04951884449a0fc4ab8b7a7f378d7"
+    },
+    {
+      "path": "ceval_val/college_economics.parquet",
+      "size_bytes": 15142,
+      "sha256": "de20bf0e060430f0f1c98e0e0040735abeb2fbaaacd3f2d54a7b137ebf244079"
+    },
+    {
+      "path": "ceval_val/college_physics.parquet",
+      "size_bytes": 9912,
+      "sha256": "0e81a35b2dfa7e344d3eb666cd1308990c838c181f708030fd77f9dd81ef8a83"
+    },
+    {
+      "path": "ceval_val/college_programming.parquet",
+      "size_bytes": 14050,
+      "sha256": "23705408d1e4733ce877217c64a5e6ba21b0a8f65347ff64f1f6c7654b446377"
+    },
+    {
+      "path": "ceval_val/computer_architecture.parquet",
+      "size_bytes": 7875,
+      "sha256": "c1c5fab4950b04a91e1f9e0f024eae1f414e33dc47a4c02ec52650d1d319ae06"
+    },
+    {
+      "path": "ceval_val/computer_network.parquet",
+      "size_bytes": 7096,
+      "sha256": "f7dd2a0760c9ef14e569d6bde56f283a701ad61934e900e0b72fd29e32fd0f02"
+    },
+    {
+      "path": "ceval_val/discrete_mathematics.parquet",
+      "size_bytes": 8112,
+      "sha256": "7e04bdff838a745ff7118e47070ddca409fea61fe130672577945656dd9e2903"
+    },
+    {
+      "path": "ceval_val/education_science.parquet",
+      "size_bytes": 8789,
+      "sha256": "6f3a48fc3b60c03e44b2f32b1fdb214967e5112de3ba3631c9e3df24d1e77fe6"
+    },
+    {
+      "path": "ceval_val/electrical_engineer.parquet",
+      "size_bytes": 11201,
+      "sha256": "cbcca6c3a508836b21ead049b8342a380a1480f768acc6e3139873d8bccb335c"
+    },
+    {
+      "path": "ceval_val/environmental_impact_assessment_engineer.parquet",
+      "size_bytes": 10549,
+      "sha256": "73aac8698483ded8535dce22ab102081b8fa51f58442035edf46bf515518eed4"
+    },
+    {
+      "path": "ceval_val/fire_engineer.parquet",
+      "size_bytes": 12633,
+      "sha256": "a9378038b664757a83bd14355773e9849edc1e4a8030246e3e8aeeaf62a3cc18"
+    },
+    {
+      "path": "ceval_val/high_school_biology.parquet",
+      "size_bytes": 10031,
+      "sha256": "2177aa275ad4a2f972ddfd6aa318323c15fb136608200daa237f17528a37ecdd"
+    },
+    {
+      "path": "ceval_val/high_school_chemistry.parquet",
+      "size_bytes": 9916,
+      "sha256": "60d20961edd3318e1cb09df44e10e0101b6ec6c97332299f030b11fc48bb1953"
+    },
+    {
+      "path": "ceval_val/high_school_chinese.parquet",
+      "size_bytes": 15628,
+      "sha256": "1b3cb0cbba7393c1a3f555dad8205899fb991bca7e4c3adb123423ae6d6069b1"
+    },
+    {
+      "path": "ceval_val/high_school_geography.parquet",
+      "size_bytes": 7921,
+      "sha256": "4bad8dbc69442c2e2c57cabfc0d87e9c9b68f1271d5826787af678a5eeeedd85"
+    },
+    {
+      "path": "ceval_val/high_school_history.parquet",
+      "size_bytes": 11031,
+      "sha256": "67691bf762376036c778b70963fae896cf72289efefa4d6d450e9366981a8aec"
+    },
+    {
+      "path": "ceval_val/high_school_mathematics.parquet",
+      "size_bytes": 9968,
+      "sha256": "d0d33970cb39b68d63cbdcd708099825d04118562c8d940f46805b527907d9a3"
+    },
+    {
+      "path": "ceval_val/high_school_physics.parquet",
+      "size_bytes": 10576,
+      "sha256": "993415a68afbc7fe93e51027da272712c805fb95c6499c27cf5217041c559b43"
+    },
+    {
+      "path": "ceval_val/high_school_politics.parquet",
+      "size_bytes": 12920,
+      "sha256": "ecac3d54c9fd1cae10e8b9d834da29753755013c52bdafdbe5e366631b21234e"
+    },
+    {
+      "path": "ceval_val/ideological_and_moral_cultivation.parquet",
+      "size_bytes": 7519,
+      "sha256": "464ee51a7c011b424d0f28e58c11691c7a6a1bd3746e3118568ef8f7991d8aad"
+    },
+    {
+      "path": "ceval_val/law.parquet",
+      "size_bytes": 12126,
+      "sha256": "bc940e6ca738861c9204507f613feef75447d909c70996b94c8f61624c4b0d6d"
+    },
+    {
+      "path": "ceval_val/legal_professional.parquet",
+      "size_bytes": 16518,
+      "sha256": "07ed092ba4e5c3154bb8e54cce4dd20fcf4760f3d970704d4f4b82723bdce9c7"
+    },
+    {
+      "path": "ceval_val/logic.parquet",
+      "size_bytes": 19556,
+      "sha256": "e6729770934549cd4d038a6c7ae9a1448728237a262e30db87225c775aaddd05"
+    },
+    {
+      "path": "ceval_val/mao_zedong_thought.parquet",
+      "size_bytes": 9260,
+      "sha256": "a1540f6c8692375ae3b27238da805e5e45631edd7a1751af36d52dd796d1b767"
+    },
+    {
+      "path": "ceval_val/marxism.parquet",
+      "size_bytes": 8030,
+      "sha256": "e1bedacb86e74700b60cd1016ba68574b543f27e503e6b131ac8e976a6519e06"
+    },
+    {
+      "path": "ceval_val/metrology_engineer.parquet",
+      "size_bytes": 9648,
+      "sha256": "fa22568373b0394011b9984098bb4c818e2d687855ebb11722b8655f88a254d2"
+    },
+    {
+      "path": "ceval_val/middle_school_biology.parquet",
+      "size_bytes": 9567,
+      "sha256": "2d50c9b8702a2b5f71d6290dee07626c78895a3878c41a386560a8da6ccf3a89"
+    },
+    {
+      "path": "ceval_val/middle_school_chemistry.parquet",
+      "size_bytes": 9195,
+      "sha256": "a34a2b9312b8bcaf76cbf6d0fca49088bf2d001b8701d26912acb020eaf3f859"
+    },
+    {
+      "path": "ceval_val/middle_school_geography.parquet",
+      "size_bytes": 7195,
+      "sha256": "655590d36e68787ee87ce4ddaa54f90ddb60f477acdbf6d6e18dd1f0e2eb0f63"
+    },
+    {
+      "path": "ceval_val/middle_school_history.parquet",
+      "size_bytes": 9991,
+      "sha256": "83ba0d7e3d1e05286de0794ec0202e83e74af2b777681c7c30664e96dc7e250b"
+    },
+    {
+      "path": "ceval_val/middle_school_mathematics.parquet",
+      "size_bytes": 9448,
+      "sha256": "ddd771e85a96c091f45e7ea6bb6522f74e03e93e91c48e9f3dac11b8c5db3790"
+    },
+    {
+      "path": "ceval_val/middle_school_physics.parquet",
+      "size_bytes": 9782,
+      "sha256": "bd9ee6cfb116711a57393c0d4cdf12fb2d0bda6c1faa13e7f364d401941e220c"
+    },
+    {
+      "path": "ceval_val/middle_school_politics.parquet",
+      "size_bytes": 11323,
+      "sha256": "db974bc6ed17192998d95f3bae187470606f42b0c7e0bf31a544fd0b69ede594"
+    },
+    {
+      "path": "ceval_val/modern_chinese_history.parquet",
+      "size_bytes": 8724,
+      "sha256": "e929497b84918ec9860925167ad1ed13362ccc6d0575b8267235647c829c374a"
+    },
+    {
+      "path": "ceval_val/operating_system.parquet",
+      "size_bytes": 7142,
+      "sha256": "e3b4d7b1d959c06cbca221535fb84ad697f9c8b88a1f91de6a2007b3bca78840"
+    },
+    {
+      "path": "ceval_val/physician.parquet",
+      "size_bytes": 11796,
+      "sha256": "edc55a74f63c3c417da5a394ec0b1441f365946f3f226ec8959449d19e2c93ec"
+    },
+    {
+      "path": "ceval_val/plant_protection.parquet",
+      "size_bytes": 7105,
+      "sha256": "7db8bdf498cf8049f5ba7c94b468ce2316ac647d1e0cd723d42b42d6bf973f04"
+    },
+    {
+      "path": "ceval_val/probability_and_statistics.parquet",
+      "size_bytes": 8668,
+      "sha256": "f1dccb78d4f9184e7fbf5fe5c7f98fa59b49db817e0cd7cf40019d95a2cf5911"
+    },
+    {
+      "path": "ceval_val/professional_tour_guide.parquet",
+      "size_bytes": 7924,
+      "sha256": "20d71b037cee629549ac1f2d6b5c8522b693c91381ad6c15c3795cfccbc9d247"
+    },
+    {
+      "path": "ceval_val/sports_science.parquet",
+      "size_bytes": 7031,
+      "sha256": "0c7ef158b24787ce1e10465571c485869f4fbc3f700f7758ca3a4f403f204a4a"
+    },
+    {
+      "path": "ceval_val/tax_accountant.parquet",
+      "size_bytes": 20057,
+      "sha256": "ddded210a4dd031794c47d27406b1079905ab1d6b11b7b3c116821dc0202b0f2"
+    },
+    {
+      "path": "ceval_val/teacher_qualification.parquet",
+      "size_bytes": 14463,
+      "sha256": "d230bdc88779b5d9ea97f2967d196f7cf89f8e8838aafb64e7c157fdcfe293ee"
+    },
+    {
+      "path": "ceval_val/urban_and_rural_planner.parquet",
+      "size_bytes": 14336,
+      "sha256": "085be7aa2a4e22cd68fec7979132cc1205d351a216d1cb4ecb6f0bc8883d29b6"
+    },
+    {
+      "path": "ceval_val/veterinary_medicine.parquet",
+      "size_bytes": 8022,
+      "sha256": "96c35c3e0dc9fc5ce4405323d56ebf3d6212eef608d224dc0a1ec53c4955555d"
+    },
+    {
+      "path": "gsm8k_test.parquet",
+      "size_bytes": 419088,
+      "sha256": "ee7b8da9e381df27b9e3f7758a159ab2bdaa4dbaa910546cbbc47e0cb44e4f59"
+    },
+    {
+      "path": "humaneval_test.parquet",
+      "size_bytes": 83920,
+      "sha256": "2f2871a15fbc95b6c683043359f4ed8e144c5a1c4f24f25f66bc51f598dfcfb6"
+    },
+    {
+      "path": "mmlupro_test.parquet",
+      "size_bytes": 4144185,
+      "sha256": "0e24a191921c2f453518a537a8b2117bd137e7714d4ef1565e9ba06c1ecb9ad8"
+    }
+  ],
+  "sets": {
+    "quality_smoke_v1": {
+      "path": "/data/models/test/qtopomoe_quality/frozen/quality_smoke_v1.jsonl",
+      "records": 164,
+      "counts": {
+        "gsm8k": 32,
+        "mmlu_pro": 64,
+        "ceval": 52,
+        "humaneval": 16
+      },
+      "sha256": "69bddd50711a0447e9b9594850fdeb1edeb9ab65864297656a1f6e1085f792ad",
+      "prompt_token_ids_sha256": "063fbe0b6d08c6c6be4a1c1f5d881f262b42dbae12c1dedf93ca7ad5ca662dac",
+      "token_ids_equal": true
+    },
+    "quality_formal_v1": {
+      "path": "/data/models/test/qtopomoe_quality/frozen/quality_formal_v1.jsonl",
+      "records": 1352,
+      "counts": {
+        "gsm8k": 256,
+        "mmlu_pro": 512,
+        "ceval": 520,
+        "humaneval": 64
+      },
+      "sha256": "54597f02cb06a6579f07efb5d488b5c2fad2a2ca71f9011377f3c7f7e787dbb6",
+      "prompt_token_ids_sha256": "e68c2d25403db5070a25146db2175553c86adb624a220c13f7e90ffe49c16e28",
+      "token_ids_equal": true
+    }
+  },
+  "tokenizers": {
+    "a": "/home/k8s-ops/.cache/modelscope/models/Qwen--Qwen3.6-35B-A3B/snapshots/master",
+    "b": "/data/models/test/qtopomoe_w4a16_canonical_text_v1"
+  }
+}
