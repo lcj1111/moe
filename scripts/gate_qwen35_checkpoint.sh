@@ -21,6 +21,7 @@ SMOKE_OUTPUT_TOKENS="${SMOKE_OUTPUT_TOKENS:-64}"
 SMOKE_SEED="${SMOKE_SEED:-42}"
 QUALITY_MANIFEST="${QUALITY_MANIFEST:-}"
 QUALITY_CONCURRENCY="${QUALITY_CONCURRENCY:-8}"
+QUALITY_TIMEOUT="${QUALITY_TIMEOUT:-3600}"
 VLLM_MOE_BACKEND="${VLLM_MOE_BACKEND:-auto}"
 
 case "$BACKEND" in
@@ -146,6 +147,7 @@ if [[ "$status" == healthy ]]; then
       elif ! "$SERVE_ENV/bin/python" "$ROOT/clients/quality_eval.py" \
         --base-url "http://127.0.0.1:$PORT/v1" --model "$SERVED_NAME" \
         --manifest "$QUALITY_MANIFEST" --concurrency "$QUALITY_CONCURRENCY" \
+        --timeout "$QUALITY_TIMEOUT" \
         --seed "$SMOKE_SEED" --output "$OUT_DIR/quality.results.jsonl" \
         --summary "$OUT_DIR/quality.summary.json"; then
         status="quality_eval_failed"
