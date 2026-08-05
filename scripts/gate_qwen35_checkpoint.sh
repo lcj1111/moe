@@ -56,8 +56,14 @@ unset PYTHONPATH
 
 nvidia-smi --query-gpu=index,uuid,memory.used,memory.free,utilization.gpu \
   --format=csv,noheader > "$OUT_DIR/gpu_before.csv"
-sha256sum "$MODEL_PATH/config.json" "$MODEL_PATH/model.safetensors" \
-  > "$OUT_DIR/checkpoint.sha256"
+find "$MODEL_PATH" -maxdepth 1 -type f \
+  \( -name 'config.json' -o -name 'model.safetensors.index.json' \
+     -o -name '*.safetensors' \) -print0 \
+  | sort -z | xargs -0 -r sha256sum > "$OUT_DIR/checkpoint.sha256"
+if [[ ! -s "$OUT_DIR/checkpoint.sha256" ]]; then
+  echo "No checkpoint files found under $MODEL_PATH" >&2
+  exit 2
+fi
 "$SERVE_ENV/bin/python" -m pip freeze --all > "$OUT_DIR/environment.freeze.txt"
 
 server_pid=""
