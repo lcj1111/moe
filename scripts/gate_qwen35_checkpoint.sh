@@ -78,7 +78,8 @@ else
     --model-path "$MODEL_PATH" --served-model-name "$SERVED_NAME" \
     --host 127.0.0.1 --port "$PORT" --tp-size "$TP_SIZE" \
     --context-length "$MAX_MODEL_LEN" --mem-fraction-static "$MEM_FRACTION" \
-    --disable-cuda-graph --enable-metrics \
+    --cuda-graph-backend-decode disabled \
+    --cuda-graph-backend-prefill disabled --enable-metrics \
     > "$SERVER_LOG" 2>&1 < /dev/null &
 fi
 server_pid=$!
