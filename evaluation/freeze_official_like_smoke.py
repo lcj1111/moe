@@ -28,6 +28,7 @@ SAMPLING = {
     "repetition_penalty": 1.0,
     "enable_thinking": True,
 }
+MAX_OUTPUT_TOKENS = 32768
 
 
 def sha256_file(path: pathlib.Path) -> str:
@@ -62,11 +63,11 @@ def mmlu_record(
     prompt += mmlu_example(row, "Let's think step by step.")
     return {
         "id": f"mmlu_pro:test:{row.get('question_id', index)}",
-        "benchmark": "mmlu_pro", "protocol": "official_like_cot_fewshot_v1",
+        "benchmark": "mmlu_pro", "protocol": "official_like_cot_fewshot_v2",
         "source_index": index, "category": str(row["category"]),
         "messages": [{"role": "user", "content": prompt}],
         "answer": str(row["answer"]).strip().upper(),
-        "score_type": "multiple_choice", "max_tokens": 8192,
+        "score_type": "multiple_choice", "max_tokens": MAX_OUTPUT_TOKENS,
         "sampling": {**SAMPLING, "seed": seed},
     }
 
@@ -89,11 +90,11 @@ def ceval_record(
     prompt += ceval_question(row)
     return {
         "id": f"ceval:{subject}:val:{row.get('id', index)}",
-        "benchmark": "ceval", "protocol": "official_like_5shot_v1",
+        "benchmark": "ceval", "protocol": "official_like_5shot_v2",
         "source_index": index, "subject": subject,
         "messages": [{"role": "user", "content": prompt}],
         "answer": str(row["answer"]).strip().upper(),
-        "score_type": "multiple_choice", "max_tokens": 4096,
+        "score_type": "multiple_choice", "max_tokens": MAX_OUTPUT_TOKENS,
         "sampling": {**SAMPLING, "seed": seed},
     }
 
@@ -159,7 +160,7 @@ def main() -> int:
             handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
 
     manifest = {
-        "schema_version": "qtopomoe.official_like_smoke.v1",
+        "schema_version": "qtopomoe.official_like_smoke.v2",
         "path": str(args.output.resolve()), "records": len(rows),
         "counts": {"mmlu_pro": 64, "ceval": 52}, "seed": args.seed,
         "revisions": {
@@ -167,6 +168,7 @@ def main() -> int:
             "ceval_parquet": CEVAL_PARQUET_REVISION,
         },
         "fewshot": {"mmlu_pro": 5, "ceval": 5},
+        "max_output_tokens": MAX_OUTPUT_TOKENS,
         "sampling": SAMPLING, "sha256": sha256_file(args.output),
         "prompt_token_ids_sha256": token_digest.hexdigest(),
         "prompt_tokens": {
@@ -174,7 +176,10 @@ def main() -> int:
             "mean": sum(token_lengths) / len(token_lengths),
         },
         "token_ids_equal": True,
-        "note": "Protocol-aligned sampled reproduction; not an official full-set score.",
+        "note": (
+            "Protocol-aligned sampled reproduction with the model-card recommended "
+            "32,768 output-token ceiling; not an official full-set score."
+        ),
     }
     manifest_path = args.output.with_suffix(".manifest.json")
     manifest_path.write_text(

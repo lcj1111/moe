@@ -99,12 +99,14 @@ async def run(args: argparse.Namespace) -> int:
             ):
                 if key in sampling:
                     payload[key] = sampling[key]
-            started = time.perf_counter()
+            queued_at = time.perf_counter()
+            request_started: float | None = None
             error = None
             response_json = None
             text = ""
             try:
                 async with semaphore:
+                    request_started = time.perf_counter()
                     async with session.post(
                         args.base_url.rstrip("/") + "/chat/completions", json=payload
                     ) as response:
@@ -115,14 +117,35 @@ async def run(args: argparse.Namespace) -> int:
                 text = response_json["choices"][0]["message"]["content"]
             except Exception as exc:  # retained in artifact and reflected in exit code
                 error = f"{type(exc).__name__}: {exc}"
-            elapsed_ms = (time.perf_counter() - started) * 1000
-            correct, prediction = (None, None) if error else score(row, text)
+            finished_at = time.perf_counter()
+            queue_ms = ((request_started or finished_at) - queued_at) * 1000
+            request_ms = (
+                (finished_at - request_started) * 1000
+                if request_started is not None else None
+            )
+            elapsed_ms = (finished_at - queued_at) * 1000
+            choice = ((response_json or {}).get("choices") or [{}])[0]
+            usage = (response_json or {}).get("usage") or {}
+            completion_tokens = usage.get("completion_tokens", usage.get("output_tokens"))
+            finish_reason = choice.get("finish_reason")
+            truncated = finish_reason == "length" or (
+                completion_tokens is not None
+                and int(completion_tokens) >= int(row["max_tokens"])
+            )
+            if error:
+                correct, prediction = None, None
+            else:
+                correct, prediction = score(row, text)
+                if truncated:
+                    correct = None
             output_rows[index] = {
                 "id": row["id"], "benchmark": row["benchmark"],
                 "score_type": row["score_type"], "expected": row.get("answer"),
                 "prediction": prediction, "correct": correct, "response": text,
-                "elapsed_ms": elapsed_ms, "error": error,
-                "usage": (response_json or {}).get("usage"),
+                "queue_ms": queue_ms, "request_ms": request_ms,
+                "elapsed_ms": elapsed_ms, "finish_reason": finish_reason,
+                "max_tokens": int(row["max_tokens"]), "truncated": truncated,
+                "error": error, "usage": usage,
             }
 
         await asyncio.gather(*(one(i, row) for i, row in enumerate(rows)))
@@ -140,23 +163,37 @@ async def run(args: argparse.Namespace) -> int:
         "manifest": str(args.manifest), "seed": args.seed,
         "protocols": sorted({row.get("protocol", "regression_v1") for row in rows}),
         "requested": len(rows), "completed": sum(not row["error"] for row in results),
-        "failed": sum(bool(row["error"]) for row in results), "benchmarks": {},
+        "failed": sum(bool(row["error"]) for row in results),
+        "truncated": sum(bool(row["truncated"]) for row in results),
+        "benchmarks": {},
     }
     for benchmark, items in sorted(by_benchmark.items()):
         scored = [row for row in items if row["correct"] is not None]
-        latencies = [row["elapsed_ms"] for row in items if not row["error"]]
+        request_latencies = [
+            row["request_ms"] for row in items
+            if not row["error"] and row["request_ms"] is not None
+        ]
+        queue_times = [row["queue_ms"] for row in items if not row["error"]]
+        end_to_end = [row["elapsed_ms"] for row in items if not row["error"]]
+        def timing(values: list[float]) -> dict[str, float | None]:
+            return {
+                "mean": statistics.fmean(values) if values else None,
+                "p50": percentile(values, 0.50),
+                "p95": percentile(values, 0.95),
+            }
         summary["benchmarks"][benchmark] = {
             "records": len(items), "scored": len(scored),
+            "truncated": sum(bool(row["truncated"]) for row in items),
             "correct": sum(bool(row["correct"]) for row in scored),
             "accuracy": (sum(bool(row["correct"]) for row in scored) / len(scored))
             if scored else None,
-            "latency_ms": {"mean": statistics.fmean(latencies) if latencies else None,
-                           "p50": percentile(latencies, 0.50),
-                           "p95": percentile(latencies, 0.95)},
+            "request_latency_ms": timing(request_latencies),
+            "queue_ms": timing(queue_times),
+            "end_to_end_ms": timing(end_to_end),
         }
     args.summary.write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n")
     print(json.dumps(summary, ensure_ascii=False))
-    return 1 if summary["failed"] else 0
+    return 1 if summary["failed"] or summary["truncated"] else 0
 
 
 def parse_args() -> argparse.Namespace:
