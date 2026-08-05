@@ -21,6 +21,7 @@ SMOKE_OUTPUT_TOKENS="${SMOKE_OUTPUT_TOKENS:-64}"
 SMOKE_SEED="${SMOKE_SEED:-42}"
 QUALITY_MANIFEST="${QUALITY_MANIFEST:-}"
 QUALITY_CONCURRENCY="${QUALITY_CONCURRENCY:-8}"
+VLLM_MOE_BACKEND="${VLLM_MOE_BACKEND:-auto}"
 
 case "$BACKEND" in
   vllm)
@@ -85,7 +86,8 @@ if [[ "$BACKEND" == vllm ]]; then
     --served-model-name "$SERVED_NAME" --host 127.0.0.1 --port "$PORT" \
     --tensor-parallel-size "$TP_SIZE" --dtype auto \
     --max-model-len "$MAX_MODEL_LEN" --max-num-seqs "$MAX_NUM_SEQS" \
-    --gpu-memory-utilization "$MEM_FRACTION" --enforce-eager \
+    --gpu-memory-utilization "$MEM_FRACTION" --moe-backend "$VLLM_MOE_BACKEND" \
+    --enforce-eager \
     > "$SERVER_LOG" 2>&1 < /dev/null &
 else
   nohup "$SERVE_ENV/bin/sglang" serve \
@@ -156,11 +158,12 @@ fi
 
 python3 - "$STATUS_FILE" "$BACKEND" "$MODEL_PATH" "$status" "$server_pid" \
   "$SMOKE_REQUESTS" "$SMOKE_CONCURRENCY" "$SMOKE_SEED" \
-  "$QUALITY_MANIFEST" "$QUALITY_CONCURRENCY" <<'PY'
+  "$QUALITY_MANIFEST" "$QUALITY_CONCURRENCY" "$VLLM_MOE_BACKEND" <<'PY'
 import json, pathlib, sys
-path, backend, model, status, pid, requests, concurrency, seed, quality, quality_c = sys.argv[1:]
+path, backend, model, status, pid, requests, concurrency, seed, quality, quality_c, moe_backend = sys.argv[1:]
 payload = {"backend": backend, "model_path": model, "status": status,
            "server_pid": int(pid), "adapter_or_override_used": False,
+           "vllm_moe_backend": moe_backend if backend == "vllm" else None,
            "smoke": {"requests": int(requests), "concurrency": int(concurrency),
                      "seed": int(seed)},
            "quality": {"manifest": quality or None,
