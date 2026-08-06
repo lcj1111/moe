@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-"""Benchmark MoE kernels (vLLM triton fused_experts / FlashInfer grouped_mm).
+"""Benchmark MoE kernels (vLLM triton fused_experts / FlashInfer cutlass).
 
-``m_bucket`` here is the per-expert token count (the MoE grouped-GEMM M),
-matching the Phase 8 ``real_M_hist`` buckets derived from route traces.  For
-triton ``fused_experts``, which takes a flat ``num_tokens`` input with per-token
-top-k expert ids, we set ``num_tokens = m_bucket * num_experts // top_k`` so
-each expert receives exactly ``m_bucket`` rows.  For FlashInfer
-``grouped_mm_bf16`` we give each expert ``m_bucket`` rows directly via
-``m_indptr``.
+``m_bucket`` is the total token count (the flat ``num_tokens`` input to the
+MoE kernel), matching Phase 4/8 semantics where ``prefill_m = input_tokens *
+concurrency`` and ``decode_m = concurrency``, both rounded to power-of-two
+buckets.  The kernel receives ``num_tokens = m_bucket`` rows of hidden states;
+per-expert rows are an internal detail of the routed kernel.
 
 Latencies are real GPU measurements (kernel execution), not synthetic
 estimates.  Output rows follow ``qtopomoe.kernel_measurement.v1`` and can be
@@ -141,7 +139,7 @@ def main() -> int:
         }
         try:
             if args.backend == "triton":
-                num_tokens = m_bucket * args.num_experts // args.top_k
+                num_tokens = m_bucket
                 if args.precision == "fp8":
                     torch.manual_seed(42)
                     hidden_states = torch.randn(
@@ -173,7 +171,7 @@ def main() -> int:
                 out = run(*inputs)
                 expected = (num_tokens, args.hidden)
             else:  # cutlass
-                num_tokens = m_bucket * args.num_experts // args.top_k
+                num_tokens = m_bucket
                 x = torch.randn(num_tokens, args.hidden, dtype=dtype, device=device)
                 ids = torch.randint(0, args.num_experts, (num_tokens, args.top_k),
                                     dtype=torch.int32, device=device)

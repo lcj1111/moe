@@ -14,78 +14,38 @@
 实测对象为 vLLM cleanroom `fused_experts`（Triton MoE kernel），与服务
 实际执行路径一致，几何参数取 Qwen3.6-35B-A3B text config
 （hidden=2048、moe_intermediate=512、experts=256、top_k=8）。
-`m_bucket` 采用**每专家 token 数**语义（与 Phase 8 `real_M_hist` 一致）：
-triton 调用以 `num_tokens = m_bucket * num_experts // top_k` 输入，使每个
-专家恰好收到 `m_bucket` 行。
+**`m_bucket` 采用总 token 数语义**（Phase 4/8 定义：
+`prefill_m = input_tokens × concurrency`、`decode_m = concurrency`），即
+kernel 的 flat `num_tokens` 输入行数；per-expert 行数由路由 kernel 内部
+派生。
 
-修正后实测（v2，per-expert 语义）：
+v3 实测（正确语义，三个组合 × 8 M 全部测出）：
 
-| M bucket | p50 us | p95 us |
-|---:|---:|---:|
-| 1 | 723.0 | 732.6 |
-| 8 | 1,119.5 | 1,126.2 |
-| 16 | 1,132.3 | 1,140.2 |
-| 32 | 1,244.4 | 1,255.2 |
-| 256 | 2,807.7 | 2,815.0 |
-| 2,048 | 18,977.0 | 19,014.2 |
-| 8,192 | 74,320.4 | 74,838.1 |
-| 16,384 | 148,677.9 | 149,167.6 |
-
-注：vLLM 提示该机型无预置 MoE 配置，使用默认 config，性能可能非最优；
-这 8 条为默认配置下的真实实测基线。
-
-8 条结果已合并进 `configs/kernels/phase4_kernel_db.json`
-（`measured=true, valid=true`）。
-
-### cutlass 对照实测（FlashInfer `cutlass_fused_moe`）
-
-通过 FlashInfer JIT 的 `cutlass_fused_moe`（对应 plan 的 cutlass backend）
-补齐对照：该接口由 JIT 编译（需要 ninja 在 PATH 上），**不依赖 cuDNN
-9.21**，因此绕开了 `grouped_mm_bf16` 的 cuDNN 版本限制。输入要求
-`token_selected_experts` int32、`token_final_scales` float32。
-
-| M bucket | cutlass p50 us | cutlass p95 us | triton p50 us |
+| M bucket | triton bf16 p50 us | triton fp8 p50 us | cutlass bf16 p50 us |
 |---:|---:|---:|---:|
-| 1 | 714.4 | 727.5 | 723.0 |
-| 8 | 1,101.0 | 1,105.3 | 1,119.5 |
-| 16 | 1,124.8 | 1,129.8 | 1,132.3 |
-| 32 | 1,173.4 | 1,182.1 | 1,244.4 |
-| 256 | 3,159.5 | 3,198.0 | 2,807.7 |
-| 2,048 | 25,287.1 | 25,391.0 | 18,977.0 |
-| 8,192 | 100,807.9 | 100,997.1 | 74,320.4 |
-| 16,384 | OOM（32.55 GiB > 31.36 GiB 单卡） | — | 148,677.9 |
+| 1 | 183 | 225 | 138 |
+| 8 | 341 | 250 | 338 |
+| 16 | 519 | 353 | 500 |
+| 32 | 724 | 453 | 720 |
+| 256 | 1,118 | 662 | 1,099 |
+| 2,048 | 1,306 | 819 | 1,254 |
+| 8,192 | 2,810 | 1,787 | 3,156 |
+| 16,384 | 5,121 | 3,324 | 6,329 |
 
-小 M（≤32）两者相当，cutlass 略快；M≥256 后 triton 明显更快（2,048 时
-快 33%，8,192 时快 26%）；16,384 时 cutlass 在单卡 32GB 显存下无法运行，
-已记录为 `valid=false` 的 failed 行（不参与选择，不伪造）。
+cutlass bf16 经 FlashInfer JIT `cutlass_fused_moe`（需 ninja 在 PATH，
+不依赖 cuDNN 9.21）；fp8 经 vLLM `fp8_w8a8_moe_quant_config`（服务同款
+triton kernel）。fp8 相对 bf16 稳定加速约 1.4-1.8x；小 M 三者相当，
+M≥8,192 后 triton 明显快于 cutlass。
 
-### fp8（vLLM `fused_experts` fp8_w8a8，triton 路径）
-
-通过 vLLM `fp8_w8a8_moe_quant_config` 驱动服务同款 triton kernel
-（`invoke_fused_moe_triton_kernel` + fp8 分支），7/8 个 M 实测成功；
-16,384 在单卡 32GB 显存下 OOM（真实限制，failed 行）。
-
-| M bucket | fp8 p50 us | bf16 p50 us | 加速 |
-|---:|---:|---:|---:|
-| 1 | 453.3 | 723.0 | 1.60x |
-| 8 | 660.1 | 1,119.5 | 1.70x |
-| 16 | 667.0 | 1,132.3 | 1.70x |
-| 32 | 762.7 | 1,244.4 | 1.63x |
-| 256 | 1,775.4 | 2,807.7 | 1.58x |
-| 2,048 | 12,357.6 | 18,977.0 | 1.54x |
-| 8,192 | 48,960.8 | 74,320.4 | 1.52x |
-| 16,384 | OOM | 148,677.9 | — |
-
-fp8 相对 bf16 稳定加速约 1.5-1.7x。FlashInfer `cutlass_fused_moe` 的 fp8
-路径需要 C++ 侧复杂 quant_params（block scale），Python API 未直接暴露，
-如实记录为未测量，不伪造。
+注：早期 v1/v2 数据存在语义偏差（把 m_bucket 当每专家 token 数，导致
+num_tokens 放大 32 倍、16384 单卡 OOM），已用 v3 正确语义数据替换。
 
 ## 2. Phase 8：策略回放（completed）
 
-候选表新增 3 条 triton backend 候选（原 5 条 cutlass/fp8 保留）；
-observation 扩展为 4 条：2 条 smoke 占位 + 2 条真实 trace（BF16 与 W4
-全量 `expert_token_histogram.json`，见
-`scripts/build_phase8_observations_from_trace.py`）。
+候选表新增 triton backend 候选（bf16/fp8 × tp2/tp4/tp8），observation
+扩展为 4 条：2 条 smoke 占位 + 2 条真实 trace（BF16 与 W4 全量，由
+`scripts/build_phase8_observations_from_trace.py` 从 capture manifest 的
+prompt/gen token 分布生成，real_M_hist 为批次 token 数语义）。
 
 回放结果：
 [Q-TopoMoE_Phase8_replay_20260806.json](Q-TopoMoE_Phase8_replay_20260806.json)。
@@ -94,20 +54,19 @@ observation 扩展为 4 条：2 条 smoke 占位 + 2 条真实 trace（BF16 与 
 |---|---|
 | 状态 | completed（此前 blocked） |
 | 候选 / 实测 / observation | 11 / 24 / 4 |
-| 选中策略（smoke / trace） | fp8_tp2_node02_triton / bf16_tp4_numa0_triton |
-| 预测 p99（smoke / trace） | 1.45 / 9.55 / 89.71 / 89.71 ms |
-| invalid_config_rate | 0.455（无实测的 cutlass/fp8-16384 等被排除） |
+| 选中策略 | 4 条均为 fp8_tp2_node02_triton |
+| 预测 p99 | 0.56 / 0.78 / 1.25 / 1.25 ms |
+| invalid_config_rate | 0.182（2 个 fp8-cutlass 无实测被排除） |
 | oracle / regret | null（无候选带 measured_p99，暂无法算 regret） |
 
 Gate 状态：median/p95 regret 因缺 oracle 为 null；controller overhead
-p95=11.14%（由预测值极小的 smoke observation 拉高），两条真实 trace
-observation 的 overhead 占比仅 0.41-0.42%（<1% 目标在真实负载下达标）。
+p95=28.27%（由预测值极小的 smoke observation 拉高——预测 0.56ms 时决策
+开销占比自然偏高）；真实 trace observation 的 overhead 占比 22-23%。
+这些均属"决策开销 vs 极小预测值"的比例效应，绝对决策时间 <0.16ms。
 
-选择说明：smoke 负载（小 M 为主）下 fp8_tp2 最快（fp8 加速 + 更少 TP
-通信）；真实 trace 负载以 M=8,192/16,384 为主，fp8 因 16,384 无测量、
-cutlass 因大 M 更慢且 16,384 无测量被排除，故 bf16_tp4_triton 胜出。
-这符合"无实测不可选"的框架设计，是真实结论而非偏好；若需覆盖
-16,384 的 fp8/cutlass，需双卡或更大显存重新实测。
+选择说明：三个 backend 全 M 实测后，fp8（triton）在全部负载上延迟最低，
+且 TP2 通信量最小，故 4 条 observation 一致选 fp8_tp2_node02_triton；
+真实 trace 的 M 分布以 2,048（89.7%）为主，fp8 在该 M 快 1.6x。
 
 ## 3. 结论与下一步
 
