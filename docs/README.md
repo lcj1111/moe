@@ -103,3 +103,5 @@
 - [Phase4 Triton MoE kernel 实测 v2（数据）](Q-TopoMoE_Phase4_triton_moe_bf16_kernel_20260806_v2.json)
 - [Phase8 replay 2026-08-06 v3（数据）](Q-TopoMoE_Phase8_replay_20260806_v3.json)
 - [Phase4 cutlass MoE kernel 实测（数据）](Q-TopoMoE_Phase4_cutlass_moe_bf16_kernel_20260806.json)
+- [Phase8 replay 2026-08-06 v4（数据）](Q-TopoMoE_Phase8_replay_20260806_v4.json)
+- [Phase4 triton MoE fp8 kernel 实测（数据）](Q-TopoMoE_Phase4_triton_moe_fp8_kernel_20260806.json)

@@ -59,6 +59,27 @@ triton 调用以 `num_tokens = m_bucket * num_experts // top_k` 输入，使每�
 快 33%，8,192 时快 26%）；16,384 时 cutlass 在单卡 32GB 显存下无法运行，
 已记录为 `valid=false` 的 failed 行（不参与选择，不伪造）。
 
+### fp8（vLLM `fused_experts` fp8_w8a8，triton 路径）
+
+通过 vLLM `fp8_w8a8_moe_quant_config` 驱动服务同款 triton kernel
+（`invoke_fused_moe_triton_kernel` + fp8 分支），7/8 个 M 实测成功；
+16,384 在单卡 32GB 显存下 OOM（真实限制，failed 行）。
+
+| M bucket | fp8 p50 us | bf16 p50 us | 加速 |
+|---:|---:|---:|---:|
+| 1 | 453.3 | 723.0 | 1.60x |
+| 8 | 660.1 | 1,119.5 | 1.70x |
+| 16 | 667.0 | 1,132.3 | 1.70x |
+| 32 | 762.7 | 1,244.4 | 1.63x |
+| 256 | 1,775.4 | 2,807.7 | 1.58x |
+| 2,048 | 12,357.6 | 18,977.0 | 1.54x |
+| 8,192 | 48,960.8 | 74,320.4 | 1.52x |
+| 16,384 | OOM | 148,677.9 | — |
+
+fp8 相对 bf16 稳定加速约 1.5-1.7x。FlashInfer `cutlass_fused_moe` 的 fp8
+路径需要 C++ 侧复杂 quant_params（block scale），Python API 未直接暴露，
+如实记录为未测量，不伪造。
+
 ## 2. Phase 8：策略回放（completed）
 
 候选表新增 3 条 triton backend 候选（原 5 条 cutlass/fp8 保留）；
@@ -72,19 +93,21 @@ observation 扩展为 4 条：2 条 smoke 占位 + 2 条真实 trace（BF16 与 
 | 项 | 值 |
 |---|---|
 | 状态 | completed（此前 blocked） |
-| 候选 / 实测 / observation | 8 / 16 / 4 |
-| 四条 observation 的选中策略 | 均为 bf16_tp4_numa0_triton |
-| 预测 p99（smoke / trace） | 2.30 / 14.63 / 89.71 / 89.71 ms |
-| invalid_config_rate | 0.625（5/8 无实测的 cutlass/fp8 被排除） |
+| 候选 / 实测 / observation | 11 / 24 / 4 |
+| 选中策略（smoke / trace） | fp8_tp2_node02_triton / bf16_tp4_numa0_triton |
+| 预测 p99（smoke / trace） | 1.45 / 9.55 / 89.71 / 89.71 ms |
+| invalid_config_rate | 0.455（无实测的 cutlass/fp8-16384 等被排除） |
 | oracle / regret | null（无候选带 measured_p99，暂无法算 regret） |
 
 Gate 状态：median/p95 regret 因缺 oracle 为 null；controller overhead
-p95=5.28%（由预测值极小的 smoke observation 拉高），两条真实 trace
-observation 的 overhead 占比仅 0.28-0.29%（<1% 目标在真实负载下达标）。
+p95=11.14%（由预测值极小的 smoke observation 拉高），两条真实 trace
+observation 的 overhead 占比仅 0.41-0.42%（<1% 目标在真实负载下达标）。
 
-选择说明：trace 负载以 M=8,192/16,384 为主，cutlass 在这些大 M 下更慢且
-16,384 无测量（invalid），因此 triton 被选中；这符合"无实测不可选"的
-框架设计，也是真实结论而非偏好。
+选择说明：smoke 负载（小 M 为主）下 fp8_tp2 最快（fp8 加速 + 更少 TP
+通信）；真实 trace 负载以 M=8,192/16,384 为主，fp8 因 16,384 无测量、
+cutlass 因大 M 更慢且 16,384 无测量被排除，故 bf16_tp4_triton 胜出。
+这符合"无实测不可选"的框架设计，是真实结论而非偏好；若需覆盖
+16,384 的 fp8/cutlass，需双卡或更大显存重新实测。
 
 ## 3. 结论与下一步
 

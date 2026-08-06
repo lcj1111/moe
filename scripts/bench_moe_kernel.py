@@ -79,6 +79,7 @@ def main() -> int:
     parser.add_argument("--top-k", type=int, default=8)
     parser.add_argument("--repeats", type=int, default=50)
     parser.add_argument("--backend", default="triton", choices=["triton", "cutlass"])
+    parser.add_argument("--precision", default="bf16", choices=["bf16", "fp8"])
     parser.add_argument("--device", default="cuda:0")
     args = parser.parse_args()
 
@@ -88,13 +89,23 @@ def main() -> int:
         from vllm.model_executor.layers.fused_moe.activation import MoEActivation
         kernel_name = "vllm.fused_experts(triton)"
         num_experts = args.num_experts
+        if args.precision == "fp8":
+            from vllm.model_executor.layers.fused_moe.config import (
+                fp8_w8a8_moe_quant_config,
+            )
+            quant_config = None
         def run(*kernel_args):
-            hidden_states, w1, w2, topk_weights, topk_ids = kernel_args
+            if args.precision == "fp8":
+                hidden_states, w1, w2, topk_weights, topk_ids, qc = kernel_args
+            else:
+                hidden_states, w1, w2, topk_weights, topk_ids = kernel_args
+                qc = None
             return fused_experts(
                 hidden_states, w1, w2, topk_weights, topk_ids,
                 activation=MoEActivation.SILU,
                 apply_router_weight_on_input=False,
                 global_num_experts=num_experts,
+                quant_config=qc,
             )
     elif args.backend == "cutlass":
         from flashinfer import cutlass_fused_moe
@@ -108,8 +119,8 @@ def main() -> int:
     else:  # pragma: no cover
         raise SystemExit(f"unknown backend {args.backend}")
 
-    dtype = torch.bfloat16
     device = args.device
+    dtype = torch.bfloat16
     rows = []
     for m_bucket in [int(x) for x in args.buckets.split(",")]:
         base_row = {
@@ -117,7 +128,7 @@ def main() -> int:
             "backend": args.backend,
             "kernel_name": kernel_name,
             "m_bucket": m_bucket,
-            "precision": "bf16",
+            "precision": args.precision,
             "kernel_config": {
                 "hidden": args.hidden,
                 "moe_intermediate": args.intermediate,
@@ -131,11 +142,34 @@ def main() -> int:
         try:
             if args.backend == "triton":
                 num_tokens = m_bucket * args.num_experts // args.top_k
-                hidden_states, w1, w2, topk_weights, topk_ids = make_inputs(
-                    num_tokens, args.hidden, args.intermediate, args.num_experts,
-                    args.top_k, dtype, device,
-                )
-                inputs = (hidden_states, w1, w2, topk_weights, topk_ids)
+                if args.precision == "fp8":
+                    torch.manual_seed(42)
+                    hidden_states = torch.randn(
+                        num_tokens, args.hidden, dtype=dtype, device=device)
+                    w1 = (torch.randn(args.num_experts, 2 * args.intermediate,
+                                      args.hidden, device=device) * 0.02).to(
+                        torch.float8_e4m3fn)
+                    w2 = (torch.randn(args.num_experts, args.hidden,
+                                      args.intermediate, device=device) * 0.02).to(
+                        torch.float8_e4m3fn)
+                    s1 = torch.ones(args.num_experts, 1, 1, dtype=torch.float32,
+                                    device=device)
+                    s2 = torch.ones(args.num_experts, 1, 1, dtype=torch.float32,
+                                    device=device)
+                    a1 = torch.tensor(1.0, dtype=torch.float32, device=device)
+                    qc = fp8_w8a8_moe_quant_config(
+                        w1_scale=s1, w2_scale=s2, a1_scale=a1, a2_scale=a1)
+                    topk_ids = torch.randint(
+                        0, args.num_experts, (num_tokens, args.top_k), device=device)
+                    topk_weights = torch.ones(
+                        num_tokens, args.top_k, dtype=dtype, device=device)
+                    inputs = (hidden_states, w1, w2, topk_weights, topk_ids, qc)
+                else:
+                    hidden_states, w1, w2, topk_weights, topk_ids = make_inputs(
+                        num_tokens, args.hidden, args.intermediate, args.num_experts,
+                        args.top_k, dtype, device,
+                    )
+                    inputs = (hidden_states, w1, w2, topk_weights, topk_ids)
                 out = run(*inputs)
                 expected = (num_tokens, args.hidden)
             else:  # cutlass
@@ -168,6 +202,10 @@ def main() -> int:
                    "error": f"{type(exc).__name__}: {str(exc)[:300]}"}
             rows.append(row)
             print(json.dumps(row, ensure_ascii=False))
+        finally:
+            if "inputs" in locals():
+                del inputs
+            torch.cuda.empty_cache()
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(rows, indent=2, ensure_ascii=False) + "\n",
