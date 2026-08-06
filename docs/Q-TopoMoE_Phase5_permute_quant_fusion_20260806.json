@@ -1,0 +1,77 @@
+{
+  "schema_version": "qtopomoe.phase5.permute_quant_fusion.v1",
+  "target": "permute + activation quant/scale + pack fusion (Triton)",
+  "profile": {
+    "num_tokens": 2048,
+    "hidden": 2048,
+    "moe_intermediate": 512,
+    "experts": 256,
+    "top_k": 8,
+    "fused_experts_total_ms": 1.298,
+    "permute_ms": 0.113,
+    "permute_share_pct": 8.73,
+    "activation_quant_ms": 0.06,
+    "activation_quant_share_pct": 4.6,
+    "permute_quant_share_pct": 13.34,
+    "runbook_stop_threshold_pct": 10.0
+  },
+  "results": [
+    {
+      "M": 1,
+      "correct": true,
+      "max_err": 0.0,
+      "ref_ms": 0.1258,
+      "fused_ms": 0.2244,
+      "speedup": 0.56
+    },
+    {
+      "M": 8,
+      "correct": true,
+      "max_err": 0.0,
+      "ref_ms": 0.1223,
+      "fused_ms": 0.2264,
+      "speedup": 0.54
+    },
+    {
+      "M": 32,
+      "correct": true,
+      "max_err": 0.0,
+      "ref_ms": 0.1146,
+      "fused_ms": 0.2575,
+      "speedup": 0.45
+    },
+    {
+      "M": 256,
+      "correct": true,
+      "max_err": 0.0,
+      "ref_ms": 0.1196,
+      "fused_ms": 0.2582,
+      "speedup": 0.46
+    },
+    {
+      "M": 2048,
+      "correct": true,
+      "max_err": 0.0,
+      "ref_ms": 0.683,
+      "fused_ms": 0.2832,
+      "speedup": 2.41
+    },
+    {
+      "M": 8192,
+      "correct": true,
+      "max_err": 0.0,
+      "ref_ms": 2.8927,
+      "fused_ms": 0.3358,
+      "speedup": 8.61
+    },
+    {
+      "M": 16384,
+      "correct": true,
+      "max_err": 0.0,
+      "ref_ms": 5.7341,
+      "fused_ms": 0.6771,
+      "speedup": 8.47
+    }
+  ],
+  "note": "Small M (<=256) slower due to Triton launch overhead; large M (prefill-like) 2.4-8.6x faster. Correctness: fp8 dequantized within 1 ulp across all shapes including M=1 and M=16384."
+}

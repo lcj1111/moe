@@ -107,3 +107,8 @@
 - [Phase4 triton MoE fp8 kernel 实测（数据）](Q-TopoMoE_Phase4_triton_moe_fp8_kernel_20260806.json)
 - [Phase8 replay 2026-08-06 v5（数据）](Q-TopoMoE_Phase8_replay_20260806_v5.json)
 - [Phase4 kernel 实测 v3（正确 m_bucket 语义）：[triton bf16](Q-TopoMoE_Phase4_triton_moe_bf16_kernel_20260806_v3.json) / [triton fp8](Q-TopoMoE_Phase4_triton_moe_fp8_kernel_20260806_v3.json) / [cutlass bf16](Q-TopoMoE_Phase4_cutlass_moe_bf16_kernel_20260806_v3.json)
+
+## Phase 5：Level 2 融合 kernel
+
+- [Phase5 进展：permute+quant/scale+pack 融合](Q-TopoMoE_Phase5_progress_20260806.md) /
+  [融合结果数据](Q-TopoMoE_Phase5_permute_quant_fusion_20260806.json)
