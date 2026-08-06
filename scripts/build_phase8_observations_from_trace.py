@@ -44,6 +44,7 @@ def main() -> int:
     parser.add_argument("--layers", type=int, default=40)
     parser.add_argument("--communication-bytes-per-token", type=float,
                         default=2.0 * 2048 * 2 * 40)  # hidden*2 bytes * layers
+    parser.add_argument("--source-tag", default="phase3_bf16_full_trace")
     args = parser.parse_args()
 
     hist = json.loads(args.histogram.read_text(encoding="utf-8"))
@@ -77,7 +78,7 @@ def main() -> int:
             "real_M_hist": real_M_hist,
             "communication_bytes": round(communication_bytes, 1),
             "route_hist": route_hist,
-            "placement": {"source": "phase3_bf16_full_trace", "trace": str(args.histogram)},
+            "placement": {"source": args.source_tag, "trace": str(args.histogram)},
             "migration_bytes": 0,
         }
     ]

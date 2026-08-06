@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
-"""Benchmark the vLLM Triton MoE kernel (fused_experts) across M buckets.
+"""Benchmark MoE kernels (vLLM triton fused_experts / FlashInfer grouped_mm).
 
-This uses the exact kernel the serving path executes (cleanroom vLLM
-``fused_experts``), so measured latencies are kernel measurements, not
-synthetic estimates. Output rows follow ``qtopomoe.kernel_measurement.v1``
-and can be merged into ``configs/kernels/phase4_kernel_db.json``.
+``m_bucket`` here is the per-expert token count (the MoE grouped-GEMM M),
+matching the Phase 8 ``real_M_hist`` buckets derived from route traces.  For
+triton ``fused_experts``, which takes a flat ``num_tokens`` input with per-token
+top-k expert ids, we set ``num_tokens = m_bucket * num_experts // top_k`` so
+each expert receives exactly ``m_bucket`` rows.  For FlashInfer
+``grouped_mm_bf16`` we give each expert ``m_bucket`` rows directly via
+``m_indptr``.
+
+Latencies are real GPU measurements (kernel execution), not synthetic
+estimates.  Output rows follow ``qtopomoe.kernel_measurement.v1`` and can be
+merged into ``configs/kernels/phase4_kernel_db.json``.
 
 Model geometry (Qwen3.6-35B-A3B text config):
     hidden_size=2048, moe_intermediate_size=512, num_experts=256,
@@ -80,31 +87,51 @@ def main() -> int:
         from vllm.model_executor.layers.fused_moe.fused_moe import fused_experts
         from vllm.model_executor.layers.fused_moe.activation import MoEActivation
         kernel_name = "vllm.fused_experts(triton)"
-        def run(hidden_states, w1, w2, topk_weights, topk_ids):
+        num_experts = args.num_experts
+        def run(*kernel_args):
+            hidden_states, w1, w2, topk_weights, topk_ids = kernel_args
             return fused_experts(
                 hidden_states, w1, w2, topk_weights, topk_ids,
                 activation=MoEActivation.SILU,
                 apply_router_weight_on_input=False,
-                global_num_experts=args.num_experts,
+                global_num_experts=num_experts,
             )
-    else:
-        raise SystemExit("flashinfer backend not yet wired; use --backend triton")
+    elif args.backend == "flashinfer":
+        from flashinfer import grouped_mm_bf16
+        kernel_name = "flashinfer.grouped_mm_bf16"
+        def run(*args):
+            a, b, m_indptr = args
+            return grouped_mm_bf16(a, b, m_indptr, out_dtype=torch.bfloat16)
+    else:  # pragma: no cover
+        raise SystemExit(f"unknown backend {args.backend}")
 
     dtype = torch.bfloat16
     device = args.device
     rows = []
     for m_bucket in [int(x) for x in args.buckets.split(",")]:
-        hidden_states, w1, w2, topk_weights, topk_ids = make_inputs(
-            m_bucket, args.hidden, args.intermediate, args.num_experts,
-            args.top_k, dtype, device,
-        )
-        out = run(hidden_states, w1, w2, topk_weights, topk_ids)
+        if args.backend == "triton":
+            num_tokens = m_bucket * args.num_experts // args.top_k
+            hidden_states, w1, w2, topk_weights, topk_ids = make_inputs(
+                num_tokens, args.hidden, args.intermediate, args.num_experts,
+                args.top_k, dtype, device,
+            )
+            inputs = (hidden_states, w1, w2, topk_weights, topk_ids)
+            out = run(*inputs)
+            expected = (num_tokens, args.hidden)
+        else:  # flashinfer
+            total_rows = m_bucket * args.num_experts
+            a = torch.randn(total_rows, args.hidden, dtype=dtype, device=device)
+            # grouped_mm_bf16 expects b as [num_experts, N, K].
+            b = torch.randn(args.num_experts, args.intermediate, args.hidden,
+                            dtype=dtype, device=device) * 0.02
+            m_indptr = (torch.arange(args.num_experts + 1, device=device) * m_bucket).to(torch.int32)
+            inputs = (a, b, m_indptr)
+            out = run(*inputs)
+            expected = (total_rows, args.intermediate)
         torch.cuda.synchronize()
-        expected = (m_bucket, args.hidden)
         if tuple(out.shape) != expected:
             raise RuntimeError(f"unexpected output shape {tuple(out.shape)} != {expected}")
-        timing = measure(lambda: run(hidden_states, w1, w2, topk_weights, topk_ids),
-                         args.repeats)
+        timing = measure(lambda: run(*inputs), args.repeats)
         row = {
             "schema_version": "qtopomoe.kernel_measurement.v1",
             "backend": args.backend,
@@ -116,6 +143,7 @@ def main() -> int:
                 "moe_intermediate": args.intermediate,
                 "num_experts": args.num_experts,
                 "top_k": args.top_k,
+                "per_expert_tokens": m_bucket,
                 "activation": "silu",
                 "apply_router_weight_on_input": False,
             },
