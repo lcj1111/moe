@@ -64,31 +64,51 @@ def main() -> int:
         f"{CEVAL_PARQUET_REVISION}?recursive=true&expand=false"
     )
     tree = json.loads(request_bytes(api_url))
-    dev_files = sorted(
-        (
-            item for item in tree
-            if item.get("type") == "file" and "/dev/" in item.get("path", "")
-            and item["path"].endswith(".parquet")
-        ),
-        key=lambda item: item["path"],
-    )
-    if len(dev_files) != 52:
-        raise SystemExit(f"expected 52 C-Eval dev files, got {len(dev_files)}")
-    for item in dev_files:
-        source_path = item["path"]
-        subject = source_path.split("/", 1)[0]
-        url = resolve_url(CEVAL_REPO, CEVAL_PARQUET_REVISION, source_path)
-        data = request_bytes(url)
-        if len(data) != int(item["size"]):
-            raise RuntimeError(f"size mismatch for {source_path}")
-        destination = output / "ceval_dev" / f"{subject}.parquet"
-        atomic_write(destination, data)
-        records.append({
-            "dataset": "ceval", "revision": CEVAL_PARQUET_REVISION,
-            "source_path": source_path,
-            "output_path": str(destination.relative_to(output)),
-            "bytes": len(data), "sha256": sha256(data), "url": url,
-        })
+    def fetch_ceval_split(tree: list[dict], split: str) -> list[dict]:
+        files = sorted(
+            (
+                item for item in tree
+                if item.get("type") == "file"
+                and f"/{split}/" in item.get("path", "")
+                and item["path"].endswith(".parquet")
+            ),
+            key=lambda item: item["path"],
+        )
+        if len(files) != 52:
+            raise SystemExit(
+                f"expected 52 C-Eval {split} files, got {len(files)}"
+            )
+        return files
+
+    for split in ("dev", "test"):
+        split_files = fetch_ceval_split(tree, split)
+        for item in split_files:
+            source_path = item["path"]
+            subject = source_path.split("/", 1)[0]
+            url = resolve_url(CEVAL_REPO, CEVAL_PARQUET_REVISION, source_path)
+            data = request_bytes(url)
+            if len(data) != int(item["size"]):
+                raise RuntimeError(f"size mismatch for {source_path}")
+            destination = output / f"ceval_{split}" / f"{subject}.parquet"
+            atomic_write(destination, data)
+            records.append({
+                "dataset": "ceval", "revision": CEVAL_PARQUET_REVISION,
+                "source_path": source_path, "split": split,
+                "output_path": str(destination.relative_to(output)),
+                "bytes": len(data), "sha256": sha256(data), "url": url,
+            })
+
+    mmlu_test_url = resolve_url(MMLU_REPO, MMLU_REVISION, "data/test-00000-of-00001.parquet")
+    mmlu_test_data = request_bytes(mmlu_test_url)
+    mmlu_test_path = output / "mmlupro_test.parquet"
+    atomic_write(mmlu_test_path, mmlu_test_data)
+    records.append({
+        "dataset": "mmlu_pro", "revision": MMLU_REVISION,
+        "source_path": "data/test-00000-of-00001.parquet",
+        "output_path": mmlu_test_path.name,
+        "bytes": len(mmlu_test_data), "sha256": sha256(mmlu_test_data),
+        "url": mmlu_test_url,
+    })
 
     manifest = {
         "schema_version": "qtopomoe.official_protocol_assets.v1",
