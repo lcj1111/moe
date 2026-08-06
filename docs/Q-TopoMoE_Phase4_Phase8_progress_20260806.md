@@ -37,11 +37,27 @@ triton 调用以 `num_tokens = m_bucket * num_experts // top_k` 输入，使每�
 8 条结果已合并进 `configs/kernels/phase4_kernel_db.json`
 （`measured=true, valid=true`）。
 
-**FlashInfer 对照未完成（环境限制，如实记录）**：`grouped_mm_bf16` 仅支持
-cudnn backend 且要求 cuDNN ≥ 9.21，本机为 9.20，实测报
-`cuDNN grouped_mm_bf16 requires backend version >= 92100, found 92000`。
-因此 flashinfer/fp8/cutlass 行保持 `planned`，不伪造延迟；后续升级 cuDNN
-或提供对应 kernel 后补齐。
+### cutlass 对照实测（FlashInfer `cutlass_fused_moe`）
+
+通过 FlashInfer JIT 的 `cutlass_fused_moe`（对应 plan 的 cutlass backend）
+补齐对照：该接口由 JIT 编译（需要 ninja 在 PATH 上），**不依赖 cuDNN
+9.21**，因此绕开了 `grouped_mm_bf16` 的 cuDNN 版本限制。输入要求
+`token_selected_experts` int32、`token_final_scales` float32。
+
+| M bucket | cutlass p50 us | cutlass p95 us | triton p50 us |
+|---:|---:|---:|---:|
+| 1 | 714.4 | 727.5 | 723.0 |
+| 8 | 1,101.0 | 1,105.3 | 1,119.5 |
+| 16 | 1,124.8 | 1,129.8 | 1,132.3 |
+| 32 | 1,173.4 | 1,182.1 | 1,244.4 |
+| 256 | 3,159.5 | 3,198.0 | 2,807.7 |
+| 2,048 | 25,287.1 | 25,391.0 | 18,977.0 |
+| 8,192 | 100,807.9 | 100,997.1 | 74,320.4 |
+| 16,384 | OOM（32.55 GiB > 31.36 GiB 单卡） | — | 148,677.9 |
+
+小 M（≤32）两者相当，cutlass 略快；M≥256 后 triton 明显更快（2,048 时
+快 33%，8,192 时快 26%）；16,384 时 cutlass 在单卡 32GB 显存下无法运行，
+已记录为 `valid=false` 的 failed 行（不参与选择，不伪造）。
 
 ## 2. Phase 8：策略回放（completed）
 
@@ -56,15 +72,19 @@ observation 扩展为 4 条：2 条 smoke 占位 + 2 条真实 trace（BF16 与 
 | 项 | 值 |
 |---|---|
 | 状态 | completed（此前 blocked） |
-| 候选 / 实测 / observation | 8 / 8 / 4 |
+| 候选 / 实测 / observation | 8 / 16 / 4 |
 | 四条 observation 的选中策略 | 均为 bf16_tp4_numa0_triton |
 | 预测 p99（smoke / trace） | 2.30 / 14.63 / 89.71 / 89.71 ms |
 | invalid_config_rate | 0.625（5/8 无实测的 cutlass/fp8 被排除） |
 | oracle / regret | null（无候选带 measured_p99，暂无法算 regret） |
 
 Gate 状态：median/p95 regret 因缺 oracle 为 null；controller overhead
-p95=3.3%，两条真实 trace observation 的 overhead 占比仅 0.17-0.19%
-（<1% 目标在真实负载下达标）。
+p95=5.28%（由预测值极小的 smoke observation 拉高），两条真实 trace
+observation 的 overhead 占比仅 0.28-0.29%（<1% 目标在真实负载下达标）。
+
+选择说明：trace 负载以 M=8,192/16,384 为主，cutlass 在这些大 M 下更慢且
+16,384 无测量（invalid），因此 triton 被选中；这符合"无实测不可选"的
+框架设计，也是真实结论而非偏好。
 
 ## 3. 结论与下一步
 

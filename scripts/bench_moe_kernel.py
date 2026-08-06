@@ -78,7 +78,7 @@ def main() -> int:
     parser.add_argument("--num-experts", type=int, default=256)
     parser.add_argument("--top-k", type=int, default=8)
     parser.add_argument("--repeats", type=int, default=50)
-    parser.add_argument("--backend", default="triton", choices=["triton", "flashinfer"])
+    parser.add_argument("--backend", default="triton", choices=["triton", "cutlass"])
     parser.add_argument("--device", default="cuda:0")
     args = parser.parse_args()
 
@@ -96,12 +96,15 @@ def main() -> int:
                 apply_router_weight_on_input=False,
                 global_num_experts=num_experts,
             )
-    elif args.backend == "flashinfer":
-        from flashinfer import grouped_mm_bf16
-        kernel_name = "flashinfer.grouped_mm_bf16"
+    elif args.backend == "cutlass":
+        from flashinfer import cutlass_fused_moe
+        kernel_name = "flashinfer.cutlass_fused_moe"
         def run(*args):
-            a, b, m_indptr = args
-            return grouped_mm_bf16(a, b, m_indptr, out_dtype=torch.bfloat16)
+            x, ids, scales, fc1, fc2 = args
+            return cutlass_fused_moe(
+                x, ids, scales, fc1, fc2, torch.bfloat16, [],
+                tp_size=1, ep_size=1,
+            )[0]
     else:  # pragma: no cover
         raise SystemExit(f"unknown backend {args.backend}")
 
@@ -109,30 +112,7 @@ def main() -> int:
     device = args.device
     rows = []
     for m_bucket in [int(x) for x in args.buckets.split(",")]:
-        if args.backend == "triton":
-            num_tokens = m_bucket * args.num_experts // args.top_k
-            hidden_states, w1, w2, topk_weights, topk_ids = make_inputs(
-                num_tokens, args.hidden, args.intermediate, args.num_experts,
-                args.top_k, dtype, device,
-            )
-            inputs = (hidden_states, w1, w2, topk_weights, topk_ids)
-            out = run(*inputs)
-            expected = (num_tokens, args.hidden)
-        else:  # flashinfer
-            total_rows = m_bucket * args.num_experts
-            a = torch.randn(total_rows, args.hidden, dtype=dtype, device=device)
-            # grouped_mm_bf16 expects b as [num_experts, N, K].
-            b = torch.randn(args.num_experts, args.intermediate, args.hidden,
-                            dtype=dtype, device=device) * 0.02
-            m_indptr = (torch.arange(args.num_experts + 1, device=device) * m_bucket).to(torch.int32)
-            inputs = (a, b, m_indptr)
-            out = run(*inputs)
-            expected = (total_rows, args.intermediate)
-        torch.cuda.synchronize()
-        if tuple(out.shape) != expected:
-            raise RuntimeError(f"unexpected output shape {tuple(out.shape)} != {expected}")
-        timing = measure(lambda: run(*inputs), args.repeats)
-        row = {
+        base_row = {
             "schema_version": "qtopomoe.kernel_measurement.v1",
             "backend": args.backend,
             "kernel_name": kernel_name,
@@ -147,14 +127,47 @@ def main() -> int:
                 "activation": "silu",
                 "apply_router_weight_on_input": False,
             },
-            "measured": True,
-            "valid": True,
-            "device": torch.cuda.get_device_name(device) if torch.cuda.is_available() else "cpu",
-            "source": "phase4_bench_20260806",
-            **timing,
         }
-        rows.append(row)
-        print(json.dumps(row, ensure_ascii=False))
+        try:
+            if args.backend == "triton":
+                num_tokens = m_bucket * args.num_experts // args.top_k
+                hidden_states, w1, w2, topk_weights, topk_ids = make_inputs(
+                    num_tokens, args.hidden, args.intermediate, args.num_experts,
+                    args.top_k, dtype, device,
+                )
+                inputs = (hidden_states, w1, w2, topk_weights, topk_ids)
+                out = run(*inputs)
+                expected = (num_tokens, args.hidden)
+            else:  # cutlass
+                num_tokens = m_bucket * args.num_experts // args.top_k
+                x = torch.randn(num_tokens, args.hidden, dtype=dtype, device=device)
+                ids = torch.randint(0, args.num_experts, (num_tokens, args.top_k),
+                                    dtype=torch.int32, device=device)
+                scales = torch.ones(num_tokens, args.top_k, dtype=torch.float32,
+                                    device=device)
+                fc1 = torch.randn(args.num_experts, 2 * args.intermediate, args.hidden,
+                                  dtype=dtype, device=device) * 0.02
+                fc2 = torch.randn(args.num_experts, args.hidden, args.intermediate,
+                                  dtype=dtype, device=device) * 0.02
+                inputs = (x, ids, scales, fc1, fc2)
+                out = run(*inputs)
+                expected = (num_tokens, args.hidden)
+            torch.cuda.synchronize()
+            if tuple(out.shape) != expected:
+                raise RuntimeError(f"unexpected output shape {tuple(out.shape)} != {expected}")
+            timing = measure(lambda: run(*inputs), args.repeats)
+            row = {**base_row, "measured": True, "valid": True,
+                   "device": torch.cuda.get_device_name(device) if torch.cuda.is_available() else "cpu",
+                   "source": "phase4_bench_20260806", **timing}
+            rows.append(row)
+            print(json.dumps(row, ensure_ascii=False))
+        except Exception as exc:  # record a failed row without aborting the sweep
+            row = {**base_row, "measured": False, "valid": False,
+                   "device": torch.cuda.get_device_name(device) if torch.cuda.is_available() else "cpu",
+                   "source": "phase4_bench_20260806",
+                   "error": f"{type(exc).__name__}: {str(exc)[:300]}"}
+            rows.append(row)
+            print(json.dumps(row, ensure_ascii=False))
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(rows, indent=2, ensure_ascii=False) + "\n",
