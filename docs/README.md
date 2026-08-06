@@ -6,6 +6,7 @@
 
 ## 项目总纲
 
+- [上手与复现阅读指南](Q-TopoMoE_复现阅读指南.md)：新接手者的文件阅读顺序与各文件作用。
 - [逐步执行 Runbook](Q-TopoMoE_逐步执行Runbook.md)：端到端执行手册（gate、trace、评测、kernel、策略）。
 - [量化与 SM120 算子协同优化执行方案](Q-TopoMoE_量化与SM120算子协同优化执行方案.md)：总体方案。
 

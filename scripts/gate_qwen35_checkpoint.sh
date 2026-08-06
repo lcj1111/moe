@@ -88,7 +88,6 @@ if [[ "$BACKEND" == vllm ]]; then
     --tensor-parallel-size "$TP_SIZE" --dtype auto \
     --max-model-len "$MAX_MODEL_LEN" --max-num-seqs "$MAX_NUM_SEQS" \
     --gpu-memory-utilization "$MEM_FRACTION" --moe-backend "$VLLM_MOE_BACKEND" \
-    --enforce-eager \
     > "$SERVER_LOG" 2>&1 < /dev/null &
 else
   nohup "$SERVE_ENV/bin/sglang" serve \
