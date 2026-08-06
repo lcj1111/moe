@@ -12,6 +12,11 @@ class KernelMeasurement:
     kernel_config: dict[str, Any]
     m_bucket: int
     precision: str = "bf16"
+    kernel_name: str | None = None
+    device: str | None = None
+    min_us: float | None = None
+    max_us: float | None = None
+    repeats: int | None = None
     p50_us: float | None = None
     p95_us: float | None = None
     measured: bool = False
@@ -22,6 +27,11 @@ class KernelMeasurement:
     @property
     def score_us(self) -> float | None:
         return self.p95_us if self.p95_us is not None else self.p50_us
+
+    @classmethod
+    def from_row(cls, row: dict[str, Any]) -> "KernelMeasurement":
+        allowed = {f.name for f in cls.__dataclass_fields__.values()}
+        return cls(**{k: v for k, v in row.items() if k in allowed})
 
 
 class KernelDatabase:
@@ -40,7 +50,7 @@ class KernelDatabase:
             if data.get("schema_version") != cls.schema_version:
                 raise ValueError(f"unsupported kernel DB schema: {data.get('schema_version')}")
             rows = data.get("measurements", [])
-        return cls(KernelMeasurement(**row) for row in rows)
+        return cls(KernelMeasurement.from_row(row) for row in rows)
 
     def dump(self, path: str | Path) -> None:
         payload = {"schema_version": self.schema_version,

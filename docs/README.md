@@ -93,6 +93,9 @@
 
 ## Phase 4 / Phase 8：kernel benchmark 与策略回放
 
+- [Phase4/8 进展：Triton MoE kernel 实测与策略回放](Q-TopoMoE_Phase4_Phase8_progress_20260806.md)
 - [Phase4/8 可执行框架](Q-TopoMoE_Phase4_Phase8_framework.md)
 - [Phase4/8 离线任务](Q-TopoMoE_Phase4_Phase8_offline_tasks.md)
 - [Phase8 replay（数据）](Q-TopoMoE_Phase8_replay_20260804.json)
+- [Phase8 replay 2026-08-06（数据）](Q-TopoMoE_Phase8_replay_20260806.json)
+- [Phase4 Triton MoE kernel 实测（数据）](Q-TopoMoE_Phase4_triton_moe_bf16_kernel_20260806.json)

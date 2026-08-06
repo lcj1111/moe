@@ -1,0 +1,51 @@
+{
+  "candidate_count": 8,
+  "evaluation": {
+    "decision_overhead_pct_p95": 9.417415996130398,
+    "gates": {
+      "controller_overhead_lt_1pct": false,
+      "median_regret_le_5pct": null,
+      "p95_regret_le_10pct": null
+    },
+    "invalid_config_rate": 0.625,
+    "median_regret_pct": null,
+    "p95_regret_pct": null,
+    "rows": [
+      {
+        "candidate_count": 8,
+        "chosen": "bf16_tp4_numa0_triton",
+        "decision_overhead_ms": 0.08980091661214828,
+        "decision_overhead_pct_of_predicted_p99": 10.056616494489326,
+        "invalid_count": 5,
+        "oracle_p99_ms": null,
+        "predicted_p99_ms": 0.892953576,
+        "regret_pct": null
+      },
+      {
+        "candidate_count": 8,
+        "chosen": "bf16_tp4_numa0_triton",
+        "decision_overhead_ms": 0.04261499270796776,
+        "decision_overhead_pct_of_predicted_p99": 3.664611510900052,
+        "invalid_count": 5,
+        "oracle_p99_ms": null,
+        "predicted_p99_ms": 1.162878864,
+        "regret_pct": null
+      },
+      {
+        "candidate_count": 8,
+        "chosen": "bf16_tp4_numa0_triton",
+        "decision_overhead_ms": 0.16543595120310783,
+        "decision_overhead_pct_of_predicted_p99": 2.7878455612495654,
+        "invalid_count": 5,
+        "oracle_p99_ms": null,
+        "predicted_p99_ms": 5.934186366082499,
+        "regret_pct": null
+      }
+    ],
+    "top1_accuracy": 0.0
+  },
+  "kernel_measurement_count": 8,
+  "observation_count": 3,
+  "schema_version": "qtopomoe.phase8_replay.v1",
+  "status": "completed"
+}
