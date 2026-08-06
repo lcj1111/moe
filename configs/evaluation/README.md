@@ -19,3 +19,13 @@ validation CoT demonstrations, five C-Eval dev examples per subject, thinking
 mode, and Qwen-recommended sampling. It remains a sampled reproduction; only a
 full-set run with an explicitly frozen official harness may be called an
 official-score reproduction.
+
+## Full-set official-like assets
+
+`full_set_official_v1.manifest.json` pins the frozen full-set protocol:
+MMLU-Pro test (12,032) + C-Eval test (12,342), 24,374 records total, seed 42,
+few-shot 5+5, thinking mode with 32,768 output ceiling, and SHA-256 of the
+93 MB JSONL (`full_set_official_v1.jsonl`, kept outside git). Build it with
+`evaluation/fetch_official_protocol_assets.py` +
+`evaluation/freeze_full_set.py`; `evaluation/slice_pilot.py` cuts a small
+timing pilot before committing to a multi-hour full run.

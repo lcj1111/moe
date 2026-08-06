@@ -1,0 +1,347 @@
+{
+  "schema_version": "qtopomoe.route_drift.v1",
+  "reference_model": "bf16",
+  "candidate_model": "w4a16-triton",
+  "num_tokens": 119827,
+  "num_layers": 40,
+  "top_k": 8,
+  "prompt_token_ids_match": true,
+  "metrics": {
+    "per_layer": [
+      {
+        "layer_id": 0,
+        "mean_jaccard": 0.986347,
+        "flip_rate": 0.053394,
+        "count_correlation": 0.999993,
+        "ref_count_cv": 0.498079,
+        "cand_count_cv": 0.499015
+      },
+      {
+        "layer_id": 1,
+        "mean_jaccard": 0.960008,
+        "flip_rate": 0.169945,
+        "count_correlation": 0.999957,
+        "ref_count_cv": 0.976712,
+        "cand_count_cv": 0.981592
+      },
+      {
+        "layer_id": 2,
+        "mean_jaccard": 0.944908,
+        "flip_rate": 0.234763,
+        "count_correlation": 0.999863,
+        "ref_count_cv": 0.431031,
+        "cand_count_cv": 0.436847
+      },
+      {
+        "layer_id": 3,
+        "mean_jaccard": 0.892655,
+        "flip_rate": 0.437956,
+        "count_correlation": 0.999419,
+        "ref_count_cv": 0.792211,
+        "cand_count_cv": 0.79954
+      },
+      {
+        "layer_id": 4,
+        "mean_jaccard": 0.904953,
+        "flip_rate": 0.391965,
+        "count_correlation": 0.999738,
+        "ref_count_cv": 0.597831,
+        "cand_count_cv": 0.602782
+      },
+      {
+        "layer_id": 5,
+        "mean_jaccard": 0.909935,
+        "flip_rate": 0.373338,
+        "count_correlation": 0.99976,
+        "ref_count_cv": 0.652893,
+        "cand_count_cv": 0.657592
+      },
+      {
+        "layer_id": 6,
+        "mean_jaccard": 0.906728,
+        "flip_rate": 0.385531,
+        "count_correlation": 0.999846,
+        "ref_count_cv": 0.787483,
+        "cand_count_cv": 0.792885
+      },
+      {
+        "layer_id": 7,
+        "mean_jaccard": 0.87411,
+        "flip_rate": 0.501606,
+        "count_correlation": 0.999443,
+        "ref_count_cv": 1.037067,
+        "cand_count_cv": 1.015591
+      },
+      {
+        "layer_id": 8,
+        "mean_jaccard": 0.87733,
+        "flip_rate": 0.49155,
+        "count_correlation": 0.999689,
+        "ref_count_cv": 1.24396,
+        "cand_count_cv": 1.240349
+      },
+      {
+        "layer_id": 9,
+        "mean_jaccard": 0.879554,
+        "flip_rate": 0.485608,
+        "count_correlation": 0.999611,
+        "ref_count_cv": 0.827744,
+        "cand_count_cv": 0.824727
+      },
+      {
+        "layer_id": 10,
+        "mean_jaccard": 0.883461,
+        "flip_rate": 0.463234,
+        "count_correlation": 0.999695,
+        "ref_count_cv": 0.903812,
+        "cand_count_cv": 0.915746
+      },
+      {
+        "layer_id": 11,
+        "mean_jaccard": 0.870304,
+        "flip_rate": 0.509234,
+        "count_correlation": 0.999614,
+        "ref_count_cv": 0.643718,
+        "cand_count_cv": 0.64583
+      },
+      {
+        "layer_id": 12,
+        "mean_jaccard": 0.856666,
+        "flip_rate": 0.553773,
+        "count_correlation": 0.999643,
+        "ref_count_cv": 0.782707,
+        "cand_count_cv": 0.782166
+      },
+      {
+        "layer_id": 13,
+        "mean_jaccard": 0.858036,
+        "flip_rate": 0.544819,
+        "count_correlation": 0.999799,
+        "ref_count_cv": 1.187343,
+        "cand_count_cv": 1.187903
+      },
+      {
+        "layer_id": 14,
+        "mean_jaccard": 0.852771,
+        "flip_rate": 0.55692,
+        "count_correlation": 0.999788,
+        "ref_count_cv": 1.163199,
+        "cand_count_cv": 1.174181
+      },
+      {
+        "layer_id": 15,
+        "mean_jaccard": 0.830065,
+        "flip_rate": 0.619351,
+        "count_correlation": 0.999556,
+        "ref_count_cv": 0.904141,
+        "cand_count_cv": 0.913194
+      },
+      {
+        "layer_id": 16,
+        "mean_jaccard": 0.827538,
+        "flip_rate": 0.625777,
+        "count_correlation": 0.999634,
+        "ref_count_cv": 1.22816,
+        "cand_count_cv": 1.244803
+      },
+      {
+        "layer_id": 17,
+        "mean_jaccard": 0.827376,
+        "flip_rate": 0.618233,
+        "count_correlation": 0.999652,
+        "ref_count_cv": 1.28388,
+        "cand_count_cv": 1.299749
+      },
+      {
+        "layer_id": 18,
+        "mean_jaccard": 0.817142,
+        "flip_rate": 0.640023,
+        "count_correlation": 0.999482,
+        "ref_count_cv": 0.893288,
+        "cand_count_cv": 0.897281
+      },
+      {
+        "layer_id": 19,
+        "mean_jaccard": 0.808365,
+        "flip_rate": 0.661938,
+        "count_correlation": 0.999598,
+        "ref_count_cv": 1.198233,
+        "cand_count_cv": 1.20713
+      },
+      {
+        "layer_id": 20,
+        "mean_jaccard": 0.791976,
+        "flip_rate": 0.700744,
+        "count_correlation": 0.999385,
+        "ref_count_cv": 1.069207,
+        "cand_count_cv": 1.060695
+      },
+      {
+        "layer_id": 21,
+        "mean_jaccard": 0.799869,
+        "flip_rate": 0.679989,
+        "count_correlation": 0.99919,
+        "ref_count_cv": 1.147502,
+        "cand_count_cv": 1.173025
+      },
+      {
+        "layer_id": 22,
+        "mean_jaccard": 0.796879,
+        "flip_rate": 0.676801,
+        "count_correlation": 0.999686,
+        "ref_count_cv": 0.936699,
+        "cand_count_cv": 0.938949
+      },
+      {
+        "layer_id": 23,
+        "mean_jaccard": 0.784565,
+        "flip_rate": 0.704148,
+        "count_correlation": 0.999449,
+        "ref_count_cv": 0.753788,
+        "cand_count_cv": 0.756705
+      },
+      {
+        "layer_id": 24,
+        "mean_jaccard": 0.764157,
+        "flip_rate": 0.747619,
+        "count_correlation": 0.999003,
+        "ref_count_cv": 0.843274,
+        "cand_count_cv": 0.854018
+      },
+      {
+        "layer_id": 25,
+        "mean_jaccard": 0.77327,
+        "flip_rate": 0.729318,
+        "count_correlation": 0.999334,
+        "ref_count_cv": 1.369535,
+        "cand_count_cv": 1.401603
+      },
+      {
+        "layer_id": 26,
+        "mean_jaccard": 0.774781,
+        "flip_rate": 0.724303,
+        "count_correlation": 0.999678,
+        "ref_count_cv": 1.463614,
+        "cand_count_cv": 1.483054
+      },
+      {
+        "layer_id": 27,
+        "mean_jaccard": 0.758441,
+        "flip_rate": 0.753503,
+        "count_correlation": 0.999086,
+        "ref_count_cv": 0.979121,
+        "cand_count_cv": 1.01308
+      },
+      {
+        "layer_id": 28,
+        "mean_jaccard": 0.765369,
+        "flip_rate": 0.744907,
+        "count_correlation": 0.999505,
+        "ref_count_cv": 1.328303,
+        "cand_count_cv": 1.340867
+      },
+      {
+        "layer_id": 29,
+        "mean_jaccard": 0.772252,
+        "flip_rate": 0.734242,
+        "count_correlation": 0.999501,
+        "ref_count_cv": 1.300219,
+        "cand_count_cv": 1.312596
+      },
+      {
+        "layer_id": 30,
+        "mean_jaccard": 0.767712,
+        "flip_rate": 0.726088,
+        "count_correlation": 0.999321,
+        "ref_count_cv": 0.911359,
+        "cand_count_cv": 0.914932
+      },
+      {
+        "layer_id": 31,
+        "mean_jaccard": 0.758019,
+        "flip_rate": 0.747987,
+        "count_correlation": 0.999469,
+        "ref_count_cv": 1.275547,
+        "cand_count_cv": 1.294554
+      },
+      {
+        "layer_id": 32,
+        "mean_jaccard": 0.781452,
+        "flip_rate": 0.703556,
+        "count_correlation": 0.999454,
+        "ref_count_cv": 1.093923,
+        "cand_count_cv": 1.102819
+      },
+      {
+        "layer_id": 33,
+        "mean_jaccard": 0.778715,
+        "flip_rate": 0.689586,
+        "count_correlation": 0.999246,
+        "ref_count_cv": 0.771119,
+        "cand_count_cv": 0.775753
+      },
+      {
+        "layer_id": 34,
+        "mean_jaccard": 0.793756,
+        "flip_rate": 0.665267,
+        "count_correlation": 0.99967,
+        "ref_count_cv": 1.208767,
+        "cand_count_cv": 1.212282
+      },
+      {
+        "layer_id": 35,
+        "mean_jaccard": 0.749252,
+        "flip_rate": 0.759453,
+        "count_correlation": 0.999312,
+        "ref_count_cv": 0.778609,
+        "cand_count_cv": 0.773404
+      },
+      {
+        "layer_id": 36,
+        "mean_jaccard": 0.739763,
+        "flip_rate": 0.771729,
+        "count_correlation": 0.998995,
+        "ref_count_cv": 0.886806,
+        "cand_count_cv": 0.88264
+      },
+      {
+        "layer_id": 37,
+        "mean_jaccard": 0.743868,
+        "flip_rate": 0.764836,
+        "count_correlation": 0.998994,
+        "ref_count_cv": 1.156392,
+        "cand_count_cv": 1.175571
+      },
+      {
+        "layer_id": 38,
+        "mean_jaccard": 0.75625,
+        "flip_rate": 0.742596,
+        "count_correlation": 0.999623,
+        "ref_count_cv": 1.960208,
+        "cand_count_cv": 1.978938
+      },
+      {
+        "layer_id": 39,
+        "mean_jaccard": 0.741405,
+        "flip_rate": 0.751233,
+        "count_correlation": 0.997557,
+        "ref_count_cv": 1.035784,
+        "cand_count_cv": 1.104098
+      }
+    ],
+    "mean_jaccard": 0.824,
+    "mean_flip_rate": 0.595922,
+    "mean_count_correlation": 0.999481,
+    "m_bucket_delta": {
+      "1-4": 2,
+      "129-256": -2,
+      "17-32": -1,
+      "33-64": 1,
+      "5-8": -1,
+      "65-128": 1,
+      "9-16": 1,
+      ">256": 0
+    }
+  },
+  "note": "Expert-ID-only metrics. Router-probability KL requires topk_weights, which the native capture does not export."
+}

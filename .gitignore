@@ -32,5 +32,6 @@ artifacts/**
 *.jsonl
 *.parquet
 *.npz
+*.npy
 core
 core.*

@@ -1,0 +1,37 @@
+{
+  "schema_version": "qtopomoe.official_like_full.v1",
+  "path": "/data/models/test/qtopomoe_quality/full_set_official_v1.jsonl",
+  "records": 24374,
+  "counts": {
+    "mmlu_pro": 12032,
+    "ceval": 12342
+  },
+  "seed": 42,
+  "revisions": {
+    "mmlu_pro": "b189ec765aa7ed75c8acfea42df31fdae71f97be",
+    "ceval_parquet": "8267189d6ba0d516d414a98919558032958c4466"
+  },
+  "fewshot": {
+    "mmlu_pro": 5,
+    "ceval": 5
+  },
+  "max_output_tokens": 32768,
+  "sampling": {
+    "temperature": 1.0,
+    "top_p": 0.95,
+    "top_k": 20,
+    "min_p": 0.0,
+    "presence_penalty": 1.5,
+    "repetition_penalty": 1.0,
+    "enable_thinking": true
+  },
+  "sha256": "888a9da9f45e3b19717e06ca2034eb1bd8454ef2b7dd410946e2a87912da477c",
+  "prompt_token_ids_sha256": "471562e2c715b29f8dd67add64d57c2d83aac1abeda5576c5be1bad61ecbfe05",
+  "prompt_tokens": {
+    "min": 278,
+    "max": 2897,
+    "mean": 953.4910560433249
+  },
+  "token_ids_equal": true,
+  "note": "Full official-like test splits with the model-card recommended 32,768 output ceiling. Large JSONL is kept outside git; this manifest pins hashes and protocol."
+}

@@ -1,0 +1,2113 @@
+{
+  "schema_version": "qtopomoe.route_trace_capture.v1",
+  "model_id": "w4a16-triton",
+  "quant_format": "w4a16",
+  "model_path": "/data/models/test/qtopomoe_w4a16_canonical_text_v1",
+  "prompt_manifest": "configs/evaluation/official_like_smoke_v2.jsonl",
+  "indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115
+  ],
+  "seed": 42,
+  "gen_tokens": 16,
+  "routed_experts_prompt_start": 0,
+  "max_prompt_tokens": 0,
+  "gpu_ids": "0,1,2,3",
+  "tp_size": 4,
+  "max_model_len": 8192,
+  "moe_backend": "triton",
+  "prompts": [
+    {
+      "prompt_id": "mmlu_pro:test:192",
+      "prompt_tokens": 1064,
+      "prompt_token_ids_sha256": "d5ef5aeb862a50e2a49617e2d351ea92e4498564a1532974fb35100db57e7408"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:336",
+      "prompt_tokens": 1060,
+      "prompt_token_ids_sha256": "5e86877e0921a9f57bac19a2b1fad77f759b9d421d169fb64f50344e90dada11"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:399",
+      "prompt_tokens": 1079,
+      "prompt_token_ids_sha256": "1aa8c82d3352ee60831aab80e2d0c75cde1358ba281014fd1c5816327ac2776d"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:524",
+      "prompt_tokens": 1095,
+      "prompt_token_ids_sha256": "32c60d4812f9f18e8e31c54fc3db6d1e3f8c2240eac45a8db0d8dc1da09a7ba6"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:669",
+      "prompt_tokens": 1106,
+      "prompt_token_ids_sha256": "040ccf257c7e8b1b8513674c9d1dcae63a2f6ea090365a631d271ea4a51c0660"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:1039",
+      "prompt_tokens": 1490,
+      "prompt_token_ids_sha256": "6c5e0ec03a7bfad768e4f1c6182a82f25134ebfcb717d1a6afebee4fd8f90d58"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:1317",
+      "prompt_tokens": 1832,
+      "prompt_token_ids_sha256": "0b548c81434a54b92e5a53a93a55cf32c5a8e9e805d94b2cec5fae2c5a01a341"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:1719",
+      "prompt_tokens": 1551,
+      "prompt_token_ids_sha256": "cd47756fd5cde59cd0d9e492aaac9b31f720a34e486efc5007032bb5891841c1"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:1898",
+      "prompt_tokens": 1715,
+      "prompt_token_ids_sha256": "2683e1b6f8c2b50634439caa7aab820a6589994c8202d00b3f59627aea3fd057"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:2076",
+      "prompt_tokens": 1128,
+      "prompt_token_ids_sha256": "c91c0c35045d83334fb8ec224b92b0e56ed2c58f9bc7758d97650ba1f6058021"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:2255",
+      "prompt_tokens": 1032,
+      "prompt_token_ids_sha256": "783dc744d8fc035cc3581253b20dd5ca030ce94873902979328af442254a05e0"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:2659",
+      "prompt_tokens": 1047,
+      "prompt_token_ids_sha256": "29b3a5e26e68f3d88a7aaa4474442a24a1d293b30dfd608269955b5952c9098d"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:2709",
+      "prompt_tokens": 1148,
+      "prompt_token_ids_sha256": "d23e67b221b79a315a24935b28755e8338bf4edb92e8f0a6013648702f09e8ab"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:2849",
+      "prompt_tokens": 1465,
+      "prompt_token_ids_sha256": "4fa40b1c27aaeca0a9ac3112a82ca4c2b3a528eec772c3c464616a00eaf61635"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:3008",
+      "prompt_tokens": 1411,
+      "prompt_token_ids_sha256": "93d5b4d613fd642527c5e7321d8028109fdec40d1d151622ae83529fd7cd7f13"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:3060",
+      "prompt_tokens": 1333,
+      "prompt_token_ids_sha256": "eadb299cb5dca6bbce1808b71619ae79acd396999fa4ae98053ec118d45008b2"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:3100",
+      "prompt_tokens": 1332,
+      "prompt_token_ids_sha256": "27dfeeb6c7d320916a6a0856d0afda41bf8537e4a52c59e59f648ae871e90231"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:3205",
+      "prompt_tokens": 1341,
+      "prompt_token_ids_sha256": "c9be3d6bf68a5daebe7a346e8e62247575a0dde652866535414bfb9bd12986f3"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4148",
+      "prompt_tokens": 1625,
+      "prompt_token_ids_sha256": "6e61355129a6b6a305f1414c891678dae722d4f8dbad5e099478cd4880145ebe"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4212",
+      "prompt_tokens": 1571,
+      "prompt_token_ids_sha256": "6c5dc77ae188b4a029c176f1048b8ea2e40468ac35cd9d63ea41915f86a1e243"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4569",
+      "prompt_tokens": 1909,
+      "prompt_token_ids_sha256": "5aa36cb39f8f752deaf5a807e8c7bd4656f03314f15ec8d929742aa3e40a848d"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4661",
+      "prompt_tokens": 1592,
+      "prompt_token_ids_sha256": "720c18bfb5334d9b85dc876d5926c1b3ac53f353673031ce5589b9024230e8e7"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4663",
+      "prompt_tokens": 1622,
+      "prompt_token_ids_sha256": "e7600310d2cd2a7f28efccb7bc17de81ca69612b6a3df92648d3355f4d42f41a"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4701",
+      "prompt_tokens": 1988,
+      "prompt_token_ids_sha256": "fb74a86336d13a1d2223bd7c9020de024e47ab62013d6b8d75c0ef4c8b2acf8f"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4765",
+      "prompt_tokens": 2016,
+      "prompt_token_ids_sha256": "b4082ebbbe01c70b37bcbfbb6fab7c0b514469b9058716bd63232e7c32590d92"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4802",
+      "prompt_tokens": 2351,
+      "prompt_token_ids_sha256": "06323c9590f77c8e0bdb64db77a87b6e964a73f1dbb0ed950f9c6d2776e08476"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4919",
+      "prompt_tokens": 2326,
+      "prompt_token_ids_sha256": "972eaf5ec24da9aad0a8347caa43b827863fd0917d11bf515b062413da1a71cc"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:5026",
+      "prompt_tokens": 2480,
+      "prompt_token_ids_sha256": "d5e90e6899ae8de36d11d0203916a99c942bc6ded28cc61bcf373fdb85e7b0e3"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:5351",
+      "prompt_tokens": 972,
+      "prompt_token_ids_sha256": "dc26e73a05216d8cdff1578a5bb235e36c07acfcad0a14fc423897e72195261d"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:5447",
+      "prompt_tokens": 953,
+      "prompt_token_ids_sha256": "29635bcfbbd92c76456e9ecf8e495d8f5219fa6e7c2fc632ec31ef6a28e657ac"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:5741",
+      "prompt_tokens": 934,
+      "prompt_token_ids_sha256": "9bf29352eb00c7eb0c9f082a7aab0161bab5f44ad17c4312114f0283b575f542"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:5746",
+      "prompt_tokens": 953,
+      "prompt_token_ids_sha256": "53ffca71cfa7b0cd2ed1cad362e7eb9e3423ee94eba2533d3db5cff8737c0116"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6101",
+      "prompt_tokens": 1081,
+      "prompt_token_ids_sha256": "7d094afb40e7e2fa8b781c4d4b575ea6ec3ffe6afccde7448f5027ac1a8aecbf"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6278",
+      "prompt_tokens": 1074,
+      "prompt_token_ids_sha256": "a05d699eb1c5e5b7503abf25dcd58fc3263f83f47d67de6c5d89373d04ddbdcb"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6572",
+      "prompt_tokens": 1229,
+      "prompt_token_ids_sha256": "32c57ac6e0cf60432283059377382295f07b37be1fa3920d04a2df879d37d07d"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6736",
+      "prompt_tokens": 1119,
+      "prompt_token_ids_sha256": "f99083fc0d3f92c4b76bde2d81ab2552cef5c72f0c5892069328f2e675ad531c"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6795",
+      "prompt_tokens": 1310,
+      "prompt_token_ids_sha256": "d9cbb4da4a548317c1e57871ac82faceaa903527b37c7a9a3598606b8679ff81"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6857",
+      "prompt_tokens": 1324,
+      "prompt_token_ids_sha256": "67fc04759694e8703a001a75704c8d6f17e50e9c849653c471c9f59356e6872e"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6883",
+      "prompt_tokens": 1427,
+      "prompt_token_ids_sha256": "a2bc8b8a832744a0454b5f9ea933c6e608ce9c38c51904373953bf20a3cd3cbd"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6939",
+      "prompt_tokens": 1280,
+      "prompt_token_ids_sha256": "9d2ad37f01e6b3ba8e1bc64bae817edb599d395313e055b809e7137f104c5e65"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6951",
+      "prompt_tokens": 1254,
+      "prompt_token_ids_sha256": "fc2e62dbd6c775aecf3f220b01c76383fcaec758167f9dbc10aa5f156b253796"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:7041",
+      "prompt_tokens": 1283,
+      "prompt_token_ids_sha256": "d8853104a86213b7e1f92e376f1a54502ea72e8370fe346a8501896cef55d06d"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:7706",
+      "prompt_tokens": 1958,
+      "prompt_token_ids_sha256": "0b23454f4825d2a1cf7f28c314a4fbbffd475e483281be0895facf07ed2be2bd"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:7871",
+      "prompt_tokens": 1811,
+      "prompt_token_ids_sha256": "210de8ba29a6198544e032406cf4b859d569182ea0bf68331a4ae97cd6523111"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:8600",
+      "prompt_tokens": 1824,
+      "prompt_token_ids_sha256": "6f33c20a117dfdc216e1efad0c1e4854f9ab44fa10884c5947d7faa98c1690da"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:8728",
+      "prompt_tokens": 1818,
+      "prompt_token_ids_sha256": "c0f597c7dbd66f9fa7467e636c7951be3ff441352c5307c9b3bf2d9fe4a1496b"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:9286",
+      "prompt_tokens": 1281,
+      "prompt_token_ids_sha256": "72b3c8489f2a004ba314a1ffbd160dd78f428c08cf9331ba46dbf334e9de4b86"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:9475",
+      "prompt_tokens": 1313,
+      "prompt_token_ids_sha256": "9b13673d03a44712b2b1b2cf1456a8f26850cc57d7c9a55430e6ce50217c7a95"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:9552",
+      "prompt_tokens": 1157,
+      "prompt_token_ids_sha256": "51537fc8d950b6860edf46e614309908c1a9f7e82bf6d06bce95dda5bd16a1dd"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:9907",
+      "prompt_tokens": 1272,
+      "prompt_token_ids_sha256": "4f7ef7f16751db85d89df89a17c0e7e310d6d8c453222604240d55fd0b21db50"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:10360",
+      "prompt_tokens": 1626,
+      "prompt_token_ids_sha256": "4739782f69e35e008fd9529a1712aabb8d3c5e049fa2a17c78f1b5e4e9e8309a"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:10392",
+      "prompt_tokens": 1487,
+      "prompt_token_ids_sha256": "31f0a0c733d5fdb2e1dd9381316741b88329ce0ac07eec9845af7666bb8695a1"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:10446",
+      "prompt_tokens": 1493,
+      "prompt_token_ids_sha256": "935882eff613e1fa6e6ce3a5368e37881fb26f58512502cd0417022784356de6"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:10517",
+      "prompt_tokens": 1507,
+      "prompt_token_ids_sha256": "4fb442a772a14e521de0d03dfe7cce75eb6127c95b66ddfbb0de58d80168e471"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:10621",
+      "prompt_tokens": 1622,
+      "prompt_token_ids_sha256": "41b8964d108b4c208a23bc577f7d55ac686dcde993bb6c38f309c724a850ace3"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:10878",
+      "prompt_tokens": 957,
+      "prompt_token_ids_sha256": "e571768f0e3514b95a5720325b8647fd27b16bb75209ec892554666581b7d1f0"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:10881",
+      "prompt_tokens": 986,
+      "prompt_token_ids_sha256": "96d01e2ac9fb9c2be220d28e2dc55dce379f7025566b9f629d3ff77a675bafed"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:11250",
+      "prompt_tokens": 996,
+      "prompt_token_ids_sha256": "17d3177b54726cefc64c40b81473859a70a30ed19ef44630a72ab7844d821639"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:11273",
+      "prompt_tokens": 1053,
+      "prompt_token_ids_sha256": "d188ba47cc3cb2302734054dbafa9ee47a3626ad8e1e34132e383d11971a2232"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:11397",
+      "prompt_tokens": 1339,
+      "prompt_token_ids_sha256": "8db86e9a7ec8790aeb2eafd9f1f46703486c384ad1045ea7f0904fa1b34fe225"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:11774",
+      "prompt_tokens": 1488,
+      "prompt_token_ids_sha256": "20923d8c86a835106e12749b97953124aa1bd038b675d5abac642a2af288250c"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:11924",
+      "prompt_tokens": 1401,
+      "prompt_token_ids_sha256": "d4bee6fcb818f1d55c462d1bb9dc90945b881f91c49171de6b29883763fd0085"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:12082",
+      "prompt_tokens": 1753,
+      "prompt_token_ids_sha256": "ca6ee0462da52fb9367f3085e39572e6d18ba20f34ac17987f802aff59ef9df3"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:12089",
+      "prompt_tokens": 1603,
+      "prompt_token_ids_sha256": "5d3287ca7e428241fb217637cf5a42ec6c3667bef7410da4f6ab14660692ba94"
+    },
+    {
+      "prompt_id": "ceval:accountant:val:47",
+      "prompt_tokens": 616,
+      "prompt_token_ids_sha256": "11ab3f63416ccd84bd09487986d3d407d1c454ffb3cb0b8568fd27fb2e74f9ad"
+    },
+    {
+      "prompt_id": "ceval:advanced_mathematics:val:7",
+      "prompt_tokens": 877,
+      "prompt_token_ids_sha256": "a7b2b35cdfc9a4d0e1083b34ddd94c22f8709b5ccf84dbd0861827417c2438d6"
+    },
+    {
+      "prompt_id": "ceval:art_studies:val:1",
+      "prompt_tokens": 343,
+      "prompt_token_ids_sha256": "a335eeb21ae4c341bf91390f4fa6d35b796ac91a38b299542ccb91573541a356"
+    },
+    {
+      "prompt_id": "ceval:basic_medicine:val:0",
+      "prompt_tokens": 298,
+      "prompt_token_ids_sha256": "0c0a93a80eb3b28c346ce0f57dbb2286982cec51c41695f4897b64901199d5bb"
+    },
+    {
+      "prompt_id": "ceval:business_administration:val:9",
+      "prompt_tokens": 448,
+      "prompt_token_ids_sha256": "f0ad02678c4c9ae5e3f947860dd16b933a1bf5837cba2f577fb14ad36931d210"
+    },
+    {
+      "prompt_id": "ceval:chinese_language_and_literature:val:17",
+      "prompt_tokens": 377,
+      "prompt_token_ids_sha256": "a44575cf2b334d0abbee73f508823a3bc4bdde6b73361ca15f56920ddbc776d9"
+    },
+    {
+      "prompt_id": "ceval:civil_servant:val:32",
+      "prompt_tokens": 728,
+      "prompt_token_ids_sha256": "d05734d3df6d983c9e4640a635a4d211287e63580602f02f33673aee132eb031"
+    },
+    {
+      "prompt_id": "ceval:clinical_medicine:val:16",
+      "prompt_tokens": 466,
+      "prompt_token_ids_sha256": "7f00b60d3ca5672127a719dfdc21ec3140e403ef3d60cf5cc3b89530b4f13bd2"
+    },
+    {
+      "prompt_id": "ceval:college_chemistry:val:13",
+      "prompt_tokens": 473,
+      "prompt_token_ids_sha256": "8be32a74b0abc612e2dfc607f4bff20378a2192b8422d226504b339611c740af"
+    },
+    {
+      "prompt_id": "ceval:college_economics:val:54",
+      "prompt_tokens": 491,
+      "prompt_token_ids_sha256": "a39d2537aa085f959a2aef53fe7a1b67a70498b93b36867c78538b42cb662049"
+    },
+    {
+      "prompt_id": "ceval:college_physics:val:7",
+      "prompt_tokens": 603,
+      "prompt_token_ids_sha256": "208d3c14aa5df594e9bf51e2e31ea470fa764cf03b92f40532a38fd4f82de760"
+    },
+    {
+      "prompt_id": "ceval:college_programming:val:15",
+      "prompt_tokens": 529,
+      "prompt_token_ids_sha256": "9acc605baa8aca87f71ed378e8966f91df502ecf846b006a64db44d837470e1e"
+    },
+    {
+      "prompt_id": "ceval:computer_architecture:val:11",
+      "prompt_tokens": 652,
+      "prompt_token_ids_sha256": "25072a072c2d159db72a7d8a4cfb079ed7631c219cec564dcf57040626337ed6"
+    },
+    {
+      "prompt_id": "ceval:computer_network:val:16",
+      "prompt_tokens": 368,
+      "prompt_token_ids_sha256": "ae88843ef45911c4adc83d1cf4db07c2f4791a4896f1c6c113c07d49fc8a12e9"
+    },
+    {
+      "prompt_id": "ceval:discrete_mathematics:val:4",
+      "prompt_tokens": 392,
+      "prompt_token_ids_sha256": "48a6089ea614272b3ba5a872be8459a7bea1089be6e0f3d098fb3359985996cb"
+    },
+    {
+      "prompt_id": "ceval:education_science:val:9",
+      "prompt_tokens": 367,
+      "prompt_token_ids_sha256": "752555882462c3aee550bdd21390f919efd0d6bb493f6e5720a70ce3f80f0a84"
+    },
+    {
+      "prompt_id": "ceval:electrical_engineer:val:9",
+      "prompt_tokens": 501,
+      "prompt_token_ids_sha256": "a2ec2cba8df00d8ba2ac82bd22380c81a47cd4af692ab2922fc30e222c9e4c4e"
+    },
+    {
+      "prompt_id": "ceval:environmental_impact_assessment_engineer:val:30",
+      "prompt_tokens": 448,
+      "prompt_token_ids_sha256": "a46e634b6721fe7dd56764c53c3a7fe85aa2f5f97245b4e58f94eac209392bbe"
+    },
+    {
+      "prompt_id": "ceval:fire_engineer:val:7",
+      "prompt_tokens": 544,
+      "prompt_token_ids_sha256": "b2e904bd213051a2d1f7378b2b025a2906d5ae71899a6c228709ab0e4cf1e7fa"
+    },
+    {
+      "prompt_id": "ceval:high_school_biology:val:3",
+      "prompt_tokens": 565,
+      "prompt_token_ids_sha256": "a1a2cdcb979e409e6391d159e2437f5f3f59966ed76f098d81ddef75a3fe220a"
+    },
+    {
+      "prompt_id": "ceval:high_school_chemistry:val:2",
+      "prompt_tokens": 593,
+      "prompt_token_ids_sha256": "c7993ceb180f4cb54d4a42e386fda248da5b39c8ef5d1626b277973be0e9af2d"
+    },
+    {
+      "prompt_id": "ceval:high_school_chinese:val:4",
+      "prompt_tokens": 991,
+      "prompt_token_ids_sha256": "c33472ba6ceaefac82c571024478a54c428088aecec0e7ef21295ee14c5c46e8"
+    },
+    {
+      "prompt_id": "ceval:high_school_geography:val:10",
+      "prompt_tokens": 373,
+      "prompt_token_ids_sha256": "70ed637d1b426abaf03dd067851dacebf56d062c649278d968121cab0aa01511"
+    },
+    {
+      "prompt_id": "ceval:high_school_history:val:19",
+      "prompt_tokens": 518,
+      "prompt_token_ids_sha256": "f6c80d1761bf510f4001949d018ab9f7a414ed73954aa300f4eca6ec587379ec"
+    },
+    {
+      "prompt_id": "ceval:high_school_mathematics:val:7",
+      "prompt_tokens": 817,
+      "prompt_token_ids_sha256": "98172399e967b5f4855c075d4cefc77b3cf621c01b6451341d942f2e40a1d72a"
+    },
+    {
+      "prompt_id": "ceval:high_school_physics:val:9",
+      "prompt_tokens": 447,
+      "prompt_token_ids_sha256": "be64a31c8fdb1a9b85682ac61f4392c647b144cb0f8a13cd043ec5e00560801e"
+    },
+    {
+      "prompt_id": "ceval:high_school_politics:val:13",
+      "prompt_tokens": 855,
+      "prompt_token_ids_sha256": "31ed38a85052ecab254c79f4d1b03b2e8f1c5f4d9dd6b2a2af5b4245c0917f54"
+    },
+    {
+      "prompt_id": "ceval:ideological_and_moral_cultivation:val:0",
+      "prompt_tokens": 293,
+      "prompt_token_ids_sha256": "4465865d4147d8c8571cb927a4c41bd8211e9160ebc3e87da44931439d8dcd47"
+    },
+    {
+      "prompt_id": "ceval:law:val:16",
+      "prompt_tokens": 539,
+      "prompt_token_ids_sha256": "7cbc93d08bbbac6dcbfcb3e664fbba4a130ab6062baa7aa28b98f647cbc994d9"
+    },
+    {
+      "prompt_id": "ceval:legal_professional:val:9",
+      "prompt_tokens": 839,
+      "prompt_token_ids_sha256": "a74aefbbf69d6b5da9f2b0f5ff0e47048d17c4de2a21071e8e6c0423314181a9"
+    },
+    {
+      "prompt_id": "ceval:logic:val:4",
+      "prompt_tokens": 966,
+      "prompt_token_ids_sha256": "595946eb2d1adb9a7bffd40542bb18c6fdaac55569aae6d9af7901be6e5038e3"
+    },
+    {
+      "prompt_id": "ceval:mao_zedong_thought:val:6",
+      "prompt_tokens": 442,
+      "prompt_token_ids_sha256": "5f5fd582c46f9f8e062ced9c155567169046505926712c89f443a5fc2dfea60d"
+    },
+    {
+      "prompt_id": "ceval:marxism:val:5",
+      "prompt_tokens": 380,
+      "prompt_token_ids_sha256": "8a91f6088b7872bd3c9e1da59032bc73ba62b6e1d540aec4fd4398a18544fea3"
+    },
+    {
+      "prompt_id": "ceval:metrology_engineer:val:5",
+      "prompt_tokens": 471,
+      "prompt_token_ids_sha256": "50576db0b406db968633caea47defaa242f85d51e956caae865e87f2751058b5"
+    },
+    {
+      "prompt_id": "ceval:middle_school_biology:val:17",
+      "prompt_tokens": 400,
+      "prompt_token_ids_sha256": "448aeb6c03b571355e7329bff1130b7dd80f4d7654e9744f4f1e8ef2c6bf72e2"
+    },
+    {
+      "prompt_id": "ceval:middle_school_chemistry:val:0",
+      "prompt_tokens": 546,
+      "prompt_token_ids_sha256": "4bc80066bcb9407ebaf43a3dbbf81c9ec76b65211e192862bcf96d96f8157f84"
+    },
+    {
+      "prompt_id": "ceval:middle_school_geography:val:1",
+      "prompt_tokens": 388,
+      "prompt_token_ids_sha256": "63cd4e848da0a88e53c178bfc0b6b7482dace5133992aab2dd311c9d82f61af9"
+    },
+    {
+      "prompt_id": "ceval:middle_school_history:val:5",
+      "prompt_tokens": 388,
+      "prompt_token_ids_sha256": "5a111b68f37b8909a75b3c45fdf0d9ae0573152c7365558bf57efe7de0cea215"
+    },
+    {
+      "prompt_id": "ceval:middle_school_mathematics:val:3",
+      "prompt_tokens": 706,
+      "prompt_token_ids_sha256": "dae4c598f0d4d08d17ceaadd16e9b4ea38d52d652bca8b66e9c42bb1e323446d"
+    },
+    {
+      "prompt_id": "ceval:middle_school_physics:val:14",
+      "prompt_tokens": 485,
+      "prompt_token_ids_sha256": "a8fb486edc5513f362322419df913b50bc1efb7aceea8d21c458d442834ef4db"
+    },
+    {
+      "prompt_id": "ceval:middle_school_politics:val:3",
+      "prompt_tokens": 631,
+      "prompt_token_ids_sha256": "167e74ff9d08ef138fc2e751601269a679ef39b44a32c84b5c32d82bbb65f59f"
+    },
+    {
+      "prompt_id": "ceval:modern_chinese_history:val:11",
+      "prompt_tokens": 511,
+      "prompt_token_ids_sha256": "4588be50b4a6f7f3c67216488460f1e03346f0cd55e1f7a2bac746d49016f9eb"
+    },
+    {
+      "prompt_id": "ceval:operating_system:val:1",
+      "prompt_tokens": 321,
+      "prompt_token_ids_sha256": "caa7881b7a232e7ff83b8296fcbddf2e7c363ca11f9f07fd90e110bb30e37b95"
+    },
+    {
+      "prompt_id": "ceval:physician:val:32",
+      "prompt_tokens": 365,
+      "prompt_token_ids_sha256": "53afa9409cafb5d42112c7d962680654e0c753218a855002a6e3d27f23c4d135"
+    },
+    {
+      "prompt_id": "ceval:plant_protection:val:5",
+      "prompt_tokens": 354,
+      "prompt_token_ids_sha256": "95e4376077e12efd83a443c7fa2678c97b941bed51b6ce93d817849593ff526f"
+    },
+    {
+      "prompt_id": "ceval:probability_and_statistics:val:6",
+      "prompt_tokens": 1108,
+      "prompt_token_ids_sha256": "77d9e85a0c3fc47847cdc0d8623bc23a1f7d40f23fba71a2783579b2dbd0c302"
+    },
+    {
+      "prompt_id": "ceval:professional_tour_guide:val:1",
+      "prompt_tokens": 366,
+      "prompt_token_ids_sha256": "6ae70b62199d0b4b716a83fdbfae362eadbaec7707d5abeaafb7d76cb306d84c"
+    },
+    {
+      "prompt_id": "ceval:sports_science:val:17",
+      "prompt_tokens": 369,
+      "prompt_token_ids_sha256": "03ea72544358633e19b976d6df11e269c66031f218ce5692549bff261b99efa1"
+    },
+    {
+      "prompt_id": "ceval:tax_accountant:val:25",
+      "prompt_tokens": 633,
+      "prompt_token_ids_sha256": "15b65102402f6f9a02e45bb0a81a97830dcd716c3779d9f0b696a484ad6f3975"
+    },
+    {
+      "prompt_id": "ceval:teacher_qualification:val:17",
+      "prompt_tokens": 429,
+      "prompt_token_ids_sha256": "df256e1118a6cd7341b0178b6c30b51966b1eab02fec1c0414aef60fe18aa21e"
+    },
+    {
+      "prompt_id": "ceval:urban_and_rural_planner:val:31",
+      "prompt_tokens": 439,
+      "prompt_token_ids_sha256": "a833bc532646e5b144c55b3bcee28a2f313ae213d84ccb820836b25bbf8bf7a4"
+    },
+    {
+      "prompt_id": "ceval:veterinary_medicine:val:1",
+      "prompt_tokens": 391,
+      "prompt_token_ids_sha256": "e9ed4a4ec02d5a847238cef5ef32facf15bbd2171ec13967fb68ef86f6d22285"
+    }
+  ],
+  "traces": [
+    {
+      "prompt_id": "mmlu_pro:test:192",
+      "file": "traces/mmlu_pro:test:192.npy",
+      "bytes": 345408,
+      "sha256": "548aa637d8f5fad9f403f551fb39758aaa25e01da75990ea1f1c3ebc82118f5b",
+      "shape": [
+        1079,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:336",
+      "file": "traces/mmlu_pro:test:336.npy",
+      "bytes": 344128,
+      "sha256": "dcd7f95910c4d8f6a1d259406cfed91ee241dd6f2f8c86ea16f540a7c06f04f0",
+      "shape": [
+        1075,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:399",
+      "file": "traces/mmlu_pro:test:399.npy",
+      "bytes": 350208,
+      "sha256": "1a56c74e23e63654902dc1a6d333089a1d8ae14b1fe08985953076fee4361fd6",
+      "shape": [
+        1094,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:524",
+      "file": "traces/mmlu_pro:test:524.npy",
+      "bytes": 355328,
+      "sha256": "87d50642b50eee669300c75f6e3614e12e26fffa8876cce0151d07e7a3da5986",
+      "shape": [
+        1110,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:669",
+      "file": "traces/mmlu_pro:test:669.npy",
+      "bytes": 358848,
+      "sha256": "9a22680904dc392f3b5bfbed4e062b348186d4ed176c25bf06909a136fb25140",
+      "shape": [
+        1121,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:1039",
+      "file": "traces/mmlu_pro:test:1039.npy",
+      "bytes": 481728,
+      "sha256": "b131838776223d5a309bad6315a9d82f0ed5cde8f05f54acff92069628a0e818",
+      "shape": [
+        1505,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:1317",
+      "file": "traces/mmlu_pro:test:1317.npy",
+      "bytes": 591168,
+      "sha256": "f6d913fec046ef47df4965dc9b2ad90e6b28e9e0b88896d78f1aafcdb5dcfeae",
+      "shape": [
+        1847,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:1719",
+      "file": "traces/mmlu_pro:test:1719.npy",
+      "bytes": 501248,
+      "sha256": "0a3095deb2f15fb718432e6f8edff9abfdf1cf93eb5eaa4b1a003e1cf35158bb",
+      "shape": [
+        1566,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:1898",
+      "file": "traces/mmlu_pro:test:1898.npy",
+      "bytes": 553728,
+      "sha256": "1d804606ad9948af7f94d9c3531804e98561bfe9c5fbdac8699de05c7493b95d",
+      "shape": [
+        1730,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:2076",
+      "file": "traces/mmlu_pro:test:2076.npy",
+      "bytes": 365888,
+      "sha256": "ec7236dbd7dff78774d68d409e4515be54a1368a4f46bc961fada47eac9acf02",
+      "shape": [
+        1143,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:2255",
+      "file": "traces/mmlu_pro:test:2255.npy",
+      "bytes": 335168,
+      "sha256": "83082da0459cacc0bbaf4563492066d747af5f7df7bf32407cc8fb9d72fe0b07",
+      "shape": [
+        1047,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:2659",
+      "file": "traces/mmlu_pro:test:2659.npy",
+      "bytes": 339968,
+      "sha256": "153539f0e15aca8ff9882179c8e55c0a569750696dd0ce03bee754460c7da547",
+      "shape": [
+        1062,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:2709",
+      "file": "traces/mmlu_pro:test:2709.npy",
+      "bytes": 372288,
+      "sha256": "ead3a3238e30c6f612b419c907c8222048c5bbe95e6710bac84ba8c1974fd5eb",
+      "shape": [
+        1163,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:2849",
+      "file": "traces/mmlu_pro:test:2849.npy",
+      "bytes": 473728,
+      "sha256": "2e529eb1bf0dc847ef8414ae95012cb2eacc10a24a70cbb7255556b6cb31c967",
+      "shape": [
+        1480,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:3008",
+      "file": "traces/mmlu_pro:test:3008.npy",
+      "bytes": 456448,
+      "sha256": "f997db7f8d997f4ea92d7d4aee61b9e5354f19f71b258eff8fcdec7b08475645",
+      "shape": [
+        1426,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:3060",
+      "file": "traces/mmlu_pro:test:3060.npy",
+      "bytes": 431488,
+      "sha256": "94155b6092a8101b5de1830bd875609445479ed706488cc6b59e1b739d0ea223",
+      "shape": [
+        1348,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:3100",
+      "file": "traces/mmlu_pro:test:3100.npy",
+      "bytes": 431168,
+      "sha256": "10e0d9ae63bff69ab0d8961de6d7064023eca747fde1e9fdad9372ac59d1bb0e",
+      "shape": [
+        1347,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:3205",
+      "file": "traces/mmlu_pro:test:3205.npy",
+      "bytes": 434048,
+      "sha256": "dbbc89dbe3440e6355a69865679e1db01687b241769684521f3df4b7fd041f72",
+      "shape": [
+        1356,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4148",
+      "file": "traces/mmlu_pro:test:4148.npy",
+      "bytes": 524928,
+      "sha256": "7314a7d283a2537c267b02c395bdf50ada6c08ac6f3da82afd685d4b7d5d5fa1",
+      "shape": [
+        1640,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4212",
+      "file": "traces/mmlu_pro:test:4212.npy",
+      "bytes": 507648,
+      "sha256": "e0244223bfa142f325626e260cd83e5e0862eedd6617a0e697dce0d357501966",
+      "shape": [
+        1586,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4569",
+      "file": "traces/mmlu_pro:test:4569.npy",
+      "bytes": 615808,
+      "sha256": "0a4895b9ea4568610c477b89c2138b96a954f5a60ca410d7dfebd83d5ce4d6e8",
+      "shape": [
+        1924,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4661",
+      "file": "traces/mmlu_pro:test:4661.npy",
+      "bytes": 514368,
+      "sha256": "e5f7c1125ae5e709e30cacf530afff01e6c3aa3deff127d2fed3cb8017e751ca",
+      "shape": [
+        1607,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4663",
+      "file": "traces/mmlu_pro:test:4663.npy",
+      "bytes": 523968,
+      "sha256": "d90f70f7eb2a36400ce7b864e1caf2f48e7ad7c9849e6011c78fa940590cd862",
+      "shape": [
+        1637,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4701",
+      "file": "traces/mmlu_pro:test:4701.npy",
+      "bytes": 641088,
+      "sha256": "8a4691b08bcd9105e05b22e9b6e45ffc5ad165c0ddc49c3bfaac76d27864050d",
+      "shape": [
+        2003,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4765",
+      "file": "traces/mmlu_pro:test:4765.npy",
+      "bytes": 650048,
+      "sha256": "110f3868c3d64ca917924b213d8cbfdc8d59b218de86ae9a46aa32b5508a6a08",
+      "shape": [
+        2031,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4802",
+      "file": "traces/mmlu_pro:test:4802.npy",
+      "bytes": 757248,
+      "sha256": "989f895359c9b44be66bc4a3c19d8320238de248e74874a5c5c0f7904594407f",
+      "shape": [
+        2366,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:4919",
+      "file": "traces/mmlu_pro:test:4919.npy",
+      "bytes": 749248,
+      "sha256": "3b1cf52ad3048bdf3bcdcf6e8f4c1ceabd6c76774efdc75884259b963afd5312",
+      "shape": [
+        2341,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:5026",
+      "file": "traces/mmlu_pro:test:5026.npy",
+      "bytes": 798528,
+      "sha256": "155b156812f2fe384f0d639444c2548f7649b9af78c31068d5a69b55e63d9da9",
+      "shape": [
+        2495,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:5351",
+      "file": "traces/mmlu_pro:test:5351.npy",
+      "bytes": 315968,
+      "sha256": "691641ec60d5d15940160d9ad380e05ee7033c1d95c7cf093c3d2be39aaad9a3",
+      "shape": [
+        987,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:5447",
+      "file": "traces/mmlu_pro:test:5447.npy",
+      "bytes": 309888,
+      "sha256": "f36c1fdaf4cfa78ff0c4e786b77f43b923b4b3cba66e9136e995178481dcf9c7",
+      "shape": [
+        968,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:5741",
+      "file": "traces/mmlu_pro:test:5741.npy",
+      "bytes": 303808,
+      "sha256": "58985bd2f4b28f53d50d613f6d699d0c54302e3b99179d1c2f82710536d0995d",
+      "shape": [
+        949,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:5746",
+      "file": "traces/mmlu_pro:test:5746.npy",
+      "bytes": 309888,
+      "sha256": "ca3c58773a35cdde0696cbae3fe9c6223ae9c1fe709309813dfbf3b93db07179",
+      "shape": [
+        968,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6101",
+      "file": "traces/mmlu_pro:test:6101.npy",
+      "bytes": 350848,
+      "sha256": "eecfcb9519616d60c4078f88e9ed736d42c4088a097d1a2b215e38d3ede27953",
+      "shape": [
+        1096,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6278",
+      "file": "traces/mmlu_pro:test:6278.npy",
+      "bytes": 348608,
+      "sha256": "1e342cc3bd355d43b33b37abb067265c207d3d2aff3fc9b0641941386d6f40ed",
+      "shape": [
+        1089,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6572",
+      "file": "traces/mmlu_pro:test:6572.npy",
+      "bytes": 398208,
+      "sha256": "c117544aa8547dfb350bd3360f82d8fea9ec69b57582f87e1b7ae7a5a85b1d54",
+      "shape": [
+        1244,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6736",
+      "file": "traces/mmlu_pro:test:6736.npy",
+      "bytes": 363008,
+      "sha256": "5d84a0305a79684eca1256254c8ce6b14ef30273590de4858193c8a495e4c07c",
+      "shape": [
+        1134,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6795",
+      "file": "traces/mmlu_pro:test:6795.npy",
+      "bytes": 424128,
+      "sha256": "9340f06228d8aaec08f35972833547ffbf57f164d4a95901fe44bc30e3d438fb",
+      "shape": [
+        1325,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6857",
+      "file": "traces/mmlu_pro:test:6857.npy",
+      "bytes": 428608,
+      "sha256": "ee9eca479f930b80eb00dfc4fa884f4ebc4b88e6d4b281a022f677918b618660",
+      "shape": [
+        1339,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6883",
+      "file": "traces/mmlu_pro:test:6883.npy",
+      "bytes": 461568,
+      "sha256": "a8f8e260dcb9c4de3a7a50b805bdf216f19e7f9dacb48d4a4cef7f5202baae30",
+      "shape": [
+        1442,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6939",
+      "file": "traces/mmlu_pro:test:6939.npy",
+      "bytes": 414528,
+      "sha256": "99f059215865250c96180090313fcb231ddb74454407902ef4693813a84185af",
+      "shape": [
+        1295,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:6951",
+      "file": "traces/mmlu_pro:test:6951.npy",
+      "bytes": 406208,
+      "sha256": "74d75792e30a70662b0afc8c237774909f0e06d81c85e21f8f2213280507fb72",
+      "shape": [
+        1269,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:7041",
+      "file": "traces/mmlu_pro:test:7041.npy",
+      "bytes": 415488,
+      "sha256": "aacfbef72977d58037319a42a1497d63a98fbe06050862840c2b603099929317",
+      "shape": [
+        1298,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:7706",
+      "file": "traces/mmlu_pro:test:7706.npy",
+      "bytes": 631488,
+      "sha256": "3ecee21a5450e9be49940384a0698482494e6477a7ef065a528a5bbb6e374e2a",
+      "shape": [
+        1973,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:7871",
+      "file": "traces/mmlu_pro:test:7871.npy",
+      "bytes": 584448,
+      "sha256": "e8e8e845a3f93b7668843d0791e809f073d5c861f79a7ad343744d2810eb3625",
+      "shape": [
+        1826,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:8600",
+      "file": "traces/mmlu_pro:test:8600.npy",
+      "bytes": 588608,
+      "sha256": "a46c699babf0fc73ed13e967d9c5a47a72479c9d2cb0aa202d07b59add7e8918",
+      "shape": [
+        1839,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:8728",
+      "file": "traces/mmlu_pro:test:8728.npy",
+      "bytes": 586688,
+      "sha256": "0d2fe05067de61404873e95acfe7e364eb2228829742d9d1b3f3ded3e9a56260",
+      "shape": [
+        1833,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:9286",
+      "file": "traces/mmlu_pro:test:9286.npy",
+      "bytes": 414848,
+      "sha256": "df9554b6aa88a9f8c157175bf137fb4a2e09e294ac3519b3de6ec6b9fec76d0f",
+      "shape": [
+        1296,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:9475",
+      "file": "traces/mmlu_pro:test:9475.npy",
+      "bytes": 425088,
+      "sha256": "55c18921f486f6456ded78bf8e53912536535557c68a8e407efce140982ae631",
+      "shape": [
+        1328,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:9552",
+      "file": "traces/mmlu_pro:test:9552.npy",
+      "bytes": 375168,
+      "sha256": "c89992f73085f6245fe4d3c39fd3513d0ae2175ff3d51876e1cca99fd5a06ca5",
+      "shape": [
+        1172,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:9907",
+      "file": "traces/mmlu_pro:test:9907.npy",
+      "bytes": 411968,
+      "sha256": "18a0091a0850ca28776b82bf720ea9a9adefcc3a6a8364abe7aedd5eb3ffeb58",
+      "shape": [
+        1287,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:10360",
+      "file": "traces/mmlu_pro:test:10360.npy",
+      "bytes": 525248,
+      "sha256": "af5a353ff74e158e3b8677e3402fdabf25f790293c08a03ed4a17458d6c4eb32",
+      "shape": [
+        1641,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:10392",
+      "file": "traces/mmlu_pro:test:10392.npy",
+      "bytes": 480768,
+      "sha256": "1cfead475575ba22ab9437e413838badbbb84271336643d81349a733fdaa84a6",
+      "shape": [
+        1502,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:10446",
+      "file": "traces/mmlu_pro:test:10446.npy",
+      "bytes": 482688,
+      "sha256": "8a3c4a5a72d562f37d3ae243f314303e0c5d72063110f6f02b87611df3861854",
+      "shape": [
+        1508,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:10517",
+      "file": "traces/mmlu_pro:test:10517.npy",
+      "bytes": 487168,
+      "sha256": "00b2ac044bffb96b40d20934760aea566c6cc121930de0c8b0413d4f7a158c2a",
+      "shape": [
+        1522,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:10621",
+      "file": "traces/mmlu_pro:test:10621.npy",
+      "bytes": 523968,
+      "sha256": "dd421297bf66027a151ea5cee8f6455fe7a7aaec002a09d12bbe3141e2b518a1",
+      "shape": [
+        1637,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:10878",
+      "file": "traces/mmlu_pro:test:10878.npy",
+      "bytes": 311168,
+      "sha256": "0f9515ba51a47ad74e239d3e034e40ed9e02f4ba38c2743efa69d5c3b73fde24",
+      "shape": [
+        972,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:10881",
+      "file": "traces/mmlu_pro:test:10881.npy",
+      "bytes": 320448,
+      "sha256": "aad32d128d59aaddf144663acf7a6d3eafd35fb2637410b68c34668c27f60269",
+      "shape": [
+        1001,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:11250",
+      "file": "traces/mmlu_pro:test:11250.npy",
+      "bytes": 323648,
+      "sha256": "9673889b18d71186cf2538ff7501e88e7a7d9cb797bad5160dca0969f852733f",
+      "shape": [
+        1011,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:11273",
+      "file": "traces/mmlu_pro:test:11273.npy",
+      "bytes": 341888,
+      "sha256": "842ab98b1bb3e8067fb0f22b8927318a84a482c681df901c54ce86a76a3e4290",
+      "shape": [
+        1068,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:11397",
+      "file": "traces/mmlu_pro:test:11397.npy",
+      "bytes": 433408,
+      "sha256": "d917f033640d6b385f71448b8dcdc4587ab6bf44849732c771399279f837a012",
+      "shape": [
+        1354,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:11774",
+      "file": "traces/mmlu_pro:test:11774.npy",
+      "bytes": 481088,
+      "sha256": "90c254a841664247f1cf7e306d67663b8e64608ca127e5fd8b675c7695ec3131",
+      "shape": [
+        1503,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:11924",
+      "file": "traces/mmlu_pro:test:11924.npy",
+      "bytes": 453248,
+      "sha256": "cce711e3c4ebf567d9133adeb6c740d1ae998624bb4569c4b59a0c91aed0c53c",
+      "shape": [
+        1416,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:12082",
+      "file": "traces/mmlu_pro:test:12082.npy",
+      "bytes": 565888,
+      "sha256": "497622ac262dd30aba1e7e3fa74e82d5087342a2abd6bf017b4c3ac46005fc20",
+      "shape": [
+        1768,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "mmlu_pro:test:12089",
+      "file": "traces/mmlu_pro:test:12089.npy",
+      "bytes": 517888,
+      "sha256": "71123b8ba2743958c537509cfaa1b0c804c6354b6cd89b17007df917ee3c4dc3",
+      "shape": [
+        1618,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:accountant:val:47",
+      "file": "traces/ceval:accountant:val:47.npy",
+      "bytes": 202048,
+      "sha256": "6a43d586bda8445c84a0b7ac346106f90acd8989043bd286547ed3e1cb483a27",
+      "shape": [
+        631,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:advanced_mathematics:val:7",
+      "file": "traces/ceval:advanced_mathematics:val:7.npy",
+      "bytes": 285568,
+      "sha256": "623b013efd84ae9a39b100a38b5d830847e215bb216cc37d0a4922376b37be8a",
+      "shape": [
+        892,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:art_studies:val:1",
+      "file": "traces/ceval:art_studies:val:1.npy",
+      "bytes": 114688,
+      "sha256": "295e2ca0a52effe720eceb6a0b0f763ca6f3f6841cd522ee9bf61b4807e2c148",
+      "shape": [
+        358,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:basic_medicine:val:0",
+      "file": "traces/ceval:basic_medicine:val:0.npy",
+      "bytes": 100288,
+      "sha256": "0cabd8d05096fa3799532bd790793f01494e6a164357de4cbef2d4f4c17bd591",
+      "shape": [
+        313,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:business_administration:val:9",
+      "file": "traces/ceval:business_administration:val:9.npy",
+      "bytes": 148288,
+      "sha256": "f806bd9f6cd3822f6b73c308302804eaf3f33a32449c53d30e9544be38aa91f4",
+      "shape": [
+        463,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:chinese_language_and_literature:val:17",
+      "file": "traces/ceval:chinese_language_and_literature:val:17.npy",
+      "bytes": 125568,
+      "sha256": "75d027f1aa42fc23432955383ceada7602416f930dea47d31cccfdce0df64af0",
+      "shape": [
+        392,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:civil_servant:val:32",
+      "file": "traces/ceval:civil_servant:val:32.npy",
+      "bytes": 237888,
+      "sha256": "3ec9c0f3c01272afd719927b1aa77c12bb616134a5a226fe7071cff6f0d5a6d3",
+      "shape": [
+        743,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:clinical_medicine:val:16",
+      "file": "traces/ceval:clinical_medicine:val:16.npy",
+      "bytes": 154048,
+      "sha256": "e331ae3e59dba683cf5731fd97e05bec8708d5186ab93a8c5abcb09651d0389a",
+      "shape": [
+        481,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:college_chemistry:val:13",
+      "file": "traces/ceval:college_chemistry:val:13.npy",
+      "bytes": 156288,
+      "sha256": "0d4c595a1462528af6389bc3b433eeb0dce24fe7ab5b88c43753397ebe89d4fd",
+      "shape": [
+        488,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:college_economics:val:54",
+      "file": "traces/ceval:college_economics:val:54.npy",
+      "bytes": 162048,
+      "sha256": "12a646c97fc0b9a8cb92da6f5e4d9aea22f6626e5dfba3798649df2c55ee021d",
+      "shape": [
+        506,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:college_physics:val:7",
+      "file": "traces/ceval:college_physics:val:7.npy",
+      "bytes": 197888,
+      "sha256": "49ed872229023e1690ca6de65bc60d0a04d45c8832e4d1a6f1826887b55f7359",
+      "shape": [
+        618,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:college_programming:val:15",
+      "file": "traces/ceval:college_programming:val:15.npy",
+      "bytes": 174208,
+      "sha256": "21f18ea00a15bcb7531deba2e590163e09313c1fb8d2ad81bc81d3991090bc84",
+      "shape": [
+        544,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:computer_architecture:val:11",
+      "file": "traces/ceval:computer_architecture:val:11.npy",
+      "bytes": 213568,
+      "sha256": "1aacf134be53935a08a2397137afe971fd6b3ee3d7dc6d23d9e9a4ad9f099378",
+      "shape": [
+        667,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:computer_network:val:16",
+      "file": "traces/ceval:computer_network:val:16.npy",
+      "bytes": 122688,
+      "sha256": "2b82e93b3ab7a8ebd87508951be8ad81107bd76fe67cba5a6e5353f9c23c9cd8",
+      "shape": [
+        383,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:discrete_mathematics:val:4",
+      "file": "traces/ceval:discrete_mathematics:val:4.npy",
+      "bytes": 130368,
+      "sha256": "c2fe20662cf427950fa6356db8b1bcf0adebccbfcba7d46d9740b62ebf573b20",
+      "shape": [
+        407,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:education_science:val:9",
+      "file": "traces/ceval:education_science:val:9.npy",
+      "bytes": 122368,
+      "sha256": "d8f070e5bee948d1f8a8401f94e8f7428906d194a65ea3e8c2c20e4d65c40e3d",
+      "shape": [
+        382,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:electrical_engineer:val:9",
+      "file": "traces/ceval:electrical_engineer:val:9.npy",
+      "bytes": 165248,
+      "sha256": "c15d593c893c151fd4e5c26fa16063d8a84fe5fe3b62f095700e5768e2cdfea1",
+      "shape": [
+        516,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:environmental_impact_assessment_engineer:val:30",
+      "file": "traces/ceval:environmental_impact_assessment_engineer:val:30.npy",
+      "bytes": 148288,
+      "sha256": "cf0f56139823aba47b97f72105f77f32bd9ae671aa530020a451a8ad54ec4c69",
+      "shape": [
+        463,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:fire_engineer:val:7",
+      "file": "traces/ceval:fire_engineer:val:7.npy",
+      "bytes": 179008,
+      "sha256": "a6015f66be020b5eb81fd3f1c7c812169b3d7c708c6d0df9ef00d75a27e2710c",
+      "shape": [
+        559,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:high_school_biology:val:3",
+      "file": "traces/ceval:high_school_biology:val:3.npy",
+      "bytes": 185728,
+      "sha256": "b1332032adb29c92bc1053eef1b58f1698156e5576946ac3119bd743ad274d75",
+      "shape": [
+        580,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:high_school_chemistry:val:2",
+      "file": "traces/ceval:high_school_chemistry:val:2.npy",
+      "bytes": 194688,
+      "sha256": "5c063164fa37ba2d50a28935320ea4d5e4921ecdc15ffd657f19808f01c0d1df",
+      "shape": [
+        608,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:high_school_chinese:val:4",
+      "file": "traces/ceval:high_school_chinese:val:4.npy",
+      "bytes": 322048,
+      "sha256": "f0295ac29702e775329275512d5f0ff6c02ad493cbb96a1d36ce875abb50d3fc",
+      "shape": [
+        1006,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:high_school_geography:val:10",
+      "file": "traces/ceval:high_school_geography:val:10.npy",
+      "bytes": 124288,
+      "sha256": "875abe194fbd12cc0b19d0c28ff7b9f568b080ddb79b64a2384098ba30bd9032",
+      "shape": [
+        388,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:high_school_history:val:19",
+      "file": "traces/ceval:high_school_history:val:19.npy",
+      "bytes": 170688,
+      "sha256": "4069d9fa5383619c19a5c5bacfbbb35f42934a96d986dbdb03cd01a5a1ca4b3e",
+      "shape": [
+        533,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:high_school_mathematics:val:7",
+      "file": "traces/ceval:high_school_mathematics:val:7.npy",
+      "bytes": 266368,
+      "sha256": "995890e70359e507fe4abc3233010005879ec7e175b2f09f6bf7195e1e209153",
+      "shape": [
+        832,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:high_school_physics:val:9",
+      "file": "traces/ceval:high_school_physics:val:9.npy",
+      "bytes": 147968,
+      "sha256": "d7e37f88888ea08ed15563efdf1fd976afaf70d3a647a76d5d4def89e18364af",
+      "shape": [
+        462,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:high_school_politics:val:13",
+      "file": "traces/ceval:high_school_politics:val:13.npy",
+      "bytes": 278528,
+      "sha256": "12a9ed965d4aceff92101679567f7dc519eca660877f8c38812d6f96d815c0f3",
+      "shape": [
+        870,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:ideological_and_moral_cultivation:val:0",
+      "file": "traces/ceval:ideological_and_moral_cultivation:val:0.npy",
+      "bytes": 98688,
+      "sha256": "edf57d499cb421b7e8cbe06fe0b09df248bfded00ccad02302ed4a02b1fa008d",
+      "shape": [
+        308,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:law:val:16",
+      "file": "traces/ceval:law:val:16.npy",
+      "bytes": 177408,
+      "sha256": "7c4159a3554c6cbfa0e4afbce4620a967171a47c40b87f12ab91e6bfcb857c03",
+      "shape": [
+        554,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:legal_professional:val:9",
+      "file": "traces/ceval:legal_professional:val:9.npy",
+      "bytes": 273408,
+      "sha256": "38b23695827b4c4a64c85e7942eea57e50897b60480122d2b01149ec4140ce9c",
+      "shape": [
+        854,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:logic:val:4",
+      "file": "traces/ceval:logic:val:4.npy",
+      "bytes": 314048,
+      "sha256": "8c6cdaed8c15bcc3b212002fd8179dcdcfdde0fa490432259116b081b8c0248d",
+      "shape": [
+        981,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:mao_zedong_thought:val:6",
+      "file": "traces/ceval:mao_zedong_thought:val:6.npy",
+      "bytes": 146368,
+      "sha256": "da3a9d3ac1f0e3a4ebb9d90071f2c36402364c3f72e71b9024ad30a5898c7e75",
+      "shape": [
+        457,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:marxism:val:5",
+      "file": "traces/ceval:marxism:val:5.npy",
+      "bytes": 126528,
+      "sha256": "858d9b29a0649f400a29aaa3bc83e8600ce33abae92b79dbd7abf7dfa7d13774",
+      "shape": [
+        395,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:metrology_engineer:val:5",
+      "file": "traces/ceval:metrology_engineer:val:5.npy",
+      "bytes": 155648,
+      "sha256": "2059a14c2c58b5097deb6e4cc89cd5b041635d267b9779a56105210841eff9f7",
+      "shape": [
+        486,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:middle_school_biology:val:17",
+      "file": "traces/ceval:middle_school_biology:val:17.npy",
+      "bytes": 132928,
+      "sha256": "5d19be9e21cae3edaf04e2e64c36922dd7b3e1bea70edc830b47336da7765313",
+      "shape": [
+        415,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:middle_school_chemistry:val:0",
+      "file": "traces/ceval:middle_school_chemistry:val:0.npy",
+      "bytes": 179648,
+      "sha256": "3710a59a5b70f67d3302c6f2ae7bb3ef359a01892b2968e3121b79bb602538a4",
+      "shape": [
+        561,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:middle_school_geography:val:1",
+      "file": "traces/ceval:middle_school_geography:val:1.npy",
+      "bytes": 129088,
+      "sha256": "f70a349d56afb8d87293aaa44b7dd5271e6b032305f6826f3c482616f8124634",
+      "shape": [
+        403,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:middle_school_history:val:5",
+      "file": "traces/ceval:middle_school_history:val:5.npy",
+      "bytes": 129088,
+      "sha256": "7b43119cb594158d09abb71fc37ae92c4c624a67febb205dcf40dbb5e5ac4a79",
+      "shape": [
+        403,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:middle_school_mathematics:val:3",
+      "file": "traces/ceval:middle_school_mathematics:val:3.npy",
+      "bytes": 230848,
+      "sha256": "df05c4778c3a128aa50e44db305f805bd8d87e4658f32ebdd5bf62013bb9232a",
+      "shape": [
+        721,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:middle_school_physics:val:14",
+      "file": "traces/ceval:middle_school_physics:val:14.npy",
+      "bytes": 160128,
+      "sha256": "dde77934f73468e34e7cb3e074ef5e0bff70a9e4c99a14f135c60d546d06bc52",
+      "shape": [
+        500,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:middle_school_politics:val:3",
+      "file": "traces/ceval:middle_school_politics:val:3.npy",
+      "bytes": 206848,
+      "sha256": "3c4e40754077ab6229c6c97a036467d6f80ffc0d1cf52004e53ac0318ef15dbd",
+      "shape": [
+        646,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:modern_chinese_history:val:11",
+      "file": "traces/ceval:modern_chinese_history:val:11.npy",
+      "bytes": 168448,
+      "sha256": "96bdba9133fe5891d29bf2f02c97892fce51b142e56358fcd4d7fc58795af528",
+      "shape": [
+        526,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:operating_system:val:1",
+      "file": "traces/ceval:operating_system:val:1.npy",
+      "bytes": 107648,
+      "sha256": "a45f5725086bd415310a74f05e20dfc15f09161d4371e5dfc7cb57ebc5487f45",
+      "shape": [
+        336,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:physician:val:32",
+      "file": "traces/ceval:physician:val:32.npy",
+      "bytes": 121728,
+      "sha256": "582f249a4777fdb0327ddb1db5c1cc5870f87ec8dedce1b93287d13c99d5ff78",
+      "shape": [
+        380,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:plant_protection:val:5",
+      "file": "traces/ceval:plant_protection:val:5.npy",
+      "bytes": 118208,
+      "sha256": "640732d700c8b36ccd9cc975a4bc9e7e554686ab4f3a001fc350817d5a97d44a",
+      "shape": [
+        369,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:probability_and_statistics:val:6",
+      "file": "traces/ceval:probability_and_statistics:val:6.npy",
+      "bytes": 359488,
+      "sha256": "7e06ba80a833c1ba1c0387a1d3adb4b5a093298e0b97b23cc05966ca74e50bf9",
+      "shape": [
+        1123,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:professional_tour_guide:val:1",
+      "file": "traces/ceval:professional_tour_guide:val:1.npy",
+      "bytes": 122048,
+      "sha256": "3822a3e2f457e09058be8d09c74156a3f1ccfcd7ec49266c5bffa4d451ab22c2",
+      "shape": [
+        381,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:sports_science:val:17",
+      "file": "traces/ceval:sports_science:val:17.npy",
+      "bytes": 123008,
+      "sha256": "e6b726c6f1a8e8c86054d7faf3bf306aa682cf5385f3c74e9f4d5fd98edc4ccb",
+      "shape": [
+        384,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:tax_accountant:val:25",
+      "file": "traces/ceval:tax_accountant:val:25.npy",
+      "bytes": 207488,
+      "sha256": "b0a8d1097c793f54e843e1da148494c0203c791e1b2e557d36449b45e09c1627",
+      "shape": [
+        648,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:teacher_qualification:val:17",
+      "file": "traces/ceval:teacher_qualification:val:17.npy",
+      "bytes": 142208,
+      "sha256": "fc9bc677ee3e5de1dfbd7457e689aee5c4512d4ce560fda8f461577826dbdcaa",
+      "shape": [
+        444,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:urban_and_rural_planner:val:31",
+      "file": "traces/ceval:urban_and_rural_planner:val:31.npy",
+      "bytes": 145408,
+      "sha256": "9f363eb4c760785828cf3c76bb3bb7b7d9206932b21de51ccef4f9b0839392e5",
+      "shape": [
+        454,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    },
+    {
+      "prompt_id": "ceval:veterinary_medicine:val:1",
+      "file": "traces/ceval:veterinary_medicine:val:1.npy",
+      "bytes": 130048,
+      "sha256": "a5ff9dbe90b25730bb57c994a10317f8865f55983c950988e7fbd8dbd27f6007",
+      "shape": [
+        406,
+        40,
+        8
+      ],
+      "dtype": "uint8"
+    }
+  ],
+  "traces_rows": 4793080,
+  "traces_jsonl_sha256": "9e1e2c0d6763d2050f46bebdafd7e7519a8b9bfe6974877a81935ae4c26501b2",
+  "histogram_sha256": "01b3613144dcd63d95ac56fc80e794e54a41bc604a4dc69494efb7ed7d44c5f0",
+  "note": "topk_weights and expert_service_time_us are null: not exported by vLLM enable_return_routed_experts."
+}
