@@ -81,6 +81,8 @@
 ## Phase 3c：full-set 官方协议冻结与计时 pilot
 
 - [Phase3c full-set 官方协议冻结与计时 pilot 报告](Q-TopoMoE_Phase3c_full_set_official_protocol_20260806.md)
+- [Phase3c W4A16 full-set 官方协议评测结果](Q-TopoMoE_Phase3c_full_official_W4_results_20260806.md) /
+  [合并 summary（数据）](Q-TopoMoE_Phase3c_full_official_w4_merged_summary_20260806.json)
 - 官方协议 manifest：`configs/evaluation/full_set_official_protocol_v1.manifest.json`
 - 官方协议 pilot 计时（数据）：
   [bf16_tp4 分层摘要](Q-TopoMoE_Phase3c_pilot_official_protocol_bf16_tp4_20260806.json) /

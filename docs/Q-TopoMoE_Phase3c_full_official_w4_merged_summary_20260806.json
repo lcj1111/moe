@@ -1,0 +1,71 @@
+{
+  "schema_version": "qtopomoe.full_official_w4.v1",
+  "model": "w4a16-canonical-text-v1",
+  "backend": "vllm-cleanroom-33c50587d",
+  "moe_backend": "triton",
+  "protocol": "official (MMLU-Pro 5-shot CoT temp0 / C-Eval 5-shot answer-only, no thinking)",
+  "gpu": "8x RTX5090 (2x TP4)",
+  "rounds": [
+    "main 24374",
+    "rerun1 1206 (max 8000/4096)",
+    "rerun2 202 (max 16384/8192)"
+  ],
+  "benchmarks": {
+    "mmlu_pro": {
+      "records": 12032,
+      "scored": 12032,
+      "truncated": 0,
+      "errors": 0,
+      "correct": 10177,
+      "accuracy": 0.845828,
+      "request_latency_ms": {
+        "min": 509,
+        "median": 5962,
+        "mean": 10718,
+        "max": 122092
+      },
+      "truncated_ids": []
+    },
+    "ceval": {
+      "records": 12342,
+      "scored": 12321,
+      "truncated": 21,
+      "errors": 0,
+      "correct": 10999,
+      "accuracy": 0.892704,
+      "request_latency_ms": {
+        "min": 103,
+        "median": 2623,
+        "mean": 4796,
+        "max": 87736
+      },
+      "truncated_ids": [
+        "ceval:accountant:test:328",
+        "ceval:civil_servant:test:89",
+        "ceval:civil_servant:test:383",
+        "ceval:college_economics:test:118",
+        "ceval:discrete_mathematics:test:11",
+        "ceval:discrete_mathematics:test:83",
+        "ceval:electrical_engineer:test:286",
+        "ceval:high_school_physics:test:133",
+        "ceval:logic:test:156",
+        "ceval:accountant:test:37",
+        "ceval:advanced_mathematics:test:24",
+        "ceval:advanced_mathematics:test:82",
+        "ceval:business_administration:test:210",
+        "ceval:civil_servant:test:60",
+        "ceval:civil_servant:test:84",
+        "ceval:college_programming:test:194",
+        "ceval:computer_architecture:test:26",
+        "ceval:computer_network:test:143",
+        "ceval:fire_engineer:test:251",
+        "ceval:high_school_mathematics:test:46",
+        "ceval:middle_school_mathematics:test:166"
+      ]
+    }
+  },
+  "notes": [
+    "21 C-Eval math/long-calculation rows remain unfinished after 8192 tokens; treated as unscored (0.17% of total).",
+    "Official BF16 reference: MMLU-Pro 85.2 (model card), C-Eval 90.0 (thinking mode)."
+  ]
+}
