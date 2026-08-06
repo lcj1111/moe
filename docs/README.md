@@ -77,6 +77,17 @@
   `traces/manifests/w4a16_full_capture_manifest.json`
 - Full-set 评测资产：`configs/evaluation/full_set_official_v1.manifest.json`
 
+## Phase 3c：full-set 官方协议冻结与计时 pilot
+
+- [Phase3c full-set 官方协议冻结与计时 pilot 报告](Q-TopoMoE_Phase3c_full_set_official_protocol_20260806.md)
+- 官方协议 manifest：`configs/evaluation/full_set_official_protocol_v1.manifest.json`
+- 官方协议 pilot 计时（数据）：
+  [bf16_tp4 分层摘要](Q-TopoMoE_Phase3c_pilot_official_protocol_bf16_tp4_20260806.json) /
+  [quality summary](Q-TopoMoE_Phase3c_pilot_official_protocol_summary_20260806.json)
+- thinking 模式对比 pilot（数据）：
+  [bf16_tp4 摘要](Q-TopoMoE_Phase3c_pilot_thinking_bf16_tp4_20260806.json) /
+  [quality summary](Q-TopoMoE_Phase3c_pilot_thinking_summary_20260806.json)
+
 ## Phase 4 / Phase 8：kernel benchmark 与策略回放
 
 - [Phase4/8 可执行框架](Q-TopoMoE_Phase4_Phase8_framework.md)

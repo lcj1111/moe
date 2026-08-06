@@ -74,7 +74,9 @@ def percentile(values: list[float], fraction: float) -> float | None:
 async def run(args: argparse.Namespace) -> int:
     import aiohttp
 
-    rows = [json.loads(line) for line in args.manifest.read_text().splitlines() if line]
+    # Split on "\n" only: splitlines() also treats Unicode NEL (\x85) and
+    # other line separators as boundaries, which can truncate a JSON row.
+    rows = [json.loads(line) for line in args.manifest.read_text().split("\n") if line]
     if not args.include_deferred_code:
         rows = [row for row in rows if row["score_type"] != "deferred_code"]
     semaphore = asyncio.Semaphore(args.concurrency)

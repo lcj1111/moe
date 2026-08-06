@@ -59,7 +59,7 @@ def render_prompt(row: dict[str, Any], tokenizer: Any) -> str:
 def load_rows(path: pathlib.Path) -> list[dict[str, Any]]:
     rows = [
         json.loads(line)
-        for line in path.read_text(encoding="utf-8").splitlines()
+        for line in path.read_text(encoding="utf-8").split("\n")
         if line.strip()
     ]
     return rows
