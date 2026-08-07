@@ -1,0 +1,16 @@
+{
+  "schema_version": "qtopomoe.phase7.migration_cost.v1",
+  "date": "2026-08-07",
+  "expert_bytes": 4194304,
+  "shape": [
+    2048,
+    512
+  ],
+  "dtype": "bfloat16",
+  "median_us_per_expert": {
+    "same_gpu": 10.14,
+    "same_numa": 47.71,
+    "cross_numa": 73.45
+  },
+  "note": "P2P enabled; OLD same_numa=78.77 cross_numa=75.32 (P2P disabled)"
+}

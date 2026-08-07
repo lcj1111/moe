@@ -11,7 +11,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from selector.kernel_db import KernelDatabase
-from selector.strategy_selector import StrategyCandidate, StrategySelector, WorkloadObservation
+from selector.strategy_selector import (
+    CostModel,
+    StrategyCandidate,
+    StrategySelector,
+    WorkloadObservation,
+)
 
 
 def main() -> None:
@@ -20,6 +25,8 @@ def main() -> None:
     parser.add_argument("--kernel-db", type=Path, required=True)
     parser.add_argument("--observations", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--cost-db", type=Path,
+                        default=Path("configs/communication/nccl_cost_db.json"))
     args = parser.parse_args()
     candidates = [StrategyCandidate(**row) for row in json.loads(args.candidates.read_text(encoding="utf-8"))]
     observations = [WorkloadObservation(**row) for row in json.loads(args.observations.read_text(encoding="utf-8"))]
@@ -30,8 +37,15 @@ def main() -> None:
         result.update({"status": "blocked_missing_kernel_measurements", "rows": [],
                        "reason": "Phase 4 kernel DB is a checked-in empty template; real CUDA measurements are required."})
     else:
-        selector = StrategySelector(candidates, db)
+        cost_rows = json.loads(args.cost_db.read_text(encoding="utf-8"))
+        mapping_rates = {
+            m["mapping"]: m["median_effective_us_per_gb"]
+            for m in cost_rows.get("mapping_summary", [])
+        }
+        cost_model = CostModel(communication_us_per_gb_by_mapping=mapping_rates)
+        selector = StrategySelector(candidates, db, cost_model=cost_model)
         result.update({"status": "completed", "evaluation": selector.evaluate(observations)})
+        result["communication_cost_source"] = str(args.cost_db)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(result["status"])

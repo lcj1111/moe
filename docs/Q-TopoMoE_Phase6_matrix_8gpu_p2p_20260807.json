@@ -1,0 +1,77 @@
+{
+  "schema_version": "qtopomoe.phase6.p2p_retest.v1",
+  "date": "2026-08-07",
+  "note": "P2P enabled; smoke 32 req concurrency 8, 256/64; supersedes old P2P-disabled numbers",
+  "rows": [
+    {
+      "run_tag": "tp8_dp1_p2p",
+      "status": "smoke_passed",
+      "tp": 8,
+      "dp": 1,
+      "ep": 0,
+      "eplb": 0,
+      "model_path": "master",
+      "completed": 32,
+      "failed": 0,
+      "ttft_p50_ms": 173.3,
+      "tpot_p50_ms": 6.25,
+      "e2e_p50_ms": 627.6
+    },
+    {
+      "run_tag": "tp4_dp2_p2p",
+      "status": "smoke_passed",
+      "tp": 4,
+      "dp": 2,
+      "ep": 0,
+      "eplb": 0,
+      "model_path": "master",
+      "completed": 32,
+      "failed": 0,
+      "ttft_p50_ms": 316.6,
+      "tpot_p50_ms": 7.86,
+      "e2e_p50_ms": 785.4
+    },
+    {
+      "run_tag": "tp2_dp4_p2p",
+      "status": "smoke_passed",
+      "tp": 2,
+      "dp": 4,
+      "ep": 0,
+      "eplb": 0,
+      "model_path": "master",
+      "completed": 32,
+      "failed": 0,
+      "ttft_p50_ms": 276.3,
+      "tpot_p50_ms": 8.27,
+      "e2e_p50_ms": 1041.6
+    },
+    {
+      "run_tag": "ep8_tp1_p2p",
+      "status": "smoke_passed",
+      "tp": 1,
+      "dp": 1,
+      "ep": 1,
+      "eplb": 0,
+      "model_path": "qtopomoe_w4a16_canonical_text_v1",
+      "completed": 32,
+      "failed": 0,
+      "ttft_p50_ms": 227.4,
+      "tpot_p50_ms": 12.54,
+      "e2e_p50_ms": 1024.6
+    },
+    {
+      "run_tag": "ep4_tp2_eplb_p2p",
+      "status": "smoke_passed",
+      "tp": 2,
+      "dp": 1,
+      "ep": 1,
+      "eplb": 1,
+      "model_path": "qtopomoe_w4a16_canonical_text_v1",
+      "completed": 32,
+      "failed": 0,
+      "ttft_p50_ms": 182.2,
+      "tpot_p50_ms": 16.28,
+      "e2e_p50_ms": 1221.5
+    }
+  ]
+}

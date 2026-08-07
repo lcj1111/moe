@@ -16,6 +16,7 @@
 - [gpu111 phase0 实测分析](Q-TopoMoE_gpu111_phase0实测分析.md)
 - [q_topomoe_phase0_verify.sh](q_topomoe_phase0_verify.sh)
 - [Phase0 P2P 启用后画像更新（推翻旧结论）](Q-TopoMoE_Phase0_P2P_update_20260807.md)
+- [P2P 启用后全量性能重测总结](Q-TopoMoE_P2P_retest_summary_20260807.md)
 
 ## Phase 1：BF16 / FP8 服务实测
 

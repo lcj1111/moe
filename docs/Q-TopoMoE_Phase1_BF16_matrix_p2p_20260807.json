@@ -1,0 +1,182 @@
+[
+  {
+    "topology": "tp4_numa0",
+    "workload": "short",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 96.13079810515046,
+    "tpot_p50": 3.743685928620691,
+    "e2e_p50": 571.5789110399783
+  },
+  {
+    "topology": "tp4_numa0",
+    "workload": "short",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 339.2695849761367,
+    "tpot_p50": 5.185732647307276,
+    "e2e_p50": 997.6048842072487
+  },
+  {
+    "topology": "tp4_numa0",
+    "workload": "short",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 979.0809699334204,
+    "tpot_p50": 8.045314715837868,
+    "e2e_p50": 2003.0579543672502
+  },
+  {
+    "topology": "tp4_numa0",
+    "workload": "medium",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 375.52547780796885,
+    "tpot_p50": 3.8735337422362397,
+    "e2e_p50": 1053.3938826993108
+  },
+  {
+    "topology": "tp4_numa0",
+    "workload": "medium",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 452.0806912332773,
+    "tpot_p50": 5.9401184087619185,
+    "e2e_p50": 1704.724540002644
+  },
+  {
+    "topology": "tp4_numa0",
+    "workload": "medium",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1530.9880808927119,
+    "tpot_p50": 9.224254870787263,
+    "e2e_p50": 3411.048796027899
+  },
+  {
+    "topology": "tp4_numa1",
+    "workload": "short",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 90.17510572448373,
+    "tpot_p50": 3.7050882765040623,
+    "e2e_p50": 560.7213168404996
+  },
+  {
+    "topology": "tp4_numa1",
+    "workload": "short",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 335.64691012725234,
+    "tpot_p50": 5.146262078274657,
+    "e2e_p50": 988.4002800099552
+  },
+  {
+    "topology": "tp4_numa1",
+    "workload": "short",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1029.8883905634284,
+    "tpot_p50": 8.046833963287392,
+    "e2e_p50": 2040.9712428227067
+  },
+  {
+    "topology": "tp4_numa1",
+    "workload": "medium",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 373.2046028599143,
+    "tpot_p50": 3.847505341150931,
+    "e2e_p50": 1046.5180375613272
+  },
+  {
+    "topology": "tp4_numa1",
+    "workload": "medium",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 472.49336913228035,
+    "tpot_p50": 5.875384659421715,
+    "e2e_p50": 1712.1288599446416
+  },
+  {
+    "topology": "tp4_numa1",
+    "workload": "medium",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1510.2818431332707,
+    "tpot_p50": 8.98698570163942,
+    "e2e_p50": 3312.183931004256
+  },
+  {
+    "topology": "tp8_sys",
+    "workload": "short",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 83.9821333065629,
+    "tpot_p50": 4.436730432844772,
+    "e2e_p50": 647.446898277849
+  },
+  {
+    "topology": "tp8_sys",
+    "workload": "short",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 412.63812500983477,
+    "tpot_p50": 5.761447520266603,
+    "e2e_p50": 1143.9179829321802
+  },
+  {
+    "topology": "tp8_sys",
+    "workload": "short",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1158.3468173630536,
+    "tpot_p50": 8.04728301476658,
+    "e2e_p50": 2165.6436948105693
+  },
+  {
+    "topology": "tp8_sys",
+    "workload": "medium",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 346.4681967161596,
+    "tpot_p50": 4.5252075347968415,
+    "e2e_p50": 1179.1063831187785
+  },
+  {
+    "topology": "tp8_sys",
+    "workload": "medium",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 551.3637601397932,
+    "tpot_p50": 6.196489549990072,
+    "e2e_p50": 1665.3106263838708
+  },
+  {
+    "topology": "tp8_sys",
+    "workload": "medium",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1481.4466568641365,
+    "tpot_p50": 8.669348684553471,
+    "e2e_p50": 3055.711698718369
+  }
+]

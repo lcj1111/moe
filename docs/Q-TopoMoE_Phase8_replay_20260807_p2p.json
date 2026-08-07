@@ -1,0 +1,62 @@
+{
+  "candidate_count": 12,
+  "communication_cost_source": "configs/communication/nccl_cost_db.json",
+  "evaluation": {
+    "decision_overhead_pct_p95": 26.049171989217506,
+    "gates": {
+      "controller_overhead_lt_1pct": false,
+      "median_regret_le_5pct": null,
+      "p95_regret_le_10pct": null
+    },
+    "invalid_config_rate": 0.16666666666666666,
+    "median_regret_pct": null,
+    "p95_regret_pct": null,
+    "rows": [
+      {
+        "candidate_count": 12,
+        "chosen": "fp8_tp2_pix01_triton",
+        "decision_overhead_ms": 0.1745852641761303,
+        "decision_overhead_pct_of_predicted_p99": 29.737370663555758,
+        "invalid_count": 2,
+        "oracle_p99_ms": null,
+        "predicted_p99_ms": 0.587090453125,
+        "regret_pct": null
+      },
+      {
+        "candidate_count": 12,
+        "chosen": "fp8_tp2_pix01_triton",
+        "decision_overhead_ms": 0.11757714673876762,
+        "decision_overhead_pct_of_predicted_p99": 5.149379501300739,
+        "invalid_count": 2,
+        "oracle_p99_ms": null,
+        "predicted_p99_ms": 2.2833265000000003,
+        "regret_pct": null
+      },
+      {
+        "candidate_count": 12,
+        "chosen": "fp8_tp2_pix01_triton",
+        "decision_overhead_ms": 0.30270591378211975,
+        "decision_overhead_pct_of_predicted_p99": 3.415273117297684,
+        "invalid_count": 2,
+        "oracle_p99_ms": null,
+        "predicted_p99_ms": 8.863300338967742,
+        "regret_pct": null
+      },
+      {
+        "candidate_count": 12,
+        "chosen": "fp8_tp2_pix01_triton",
+        "decision_overhead_ms": 0.3036162815988064,
+        "decision_overhead_pct_of_predicted_p99": 3.425543433706149,
+        "invalid_count": 2,
+        "oracle_p99_ms": null,
+        "predicted_p99_ms": 8.863302640139617,
+        "regret_pct": null
+      }
+    ],
+    "top1_accuracy": 0.0
+  },
+  "kernel_measurement_count": 24,
+  "observation_count": 4,
+  "schema_version": "qtopomoe.phase8_replay.v1",
+  "status": "completed"
+}
