@@ -118,3 +118,9 @@
 
 - [Phase6 进展：4 卡矩阵](Q-TopoMoE_Phase6_progress_20260807.md) /
   [矩阵数据](Q-TopoMoE_Phase6_matrix_4gpu_20260807.json)
+
+## Phase 7：量化感知 EPLB
+
+- [Phase7 进展：迁移成本与离线 placement](Q-TopoMoE_Phase7_progress_20260807.md) /
+  [placement 数据](Q-TopoMoE_Phase7_placement_20260807.json) /
+  [迁移成本数据](Q-TopoMoE_Phase7_migration_cost_20260807.json)
