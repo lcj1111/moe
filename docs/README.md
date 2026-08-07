@@ -113,3 +113,8 @@
 - [Phase5 进展：permute+quant/scale+pack 融合](Q-TopoMoE_Phase5_progress_20260806.md) /
   [融合结果数据](Q-TopoMoE_Phase5_permute_quant_fusion_20260806.json) /
   [prepare-stage A/B 数据](Q-TopoMoE_Phase5_prepare_ab_20260807.json)
+
+## Phase 6：TP/DP/EP 系统矩阵
+
+- [Phase6 进展：4 卡矩阵](Q-TopoMoE_Phase6_progress_20260807.md) /
+  [矩阵数据](Q-TopoMoE_Phase6_matrix_4gpu_20260807.json)
