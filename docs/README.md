@@ -111,4 +111,5 @@
 ## Phase 5：Level 2 融合 kernel
 
 - [Phase5 进展：permute+quant/scale+pack 融合](Q-TopoMoE_Phase5_progress_20260806.md) /
-  [融合结果数据](Q-TopoMoE_Phase5_permute_quant_fusion_20260806.json)
+  [融合结果数据](Q-TopoMoE_Phase5_permute_quant_fusion_20260806.json) /
+  [prepare-stage A/B 数据](Q-TopoMoE_Phase5_prepare_ab_20260807.json)
