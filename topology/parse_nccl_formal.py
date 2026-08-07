@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""Parse raw nccl-tests logs into summarized statistics.
+
+Reads ``all_reduce/all_gather/reduce_scatter/alltoall/sendrecv_*_r[1-5].log``
+from a formal run directory, computes mean/CI95 per (collective, label, size)
+and writes ``statistics.json``/``statistics.csv`` for
+``scripts/build_nccl_cost_db.py``.
+"""
 import argparse
 import csv
 import json

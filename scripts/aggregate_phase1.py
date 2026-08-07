@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""Aggregate Phase 1 service-matrix smoke summaries into one table.
+
+Reads per-topology ``*_c*.summary.json`` files under a run root and writes a
+single CSV/JSON matrix (format, topology, workload, concurrency, TTFT/TPOT/
+e2e).  Companion to ``scripts/analyze_phase1.py`` and
+``scripts/phase1_matrix.sh``.
+"""
 from __future__ import annotations
 
 import argparse

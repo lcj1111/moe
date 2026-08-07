@@ -1,3 +1,9 @@
+"""Phase 4 Level 1 backend selector.
+
+Picks the best measured kernel (cutlass/triton/flashinfer) for a given
+``m_bucket`` and precision from ``KernelDatabase``; unmeasured or invalid
+rows are never selected.  See ``docs/Q-TopoMoE_Phase4_Phase8_framework.md``.
+"""
 from __future__ import annotations
 
 from dataclasses import dataclass

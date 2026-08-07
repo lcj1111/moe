@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+"""Validate project YAML/JSON config files against a minimal schema.
+
+Used by ``make check`` (env/project.env + validate_configs.py).  Fails fast
+on missing required keys or malformed values so broken configs do not reach
+experiment runners.
+"""
 from pathlib import Path
 import sys
 

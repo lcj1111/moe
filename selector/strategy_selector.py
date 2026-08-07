@@ -1,3 +1,10 @@
+"""Phase 8 joint strategy selector and transparent cost model.
+
+Evaluates TP/DP/EP candidates against workload observations (real-M
+histogram, communication bytes, route histogram) using measured kernel
+latencies and mapping costs, then reports predicted p99, oracle regret and
+controller overhead.  See ``docs/Q-TopoMoE_Phase4_Phase8_framework.md``.
+"""
 from __future__ import annotations
 
 import json

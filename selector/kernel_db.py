@@ -1,3 +1,9 @@
+"""Versioned MoE kernel measurement database.
+
+Stores per-backend/per-M-bucket p50/p95 latencies measured on real GPUs
+(``scripts/bench_moe_kernel.py``).  Only rows with ``measured=True`` and a
+valid latency are selectable; no synthetic latency is ever injected.
+"""
 from __future__ import annotations
 
 import json

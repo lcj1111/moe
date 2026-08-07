@@ -90,29 +90,21 @@
 - [Phase3c W4A16 full-set 官方协议评测结果](Q-TopoMoE_Phase3c_full_official_W4_results_20260806.md) /
   [合并 summary（数据）](Q-TopoMoE_Phase3c_full_official_w4_merged_summary_20260806.json)
 - 官方协议 manifest：`configs/evaluation/full_set_official_protocol_v1.manifest.json`
-- 官方协议 pilot 计时（数据）：
-  [bf16_tp4 分层摘要](Q-TopoMoE_Phase3c_pilot_official_protocol_bf16_tp4_20260806.json) /
-  [quality summary](Q-TopoMoE_Phase3c_pilot_official_protocol_summary_20260806.json)
-- thinking 模式对比 pilot（数据）：
-  [bf16_tp4 摘要](Q-TopoMoE_Phase3c_pilot_thinking_bf16_tp4_20260806.json) /
-  [quality summary](Q-TopoMoE_Phase3c_pilot_thinking_summary_20260806.json)
+- P2P 后计时重测（数据）：[official 协议 pilot](Q-TopoMoE_Phase3c_pilot_p2p_20260807.json) /
+  [thinking 模式 pilot](Q-TopoMoE_Phase3c_pilot_thinking_p2p_20260807.json)
+- 旧 P2P 禁用版计时数据已归档至 `docs/archive/`（仅作历史对照）。
 
 ## Phase 4 / Phase 8：kernel benchmark 与策略回放
 
 - [Phase4/8 进展：Triton MoE kernel 实测与策略回放](Q-TopoMoE_Phase4_Phase8_progress_20260806.md)
 - [Phase4/8 可执行框架](Q-TopoMoE_Phase4_Phase8_framework.md)
 - [Phase4/8 离线任务](Q-TopoMoE_Phase4_Phase8_offline_tasks.md)
-- [Phase8 replay（数据）](Q-TopoMoE_Phase8_replay_20260804.json)
-- [Phase8 replay 2026-08-06（数据）](Q-TopoMoE_Phase8_replay_20260806.json)
-- [Phase4 Triton MoE kernel 实测（数据）](Q-TopoMoE_Phase4_triton_moe_bf16_kernel_20260806.json)
-- [Phase8 replay 2026-08-06 v2（数据）](Q-TopoMoE_Phase8_replay_20260806_v2.json)
-- [Phase4 Triton MoE kernel 实测 v2（数据）](Q-TopoMoE_Phase4_triton_moe_bf16_kernel_20260806_v2.json)
-- [Phase8 replay 2026-08-06 v3（数据）](Q-TopoMoE_Phase8_replay_20260806_v3.json)
-- [Phase4 cutlass MoE kernel 实测（数据）](Q-TopoMoE_Phase4_cutlass_moe_bf16_kernel_20260806.json)
-- [Phase8 replay 2026-08-06 v4（数据）](Q-TopoMoE_Phase8_replay_20260806_v4.json)
-- [Phase4 triton MoE fp8 kernel 实测（数据）](Q-TopoMoE_Phase4_triton_moe_fp8_kernel_20260806.json)
-- [Phase8 replay 2026-08-06 v5（数据）](Q-TopoMoE_Phase8_replay_20260806_v5.json)
-- [Phase4 kernel 实测 v3（正确 m_bucket 语义）：[triton bf16](Q-TopoMoE_Phase4_triton_moe_bf16_kernel_20260806_v3.json) / [triton fp8](Q-TopoMoE_Phase4_triton_moe_fp8_kernel_20260806_v3.json) / [cutlass bf16](Q-TopoMoE_Phase4_cutlass_moe_bf16_kernel_20260806_v3.json)
+- [Phase8 replay P2P（数据）](Q-TopoMoE_Phase8_replay_20260807_p2p.json)
+- Phase4 kernel 实测（正确 m_bucket 语义，数据）：
+  [triton bf16](Q-TopoMoE_Phase4_triton_moe_bf16_kernel_20260806_v3.json) /
+  [triton fp8](Q-TopoMoE_Phase4_triton_moe_fp8_kernel_20260806_v3.json) /
+  [cutlass bf16](Q-TopoMoE_Phase4_cutlass_moe_bf16_kernel_20260806_v3.json)
+- 旧版 kernel/replay 中间迭代数据已归档至 `docs/archive/`（仅作历史对照）。
 
 ## Phase 5：Level 2 融合 kernel
 
@@ -123,10 +115,11 @@
 ## Phase 6：TP/DP/EP 系统矩阵
 
 - [Phase6 进展：4 卡矩阵](Q-TopoMoE_Phase6_progress_20260807.md) /
-  [矩阵数据](Q-TopoMoE_Phase6_matrix_4gpu_20260807.json)
+  [P2P 后 4 卡矩阵](Q-TopoMoE_Phase6_matrix_4gpu_p2p_20260807.json) /
+  [P2P 后 8 卡矩阵](Q-TopoMoE_Phase6_matrix_8gpu_p2p_20260807.json)
 
 ## Phase 7：量化感知 EPLB
 
 - [Phase7 进展：迁移成本与离线 placement](Q-TopoMoE_Phase7_progress_20260807.md) /
   [placement 数据](Q-TopoMoE_Phase7_placement_20260807.json) /
-  [迁移成本数据](Q-TopoMoE_Phase7_migration_cost_20260807.json)
+  [迁移成本数据（P2P）](Q-TopoMoE_Phase7_migration_cost_p2p_20260807.json)

@@ -1,0 +1,21 @@
+{
+  "schema_version": "qtopomoe.phase3c.p2p_retest.v1",
+  "date": "2026-08-07",
+  "manifest": "full_set_pilot_v1.jsonl",
+  "model": "bf16",
+  "backend": "vllm-cleanroom",
+  "tp": 4,
+  "gpu": "0,1,2,3",
+  "concurrency": 1,
+  "max_model_len": 65536,
+  "request_ms": {
+    "p50": 6839,
+    "mean": 7449,
+    "min": 3933,
+    "max": 14084
+  },
+  "completion_tokens_mean": 1714,
+  "failed": 0,
+  "truncated": 0,
+  "note": "P2P enabled; OLD (P2P disabled) p50=112711ms mean=116484ms -> ~16x faster"
+}
