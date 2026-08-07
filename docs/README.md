@@ -15,6 +15,7 @@
 - [8×5090 实机拓扑评估与首轮实验矩阵](Q-TopoMoE_8x5090实机拓扑评估与首轮实验矩阵.md)
 - [gpu111 phase0 实测分析](Q-TopoMoE_gpu111_phase0实测分析.md)
 - [q_topomoe_phase0_verify.sh](q_topomoe_phase0_verify.sh)
+- [Phase0 P2P 启用后画像更新（推翻旧结论）](Q-TopoMoE_Phase0_P2P_update_20260807.md)
 
 ## Phase 1：BF16 / FP8 服务实测
 
@@ -24,6 +25,10 @@
   [Phase1 统计（数据）](Q-TopoMoE_Phase1_statistics_20260804.json)
 
 ## Phase 2：量化、canonical checkpoint 与质量 gate
+
+- [W4A16 block64 无损变换验证](Q-TopoMoE_W4A16_block64_transform_20260807.md) /
+  [reblock manifest](Q-TopoMoE_W4A16_reblock_manifest_20260807.json) /
+  [g64 official-like v2 summary](Q-TopoMoE_Phase2_official_like_v2_W4A16_g64_summary_20260807.json)
 
 ### checkpoint / 兼容性
 

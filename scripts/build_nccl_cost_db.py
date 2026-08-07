@@ -48,8 +48,11 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--source", default=None,
+                        help="source path recorded in the DB (default: input)")
     args = parser.parse_args()
     result = build(json.loads(args.input.read_text(encoding="utf-8")))
+    result["source"] = args.source or str(args.input)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"normalized {len(result['points'])} time points across {len(result['mapping_summary'])} mappings")

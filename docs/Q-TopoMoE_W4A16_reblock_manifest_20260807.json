@@ -1,0 +1,8 @@
+{
+  "schema_version": "qtopomoe.w4a16.reblock_128_to_64.v1",
+  "source": "/data/models/test/qtopomoe_w4a16_canonical_text_v1",
+  "destination": "/data/models/test/qtopomoe_w4a16_canonical_text_v1_g64",
+  "transform": "lossless group_size 128 -> 64: every weight_scale group dim duplicated (repeat_interleave 2); packed int4 weights unchanged; symmetric no-zero-point so dequant is bit-identical",
+  "generated_at_utc": "2026-08-07T06:34:29.258601+00:00",
+  "scale_tensors_transformed": 30880
+}
