@@ -22,6 +22,7 @@ TP_SIZE="${TP_SIZE:-1}"
 DP_SIZE="${DP_SIZE:-1}"
 EP_SIZE="${EP_SIZE:-0}"
 EPLB="${EPLB:-0}"
+EPLB_CONFIG="${EPLB_CONFIG:-}"
 PORT="${PORT:?PORT required}"
 RUN_TAG="${RUN_TAG:?RUN_TAG required}"
 OUT_ROOT="${OUT_ROOT:-/data/models/test/qtopomoe_phase6}"
@@ -68,6 +69,9 @@ if (( EP_SIZE > 0 )); then
 fi
 if (( EPLB > 0 )); then
   EXTRA_ARGS+=(--enable-eplb)
+  if [[ -n "$EPLB_CONFIG" ]]; then
+    EXTRA_ARGS+=(--eplb-config "$EPLB_CONFIG")
+  fi
 fi
 
 nohup "$SERVE_ENV/bin/vllm" serve "$MODEL_PATH" \
@@ -120,7 +124,7 @@ fi
   echo "{\"run_tag\": \"$RUN_TAG\", \"status\": \"$status\","
   echo " \"model_path\": \"$MODEL_PATH\", \"gpu_ids\": \"$GPU_IDS\","
   echo " \"tp\": $TP_SIZE, \"dp\": $DP_SIZE, \"ep\": $EP_SIZE,"
-  echo " \"eplb\": $EPLB, \"port\": $PORT,"
+  echo " \"eplb\": $EPLB, \"eplb_config\": \"$EPLB_CONFIG\", \"port\": $PORT,"
   echo " \"smoke\": {\"requests\": $SMOKE_REQUESTS, \"concurrency\": $SMOKE_CONCURRENCY,"
   echo "  \"input_tokens\": $SMOKE_INPUT_TOKENS, \"output_tokens\": $SMOKE_OUTPUT_TOKENS}}"
 } > "$RUN_DIR/meta.json"

@@ -42,6 +42,12 @@ TP8-SYS accepted。TP4-NUMA0 e2e 2003ms、TP8-SYS 2166ms，TPOT 均 8.05ms
 TP8/DP/EP 配置的 e2e 普遍改善 20-50%；EP8 all-to-all 在 P2P 下 TTFT
 -63%、TPOT -43%。
 
+EPLB 行另跑一次重复验证（run2）：e2e 1,221.5→1,200.7 ms（-1.7%），
+结果稳定。冗余专家 1 变体不可测：vLLM 要求专家数可被 EP rank 整除，
+256+1=257 为质数（EP2/4/8 均不整除），`--eplb-config
+'{"num_redundant_experts": 1}'` 报 `even distribution of experts across
+ranks`——框架限制，与 P2P 无关，保留为格式不兼容证据。
+
 ### Phase 3c pilot 计时（BF16 TP4，8 条 official 协议）
 
 单题 request_ms：**p50 2066ms、mean 2001ms**（旧 23667/30242ms，**约 15x

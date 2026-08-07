@@ -72,6 +72,21 @@
       "ttft_p50_ms": 182.2,
       "tpot_p50_ms": 16.28,
       "e2e_p50_ms": 1221.5
+    },
+    {
+      "run_tag": "ep4_tp2_eplb_p2p_run2",
+      "status": "smoke_passed",
+      "tp": 2,
+      "dp": 1,
+      "ep": 1,
+      "eplb": 1,
+      "model_path": "qtopomoe_w4a16_canonical_text_v1",
+      "completed": 32,
+      "failed": 0,
+      "ttft_p50_ms": 199.1,
+      "tpot_p50_ms": 15.87,
+      "e2e_p50_ms": 1200.7,
+      "note": "repeat of ep4_tp2_eplb_p2p for consistency; no redundant expert configured"
     }
   ]
 }

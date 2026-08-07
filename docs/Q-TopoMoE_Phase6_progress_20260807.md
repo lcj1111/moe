@@ -25,6 +25,30 @@
 
 原始数据：[Q-TopoMoE_Phase6_matrix_4gpu_p2p_20260807.json](Q-TopoMoE_Phase6_matrix_4gpu_p2p_20260807.json)。
 
+### 2.1 新旧对比（P2P 启用前后，4 卡）
+
+| 配置 | 模型 | TTFT 旧→新 | TPOT 旧→新 | e2e 旧→新 |
+|---|---|---:|---:|---:|
+| TP4×DP1 | BF16 | 173.7→190.0 ms（+9.4%） | 6.47→5.80 ms（-10.3%） | 820.2→620.5 ms（-24.3%） |
+| TP2×DP2 | BF16 | 612.7→214.0 ms（-65.1%） | 8.21→6.40 ms（-22.1%） | 1,586.2→693.1 ms（-56.3%） |
+| TP1×DP4 | W4A16 | 292.3→238.3 ms（-18.5%） | 12.04→11.32 ms（-6.0%） | 1,072.3→1,010.2 ms（-5.8%） |
+| EP4 static | W4A16 | 187.9→194.0 ms（+3.2%） | 8.67→8.17 ms（-5.8%） | 735.4→711.6 ms（-3.2%） |
+
+解读：
+
+1. **TP2×DP2 收益最大（e2e -56%）**：该格通信最密集（TP2 all-reduce +
+   DP 协调），P2P 禁用时全部走共享主机内存，受损最重；启用后恢复
+   P2P/direct pointer，TTFT -65%、TPOT -22%。
+2. **TP4×DP1（e2e -24%）**：TPOT -10% 说明 4 卡 all-reduce 在 decode 阶段
+   直接受益于 P2P；TTFT +9.4% 属 32 请求小样本噪声，不影响结论。
+3. **TP1×DP4 变化最小（-5.8%）**：DP4 各副本单卡独立推理，跨卡仅少量
+   协调流量，P2P 影响有限——符合"P2P 主要影响 TP/EP 通信"的预期。
+4. **EP4 static（-3.2%）**：4 卡 all-to-all 且 W4 专家体积小，收益有限；
+   TPOT -5.8% 与 TP1×DP4 接近。
+
+结论：P2P 主要修复的是"通信密集"配置（TP2×DP2 之类），4 卡矩阵的
+相对排序不变（TP4×DP1 仍最优、TP1×DP4 仍最慢），但各格差距大幅缩小。
+
 ## 3. 八卡矩阵（P2P 后）
 
 | 配置 | 模型 | TTFT p50 | TPOT p50 | e2e p50 | 旧 e2e | 通过 |
@@ -34,8 +58,12 @@
 | TP2×DP4 | BF16 | 276.3 ms | 8.27 ms | 1,041.6 ms | 1,314.8 ms | 32/32 |
 | EP8 TP1 | W4A16 | 227.4 ms | 12.54 ms | 1,024.6 ms | 2,055.4 ms | 32/32 |
 | EP4×TP2+EPLB | W4A16 | 182.2 ms | 16.28 ms | 1,221.5 ms | 1,234.6 ms | 32/32 |
+| EP4×TP2+EPLB（重复） | W4A16 | 199.1 ms | 15.87 ms | 1,200.7 ms | — | 32/32 |
 
 原始数据：[Q-TopoMoE_Phase6_matrix_8gpu_p2p_20260807.json](Q-TopoMoE_Phase6_matrix_8gpu_p2p_20260807.json)。
+
+> 注：EPLB 行额外做了一次重复运行（run2）以检查稳定性，e2e 1,221.5
+> →1,200.7 ms（-1.7%），TTFT/TPOT 波动在 smoke 样本正常范围。
 
 ## 4. 观察
 
@@ -58,5 +86,8 @@
   同理受 block 对齐限制，保留为格式不兼容证据。
 - EP 准入顺序：EP4/单 NUMA static（完成）、EP8/static（完成，TP1×EP8）、
   EP8+原生 EPLB（EP4×TP2 验证 EPLB 可用；纯 EP8 无 TP/DP 维度被 vLLM
-  拒绝）、EP8+冗余专家 1（待重测）、自研 topology-aware EPLB（待做）。
+  拒绝）、EP8+冗余专家 1（框架限制：vLLM 要求专家数可被 EP rank 整除，
+  256+1=257 为质数，EP2/4/8 均不可用，`--eplb-config
+  '{"num_redundant_experts": 1}'` 报 `even distribution of experts across
+  ranks`，保留为格式不兼容证据）、自研 topology-aware EPLB（待做）。
 - 旧 P2P 禁用版四卡矩阵数据：`docs/archive/Q-TopoMoE_Phase6_matrix_4gpu_20260807.json`。
