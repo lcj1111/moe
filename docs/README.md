@@ -46,6 +46,10 @@
 
 ### 量化与 W4A16
 
+- [NVFP4 官方 checkpoint 验证与质量 Gate](Q-TopoMoE_Phase2_NVFP4_gate_20260807.md) /
+  [audit（数据）](Q-TopoMoE_Phase2_NVFP4_audit_20260807.json) /
+  [quality summary（数据）](Q-TopoMoE_Phase2_NVFP4_official_like_v2_summary_20260807.json)
+
 - [Phase2 量化预检报告](Q-TopoMoE_Phase2_量化预检报告.md)
 - [Phase2 W4A16 freeze（数据）](Q-TopoMoE_W4A16_freeze_20260805.json)
 - [Phase2 W4A16 审计（数据）](Q-TopoMoE_Phase2_W4A16_audit_20260805.json)
