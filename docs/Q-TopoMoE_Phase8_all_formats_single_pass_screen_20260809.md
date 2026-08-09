@@ -56,3 +56,21 @@ warmup, measurement, clean stop and 30-second cooldown for every repetition.
 Report bootstrap 95% confidence intervals. Prefix-cache 0/50/90% and the
 closed-loop/Poisson/burst traffic dimensions still require their formal runs;
 the current screen only establishes the candidate funnel.
+
+The frozen repeated-run implementation is
+`configs/experiments/phase8_pareto_repeated_v1.json` plus
+`scripts/run_phase8_repeated.py`. It creates a seed-42 schedule of 20 service
+runs, refuses to overwrite incomplete evidence, verifies idle selected GPUs,
+pins the P2P-enabled environment, checks the exact runtime backend and EP rank
+count after warmup, audits every cell, and cools down for 30 seconds. Run it on
+gpu-111 with:
+
+```bash
+/data/models/test/vllm_env/bin/python scripts/run_phase8_repeated.py \
+  --plan configs/experiments/phase8_pareto_repeated_v1.json \
+  --output-root /data/models/test/qtopomoe_phase8_repeated_v1
+```
+
+After all 20 runs pass, generate deterministic 10,000-sample bootstrap median
+intervals with `scripts/aggregate_phase8_repeated.py`. Raw artifacts remain on
+the data volume; only the compact aggregate is committed.
