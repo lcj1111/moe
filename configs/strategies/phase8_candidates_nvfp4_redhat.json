@@ -1,0 +1,71 @@
+[
+  {
+    "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+    "quant_format": "nvfp4",
+    "checkpoint": "/data/models/test/redhatai_qwen36_nvfp4",
+    "tp": 4,
+    "dp": 1,
+    "ep": 4,
+    "gpu_mapping": "tp4_numa0",
+    "eplb_policy": "static",
+    "redundant_experts": 0,
+    "kernel_backend": "marlin",
+    "cost_kernel_backend": "nvfp4_cutlass",
+    "kernel_config": {
+      "actual_source": "vLLM runtime auto-selection",
+      "cost_proxy": "native CUTLASS NVFP4 real-M microbenchmark; not MARLIN latency"
+    },
+    "quality_valid": true,
+    "supported": true
+  },
+  {
+    "candidate_id": "nvfp4_redhat_ep8_static_sys",
+    "quant_format": "nvfp4",
+    "checkpoint": "/data/models/test/redhatai_qwen36_nvfp4",
+    "tp": 8,
+    "dp": 1,
+    "ep": 8,
+    "gpu_mapping": "tp8_sys",
+    "eplb_policy": "static",
+    "redundant_experts": 0,
+    "kernel_backend": "marlin",
+    "cost_kernel_backend": "nvfp4_cutlass",
+    "kernel_config": {
+      "actual_source": "vLLM runtime auto-selection",
+      "cost_proxy": "native CUTLASS NVFP4 real-M microbenchmark; not MARLIN latency"
+    },
+    "quality_valid": true,
+    "supported": true
+  },
+  {
+    "candidate_id": "nvfp4_redhat_ep8_native_eplb",
+    "quant_format": "nvfp4",
+    "checkpoint": "/data/models/test/redhatai_qwen36_nvfp4",
+    "tp": 8,
+    "dp": 1,
+    "ep": 8,
+    "gpu_mapping": "tp8_sys",
+    "eplb_policy": "native",
+    "redundant_experts": 0,
+    "kernel_backend": "marlin",
+    "cost_kernel_backend": "nvfp4_cutlass",
+    "kernel_config": {"rejection": "CompressedTensorsW4A4Nvfp4MoEMethod does not support EPLB"},
+    "quality_valid": true,
+    "supported": false
+  },
+  {
+    "candidate_id": "nvfp4_selfgen_v1_ep4_static",
+    "quant_format": "nvfp4",
+    "checkpoint": "/data/models/test/qtopomoe_nvfp4_text_v1",
+    "tp": 4,
+    "dp": 1,
+    "ep": 4,
+    "gpu_mapping": "tp4_numa0",
+    "eplb_policy": "static",
+    "redundant_experts": 0,
+    "kernel_backend": "nvfp4_cutlass",
+    "kernel_config": {"rejection": "official-like quality Gate -3.45 percentage points"},
+    "quality_valid": false,
+    "supported": true
+  }
+]

@@ -29,6 +29,7 @@ class StrategyCandidate:
     redundant_experts: int
     kernel_backend: str
     kernel_config: dict[str, Any] = field(default_factory=dict)
+    cost_kernel_backend: str | None = None
     memory_required_gb: float | None = None
     quality_valid: bool = True
     supported: bool = True
@@ -42,6 +43,7 @@ class WorkloadObservation:
     route_hist: Mapping[str, float] = field(default_factory=dict)
     placement: Mapping[str, Any] = field(default_factory=dict)
     migration_bytes: float = 0.0
+    measured_p99_ms_by_candidate: Mapping[str, float] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -62,8 +64,9 @@ class CostModel:
     def predict_p99_ms(self, candidate: StrategyCandidate, obs: WorkloadObservation,
                        kernel_db: KernelDatabase) -> float | None:
         compute_us = 0.0
+        cost_backend = candidate.cost_kernel_backend or candidate.kernel_backend
         for raw_bucket, weight in obs.real_M_hist.items():
-            row = kernel_db.best(int(raw_bucket), candidate.quant_format, candidate.kernel_backend)
+            row = kernel_db.best(int(raw_bucket), candidate.quant_format, cost_backend)
             if row is None or row.score_us is None:
                 return None
             compute_us += float(weight) * row.score_us
@@ -111,16 +114,32 @@ class StrategySelector:
         rows = []
         for obs in observations:
             chosen, predicted, meta = self.select(obs)
-            measured = [c for c in self.candidates if self._valid(c) and c.measured_p99_ms is not None]
-            oracle = min((c.measured_p99_ms for c in measured), default=None)
-            regret = None if oracle in (None, 0) else (predicted - oracle) / oracle * 100
-            overhead_pct = meta["decision_overhead_ms"] / predicted * 100 if predicted > 0 else None
+            measured_by_candidate = {
+                c.candidate_id: float(obs.measured_p99_ms_by_candidate.get(
+                    c.candidate_id, c.measured_p99_ms))
+                for c in self.candidates
+                if self._valid(c) and (
+                    c.candidate_id in obs.measured_p99_ms_by_candidate
+                    or c.measured_p99_ms is not None)
+            }
+            oracle = min(measured_by_candidate.values(), default=None)
+            chosen_measured = measured_by_candidate.get(chosen.candidate_id)
+            regret = (None if oracle in (None, 0) or chosen_measured is None else
+                      (chosen_measured - oracle) / oracle * 100)
+            overhead_denominator_ms = chosen_measured or predicted
+            overhead_pct = (meta["decision_overhead_ms"] / overhead_denominator_ms * 100
+                            if overhead_denominator_ms > 0 else None)
             rows.append({"chosen": chosen.candidate_id, "predicted_p99_ms": predicted,
+                         "chosen_measured_p99_ms": chosen_measured,
                          "oracle_p99_ms": oracle, "regret_pct": regret,
-                         "decision_overhead_pct_of_predicted_p99": overhead_pct, **meta})
+                         "decision_overhead_denominator_ms": overhead_denominator_ms,
+                         "decision_overhead_pct_of_service_p99": overhead_pct, **meta})
         regrets = [r["regret_pct"] for r in rows if r["regret_pct"] is not None]
-        overhead = [r["decision_overhead_pct_of_predicted_p99"] for r in rows if r["decision_overhead_pct_of_predicted_p99"] is not None]
-        return {"rows": rows, "top1_accuracy": sum(r["regret_pct"] == 0 for r in rows) / len(rows) if rows else None,
+        overhead = [r["decision_overhead_pct_of_service_p99"] for r in rows
+                    if r["decision_overhead_pct_of_service_p99"] is not None]
+        evaluated_rows = [r for r in rows if r["regret_pct"] is not None]
+        return {"rows": rows, "top1_accuracy": (sum(r["regret_pct"] == 0 for r in evaluated_rows) /
+                len(evaluated_rows) if evaluated_rows else None),
                 "median_regret_pct": statistics.median(regrets) if regrets else None,
                 "p95_regret_pct": statistics.quantiles(regrets, n=20, method="inclusive")[18] if len(regrets) >= 2 else (regrets[0] if regrets else None),
                 "decision_overhead_pct_p95": statistics.quantiles(overhead, n=20, method="inclusive")[18] if len(overhead) >= 2 else (overhead[0] if overhead else None),

@@ -47,7 +47,7 @@
     },
     {
       "run_tag": "ep8_tp1_p2p",
-      "status": "smoke_passed",
+      "status": "invalid_parallel_topology",
       "tp": 1,
       "dp": 1,
       "ep": 1,
@@ -58,6 +58,9 @@
       "ttft_p50_ms": 227.4,
       "tpot_p50_ms": 12.54,
       "e2e_p50_ms": 1024.6
+      ,"actual_world_size": 1,
+      "actual_ep_ranks": 1,
+      "note": "TP=1, DP=1 used only GPU0; this is not EP8 evidence"
     },
     {
       "run_tag": "ep4_tp2_eplb_p2p",
@@ -72,6 +75,9 @@
       "ttft_p50_ms": 182.2,
       "tpot_p50_ms": 16.28,
       "e2e_p50_ms": 1221.5
+      ,"actual_world_size": 2,
+      "actual_ep_ranks": 2,
+      "note": "Despite the historical run tag, TP=2 DP=1 created EP2, not EP4"
     },
     {
       "run_tag": "ep4_tp2_eplb_p2p_run2",
@@ -86,7 +92,9 @@
       "ttft_p50_ms": 199.1,
       "tpot_p50_ms": 15.87,
       "e2e_p50_ms": 1200.7,
-      "note": "repeat of ep4_tp2_eplb_p2p for consistency; no redundant expert configured"
+      "actual_world_size": 2,
+      "actual_ep_ranks": 2,
+      "note": "Repeat of the EP2 native-EPLB cell; no redundant expert configured. Historical tag said EP4 incorrectly."
     }
   ]
 }

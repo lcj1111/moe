@@ -1,0 +1,18 @@
+{
+  "schema_version": "qtopomoe.workload_matrix.v1",
+  "seed": 42,
+  "cells": [
+    {"id": "w1_c1", "input_tokens": 256, "output_tokens": 128, "concurrency": 1, "requests": 32},
+    {"id": "w1_c8", "input_tokens": 256, "output_tokens": 128, "concurrency": 8, "requests": 32},
+    {"id": "w1_c32", "input_tokens": 256, "output_tokens": 128, "concurrency": 32, "requests": 64},
+    {"id": "w1_c128", "input_tokens": 256, "output_tokens": 128, "concurrency": 128, "requests": 128},
+    {"id": "w2_c1", "input_tokens": 2048, "output_tokens": 256, "concurrency": 1, "requests": 32},
+    {"id": "w2_c8", "input_tokens": 2048, "output_tokens": 256, "concurrency": 8, "requests": 32},
+    {"id": "w2_c32", "input_tokens": 2048, "output_tokens": 256, "concurrency": 32, "requests": 64},
+    {"id": "w3_c1", "input_tokens": 8192, "output_tokens": 256, "concurrency": 1, "requests": 16},
+    {"id": "w3_c8", "input_tokens": 8192, "output_tokens": 256, "concurrency": 8, "requests": 16},
+    {"id": "w3_c16", "input_tokens": 8192, "output_tokens": 256, "concurrency": 16, "requests": 32},
+    {"id": "w4_c1", "input_tokens": 32768, "output_tokens": 128, "concurrency": 1, "requests": 8},
+    {"id": "w4_c4", "input_tokens": 32768, "output_tokens": 128, "concurrency": 4, "requests": 8}
+  ]
+}

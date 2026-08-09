@@ -5,6 +5,12 @@
 > P2P 启用后所有多卡性能数字已重测；旧 P2P 禁用版数据归档至
 > `docs/archive/`（仅作历史对照）。
 
+> **2026-08-09 并行拓扑审计更正：** vLLM 的 EP rank 数由实际并行
+> world size 决定，不由 `CUDA_VISIBLE_DEVICES` 数量决定。历史
+> `ep8_tp1_p2p` 实际 `world_size=1`，不得作为 EP8 结果；历史
+> `ep4_tp2_eplb_*` 实际 `world_size=2`，是 EP2+EPLB，不是 EP4。
+> 下表保留其时序用于失败审计，但已修正准入含义。
+
 ## 1. 环境与前置
 
 - vLLM cleanroom `33c50587d`，支持 `--tensor-parallel-size`、
@@ -56,13 +62,13 @@
 | TP8×DP1 | BF16 | 173.3 ms | 6.25 ms | 627.6 ms | 864.9 ms | 32/32 |
 | TP4×DP2 | BF16 | 316.6 ms | 7.86 ms | 785.4 ms | 1,528.7 ms | 32/32 |
 | TP2×DP4 | BF16 | 276.3 ms | 8.27 ms | 1,041.6 ms | 1,314.8 ms | 32/32 |
-| EP8 TP1 | W4A16 | 227.4 ms | 12.54 ms | 1,024.6 ms | 2,055.4 ms | 32/32 |
-| EP4×TP2+EPLB | W4A16 | 182.2 ms | 16.28 ms | 1,221.5 ms | 1,234.6 ms | 32/32 |
-| EP4×TP2+EPLB（重复） | W4A16 | 199.1 ms | 15.87 ms | 1,200.7 ms | — | 32/32 |
+| TP1+EP（实际 world=1，非 EP8） | W4A16 | 227.4 ms | 12.54 ms | 1,024.6 ms | 2,055.4 ms | 无效拓扑 |
+| TP2+EP2+原生 EPLB | W4A16 | 182.2 ms | 16.28 ms | 1,221.5 ms | 1,234.6 ms | 32/32 |
+| TP2+EP2+原生 EPLB（重复） | W4A16 | 199.1 ms | 15.87 ms | 1,200.7 ms | — | 32/32 |
 
 原始数据：[Q-TopoMoE_Phase6_matrix_8gpu_p2p_20260807.json](Q-TopoMoE_Phase6_matrix_8gpu_p2p_20260807.json)。
 
-> 注：EPLB 行额外做了一次重复运行（run2）以检查稳定性，e2e 1,221.5
+> 注：EP2+EPLB 行额外做了一次重复运行（run2）以检查稳定性，e2e 1,221.5
 > →1,200.7 ms（-1.7%），TTFT/TPOT 波动在 smoke 样本正常范围。
 
 ## 4. 观察
@@ -70,11 +76,12 @@
 1. **P2P 全面提升多卡性能**：e2e 普遍改善 20-50%，其中 TP2×DP2（-56%）、
    TP4×DP2（-49%）、EP8 TP1（-50%）最显著；TP8×DP1 改善 27%。
 2. **TPOT（稳态 decode）**：TP4×DP1 最低（5.80 ms），TP8×DP1 次之
-   （6.25 ms）；TP1×DP4/EP8 最高（11-13 ms），符合单卡推理预期。
+   （6.25 ms）；TP1×DP4 较高（11 ms）。原标注 EP8 的 12.54 ms
+   实际是 world=1，不参与 EP 比较。
 3. **TTFT（prefill）**：TP8×DP1 最优（173 ms）；TP4×DP2 明显偏高
    （317 ms），DP 协调 + 更细 TP 分片对 prefill 不利。
 4. **e2e p50**：TP4×DP1 最低（620 ms）；8 卡矩阵中 TP8×DP1（628 ms）
-   与 TP4×DP1 相当，TP2×DP4 与 EP 配置略高。
+   与 TP4×DP1 相当，TP2×DP4 与已验证 EP2/EP4 配置略高。
 5. TP1×DP4 证明 W4A16 canonical 单卡容量通过（Runbook 前置条件），
    为 TP1×DP8 提供依据。
 
@@ -84,9 +91,9 @@
 - TP1×DP8（W4A16）仍受静态 group scale 对齐限制（group_size=128 与
   DP8 每分区 64 不整除），可用 block64 变体（`..._g64`）支持；TP8×FP8
   同理受 block 对齐限制，保留为格式不兼容证据。
-- EP 准入顺序：EP4/单 NUMA static（完成）、EP8/static（完成，TP1×EP8）、
-  EP8+原生 EPLB（EP4×TP2 验证 EPLB 可用；纯 EP8 无 TP/DP 维度被 vLLM
-  拒绝）、EP8+冗余专家 1（框架限制：vLLM 要求专家数可被 EP rank 整除，
+- EP 准入顺序：W4A16 的 EP4/单 NUMA static 已完成；本历史矩阵没有
+  有效 EP8 static。原生 EPLB 仅在 EP2（TP2×DP1）完成 smoke，不能外推为
+  EP8+原生 EPLB。EP8+冗余专家 1 仍受框架限制：vLLM 要求专家数可被 EP rank 整除，
   256+1=257 为质数，EP2/4/8 均不可用，`--eplb-config
   '{"num_redundant_experts": 1}'` 报 `even distribution of experts across
   ranks`，保留为格式不兼容证据）、自研 topology-aware EPLB（待做）。

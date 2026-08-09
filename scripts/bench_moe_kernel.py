@@ -76,10 +76,14 @@ def main() -> int:
     parser.add_argument("--num-experts", type=int, default=256)
     parser.add_argument("--top-k", type=int, default=8)
     parser.add_argument("--repeats", type=int, default=50)
-    parser.add_argument("--backend", default="triton", choices=["triton", "cutlass"])
-    parser.add_argument("--precision", default="bf16", choices=["bf16", "fp8"])
+    parser.add_argument("--backend", default="triton", choices=["triton", "cutlass", "nvfp4_cutlass"])
+    parser.add_argument("--precision", default="bf16", choices=["bf16", "fp8", "nvfp4"])
     parser.add_argument("--device", default="cuda:0")
+    parser.add_argument("--source", default="phase4_bench_20260809")
     args = parser.parse_args()
+
+    if (args.backend == "nvfp4_cutlass") != (args.precision == "nvfp4"):
+        raise SystemExit("backend=nvfp4_cutlass and precision=nvfp4 must be used together")
 
     # Import inside main so --help works without the vLLM venv.
     if args.backend == "triton":
@@ -114,6 +118,42 @@ def main() -> int:
                 x, ids, scales, fc1, fc2, torch.bfloat16, [],
                 tp_size=1, ep_size=1,
             )[0]
+    elif args.backend == "nvfp4_cutlass":
+        from vllm.model_executor.layers.fused_moe.activation import MoEActivation
+        from vllm.model_executor.layers.fused_moe.experts.cutlass_moe import (
+            run_cutlass_moe_fp4,
+        )
+        kernel_name = "vllm.run_cutlass_moe_fp4"
+
+        def run(*kernel_args):
+            (
+                output, hidden_states, a1_gscale, w1, w1_scale, w1_alphas,
+                a2_gscale, w2, w2_scale, w2_alphas, topk_weights, topk_ids,
+                workspace13, workspace2,
+            ) = kernel_args
+            return run_cutlass_moe_fp4(
+                output=output,
+                a=hidden_states,
+                a1_gscale=a1_gscale,
+                w1_fp4=w1,
+                w1_blockscale=w1_scale,
+                w1_alphas=w1_alphas,
+                a2_gscale=a2_gscale,
+                w2_fp4=w2,
+                w2_blockscale=w2_scale,
+                w2_alphas=w2_alphas,
+                topk_weights=topk_weights,
+                topk_ids=topk_ids,
+                activation=MoEActivation.SILU,
+                workspace13=workspace13,
+                workspace2=workspace2,
+                m=hidden_states.shape[0],
+                n=args.intermediate,
+                k=args.hidden,
+                e=args.num_experts,
+                device=hidden_states.device,
+                apply_router_weight_on_input=False,
+            )
     else:  # pragma: no cover
         raise SystemExit(f"unknown backend {args.backend}")
 
@@ -132,7 +172,7 @@ def main() -> int:
                 "moe_intermediate": args.intermediate,
                 "num_experts": args.num_experts,
                 "top_k": args.top_k,
-                "per_expert_tokens": m_bucket,
+                "total_tokens": m_bucket,
                 "activation": "silu",
                 "apply_router_weight_on_input": False,
             },
@@ -170,7 +210,7 @@ def main() -> int:
                     inputs = (hidden_states, w1, w2, topk_weights, topk_ids)
                 out = run(*inputs)
                 expected = (num_tokens, args.hidden)
-            else:  # cutlass
+            elif args.backend == "cutlass":
                 num_tokens = m_bucket
                 x = torch.randn(num_tokens, args.hidden, dtype=dtype, device=device)
                 ids = torch.randint(0, args.num_experts, (num_tokens, args.top_k),
@@ -184,19 +224,65 @@ def main() -> int:
                 inputs = (x, ids, scales, fc1, fc2)
                 out = run(*inputs)
                 expected = (num_tokens, args.hidden)
+            else:  # native VLLM_CUTLASS NVFP4 MoE
+                num_tokens = m_bucket
+                hidden_states = torch.randn(
+                    num_tokens, args.hidden, dtype=dtype, device=device)
+                topk_ids = torch.randint(
+                    0, args.num_experts, (num_tokens, args.top_k),
+                    dtype=torch.int32, device=device)
+                topk_weights = torch.full(
+                    (num_tokens, args.top_k), 1.0 / args.top_k,
+                    dtype=dtype, device=device)
+                w1 = torch.randint(
+                    0, 256,
+                    (args.num_experts, 2 * args.intermediate, args.hidden // 2),
+                    dtype=torch.uint8, device=device)
+                w2 = torch.randint(
+                    0, 256,
+                    (args.num_experts, args.hidden, args.intermediate // 2),
+                    dtype=torch.uint8, device=device)
+                w1_scale = torch.full(
+                    (args.num_experts, 2 * args.intermediate, args.hidden // 16),
+                    0.015625, dtype=torch.float8_e4m3fn, device=device)
+                w2_scale = torch.full(
+                    (args.num_experts, args.hidden, args.intermediate // 16),
+                    0.015625, dtype=torch.float8_e4m3fn, device=device)
+                w1_alphas = torch.ones(args.num_experts, dtype=torch.float32, device=device)
+                w2_alphas = torch.ones(args.num_experts, dtype=torch.float32, device=device)
+                a1_gscale = torch.ones(args.num_experts, dtype=torch.float32, device=device)
+                a2_gscale = torch.ones(args.num_experts, dtype=torch.float32, device=device)
+                workspace13 = torch.empty(
+                    num_tokens * args.top_k,
+                    max(2 * args.intermediate, args.hidden),
+                    dtype=dtype, device=device)
+                workspace2 = torch.empty(
+                    num_tokens * args.top_k, args.intermediate,
+                    dtype=dtype, device=device)
+                output = torch.empty(num_tokens, args.hidden, dtype=dtype, device=device)
+                inputs = (
+                    output, hidden_states, a1_gscale, w1, w1_scale, w1_alphas,
+                    a2_gscale, w2, w2_scale, w2_alphas, topk_weights, topk_ids,
+                    workspace13, workspace2,
+                )
+                run(*inputs)
+                out = output
+                expected = (num_tokens, args.hidden)
             torch.cuda.synchronize()
             if tuple(out.shape) != expected:
                 raise RuntimeError(f"unexpected output shape {tuple(out.shape)} != {expected}")
+            if not torch.isfinite(out).all():
+                raise RuntimeError("kernel output contains non-finite values")
             timing = measure(lambda: run(*inputs), args.repeats)
             row = {**base_row, "measured": True, "valid": True,
                    "device": torch.cuda.get_device_name(device) if torch.cuda.is_available() else "cpu",
-                   "source": "phase4_bench_20260806", **timing}
+                   "source": args.source, **timing}
             rows.append(row)
             print(json.dumps(row, ensure_ascii=False))
         except Exception as exc:  # record a failed row without aborting the sweep
             row = {**base_row, "measured": False, "valid": False,
                    "device": torch.cuda.get_device_name(device) if torch.cuda.is_available() else "cpu",
-                   "source": "phase4_bench_20260806",
+                   "source": args.source,
                    "error": f"{type(exc).__name__}: {str(exc)[:300]}"}
             rows.append(row)
             print(json.dumps(row, ensure_ascii=False))

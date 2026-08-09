@@ -1,0 +1,10 @@
+{
+  "schema_version": "qtopomoe.workload_matrix.v1",
+  "seed": 42,
+  "purpose": "Correct the initial c4 transcription and complete the Runbook c8 cells without discarding the extra c4 observations.",
+  "cells": [
+    {"id": "w1_c8", "input_tokens": 256, "output_tokens": 128, "concurrency": 8, "requests": 32},
+    {"id": "w2_c8", "input_tokens": 2048, "output_tokens": 256, "concurrency": 8, "requests": 32},
+    {"id": "w3_c8", "input_tokens": 8192, "output_tokens": 256, "concurrency": 8, "requests": 16}
+  ]
+}

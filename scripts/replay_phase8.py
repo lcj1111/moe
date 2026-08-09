@@ -44,7 +44,19 @@ def main() -> None:
         }
         cost_model = CostModel(communication_us_per_gb_by_mapping=mapping_rates)
         selector = StrategySelector(candidates, db, cost_model=cost_model)
-        result.update({"status": "completed", "evaluation": selector.evaluate(observations)})
+        evaluation = selector.evaluate(observations)
+        evaluated_count = sum(
+            row.get("regret_pct") is not None for row in evaluation["rows"])
+        numeric_gates_pass = all(value is True for value in evaluation["gates"].values())
+        formal_gate_ready = evaluated_count >= 4 and numeric_gates_pass
+        result.update({
+            "status": "completed" if formal_gate_ready else "completed_provisional",
+            "evaluation": evaluation,
+            "evaluated_observation_count": evaluated_count,
+            "formal_gate_ready": formal_gate_ready,
+            "formal_gate_requirement": (
+                "at least four measured workload observations plus all numeric gates"),
+        })
         result["communication_cost_source"] = str(args.cost_db)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
