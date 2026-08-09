@@ -9,6 +9,7 @@ import os
 import random
 import re
 import signal
+import shutil
 import subprocess
 import time
 import urllib.error
@@ -63,8 +64,15 @@ def verify_runtime(plan: dict[str, Any], vllm_bin: str,
     if runtime["vllm_version"] != expected:
         raise RuntimeError(
             f"frozen vLLM Gate failed: actual={runtime['vllm_version']} expected={expected}")
+    runtime_bin = Path(vllm_bin).resolve().parent
+    runtime_path = str(runtime_bin) + os.pathsep + os.environ.get("PATH", "")
+    ninja_bin = shutil.which("ninja", path=runtime_path)
+    if ninja_bin is None:
+        raise RuntimeError(f"frozen runtime Gate failed: ninja absent from {runtime_bin}")
     runtime.update({"vllm_bin": str(Path(vllm_bin).resolve()),
-                    "vllm_bin_sha256": sha256(Path(vllm_bin))})
+                    "vllm_bin_sha256": sha256(Path(vllm_bin)),
+                    "ninja_bin": str(Path(ninja_bin).resolve()),
+                    "ninja_bin_sha256": sha256(Path(ninja_bin))})
     return runtime
 
 
@@ -193,6 +201,7 @@ def run_one(plan: dict[str, Any], candidate: dict[str, Any], repeat: int,
         "NCCL_IB_DISABLE": "1", "NCCL_P2P_DISABLE": "0",
         "VLLM_WORKER_MULTIPROC_METHOD": "spawn",
     })
+    environment["PATH"] = str(Path(vllm_bin).resolve().parent) + os.pathsep + environment["PATH"]
     server_log = (run_dir / "server.log").open("w", encoding="utf-8")
     gpu_log = (run_dir / "gpu_memory.csv").open("w", encoding="utf-8")
     gpu_log.write("timestamp,index,memory.used,utilization.gpu,power.draw\n")
