@@ -190,6 +190,7 @@ def run_one(plan: dict[str, Any], candidate: dict[str, Any], repeat: int,
                               if candidate["enable_expert_parallel"] else 0),
         "actual_ep_ranks": 0, "moe_backend": candidate.get("moe_backend"),
         "backend_log_pattern": candidate["backend_log_pattern"],
+        "forbidden_log_patterns": candidate.get("forbidden_log_patterns", []),
         "numa_args": candidate.get("numa_args", []), "command": command,
         "runtime": runtime,
         "started_unix": time.time(),
@@ -232,6 +233,10 @@ def run_one(plan: dict[str, Any], candidate: dict[str, Any], repeat: int,
         log_text = (run_dir / "server.log").read_text(encoding="utf-8", errors="replace")
         if candidate["backend_log_pattern"] not in log_text:
             raise RuntimeError("backend log Gate failed")
+        forbidden_hits = [pattern for pattern in candidate.get("forbidden_log_patterns", [])
+                          if pattern in log_text]
+        if forbidden_hits:
+            raise RuntimeError(f"forbidden log Gate failed: {forbidden_hits}")
         ep_denominators = [int(value) for value in re.findall(r"EP Rank \d+/(\d+)", log_text)]
         actual_ep = max(ep_denominators, default=0)
         if actual_ep != meta["expected_ep_ranks"]:
