@@ -104,6 +104,25 @@ failure recovery notes and the ordered next step are in
 machine-readable aggregate is the adjacent `.json` file. These are screening
 results only and do not replace randomized five-repeat bootstrap-CI runs.
 
+## Cross-format randomized repeated result (2026-08-10)
+
+The four Pareto candidates completed all 20 seed-42 randomized service runs
+and all 240 candidate/repetition/workload summaries. Request completion,
+failed-zero, exact-token, common-chat-template and EP-rank-truth Gates all
+passed. The accepted 10,000-resample aggregate and the uncertainty audit are
+documented in
+`docs/Q-TopoMoE_Phase8_all_formats_repeated_bootstrap_20260810.md`; the
+adjacent `.json` retains per-cell medians, bootstrap 95% intervals and hashed
+source-artifact references. FP8 TP2 wins 7/12 median-e2e cells, NVFP4 EP8 wins
+4/12 and W4A16 EP4 wins 1/12. NVFP4 EP8 has materially higher repeated-run
+variability, so service-level selector calibration must consume repeated
+medians and uncertainty rather than a fastest-run oracle.
+
+This completes the randomized repeated Gate for the current closed-loop
+12-cell funnel. Although vLLM prefix caching was enabled, controlled prefix
+hit ratios and Poisson/burst arrivals were not exercised. They remain a
+separate formal matrix after transparent selector calibration and replay.
+
 ## CPU verification
 
 ```bash

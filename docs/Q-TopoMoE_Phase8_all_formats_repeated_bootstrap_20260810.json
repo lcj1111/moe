@@ -1,0 +1,4159 @@
+{
+  "bootstrap_samples": 10000,
+  "candidate_aggregate": [
+    {
+      "actual_ep_ranks": 8,
+      "candidate_id": "nvfp4_redhat_ep8_static_sys",
+      "dp": 1,
+      "ep_enabled": true,
+      "expected_ep_ranks": 8,
+      "gpu_count": 8,
+      "gpu_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "median_of_cell_median_e2e_p99_ms": 1249.629850499332,
+      "median_of_cell_median_output_tokens_s": 1031.6606589036046,
+      "model_path": "/data/models/test/redhatai_qwen36_nvfp4",
+      "oracle_wins": 4,
+      "peak_selected_gpu_memory_sum_mib": 235896.0,
+      "tp": 8
+    },
+    {
+      "actual_ep_ranks": 4,
+      "candidate_id": "w4a16_ep4_static_triton",
+      "dp": 1,
+      "ep_enabled": true,
+      "expected_ep_ranks": 4,
+      "gpu_count": 4,
+      "gpu_ids": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "median_of_cell_median_e2e_p99_ms": 1065.0289715267718,
+      "median_of_cell_median_output_tokens_s": 874.5411737075347,
+      "model_path": "/data/models/test/qtopomoe_w4a16_canonical_text_v1",
+      "oracle_wins": 1,
+      "peak_selected_gpu_memory_sum_mib": 119652.0,
+      "tp": 4
+    },
+    {
+      "actual_ep_ranks": 4,
+      "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+      "dp": 1,
+      "ep_enabled": true,
+      "expected_ep_ranks": 4,
+      "gpu_count": 4,
+      "gpu_ids": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "median_of_cell_median_e2e_p99_ms": 1481.2296170275658,
+      "median_of_cell_median_output_tokens_s": 918.6045382052666,
+      "model_path": "/data/models/test/redhatai_qwen36_nvfp4",
+      "oracle_wins": 0,
+      "peak_selected_gpu_memory_sum_mib": 117540.0,
+      "tp": 4
+    },
+    {
+      "actual_ep_ranks": 0,
+      "candidate_id": "fp8_tp2_pix01_triton",
+      "dp": 1,
+      "ep_enabled": false,
+      "expected_ep_ranks": 0,
+      "gpu_count": 2,
+      "gpu_ids": [
+        0,
+        1
+      ],
+      "median_of_cell_median_e2e_p99_ms": 1135.2908909320831,
+      "median_of_cell_median_output_tokens_s": 828.6531280384263,
+      "model_path": "/data/models/test/models/Qwen--Qwen3.6-35B-A3B-FP8/snapshots/master",
+      "oracle_wins": 7,
+      "peak_selected_gpu_memory_sum_mib": 58878.0,
+      "tp": 2
+    }
+  ],
+  "chat_template_sha256": "e84f32a23fdda27689f868aa4a1a5621f41133e51a48d7f3efcbea2839574259",
+  "errors": [],
+  "gate": {
+    "all_cells_present": true,
+    "all_runs_passed": true,
+    "ep_rank_truth": true,
+    "failed_zero": true,
+    "five_repeats": true,
+    "request_complete": true,
+    "single_chat_template": true,
+    "token_exact": true
+  },
+  "resource_aware_pareto_candidates": [
+    "nvfp4_redhat_ep8_static_sys",
+    "w4a16_ep4_static_triton",
+    "nvfp4_redhat_ep4_static_numa0",
+    "fp8_tp2_pix01_triton"
+  ],
+  "rows": [
+    {
+      "concurrency": 1,
+      "id": "w1_c1",
+      "input_tokens": 256,
+      "measurements": {
+        "fp8_tp2_pix01_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 206.09883591532707,
+              "bootstrap_95ci_low": 203.5287767648697,
+              "bootstrap_samples": 10000,
+              "median": 203.8663369603455,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 6760.714734652235,
+              "bootstrap_95ci_low": 6676.408403225097,
+              "bootstrap_samples": 10000,
+              "median": 6749.520399082115,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 3.6033450271047296,
+              "bootstrap_95ci_low": 3.597342542239598,
+              "bootstrap_samples": 10000,
+              "median": 3.600560827180743,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 55.25337718427181,
+              "bootstrap_95ci_low": 52.81082773581147,
+              "bootstrap_samples": 10000,
+              "median": 53.03973983973265,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r02/workloads/w1_c1/summary.json",
+              "artifact_sha256": "2f9bfe2092953c390e83313b7e0ad83625837f45596a89cb20b74540701e80fd",
+              "e2e_p99_ms": 206.09883591532707,
+              "output_tokens_s": 6676.408403225097,
+              "repeat": 2,
+              "tpot_p99_ms": 3.6018372380307744,
+              "ttft_p99_ms": 55.25337718427181
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r04/workloads/w1_c1/summary.json",
+              "artifact_sha256": "5416109b4c08883b685c74b26299ccf8a6c0d81038a8c0a2475d0c27d140586d",
+              "e2e_p99_ms": 203.8663369603455,
+              "output_tokens_s": 6749.520399082115,
+              "repeat": 4,
+              "tpot_p99_ms": 3.6033450271047296,
+              "ttft_p99_ms": 53.03973983973265
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r05/workloads/w1_c1/summary.json",
+              "artifact_sha256": "bef1e6d99f0939b5b2b35d1c31d2c49adfa0dd2d685d93c1b7bf5e0386a49861",
+              "e2e_p99_ms": 203.54867493733764,
+              "output_tokens_s": 6760.053831957398,
+              "repeat": 5,
+              "tpot_p99_ms": 3.598849599560102,
+              "ttft_p99_ms": 53.01912594586611
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r03/workloads/w1_c1/summary.json",
+              "artifact_sha256": "5479c4cdba347ce754c37d312d073ec89873c84c31e2f7cde45a6543824c5f0f",
+              "e2e_p99_ms": 203.5287767648697,
+              "output_tokens_s": 6760.714734652235,
+              "repeat": 3,
+              "tpot_p99_ms": 3.597342542239598,
+              "ttft_p99_ms": 52.81082773581147
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r01/workloads/w1_c1/summary.json",
+              "artifact_sha256": "7edc95c1a3e002ce3bd96fac1be871f368bc54a5941a3e7626aa7a9117184792",
+              "e2e_p99_ms": 204.88607278093696,
+              "output_tokens_s": 6715.927448476264,
+              "repeat": 1,
+              "tpot_p99_ms": 3.600560827180743,
+              "ttft_p99_ms": 54.28857682272792
+            }
+          ]
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 479.424687102437,
+              "bootstrap_95ci_low": 431.9559056311846,
+              "bootstrap_samples": 10000,
+              "median": 452.66098622232676,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 3229.790161951203,
+              "bootstrap_95ci_low": 3103.72002116375,
+              "bootstrap_samples": 10000,
+              "median": 3210.97589341505,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 4.363338943221606,
+              "bootstrap_95ci_low": 4.351665277798206,
+              "bootstrap_samples": 10000,
+              "median": 4.360520819318481,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 59.298687148839235,
+              "bootstrap_95ci_low": 54.22568786889315,
+              "bootstrap_samples": 10000,
+              "median": 56.2930628657341,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r04/workloads/w1_c1/summary.json",
+              "artifact_sha256": "b70ebeff87ed90a48b321725b0668ff4fe9161aceb7375c55b991b9efac8345d",
+              "e2e_p99_ms": 478.25490310788155,
+              "output_tokens_s": 3213.7673655031904,
+              "repeat": 4,
+              "tpot_p99_ms": 4.361120279496297,
+              "ttft_p99_ms": 56.2930628657341
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r05/workloads/w1_c1/summary.json",
+              "artifact_sha256": "85294f13192fbd4cea7587d75c38a83713de06da7f530c45b9117a1f28f834c4",
+              "e2e_p99_ms": 452.66098622232676,
+              "output_tokens_s": 3229.790161951203,
+              "repeat": 5,
+              "tpot_p99_ms": 4.363338943221606,
+              "ttft_p99_ms": 59.298687148839235
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w1_c1/summary.json",
+              "artifact_sha256": "2453cd03c8fc4e212335e754e3cb53ee0213ba087a40ebc120c5e3b9634b0a56",
+              "e2e_p99_ms": 479.424687102437,
+              "output_tokens_s": 3103.72002116375,
+              "repeat": 2,
+              "tpot_p99_ms": 4.360520819318481,
+              "ttft_p99_ms": 55.22466590628028
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w1_c1/summary.json",
+              "artifact_sha256": "9aa7620104bab8f3ae7e6d66d6693a4706e4ceaa9c70a143dc1fb2e3decd0486",
+              "e2e_p99_ms": 431.9559056311846,
+              "output_tokens_s": 3210.97589341505,
+              "repeat": 3,
+              "tpot_p99_ms": 4.351665277798206,
+              "ttft_p99_ms": 58.799452148377895
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w1_c1/summary.json",
+              "artifact_sha256": "395b8eadd0295d180bf0b3b5361ff1676d47ee0c229f017fd3529c414061ffd0",
+              "e2e_p99_ms": 452.58677564561367,
+              "output_tokens_s": 3157.4055560097527,
+              "repeat": 1,
+              "tpot_p99_ms": 4.352170029389007,
+              "ttft_p99_ms": 54.22568786889315
+            }
+          ]
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 551.204388961196,
+              "bootstrap_95ci_low": 269.84052220359445,
+              "bootstrap_samples": 10000,
+              "median": 549.3177683092654,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 4806.542729047251,
+              "bootstrap_95ci_low": 2534.450066032306,
+              "bootstrap_samples": 10000,
+              "median": 2683.734896681175,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 5.1826997319372685,
+              "bootstrap_95ci_low": 5.131280515342951,
+              "bootstrap_samples": 10000,
+              "median": 5.140402414000187,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 74.10926837474108,
+              "bootstrap_95ci_low": 60.45560399070382,
+              "bootstrap_samples": 10000,
+              "median": 61.10017513856292,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r05/workloads/w1_c1/summary.json",
+              "artifact_sha256": "67d77043d7bb60c573215faa09f83afedeae874f8b2115fed6d103932cff04f6",
+              "e2e_p99_ms": 551.204388961196,
+              "output_tokens_s": 2534.450066032306,
+              "repeat": 5,
+              "tpot_p99_ms": 5.1826997319372685,
+              "ttft_p99_ms": 60.45560399070382
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r04/workloads/w1_c1/summary.json",
+              "artifact_sha256": "4689358fad52881c6b91467203383a0bd01d1db1c229f5a7b56ecffc7df126a3",
+              "e2e_p99_ms": 549.3177683092654,
+              "output_tokens_s": 2652.3809788357516,
+              "repeat": 4,
+              "tpot_p99_ms": 5.140402414000187,
+              "ttft_p99_ms": 62.325099017471075
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w1_c1/summary.json",
+              "artifact_sha256": "eac99ec50121b6fb0431bc91837f597ecc4637e729057161fcc007da34aaad06",
+              "e2e_p99_ms": 529.2317508719862,
+              "output_tokens_s": 2847.5237880512623,
+              "repeat": 3,
+              "tpot_p99_ms": 5.135941820649,
+              "ttft_p99_ms": 61.10017513856292
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w1_c1/summary.json",
+              "artifact_sha256": "7d540d06bc9c21ecd47f3267f23db4c9ff7e389fd64ebdd9deec5f9f4e299b97",
+              "e2e_p99_ms": 551.0976519435644,
+              "output_tokens_s": 2683.734896681175,
+              "repeat": 2,
+              "tpot_p99_ms": 5.131280515342951,
+              "ttft_p99_ms": 74.10926837474108
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w1_c1/summary.json",
+              "artifact_sha256": "fcbf3b1e7bad27a560d314d79bec5769493249d042697e134b38142776d0c34a",
+              "e2e_p99_ms": 269.84052220359445,
+              "output_tokens_s": 4806.542729047251,
+              "repeat": 1,
+              "tpot_p99_ms": 5.153254880450475,
+              "ttft_p99_ms": 60.682582668960094
+            }
+          ]
+        },
+        "w4a16_ep4_static_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 337.3560057953,
+              "bootstrap_95ci_low": 334.5531621016562,
+              "bootstrap_samples": 10000,
+              "median": 335.4171277023852,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 4591.1985717034595,
+              "bootstrap_95ci_low": 4553.053669161622,
+              "bootstrap_samples": 10000,
+              "median": 4579.372587564727,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 6.023354006019678,
+              "bootstrap_95ci_low": 6.005653764735511,
+              "bootstrap_samples": 10000,
+              "median": 6.015681205911839,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 56.328433100134134,
+              "bootstrap_95ci_low": 53.924891632050276,
+              "bootstrap_samples": 10000,
+              "median": 54.0602789260447,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r02/workloads/w1_c1/summary.json",
+              "artifact_sha256": "08da376e0d391fc20f3a14a271e10b2850a4b36daf51c5be6e73fdcfd2ad541e",
+              "e2e_p99_ms": 337.3560057953,
+              "output_tokens_s": 4553.053669161622,
+              "repeat": 2,
+              "tpot_p99_ms": 6.015706153467614,
+              "ttft_p99_ms": 54.75401785224676
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r03/workloads/w1_c1/summary.json",
+              "artifact_sha256": "00b56c40d84cf1ed778a4a2c974732c1640a4136ef5a6d45c14d78083f456e7d",
+              "e2e_p99_ms": 334.5531621016562,
+              "output_tokens_s": 4591.1985717034595,
+              "repeat": 3,
+              "tpot_p99_ms": 6.0123287220584585,
+              "ttft_p99_ms": 54.013230837881565
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r04/workloads/w1_c1/summary.json",
+              "artifact_sha256": "bf77cfa66181206e7ca228e0372d6474738c4bd3a590665edc8eda0f6b944e11",
+              "e2e_p99_ms": 336.9791000150144,
+              "output_tokens_s": 4558.146187498162,
+              "repeat": 4,
+              "tpot_p99_ms": 6.023354006019678,
+              "ttft_p99_ms": 56.328433100134134
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r05/workloads/w1_c1/summary.json",
+              "artifact_sha256": "cc44f2077489898dd921ffc00c88b68cac745b5a5a965fa0972cfc53b96ccb80",
+              "e2e_p99_ms": 335.4150056838989,
+              "output_tokens_s": 4579.401559176376,
+              "repeat": 5,
+              "tpot_p99_ms": 6.005653764735511,
+              "ttft_p99_ms": 54.0602789260447
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r01/workloads/w1_c1/summary.json",
+              "artifact_sha256": "a22ae8d5dc49d32900a11f9c94138c8fb31f3d1454f8c305042e9effe1ea4bd1",
+              "e2e_p99_ms": 335.4171277023852,
+              "output_tokens_s": 4579.372587564727,
+              "repeat": 1,
+              "tpot_p99_ms": 6.015681205911839,
+              "ttft_p99_ms": 53.924891632050276
+            }
+          ]
+        }
+      },
+      "oracle_by_median_e2e_p99": "fp8_tp2_pix01_triton",
+      "output_tokens": 128,
+      "requests": 32,
+      "workload_id": "w1_c1"
+    },
+    {
+      "concurrency": 8,
+      "id": "w1_c8",
+      "input_tokens": 256,
+      "measurements": {
+        "fp8_tp2_pix01_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1149.3550748564303,
+              "bootstrap_95ci_low": 779.4452677480876,
+              "bootstrap_samples": 10000,
+              "median": 861.7530539631844,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 2381.192605657612,
+              "bootstrap_95ci_low": 1407.7459919878195,
+              "bootstrap_samples": 10000,
+              "median": 1803.846989875383,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 12.528289719263004,
+              "bootstrap_95ci_low": 9.886759913951895,
+              "bootstrap_samples": 10000,
+              "median": 10.654083308985545,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 525.0490461476147,
+              "bootstrap_95ci_low": 417.76583483442664,
+              "bootstrap_samples": 10000,
+              "median": 445.0502502731979,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r02/workloads/w1_c8/summary.json",
+              "artifact_sha256": "9b22937729594d4cb8107f369e2e1d02203d787a40198f88fd830bf54b62ecd2",
+              "e2e_p99_ms": 779.4452677480876,
+              "output_tokens_s": 1803.846989875383,
+              "repeat": 2,
+              "tpot_p99_ms": 10.654083308985545,
+              "ttft_p99_ms": 418.8561807386577
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r04/workloads/w1_c8/summary.json",
+              "artifact_sha256": "8ea83953447daf880842e42cc034e4ed28902600cd016c0c00cd825cc1956cfc",
+              "e2e_p99_ms": 861.7530539631844,
+              "output_tokens_s": 2381.192605657612,
+              "repeat": 4,
+              "tpot_p99_ms": 12.528289719263004,
+              "ttft_p99_ms": 445.0502502731979
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r05/workloads/w1_c8/summary.json",
+              "artifact_sha256": "4d49200032c8fdeb0a7226d97ad4532a54f917f8bc990f4d6de196d4d6008aa1",
+              "e2e_p99_ms": 854.5348290354013,
+              "output_tokens_s": 1743.6387018676717,
+              "repeat": 5,
+              "tpot_p99_ms": 10.983455798123032,
+              "ttft_p99_ms": 465.8225099556148
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r03/workloads/w1_c8/summary.json",
+              "artifact_sha256": "eedb0d7d39bcdd0c2f48d2c3a97d3c953d14e445957912dbcbebcf90cad691f6",
+              "e2e_p99_ms": 1149.3550748564303,
+              "output_tokens_s": 1407.7459919878195,
+              "repeat": 3,
+              "tpot_p99_ms": 9.886759913951895,
+              "ttft_p99_ms": 525.0490461476147
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r01/workloads/w1_c8/summary.json",
+              "artifact_sha256": "3c3c3a88ccc5962fd9ecf80fb933860f49edd74ec3e097457a5553d4ef1ec86d",
+              "e2e_p99_ms": 934.5247452147305,
+              "output_tokens_s": 1889.7305919857877,
+              "repeat": 1,
+              "tpot_p99_ms": 10.266003230671314,
+              "ttft_p99_ms": 417.76583483442664
+            }
+          ]
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1705.169565975666,
+              "bootstrap_95ci_low": 1260.6759979389608,
+              "bootstrap_samples": 10000,
+              "median": 1596.2972859852016,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1205.7023394472487,
+              "bootstrap_95ci_low": 833.348206743844,
+              "bootstrap_samples": 10000,
+              "median": 1002.2058378443222,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 16.95140366010913,
+              "bootstrap_95ci_low": 9.894023031586467,
+              "bootstrap_samples": 10000,
+              "median": 15.52367669975628,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 470.10342590510845,
+              "bootstrap_95ci_low": 416.42285883426666,
+              "bootstrap_samples": 10000,
+              "median": 445.8031100220978,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r04/workloads/w1_c8/summary.json",
+              "artifact_sha256": "4a1fcd69d79478537fc62e367d40d06be87bd7e99ced381b7909cb67c188d342",
+              "e2e_p99_ms": 1596.2972859852016,
+              "output_tokens_s": 1020.4866062868828,
+              "repeat": 4,
+              "tpot_p99_ms": 16.95140366010913,
+              "ttft_p99_ms": 445.8031100220978
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r05/workloads/w1_c8/summary.json",
+              "artifact_sha256": "082432f891665272f571f482d5b1097dfee8c2844d79ff4bff0f93fa6d7893ea",
+              "e2e_p99_ms": 1260.6759979389608,
+              "output_tokens_s": 1205.7023394472487,
+              "repeat": 5,
+              "tpot_p99_ms": 9.894023031586467,
+              "ttft_p99_ms": 470.10342590510845
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w1_c8/summary.json",
+              "artifact_sha256": "2a82267acbb200ec5454839bea2adfceeebc2e2f7e980556d430953dfdefd707",
+              "e2e_p99_ms": 1705.169565975666,
+              "output_tokens_s": 833.348206743844,
+              "repeat": 2,
+              "tpot_p99_ms": 16.89581368572828,
+              "ttft_p99_ms": 446.7472922988236
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w1_c8/summary.json",
+              "artifact_sha256": "79f14e7435c84b36d7bb3bfbcaa665ed6c697218bdc4a92864b59ce061bc56b1",
+              "e2e_p99_ms": 1655.7444017380476,
+              "output_tokens_s": 918.0160889594097,
+              "repeat": 3,
+              "tpot_p99_ms": 15.328669896683632,
+              "ttft_p99_ms": 416.42285883426666
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w1_c8/summary.json",
+              "artifact_sha256": "184dbffd6b208b93ed07002fc1b6cada9d82618cb3becd3061cf918dad1faffe",
+              "e2e_p99_ms": 1441.8195798061788,
+              "output_tokens_s": 1002.2058378443222,
+              "repeat": 1,
+              "tpot_p99_ms": 15.52367669975628,
+              "ttft_p99_ms": 443.60486418008804
+            }
+          ]
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1704.710628837347,
+              "bootstrap_95ci_low": 1343.8980630598962,
+              "bootstrap_samples": 10000,
+              "median": 1654.911732301116,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1017.1902449859206,
+              "bootstrap_95ci_low": 783.2433354324445,
+              "bootstrap_samples": 10000,
+              "median": 906.8987861326403,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 19.215611490206076,
+              "bootstrap_95ci_low": 14.646616310062932,
+              "bootstrap_samples": 10000,
+              "median": 16.55970922169777,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 490.9198679961264,
+              "bootstrap_95ci_low": 382.782646920532,
+              "bootstrap_samples": 10000,
+              "median": 405.85298277437687,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r05/workloads/w1_c8/summary.json",
+              "artifact_sha256": "a0f7dac828fa64d1a23b30237db795f00310d2ea40173743ecd341fad6624a91",
+              "e2e_p99_ms": 1704.4511451385915,
+              "output_tokens_s": 783.2433354324445,
+              "repeat": 5,
+              "tpot_p99_ms": 19.215611490206076,
+              "ttft_p99_ms": 417.7718982100487
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r04/workloads/w1_c8/summary.json",
+              "artifact_sha256": "dff89db0c1f877b215dd45373cc77d0497f5529e579a1f8fc011283af4ba920d",
+              "e2e_p99_ms": 1704.710628837347,
+              "output_tokens_s": 906.8987861326403,
+              "repeat": 4,
+              "tpot_p99_ms": 16.72108966904955,
+              "ttft_p99_ms": 382.782646920532
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w1_c8/summary.json",
+              "artifact_sha256": "6995198a033c909b97ba9bcac116ba4f0b9a4e870efc5d941fe05583282965b9",
+              "e2e_p99_ms": 1343.8980630598962,
+              "output_tokens_s": 1017.1902449859206,
+              "repeat": 3,
+              "tpot_p99_ms": 14.646616310062932,
+              "ttft_p99_ms": 405.85298277437687
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w1_c8/summary.json",
+              "artifact_sha256": "99315f1ec6def7ead388b26d7eeb6dba969237b38ab9cf3cd26589f10b4a392a",
+              "e2e_p99_ms": 1654.911732301116,
+              "output_tokens_s": 844.1537833909149,
+              "repeat": 2,
+              "tpot_p99_ms": 16.526619506227533,
+              "ttft_p99_ms": 404.50902795419097
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w1_c8/summary.json",
+              "artifact_sha256": "bf5f718ad2312cf33add8f56943889cc6e3cc66c6d703005c561ff1455010d18",
+              "e2e_p99_ms": 1626.6675773076713,
+              "output_tokens_s": 978.0732229465682,
+              "repeat": 1,
+              "tpot_p99_ms": 16.55970922169777,
+              "ttft_p99_ms": 490.9198679961264
+            }
+          ]
+        },
+        "w4a16_ep4_static_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1112.5152120366693,
+              "bootstrap_95ci_low": 1061.9787783361971,
+              "bootstrap_samples": 10000,
+              "median": 1100.2165949903429,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1227.8964764653563,
+              "bootstrap_95ci_low": 1172.1188042119277,
+              "bootstrap_samples": 10000,
+              "median": 1185.221170029203,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 22.104959555068298,
+              "bootstrap_95ci_low": 21.70366526728398,
+              "bootstrap_samples": 10000,
+              "median": 21.835476870795613,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 455.8134777471423,
+              "bootstrap_95ci_low": 406.8976268172264,
+              "bootstrap_samples": 10000,
+              "median": 439.5783320069313,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r02/workloads/w1_c8/summary.json",
+              "artifact_sha256": "90d61855a82a3dcde737c4e127c56acf2ae4a758d2b542414d703bdfb7635706",
+              "e2e_p99_ms": 1112.5152120366693,
+              "output_tokens_s": 1172.1188042119277,
+              "repeat": 2,
+              "tpot_p99_ms": 21.835476870795613,
+              "ttft_p99_ms": 455.8134777471423
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r03/workloads/w1_c8/summary.json",
+              "artifact_sha256": "f24c4ecff267cdcb1b35a65c92d32a3b4fa7ddcd8b1f547bccbe227b436b177d",
+              "e2e_p99_ms": 1106.9027320481837,
+              "output_tokens_s": 1178.0619581515648,
+              "repeat": 3,
+              "tpot_p99_ms": 21.828926045839722,
+              "ttft_p99_ms": 435.4156353510916
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r04/workloads/w1_c8/summary.json",
+              "artifact_sha256": "03ce4d5247af4464b22427a209b787c4f6ab088bbdbb2e6cbee05328c284945b",
+              "e2e_p99_ms": 1061.9787783361971,
+              "output_tokens_s": 1227.8964764653563,
+              "repeat": 4,
+              "tpot_p99_ms": 21.89886514832707,
+              "ttft_p99_ms": 406.8976268172264
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r05/workloads/w1_c8/summary.json",
+              "artifact_sha256": "6b133cbcef4ddce638f14f4aad3b7f50667b82011382839272db3b7f7d2f6e9f",
+              "e2e_p99_ms": 1100.2165949903429,
+              "output_tokens_s": 1185.221170029203,
+              "repeat": 5,
+              "tpot_p99_ms": 22.104959555068298,
+              "ttft_p99_ms": 439.5783320069313
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r01/workloads/w1_c8/summary.json",
+              "artifact_sha256": "cdc2a0c6b7980d2bc3e7c346502f868457ad25be1791eabcef86c206a2f07645",
+              "e2e_p99_ms": 1099.5304877869785,
+              "output_tokens_s": 1185.9607482322356,
+              "repeat": 1,
+              "tpot_p99_ms": 21.70366526728398,
+              "ttft_p99_ms": 448.52207275107503
+            }
+          ]
+        }
+      },
+      "oracle_by_median_e2e_p99": "fp8_tp2_pix01_triton",
+      "output_tokens": 128,
+      "requests": 32,
+      "workload_id": "w1_c8"
+    },
+    {
+      "concurrency": 32,
+      "id": "w1_c32",
+      "input_tokens": 256,
+      "measurements": {
+        "fp8_tp2_pix01_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 2445.968588348478,
+              "bootstrap_95ci_low": 2378.8113822229207,
+              "bootstrap_samples": 10000,
+              "median": 2427.495754789561,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1543.305550936215,
+              "bootstrap_95ci_low": 1255.8885074458774,
+              "bootstrap_samples": 10000,
+              "median": 1315.7864921040054,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 17.059086449444294,
+              "bootstrap_95ci_low": 16.657005043493378,
+              "bootstrap_samples": 10000,
+              "median": 16.956198789800208,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 1267.4242369830608,
+              "bootstrap_95ci_low": 1186.9239979423583,
+              "bootstrap_samples": 10000,
+              "median": 1262.9652242176235,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r02/workloads/w1_c32/summary.json",
+              "artifact_sha256": "2930f800ce59662b3b7f9af34f47e81c83a4a2fc08c24087e3276052cceb2bfd",
+              "e2e_p99_ms": 2384.1358036734164,
+              "output_tokens_s": 1315.7864921040054,
+              "repeat": 2,
+              "tpot_p99_ms": 16.96627977413728,
+              "ttft_p99_ms": 1186.9239979423583
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r04/workloads/w1_c32/summary.json",
+              "artifact_sha256": "4422ed209d995c4e8a02c4880913ba5e5d1b3563521ecead74bf2d372a67e6ea",
+              "e2e_p99_ms": 2445.968588348478,
+              "output_tokens_s": 1374.2016821073937,
+              "repeat": 4,
+              "tpot_p99_ms": 16.956198789800208,
+              "ttft_p99_ms": 1263.643633108586
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r05/workloads/w1_c32/summary.json",
+              "artifact_sha256": "0908f168b04d2a33e23a390d3b6ee39a72d68d8de36cf71ff2fb9d08c1a2d1ed",
+              "e2e_p99_ms": 2427.495754789561,
+              "output_tokens_s": 1543.305550936215,
+              "repeat": 5,
+              "tpot_p99_ms": 17.059086449444294,
+              "ttft_p99_ms": 1267.4242369830608
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r03/workloads/w1_c32/summary.json",
+              "artifact_sha256": "fa33c9efa7a54a883cdebe39483fb251115a5e180ff1984a589433abcae31289",
+              "e2e_p99_ms": 2430.7341556996107,
+              "output_tokens_s": 1255.8885074458774,
+              "repeat": 3,
+              "tpot_p99_ms": 16.730531631037593,
+              "ttft_p99_ms": 1262.9652242176235
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r01/workloads/w1_c32/summary.json",
+              "artifact_sha256": "5c829d8e9f8408ad6f2858c56fae37e4a794fcb73878df6775398aee59a3ef71",
+              "e2e_p99_ms": 2378.8113822229207,
+              "output_tokens_s": 1279.7609660739986,
+              "repeat": 1,
+              "tpot_p99_ms": 16.657005043493378,
+              "ttft_p99_ms": 1214.5758057013154
+            }
+          ]
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 2935.6757891364396,
+              "bootstrap_95ci_low": 2581.418767105788,
+              "bootstrap_samples": 10000,
+              "median": 2779.339716769755,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1158.6044487804133,
+              "bootstrap_95ci_low": 994.0005672385638,
+              "bootstrap_samples": 10000,
+              "median": 1035.802741765606,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 25.762237631147954,
+              "bootstrap_95ci_low": 20.05963401593776,
+              "bootstrap_samples": 10000,
+              "median": 22.056894741304543,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 1296.2060123682022,
+              "bootstrap_95ci_low": 1197.3622217774391,
+              "bootstrap_samples": 10000,
+              "median": 1239.993143826723,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r04/workloads/w1_c32/summary.json",
+              "artifact_sha256": "827272671067c8a41793f2696c818d9fd413f3604f16f2439feae37f9b7ea8c7",
+              "e2e_p99_ms": 2779.339716769755,
+              "output_tokens_s": 1030.0868519746655,
+              "repeat": 4,
+              "tpot_p99_ms": 20.692289675562044,
+              "ttft_p99_ms": 1296.2060123682022
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r05/workloads/w1_c32/summary.json",
+              "artifact_sha256": "eb821af0edd55ce423b748a63f7bf5e74be8e34fadaaf43080a2d68f7b377f0a",
+              "e2e_p99_ms": 2798.4352242201567,
+              "output_tokens_s": 1158.6044487804133,
+              "repeat": 5,
+              "tpot_p99_ms": 20.05963401593776,
+              "ttft_p99_ms": 1212.7674310468137
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w1_c32/summary.json",
+              "artifact_sha256": "c0cbd115657d58ce3b0105b9c7ebe02c06e8bd5ce2481be470b74594cbf67f5f",
+              "e2e_p99_ms": 2581.418767105788,
+              "output_tokens_s": 1153.2291835714439,
+              "repeat": 2,
+              "tpot_p99_ms": 22.056894741304543,
+              "ttft_p99_ms": 1247.4310100078583
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w1_c32/summary.json",
+              "artifact_sha256": "54dc4088b7ddf01bdbc9c6b81a280ed58b2ceaf2c605166c64adeb6ae405af54",
+              "e2e_p99_ms": 2935.6757891364396,
+              "output_tokens_s": 994.0005672385638,
+              "repeat": 3,
+              "tpot_p99_ms": 25.762237631147954,
+              "ttft_p99_ms": 1197.3622217774391
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w1_c32/summary.json",
+              "artifact_sha256": "4b268c9a723d90f4aeb26c2f27530d73aaa5e2318dba25cbc02e5e5175d903fd",
+              "e2e_p99_ms": 2662.1099803596735,
+              "output_tokens_s": 1035.802741765606,
+              "repeat": 1,
+              "tpot_p99_ms": 22.647033385836924,
+              "ttft_p99_ms": 1239.993143826723
+            }
+          ]
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 2740.179539192468,
+              "bootstrap_95ci_low": 1595.2383070252836,
+              "bootstrap_samples": 10000,
+              "median": 2479.955527000129,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1488.3934171349297,
+              "bootstrap_95ci_low": 1010.2765639258331,
+              "bootstrap_samples": 10000,
+              "median": 1139.6627638117902,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 25.494462511955927,
+              "bootstrap_95ci_low": 17.391034674535437,
+              "bootstrap_samples": 10000,
+              "median": 22.484080877336787,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 1229.095907881856,
+              "bootstrap_95ci_low": 1150.1214122399688,
+              "bootstrap_samples": 10000,
+              "median": 1220.4038952477276,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r05/workloads/w1_c32/summary.json",
+              "artifact_sha256": "e8cbade5e6c314a094954f4f16d2aa4cc8895c8e2af20474554a13514fdbe933",
+              "e2e_p99_ms": 2692.1100821346045,
+              "output_tokens_s": 1076.2736116895273,
+              "repeat": 5,
+              "tpot_p99_ms": 22.484080877336787,
+              "ttft_p99_ms": 1229.095907881856
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r04/workloads/w1_c32/summary.json",
+              "artifact_sha256": "a3ce0a03b76dce33f9d279f2a27f39e9fb5d09b2d2700f6ca4cd35e1084033e4",
+              "e2e_p99_ms": 1595.2383070252836,
+              "output_tokens_s": 1488.3934171349297,
+              "repeat": 4,
+              "tpot_p99_ms": 19.253632347301945,
+              "ttft_p99_ms": 1150.1214122399688
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w1_c32/summary.json",
+              "artifact_sha256": "b2d59d9109aaa9415533c47be39b8dc36412dcc4d08410a7e68ae19bce0c5e63",
+              "e2e_p99_ms": 2479.955527000129,
+              "output_tokens_s": 1139.6627638117902,
+              "repeat": 3,
+              "tpot_p99_ms": 17.391034674535437,
+              "ttft_p99_ms": 1220.4038952477276
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w1_c32/summary.json",
+              "artifact_sha256": "92475bd30220a5651aef5bb58a3a780a0e5f699c8252f5ec59999abb4f9b1a20",
+              "e2e_p99_ms": 2740.179539192468,
+              "output_tokens_s": 1010.2765639258331,
+              "repeat": 2,
+              "tpot_p99_ms": 25.494462511955927,
+              "ttft_p99_ms": 1223.205525893718
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w1_c32/summary.json",
+              "artifact_sha256": "765149d4f64fb089fd97a8e6968edb6f6514973612d7beeeb77412ae71d2911a",
+              "e2e_p99_ms": 2155.7920617051423,
+              "output_tokens_s": 1190.4637130736826,
+              "repeat": 1,
+              "tpot_p99_ms": 22.564229555428028,
+              "ttft_p99_ms": 1208.634425420314
+            }
+          ]
+        },
+        "w4a16_ep4_static_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 3335.6018429622054,
+              "bootstrap_95ci_low": 2347.508276812732,
+              "bootstrap_samples": 10000,
+              "median": 2449.6435644105077,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1087.8003410661393,
+              "bootstrap_95ci_low": 836.2765411064435,
+              "bootstrap_samples": 10000,
+              "median": 901.6779524253253,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 34.89896175192876,
+              "bootstrap_95ci_low": 31.613486271817237,
+              "bootstrap_samples": 10000,
+              "median": 31.915470699055327,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 1251.5834863297641,
+              "bootstrap_95ci_low": 1205.9672521427274,
+              "bootstrap_samples": 10000,
+              "median": 1232.2816429659724,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r02/workloads/w1_c32/summary.json",
+              "artifact_sha256": "f4cb47fda5501c90cde408b3ec63ec44cf6afd67aad44a428090e9d603bc0fa7",
+              "e2e_p99_ms": 3328.420185018331,
+              "output_tokens_s": 836.458462250137,
+              "repeat": 2,
+              "tpot_p99_ms": 34.415926008174814,
+              "ttft_p99_ms": 1251.5834863297641
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r03/workloads/w1_c32/summary.json",
+              "artifact_sha256": "e3d658d9f3f44b8d5408f74e48f9ad472eade8da26915a75bea6e7d70fc43c14",
+              "e2e_p99_ms": 2449.6435644105077,
+              "output_tokens_s": 1086.424979160564,
+              "repeat": 3,
+              "tpot_p99_ms": 31.9056311984443,
+              "ttft_p99_ms": 1239.2039629630744
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r04/workloads/w1_c32/summary.json",
+              "artifact_sha256": "38686a1ef386fac1c36afbd73a772f6f0a489cdc28f176f260e844ad0456302e",
+              "e2e_p99_ms": 2443.9487089402974,
+              "output_tokens_s": 1087.8003410661393,
+              "repeat": 4,
+              "tpot_p99_ms": 31.915470699055327,
+              "ttft_p99_ms": 1232.2816429659724
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r05/workloads/w1_c32/summary.json",
+              "artifact_sha256": "df55ae0dab0944d220d37896a0d6e756b624f57759d2230a6fd1ae5f0a28bb05",
+              "e2e_p99_ms": 3335.6018429622054,
+              "output_tokens_s": 836.2765411064435,
+              "repeat": 5,
+              "tpot_p99_ms": 34.89896175192876,
+              "ttft_p99_ms": 1228.8950416259468
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r01/workloads/w1_c32/summary.json",
+              "artifact_sha256": "2cfea162d9782fb150189421e06dcca9a2763bde027499968fd09822f60cc2d4",
+              "e2e_p99_ms": 2347.508276812732,
+              "output_tokens_s": 901.6779524253253,
+              "repeat": 1,
+              "tpot_p99_ms": 31.613486271817237,
+              "ttft_p99_ms": 1205.9672521427274
+            }
+          ]
+        }
+      },
+      "oracle_by_median_e2e_p99": "fp8_tp2_pix01_triton",
+      "output_tokens": 128,
+      "requests": 64,
+      "workload_id": "w1_c32"
+    },
+    {
+      "concurrency": 128,
+      "id": "w1_c128",
+      "input_tokens": 256,
+      "measurements": {
+        "fp8_tp2_pix01_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 5249.780348967761,
+              "bootstrap_95ci_low": 4933.688308112323,
+              "bootstrap_samples": 10000,
+              "median": 5093.567908741534,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1362.5999092605196,
+              "bootstrap_95ci_low": 1161.2806218202313,
+              "bootstrap_samples": 10000,
+              "median": 1245.2056254248766,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 54.823444023527,
+              "bootstrap_95ci_low": 46.753493464879085,
+              "bootstrap_samples": 10000,
+              "median": 53.26306094994416,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 4440.113592892885,
+              "bootstrap_95ci_low": 4120.587693993002,
+              "bootstrap_samples": 10000,
+              "median": 4282.946404069662,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r02/workloads/w1_c128/summary.json",
+              "artifact_sha256": "f392b4185a235246f57a8c692b6e254c336169a9fd84e8c59cfca431922e460f",
+              "e2e_p99_ms": 5231.336370110512,
+              "output_tokens_s": 1161.2806218202313,
+              "repeat": 2,
+              "tpot_p99_ms": 48.55052289757423,
+              "ttft_p99_ms": 4432.410077191889
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r04/workloads/w1_c128/summary.json",
+              "artifact_sha256": "aab73af1f1445e77a9bb6848f6a8542f49d6cb5abbb3231d214607ff4244babc",
+              "e2e_p99_ms": 5093.567908741534,
+              "output_tokens_s": 1245.2056254248766,
+              "repeat": 4,
+              "tpot_p99_ms": 54.043104809180306,
+              "ttft_p99_ms": 4282.946404069662
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r05/workloads/w1_c128/summary.json",
+              "artifact_sha256": "f1d3c6fb6e1bae608d69d764eab0d27f3f59c76e2344ee9de03552a732d5ac7b",
+              "e2e_p99_ms": 4933.688308112323,
+              "output_tokens_s": 1362.5999092605196,
+              "repeat": 5,
+              "tpot_p99_ms": 53.26306094994416,
+              "ttft_p99_ms": 4120.587693993002
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r03/workloads/w1_c128/summary.json",
+              "artifact_sha256": "0a6db690d6fb72184a34b5350b9359dab18a4e3eeea29a920af04efc093d11ef",
+              "e2e_p99_ms": 5249.780348967761,
+              "output_tokens_s": 1168.885178804777,
+              "repeat": 3,
+              "tpot_p99_ms": 46.753493464879085,
+              "ttft_p99_ms": 4440.113592892885
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r01/workloads/w1_c128/summary.json",
+              "artifact_sha256": "a0601be5391e299e09b3e2dcd9c3d0a894cb1325985520d8faf6d3439d506dcf",
+              "e2e_p99_ms": 5003.812768962234,
+              "output_tokens_s": 1289.2871291869185,
+              "repeat": 1,
+              "tpot_p99_ms": 54.823444023527,
+              "ttft_p99_ms": 4202.851496171206
+            }
+          ]
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 5983.560648281127,
+              "bootstrap_95ci_low": 5733.2256101071835,
+              "bootstrap_samples": 10000,
+              "median": 5816.074446775019,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1034.8382525897237,
+              "bootstrap_95ci_low": 958.6217933226089,
+              "bootstrap_samples": 10000,
+              "median": 995.4729563114716,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 62.340644641946525,
+              "bootstrap_95ci_low": 51.008451684582525,
+              "bootstrap_samples": 10000,
+              "median": 55.02514275381478,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 5219.136005267501,
+              "bootstrap_95ci_low": 4886.758239939809,
+              "bootstrap_samples": 10000,
+              "median": 4949.209564365447,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r04/workloads/w1_c128/summary.json",
+              "artifact_sha256": "6f4c2f591eec7598b1cde65766e64f100a659fe66ba82d8312e2c9bdf56c505e",
+              "e2e_p99_ms": 5983.560648281127,
+              "output_tokens_s": 958.6217933226089,
+              "repeat": 4,
+              "tpot_p99_ms": 62.340644641946525,
+              "ttft_p99_ms": 5219.136005267501
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r05/workloads/w1_c128/summary.json",
+              "artifact_sha256": "4717e30b62876b4e03cce1ccde40db5062b2bae1ef3da470d2a25ec3429b14e0",
+              "e2e_p99_ms": 5816.074446775019,
+              "output_tokens_s": 1020.5218972729608,
+              "repeat": 5,
+              "tpot_p99_ms": 51.008451684582525,
+              "ttft_p99_ms": 4949.209564365447
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w1_c128/summary.json",
+              "artifact_sha256": "6e95e5e64dcc5f4ce9057b6931d3be064264b77a2e052f57e007f6deb82baa61",
+              "e2e_p99_ms": 5733.2256101071835,
+              "output_tokens_s": 995.4729563114716,
+              "repeat": 2,
+              "tpot_p99_ms": 58.388502497109585,
+              "ttft_p99_ms": 4906.362787820399
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w1_c128/summary.json",
+              "artifact_sha256": "c5261bddcd5cc8b88cad6c2bc633154a2173d946af0ad6de015ce4dbefbd6483",
+              "e2e_p99_ms": 5767.278539016843,
+              "output_tokens_s": 1034.8382525897237,
+              "repeat": 3,
+              "tpot_p99_ms": 55.02514275381478,
+              "ttft_p99_ms": 4886.758239939809
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w1_c128/summary.json",
+              "artifact_sha256": "ab94f1d9d4a07605775746950b0b33a4d2a29287cdc09379b651991ffc46a44f",
+              "e2e_p99_ms": 5917.457085102797,
+              "output_tokens_s": 990.6190314764192,
+              "repeat": 1,
+              "tpot_p99_ms": 54.007894075589206,
+              "ttft_p99_ms": 5137.532344087958
+            }
+          ]
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 6551.087683998048,
+              "bootstrap_95ci_low": 5990.607473999262,
+              "bootstrap_samples": 10000,
+              "median": 6209.835852030665,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 998.7455862748984,
+              "bootstrap_95ci_low": 874.9567157365932,
+              "bootstrap_samples": 10000,
+              "median": 950.9794684110144,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 64.958145794196,
+              "bootstrap_95ci_low": 49.919720942106764,
+              "bootstrap_samples": 10000,
+              "median": 54.33813813261879,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 5708.680861629546,
+              "bootstrap_95ci_low": 5138.551371637732,
+              "bootstrap_samples": 10000,
+              "median": 5367.960684932768,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r05/workloads/w1_c128/summary.json",
+              "artifact_sha256": "a4dcc636167ba718e8f6b9e896f5da5927a5af0915a55070f5acdb44443d4cc9",
+              "e2e_p99_ms": 5990.607473999262,
+              "output_tokens_s": 950.9794684110144,
+              "repeat": 5,
+              "tpot_p99_ms": 49.919720942106764,
+              "ttft_p99_ms": 5138.551371637732
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r04/workloads/w1_c128/summary.json",
+              "artifact_sha256": "81f2830e0e6c190644c4414cc66134b4bc742224df0ab2fa9a0811879bee7296",
+              "e2e_p99_ms": 6209.835852030665,
+              "output_tokens_s": 918.2240089200951,
+              "repeat": 4,
+              "tpot_p99_ms": 64.958145794196,
+              "ttft_p99_ms": 5373.459160793573
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w1_c128/summary.json",
+              "artifact_sha256": "6a286b224bfc279ebe370243adbb151449a27f542ef4ea9d3193a66d356197ac",
+              "e2e_p99_ms": 6551.087683998048,
+              "output_tokens_s": 874.9567157365932,
+              "repeat": 3,
+              "tpot_p99_ms": 54.77464868902014,
+              "ttft_p99_ms": 5708.680861629546
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w1_c128/summary.json",
+              "artifact_sha256": "9ebe563a6588c5645f1fe66cf2eb64df27360ab435c22ef79288f263962264a0",
+              "e2e_p99_ms": 6219.751482829452,
+              "output_tokens_s": 973.1743447960033,
+              "repeat": 2,
+              "tpot_p99_ms": 54.33813813261879,
+              "ttft_p99_ms": 5367.960684932768
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w1_c128/summary.json",
+              "artifact_sha256": "1bc8219db3e905b05c8728901cf1707e09deb133840aefe25b28d907c712c221",
+              "e2e_p99_ms": 6186.259474139661,
+              "output_tokens_s": 998.7455862748984,
+              "repeat": 1,
+              "tpot_p99_ms": 51.60870316733674,
+              "ttft_p99_ms": 5332.519926130772
+            }
+          ]
+        },
+        "w4a16_ep4_static_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 7326.458176132292,
+              "bootstrap_95ci_low": 6347.033733036369,
+              "bootstrap_samples": 10000,
+              "median": 6899.938834831119,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 874.0213146746598,
+              "bootstrap_95ci_low": 742.0619503702311,
+              "bootstrap_samples": 10000,
+              "median": 790.4686589834132,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 74.61247444411532,
+              "bootstrap_95ci_low": 56.33422333954109,
+              "bootstrap_samples": 10000,
+              "median": 63.070958092187844,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 5990.354396868497,
+              "bootstrap_95ci_low": 5049.706076737493,
+              "bootstrap_samples": 10000,
+              "median": 5636.055148206651,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r02/workloads/w1_c128/summary.json",
+              "artifact_sha256": "31569e09a71b78ed2b71f45920775fd67a1a55211280997d213b6c4da0e26cee",
+              "e2e_p99_ms": 6406.675291713327,
+              "output_tokens_s": 874.0213146746598,
+              "repeat": 2,
+              "tpot_p99_ms": 56.33422333954109,
+              "ttft_p99_ms": 5049.706076737493
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r03/workloads/w1_c128/summary.json",
+              "artifact_sha256": "8b4797fc979d7c6252bad6562f601c69af53d1ac08698952872ed858fb381925",
+              "e2e_p99_ms": 7164.451431948692,
+              "output_tokens_s": 771.7053498795851,
+              "repeat": 3,
+              "tpot_p99_ms": 64.83341008424759,
+              "ttft_p99_ms": 5771.662776358426
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r04/workloads/w1_c128/summary.json",
+              "artifact_sha256": "309d33e5df27d51fe3f2434c61f03736730dd9adbe50a27afce7f5f561904262",
+              "e2e_p99_ms": 6899.938834831119,
+              "output_tokens_s": 790.4686589834132,
+              "repeat": 4,
+              "tpot_p99_ms": 74.61247444411532,
+              "ttft_p99_ms": 5636.055148206651
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r05/workloads/w1_c128/summary.json",
+              "artifact_sha256": "a9901dc70efd109d3708a95847714d9533579cbc757b7522b61aefe199e66ca7",
+              "e2e_p99_ms": 7326.458176132292,
+              "output_tokens_s": 742.0619503702311,
+              "repeat": 5,
+              "tpot_p99_ms": 63.070958092187844,
+              "ttft_p99_ms": 5990.354396868497
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r01/workloads/w1_c128/summary.json",
+              "artifact_sha256": "6737b6c2ef64a095785dc9466f86337fb0da27562344370172f30e3fe794cb90",
+              "e2e_p99_ms": 6347.033733036369,
+              "output_tokens_s": 851.0761377987212,
+              "repeat": 1,
+              "tpot_p99_ms": 61.458370299078524,
+              "ttft_p99_ms": 5063.3250921964645
+            }
+          ]
+        }
+      },
+      "oracle_by_median_e2e_p99": "fp8_tp2_pix01_triton",
+      "output_tokens": 128,
+      "requests": 128,
+      "workload_id": "w1_c128"
+    },
+    {
+      "concurrency": 1,
+      "id": "w2_c1",
+      "input_tokens": 2048,
+      "measurements": {
+        "fp8_tp2_pix01_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 307.8701007179916,
+              "bootstrap_95ci_low": 302.4443769827485,
+              "bootstrap_samples": 10000,
+              "median": 306.79052509367466,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 3491.5511094465955,
+              "bootstrap_95ci_low": 3430.018041821131,
+              "bootstrap_samples": 10000,
+              "median": 3442.088049093314,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 3.62924046930857,
+              "bootstrap_95ci_low": 3.6086470063310117,
+              "bootstrap_samples": 10000,
+              "median": 3.6145302437944338,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 192.58455699309707,
+              "bootstrap_95ci_low": 186.9594929739833,
+              "bootstrap_samples": 10000,
+              "median": 191.44919328391552,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r02/workloads/w2_c1/summary.json",
+              "artifact_sha256": "34302b5de3b32a425f16610ae6499c6281a08e951f99cd8d54c1c6895bba2d6c",
+              "e2e_p99_ms": 307.20081413164735,
+              "output_tokens_s": 3437.4908900712203,
+              "repeat": 2,
+              "tpot_p99_ms": 3.613339809817262,
+              "ttft_p99_ms": 191.7828512378037
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r04/workloads/w2_c1/summary.json",
+              "artifact_sha256": "e357e98a1a28b6cda6d5e953dcc9b0bb0efef8ab6b35fb677c177199bf20c4a8",
+              "e2e_p99_ms": 305.9505596756935,
+              "output_tokens_s": 3451.5380560812055,
+              "repeat": 4,
+              "tpot_p99_ms": 3.6179530288791284,
+              "ttft_p99_ms": 190.62018394470215
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r05/workloads/w2_c1/summary.json",
+              "artifact_sha256": "06bb79ce1a1940a6ba9a9e5b86ba556f743b5f365dcf9a0a744e25152d4b5b86",
+              "e2e_p99_ms": 307.8701007179916,
+              "output_tokens_s": 3430.018041821131,
+              "repeat": 5,
+              "tpot_p99_ms": 3.6086470063310117,
+              "ttft_p99_ms": 192.58455699309707
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r03/workloads/w2_c1/summary.json",
+              "artifact_sha256": "06c5a72d272968cec54150381699961d212a2039a003a793869416ec7c79650c",
+              "e2e_p99_ms": 306.79052509367466,
+              "output_tokens_s": 3442.088049093314,
+              "repeat": 3,
+              "tpot_p99_ms": 3.6145302437944338,
+              "ttft_p99_ms": 191.44919328391552
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r01/workloads/w2_c1/summary.json",
+              "artifact_sha256": "7c2cb5b052d215cda52d1e30170ae8aadb64f4171e6808392667a16c31962fdc",
+              "e2e_p99_ms": 302.4443769827485,
+              "output_tokens_s": 3491.5511094465955,
+              "repeat": 1,
+              "tpot_p99_ms": 3.62924046930857,
+              "ttft_p99_ms": 186.9594929739833
+            }
+          ]
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 478.78493182361126,
+              "bootstrap_95ci_low": 330.10917715728283,
+              "bootstrap_samples": 10000,
+              "median": 431.56597716733813,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 3320.1136952269676,
+              "bootstrap_95ci_low": 2387.2931749261725,
+              "bootstrap_samples": 10000,
+              "median": 2724.59455493577,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 4.353962158067868,
+              "bootstrap_95ci_low": 4.346505649244556,
+              "bootstrap_samples": 10000,
+              "median": 4.349003080278635,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 193.8337590545416,
+              "bootstrap_95ci_low": 189.29056078195572,
+              "bootstrap_samples": 10000,
+              "median": 191.4390712045133,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r04/workloads/w2_c1/summary.json",
+              "artifact_sha256": "1c92d3af762ef0c69c810b16f461f90117178cb8b6502b134540b49d377093f9",
+              "e2e_p99_ms": 330.10917715728283,
+              "output_tokens_s": 3320.1136952269676,
+              "repeat": 4,
+              "tpot_p99_ms": 4.348242218839005,
+              "ttft_p99_ms": 191.4396290667355
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r05/workloads/w2_c1/summary.json",
+              "artifact_sha256": "b901411491d2ce94da06e8d573d99bcbdc3dbe759b996b9415ad8bf893df54bc",
+              "e2e_p99_ms": 431.56597716733813,
+              "output_tokens_s": 2660.0799431296855,
+              "repeat": 5,
+              "tpot_p99_ms": 4.353962158067868,
+              "ttft_p99_ms": 189.29056078195572
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w2_c1/summary.json",
+              "artifact_sha256": "5722a0d6c4ed2ce92388f020c52b40ba83f121a0e742c2a26adffc1110268d08",
+              "e2e_p99_ms": 330.5007740855217,
+              "output_tokens_s": 3288.948423820404,
+              "repeat": 2,
+              "tpot_p99_ms": 4.350486513529275,
+              "ttft_p99_ms": 191.4390712045133
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w2_c1/summary.json",
+              "artifact_sha256": "87d53ff56ff66ef17e03b82773102f8a51d71f0a2bf8bd68fb126a867fe5e346",
+              "e2e_p99_ms": 478.78493182361126,
+              "output_tokens_s": 2387.2931749261725,
+              "repeat": 3,
+              "tpot_p99_ms": 4.346505649244556,
+              "ttft_p99_ms": 190.69296261295676
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w2_c1/summary.json",
+              "artifact_sha256": "ef92a9dc7dd9efe8098dbc0875d958bb20680810caf28f02bff46c5421a56e66",
+              "e2e_p99_ms": 432.35790729522705,
+              "output_tokens_s": 2724.59455493577,
+              "repeat": 1,
+              "tpot_p99_ms": 4.349003080278635,
+              "ttft_p99_ms": 193.8337590545416
+            }
+          ]
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 467.26982295513153,
+              "bootstrap_95ci_low": 312.53337766975164,
+              "bootstrap_samples": 10000,
+              "median": 394.8993217200041,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 3497.7333781900797,
+              "bootstrap_95ci_low": 2430.421810697842,
+              "bootstrap_samples": 10000,
+              "median": 2836.165924828088,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 5.130683755851351,
+              "bootstrap_95ci_low": 5.118478220538236,
+              "bootstrap_samples": 10000,
+              "median": 5.122885591565416,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 156.499152071774,
+              "bootstrap_95ci_low": 148.9312336780131,
+              "bootstrap_samples": 10000,
+              "median": 152.15649362653494,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r05/workloads/w2_c1/summary.json",
+              "artifact_sha256": "23551ff79ba7eb51ab0a281e83533235b143169dc5884113fe53a26a82754d7f",
+              "e2e_p99_ms": 313.6316812597215,
+              "output_tokens_s": 3497.7333781900797,
+              "repeat": 5,
+              "tpot_p99_ms": 5.129946599481627,
+              "ttft_p99_ms": 150.4826219752431
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r04/workloads/w2_c1/summary.json",
+              "artifact_sha256": "38f178d27113d1d76c4674fb7ff2f9b7d30a6f8c1926a9bae736c39f1430ec27",
+              "e2e_p99_ms": 467.26982295513153,
+              "output_tokens_s": 2548.8485271054255,
+              "repeat": 4,
+              "tpot_p99_ms": 5.120910220564558,
+              "ttft_p99_ms": 156.499152071774
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w2_c1/summary.json",
+              "artifact_sha256": "0cadfe64480484dcc247e328e2b67ea3169e29144e13205c698645ee923b6a76",
+              "e2e_p99_ms": 394.8993217200041,
+              "output_tokens_s": 2836.165924828088,
+              "repeat": 3,
+              "tpot_p99_ms": 5.118478220538236,
+              "ttft_p99_ms": 152.15649362653494
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w2_c1/summary.json",
+              "artifact_sha256": "1f85534931ab0794396d28201290eade017dc99f7ddd627fed903f26ed00ccfe",
+              "e2e_p99_ms": 444.3673091009259,
+              "output_tokens_s": 2430.421810697842,
+              "repeat": 2,
+              "tpot_p99_ms": 5.122885591565416,
+              "ttft_p99_ms": 154.381331987679
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w2_c1/summary.json",
+              "artifact_sha256": "4cf9a03dc86a4525a5075406d18c1c471d76a5e11984b995bb88ba5bc8583612",
+              "e2e_p99_ms": 312.53337766975164,
+              "output_tokens_s": 3426.8339848542714,
+              "repeat": 1,
+              "tpot_p99_ms": 5.130683755851351,
+              "ttft_p99_ms": 148.9312336780131
+            }
+          ]
+        },
+        "w4a16_ep4_static_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 385.6139979325235,
+              "bootstrap_95ci_low": 377.29993695393205,
+              "bootstrap_samples": 10000,
+              "median": 380.6160441599786,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 2798.834286921539,
+              "bootstrap_95ci_low": 2738.4897998043725,
+              "bootstrap_samples": 10000,
+              "median": 2774.449517309752,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 6.0559701232705265,
+              "bootstrap_95ci_low": 6.043536224751733,
+              "bootstrap_samples": 10000,
+              "median": 6.052155236830004,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 192.17209098860621,
+              "bootstrap_95ci_low": 184.45889186114073,
+              "bootstrap_samples": 10000,
+              "median": 187.09032237529755,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r02/workloads/w2_c1/summary.json",
+              "artifact_sha256": "bfa7c03d553880538464cd16ef67559c91d0a03f9b93baa90a521a1217774e90",
+              "e2e_p99_ms": 377.5995126925409,
+              "output_tokens_s": 2796.6137786301765,
+              "repeat": 2,
+              "tpot_p99_ms": 6.0559701232705265,
+              "ttft_p99_ms": 184.51482756063342
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r03/workloads/w2_c1/summary.json",
+              "artifact_sha256": "59b8c8690aabcc2f9f2829feb5fc4d06ecde16668688ad4e35e8f84785b783fc",
+              "e2e_p99_ms": 377.29993695393205,
+              "output_tokens_s": 2798.834286921539,
+              "repeat": 3,
+              "tpot_p99_ms": 6.043536224751733,
+              "ttft_p99_ms": 184.45889186114073
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r04/workloads/w2_c1/summary.json",
+              "artifact_sha256": "b27433c39507aae56733c021433230ea40dde38d11162a819821e838a273c940",
+              "e2e_p99_ms": 380.6160441599786,
+              "output_tokens_s": 2774.449517309752,
+              "repeat": 4,
+              "tpot_p99_ms": 6.052155236830004,
+              "ttft_p99_ms": 187.09032237529755
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r05/workloads/w2_c1/summary.json",
+              "artifact_sha256": "6a604227c38ac43fdff72d54237248811cae6209869d54a6e82af9f20708310d",
+              "e2e_p99_ms": 385.6139979325235,
+              "output_tokens_s": 2738.4897998043725,
+              "repeat": 5,
+              "tpot_p99_ms": 6.054874567780644,
+              "ttft_p99_ms": 192.17209098860621
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r01/workloads/w2_c1/summary.json",
+              "artifact_sha256": "758f7aa3e68d2e8fb188337f498a14c60576dfde52c6ce3ab2b08550dc4e1654",
+              "e2e_p99_ms": 382.44362687692046,
+              "output_tokens_s": 2761.191260064705,
+              "repeat": 1,
+              "tpot_p99_ms": 6.045294809155166,
+              "ttft_p99_ms": 189.0718969516456
+            }
+          ]
+        }
+      },
+      "oracle_by_median_e2e_p99": "fp8_tp2_pix01_triton",
+      "output_tokens": 256,
+      "requests": 32,
+      "workload_id": "w2_c1"
+    },
+    {
+      "concurrency": 8,
+      "id": "w2_c8",
+      "input_tokens": 2048,
+      "measurements": {
+        "fp8_tp2_pix01_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1416.5249550715089,
+              "bootstrap_95ci_low": 1384.1086979955435,
+              "bootstrap_samples": 10000,
+              "median": 1391.2754198536277,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 836.6394934711468,
+              "bootstrap_95ci_low": 813.2578221622964,
+              "bootstrap_samples": 10000,
+              "median": 828.017216117567,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 18.179170485283876,
+              "bootstrap_95ci_low": 17.864047977569943,
+              "bootstrap_samples": 10000,
+              "median": 18.021075130515808,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 753.5425731912255,
+              "bootstrap_95ci_low": 730.9182989411056,
+              "bootstrap_samples": 10000,
+              "median": 735.5882581323385,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r02/workloads/w2_c8/summary.json",
+              "artifact_sha256": "883d4fd1d07fa82d5aae7fb57e24f6f187d713eb26f0eb9e533aa023bf62b1eb",
+              "e2e_p99_ms": 1391.2754198536277,
+              "output_tokens_s": 828.017216117567,
+              "repeat": 2,
+              "tpot_p99_ms": 18.021075130515808,
+              "ttft_p99_ms": 735.5882581323385
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r04/workloads/w2_c8/summary.json",
+              "artifact_sha256": "09b4252e14965dc3791ed8ded2bbf1159b5a3fb0591bf1b1cd26d7f7d83f9bef",
+              "e2e_p99_ms": 1416.5249550715089,
+              "output_tokens_s": 813.2578221622964,
+              "repeat": 4,
+              "tpot_p99_ms": 18.179170485283876,
+              "ttft_p99_ms": 753.5425731912255
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r05/workloads/w2_c8/summary.json",
+              "artifact_sha256": "815a75b80aa42ce8707611bd587a365615ca119a69fb65852fe51f1953dee185",
+              "e2e_p99_ms": 1394.3253210745752,
+              "output_tokens_s": 830.5091950188178,
+              "repeat": 5,
+              "tpot_p99_ms": 18.095724813237382,
+              "ttft_p99_ms": 738.8548590242863
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r03/workloads/w2_c8/summary.json",
+              "artifact_sha256": "2605f945318884fc278438afcbe1c58c5c8990bd792545f393068dd25f17f92b",
+              "e2e_p99_ms": 1384.1086979955435,
+              "output_tokens_s": 836.6394934711468,
+              "repeat": 3,
+              "tpot_p99_ms": 17.936591436532705,
+              "ttft_p99_ms": 730.9182989411056
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r01/workloads/w2_c8/summary.json",
+              "artifact_sha256": "45ebbd030b40f0a23b31775238bd4d412ee1908768ab97a729be44f7d260b0e7",
+              "e2e_p99_ms": 1389.1133768483996,
+              "output_tokens_s": 818.5077035105725,
+              "repeat": 1,
+              "tpot_p99_ms": 17.864047977569943,
+              "ttft_p99_ms": 735.1528350263834
+            }
+          ]
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1874.6364773251116,
+              "bootstrap_95ci_low": 1216.690479312092,
+              "bootstrap_samples": 10000,
+              "median": 1399.4884761050344,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 978.0630490943081,
+              "bootstrap_95ci_low": 633.7228654032903,
+              "bootstrap_samples": 10000,
+              "median": 841.7361200990616,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 25.247533136280254,
+              "bootstrap_95ci_low": 17.756934379576705,
+              "bootstrap_samples": 10000,
+              "median": 18.39397137518972,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 594.9981431476772,
+              "bootstrap_95ci_low": 577.758545987308,
+              "bootstrap_samples": 10000,
+              "median": 583.339094184339,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r04/workloads/w2_c8/summary.json",
+              "artifact_sha256": "ddec5b634ada8448b5ae58415bc44ff9db1705d4fbe05f5e52855d57465229b9",
+              "e2e_p99_ms": 1572.700503282249,
+              "output_tokens_s": 708.3357560292412,
+              "repeat": 4,
+              "tpot_p99_ms": 17.756934379576705,
+              "ttft_p99_ms": 577.758545987308
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r05/workloads/w2_c8/summary.json",
+              "artifact_sha256": "f9c3b9f941c9e8c65cd5911c5b151c2e986e9e7ce0b5dd823c72c88dce1c090d",
+              "e2e_p99_ms": 1216.690479312092,
+              "output_tokens_s": 978.0630490943081,
+              "repeat": 5,
+              "tpot_p99_ms": 22.358962422790558,
+              "ttft_p99_ms": 580.0988511182368
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w2_c8/summary.json",
+              "artifact_sha256": "a7f0ead9a397a40cbd5c8ca9f0dd160d846cdf2f90b69e56ce1b25f9173335bd",
+              "e2e_p99_ms": 1341.2560941651464,
+              "output_tokens_s": 861.8786561559242,
+              "repeat": 2,
+              "tpot_p99_ms": 18.09794077416882,
+              "ttft_p99_ms": 589.6183238364756
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w2_c8/summary.json",
+              "artifact_sha256": "f3b8230ebefb8a8268f310cb3f92860d99b093c8bd0597fd9eb4e17aaec3e80f",
+              "e2e_p99_ms": 1874.6364773251116,
+              "output_tokens_s": 633.7228654032903,
+              "repeat": 3,
+              "tpot_p99_ms": 25.247533136280254,
+              "ttft_p99_ms": 583.339094184339
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w2_c8/summary.json",
+              "artifact_sha256": "2419b5d14474dfe7a572c3356f6e6bfbfb95af4c598eef4f9f98542ddda44a98",
+              "e2e_p99_ms": 1399.4884761050344,
+              "output_tokens_s": 841.7361200990616,
+              "repeat": 1,
+              "tpot_p99_ms": 18.39397137518972,
+              "ttft_p99_ms": 594.9981431476772
+            }
+          ]
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1392.3375671729445,
+              "bootstrap_95ci_low": 694.6126911789179,
+              "bootstrap_samples": 10000,
+              "median": 1047.341811005026,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1554.8233047210683,
+              "bootstrap_95ci_low": 857.5506602356089,
+              "bootstrap_samples": 10000,
+              "median": 1126.6617904499349,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 14.330130217044994,
+              "bootstrap_95ci_low": 13.815698070594898,
+              "bootstrap_samples": 10000,
+              "median": 14.161748898914084,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 452.27483101189137,
+              "bootstrap_95ci_low": 411.9431679137051,
+              "bootstrap_samples": 10000,
+              "median": 428.17096784710884,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r05/workloads/w2_c8/summary.json",
+              "artifact_sha256": "c5efde304585eadef3412cb9534ccd1a56482f4903b36379c58557ab8f8f3f15",
+              "e2e_p99_ms": 966.0078687593341,
+              "output_tokens_s": 1177.0090459617838,
+              "repeat": 5,
+              "tpot_p99_ms": 14.207156832088474,
+              "ttft_p99_ms": 452.27483101189137
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r04/workloads/w2_c8/summary.json",
+              "artifact_sha256": "15e5c66affaab2be29e8a2e7faecc6d07003db5c1348bfe664ab2b3a0aeb3e89",
+              "e2e_p99_ms": 1392.3375671729445,
+              "output_tokens_s": 857.5506602356089,
+              "repeat": 4,
+              "tpot_p99_ms": 14.330130217044994,
+              "ttft_p99_ms": 426.6145061701536
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w2_c8/summary.json",
+              "artifact_sha256": "020d850cbdaf989a4908e7dcb76f69eea766a766b8a806f44249159192266819",
+              "e2e_p99_ms": 1212.3187952674925,
+              "output_tokens_s": 919.7250792057384,
+              "repeat": 3,
+              "tpot_p99_ms": 14.161748898914084,
+              "ttft_p99_ms": 411.9431679137051
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w2_c8/summary.json",
+              "artifact_sha256": "11ee75f2a4dcf618aa34bbe188fb5cdefa58aae3a39c5497f8674482bfe417cd",
+              "e2e_p99_ms": 1047.341811005026,
+              "output_tokens_s": 1126.6617904499349,
+              "repeat": 2,
+              "tpot_p99_ms": 13.815698070594898,
+              "ttft_p99_ms": 436.43232760950923
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w2_c8/summary.json",
+              "artifact_sha256": "8b4d835dd3f1d5bd4600c975ffe649a771db40e6414b7d2efe34bacd34e75c9f",
+              "e2e_p99_ms": 694.6126911789179,
+              "output_tokens_s": 1554.8233047210683,
+              "repeat": 1,
+              "tpot_p99_ms": 14.06366853916552,
+              "ttft_p99_ms": 428.17096784710884
+            }
+          ]
+        },
+        "w4a16_ep4_static_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 912.6106058247387,
+              "bootstrap_95ci_low": 885.3824059478939,
+              "bootstrap_samples": 10000,
+              "median": 904.7394287772477,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1192.7049746029709,
+              "bootstrap_95ci_low": 1157.1200172999067,
+              "bootstrap_samples": 10000,
+              "median": 1167.186889850905,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 15.760540874907747,
+              "bootstrap_95ci_low": 15.251429591444321,
+              "bootstrap_samples": 10000,
+              "median": 15.300101091270335,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 580.6481097824872,
+              "bootstrap_95ci_low": 554.2506538331509,
+              "bootstrap_samples": 10000,
+              "median": 572.185019031167,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r02/workloads/w2_c8/summary.json",
+              "artifact_sha256": "ca454cda239564a2cdb53159a50e13f0bd874cae4503d12665c5d3c9e2520df2",
+              "e2e_p99_ms": 885.3824059478939,
+              "output_tokens_s": 1192.7049746029709,
+              "repeat": 2,
+              "tpot_p99_ms": 15.261050342814997,
+              "ttft_p99_ms": 554.2506538331509
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r03/workloads/w2_c8/summary.json",
+              "artifact_sha256": "a6d6d4b31f8ae21b32c4d95f798b20da2498864d7cdeebb02dc3d17a192d6bad",
+              "e2e_p99_ms": 912.6106058247387,
+              "output_tokens_s": 1157.1200172999067,
+              "repeat": 3,
+              "tpot_p99_ms": 15.300101091270335,
+              "ttft_p99_ms": 580.6481097824872
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r04/workloads/w2_c8/summary.json",
+              "artifact_sha256": "94b08c96b5e640a780d4241752fdf33082f598ed5ac7560e0b29e67ff38a10c3",
+              "e2e_p99_ms": 908.7053001858294,
+              "output_tokens_s": 1162.0929247183317,
+              "repeat": 4,
+              "tpot_p99_ms": 15.760540874907747,
+              "ttft_p99_ms": 575.4350079223514
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r05/workloads/w2_c8/summary.json",
+              "artifact_sha256": "4e08eeb506bbe6dd9b2fb69f98025c904abfc0fb4c5b8e5bc9838a7a700d0d42",
+              "e2e_p99_ms": 904.7394287772477,
+              "output_tokens_s": 1167.186889850905,
+              "repeat": 5,
+              "tpot_p99_ms": 15.43205147027038,
+              "ttft_p99_ms": 571.8598291277885
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r01/workloads/w2_c8/summary.json",
+              "artifact_sha256": "52a0c450b3c5e8f40c7d10de5c382431027bd70e672a026a5aa01a6fe2782c48",
+              "e2e_p99_ms": 903.936539310962,
+              "output_tokens_s": 1168.2236020738253,
+              "repeat": 1,
+              "tpot_p99_ms": 15.251429591444321,
+              "ttft_p99_ms": 572.185019031167
+            }
+          ]
+        }
+      },
+      "oracle_by_median_e2e_p99": "w4a16_ep4_static_triton",
+      "output_tokens": 256,
+      "requests": 32,
+      "workload_id": "w2_c8"
+    },
+    {
+      "concurrency": 32,
+      "id": "w2_c32",
+      "input_tokens": 2048,
+      "measurements": {
+        "fp8_tp2_pix01_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 3535.0049789994955,
+              "bootstrap_95ci_low": 3478.124757297337,
+              "bootstrap_samples": 10000,
+              "median": 3505.23236207664,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 591.0505899809459,
+              "bootstrap_95ci_low": 576.6458518750799,
+              "bootstrap_samples": 10000,
+              "median": 581.887540504826,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 44.59650997022116,
+              "bootstrap_95ci_low": 42.448020515006945,
+              "bootstrap_samples": 10000,
+              "median": 44.12497416440699,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 2243.2824010029435,
+              "bootstrap_95ci_low": 2185.4945519007742,
+              "bootstrap_samples": 10000,
+              "median": 2218.4159690514207,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r02/workloads/w2_c32/summary.json",
+              "artifact_sha256": "5eebd284141efe5059279f72294d2edebdc9d6a9f98dc1e2369b350307ea808a",
+              "e2e_p99_ms": 3478.124757297337,
+              "output_tokens_s": 591.0505899809459,
+              "repeat": 2,
+              "tpot_p99_ms": 42.448020515006945,
+              "ttft_p99_ms": 2185.4945519007742
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r04/workloads/w2_c32/summary.json",
+              "artifact_sha256": "c14953a3eb12c06a4235e7a4488b401987ff2fbac1286a45f5e45f02eeb2396b",
+              "e2e_p99_ms": 3533.924537245184,
+              "output_tokens_s": 582.7538028144942,
+              "repeat": 4,
+              "tpot_p99_ms": 42.740660732158936,
+              "ttft_p99_ms": 2235.221247188747
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r05/workloads/w2_c32/summary.json",
+              "artifact_sha256": "fd314a6b10edcd730047d6e7666fe1dae4e3a64c34b588abffb2075e50b709d6",
+              "e2e_p99_ms": 3500.985215883702,
+              "output_tokens_s": 580.2614518452375,
+              "repeat": 5,
+              "tpot_p99_ms": 44.59650997022116,
+              "ttft_p99_ms": 2207.5361027382314
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r03/workloads/w2_c32/summary.json",
+              "artifact_sha256": "4ed99f2c3ae24416e50859db409a7265b8253fe236fb4cb7cf3eb93a4f4f7593",
+              "e2e_p99_ms": 3535.0049789994955,
+              "output_tokens_s": 576.6458518750799,
+              "repeat": 3,
+              "tpot_p99_ms": 44.18055594873589,
+              "ttft_p99_ms": 2243.2824010029435
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r01/workloads/w2_c32/summary.json",
+              "artifact_sha256": "c6423ada8cced0ba5ab180f4ef06f0cea3d0295d4e49088b07259baf7a7b6fb9",
+              "e2e_p99_ms": 3505.23236207664,
+              "output_tokens_s": 581.887540504826,
+              "repeat": 1,
+              "tpot_p99_ms": 44.12497416440699,
+              "ttft_p99_ms": 2218.4159690514207
+            }
+          ]
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 2996.4049952104688,
+              "bootstrap_95ci_low": 2554.035899695009,
+              "bootstrap_samples": 10000,
+              "median": 2687.0711618103087,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 789.8650306049103,
+              "bootstrap_95ci_low": 695.8270278471157,
+              "bootstrap_samples": 10000,
+              "median": 777.2906634385258,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 39.40069373628056,
+              "bootstrap_95ci_low": 33.43623550608754,
+              "bootstrap_samples": 10000,
+              "median": 37.31877722020727,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 1556.403009686619,
+              "bootstrap_95ci_low": 1461.986463982612,
+              "bootstrap_samples": 10000,
+              "median": 1521.6019391082227,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r04/workloads/w2_c32/summary.json",
+              "artifact_sha256": "180d6c75022dc652ffaf52434a3aff32c6fd0137208c46de81582ffe5ec92439",
+              "e2e_p99_ms": 2996.4049952104688,
+              "output_tokens_s": 695.8270278471157,
+              "repeat": 4,
+              "tpot_p99_ms": 36.558487845468335,
+              "ttft_p99_ms": 1535.3984930552542
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r05/workloads/w2_c32/summary.json",
+              "artifact_sha256": "2ee96386332ee0db2ccc060c01825100e4e348b0fb5bfb94b2e8765f23fd0457",
+              "e2e_p99_ms": 2811.370138078928,
+              "output_tokens_s": 784.8408254620962,
+              "repeat": 5,
+              "tpot_p99_ms": 37.31877722020727,
+              "ttft_p99_ms": 1521.6019391082227
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w2_c32/summary.json",
+              "artifact_sha256": "5f4517bd7ffe2afcd219651849886175b8e17ed19ceeaccf7e56270f34411c4c",
+              "e2e_p99_ms": 2554.035899695009,
+              "output_tokens_s": 789.8650306049103,
+              "repeat": 2,
+              "tpot_p99_ms": 39.40069373628056,
+              "ttft_p99_ms": 1556.403009686619
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w2_c32/summary.json",
+              "artifact_sha256": "19ad3f4814736e816a52b0af5dc57474f48f39cb3296d114ecbf6f1083aeec9b",
+              "e2e_p99_ms": 2661.184926982969,
+              "output_tokens_s": 713.813560390694,
+              "repeat": 3,
+              "tpot_p99_ms": 38.75071107177064,
+              "ttft_p99_ms": 1497.789541259408
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w2_c32/summary.json",
+              "artifact_sha256": "10246d5b8667f55fac01ff35fa16414e7768d76877578e7bbf2fd4deae9c48cc",
+              "e2e_p99_ms": 2687.0711618103087,
+              "output_tokens_s": 777.2906634385258,
+              "repeat": 1,
+              "tpot_p99_ms": 33.43623550608754,
+              "ttft_p99_ms": 1461.986463982612
+            }
+          ]
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 2187.6136953942478,
+              "bootstrap_95ci_low": 1762.7365686930716,
+              "bootstrap_samples": 10000,
+              "median": 1971.054675988853,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1144.063641742704,
+              "bootstrap_95ci_low": 926.9181632174866,
+              "bootstrap_samples": 10000,
+              "median": 1112.3418493961947,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 30.644695376395248,
+              "bootstrap_95ci_low": 16.830905311508104,
+              "bootstrap_samples": 10000,
+              "median": 19.306120098917745,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 1109.6133906394243,
+              "bootstrap_95ci_low": 1047.09094716236,
+              "bootstrap_samples": 10000,
+              "median": 1076.665342785418,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r05/workloads/w2_c32/summary.json",
+              "artifact_sha256": "ff4ba5627a737b10cb16e45d56da5f5833192844f757e8a64e80d36de6aa9c89",
+              "e2e_p99_ms": 1762.7365686930716,
+              "output_tokens_s": 1112.3418493961947,
+              "repeat": 5,
+              "tpot_p99_ms": 16.830905311508104,
+              "ttft_p99_ms": 1109.6133906394243
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r04/workloads/w2_c32/summary.json",
+              "artifact_sha256": "43edda1e7259fee6016540457c2cca95331885f0ac5060f91403173ffbbfa1f5",
+              "e2e_p99_ms": 2187.6136953942478,
+              "output_tokens_s": 926.9181632174866,
+              "repeat": 4,
+              "tpot_p99_ms": 28.901617150180616,
+              "ttft_p99_ms": 1047.09094716236
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w2_c32/summary.json",
+              "artifact_sha256": "ce6d522376b77584d88489dd501555377fd40428e8e48253db429ae5b4ffca75",
+              "e2e_p99_ms": 1971.054675988853,
+              "output_tokens_s": 1144.063641742704,
+              "repeat": 3,
+              "tpot_p99_ms": 17.53174171608407,
+              "ttft_p99_ms": 1076.665342785418
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w2_c32/summary.json",
+              "artifact_sha256": "375a6d111067f5df46b6ff3cace82e76f07701739d4defbc125058eff896fda0",
+              "e2e_p99_ms": 2073.9766131155193,
+              "output_tokens_s": 1038.677274928692,
+              "repeat": 2,
+              "tpot_p99_ms": 30.644695376395248,
+              "ttft_p99_ms": 1069.5018358528614
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w2_c32/summary.json",
+              "artifact_sha256": "474982f80e3b1bdbdaa33485fde46413ad93d411c3d0c9d4f268f573355da909",
+              "e2e_p99_ms": 1779.1821137070656,
+              "output_tokens_s": 1140.8618779398596,
+              "repeat": 1,
+              "tpot_p99_ms": 19.306120098917745,
+              "ttft_p99_ms": 1107.1117343381047
+            }
+          ]
+        },
+        "w4a16_ep4_static_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 2431.6096319817007,
+              "bootstrap_95ci_low": 2259.9073187448084,
+              "bootstrap_samples": 10000,
+              "median": 2284.5945903100073,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 901.6634885140006,
+              "bootstrap_95ci_low": 836.6792518899541,
+              "bootstrap_samples": 10000,
+              "median": 890.6940292191013,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 30.307351888041012,
+              "bootstrap_95ci_low": 30.242739943787456,
+              "bootstrap_samples": 10000,
+              "median": 30.265545909060165,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 1656.948592979461,
+              "bootstrap_95ci_low": 1489.5009999163449,
+              "bootstrap_samples": 10000,
+              "median": 1514.1386543400586,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r02/workloads/w2_c32/summary.json",
+              "artifact_sha256": "0123ddd1de9a72f69c4c99bfd9f020741bc07a71f823a6bb549ade5a381da85e",
+              "e2e_p99_ms": 2259.9073187448084,
+              "output_tokens_s": 901.6634885140006,
+              "repeat": 2,
+              "tpot_p99_ms": 30.307351888041012,
+              "ttft_p99_ms": 1489.5009999163449
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r03/workloads/w2_c32/summary.json",
+              "artifact_sha256": "85970ac209437562c100aa536967abcc18d2fa20a78ccfa51e3cda7551c9520d",
+              "e2e_p99_ms": 2335.744972806424,
+              "output_tokens_s": 872.0069711439706,
+              "repeat": 3,
+              "tpot_p99_ms": 30.265545909060165,
+              "ttft_p99_ms": 1563.3397568017244
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r04/workloads/w2_c32/summary.json",
+              "artifact_sha256": "179d6660f1628036781f0e956b80bb270faaf1eb6cc76887ae8da75ae485a140",
+              "e2e_p99_ms": 2268.097470048815,
+              "output_tokens_s": 896.98466845395,
+              "repeat": 4,
+              "tpot_p99_ms": 30.28283109597396,
+              "ttft_p99_ms": 1492.1268881298602
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r05/workloads/w2_c32/summary.json",
+              "artifact_sha256": "9a28887748869eeacb98c17bbeba45a8cbb131f9d373bf3be47f6f5bb4f59ca7",
+              "e2e_p99_ms": 2431.6096319817007,
+              "output_tokens_s": 836.6792518899541,
+              "repeat": 5,
+              "tpot_p99_ms": 30.242739943787456,
+              "ttft_p99_ms": 1656.948592979461
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r01/workloads/w2_c32/summary.json",
+              "artifact_sha256": "47e07e1620a8472ed0e01d53f1e072087baf82e7ec988111065e37c7e9e43b2e",
+              "e2e_p99_ms": 2284.5945903100073,
+              "output_tokens_s": 890.6940292191013,
+              "repeat": 1,
+              "tpot_p99_ms": 30.253498305683024,
+              "ttft_p99_ms": 1514.1386543400586
+            }
+          ]
+        }
+      },
+      "oracle_by_median_e2e_p99": "nvfp4_redhat_ep8_static_sys",
+      "output_tokens": 256,
+      "requests": 64,
+      "workload_id": "w2_c32"
+    },
+    {
+      "concurrency": 1,
+      "id": "w3_c1",
+      "input_tokens": 8192,
+      "measurements": {
+        "fp8_tp2_pix01_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 736.5885893814266,
+              "bootstrap_95ci_low": 726.9284520298243,
+              "bootstrap_samples": 10000,
+              "median": 733.1581278704107,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 836.3959318173106,
+              "bootstrap_95ci_low": 825.4268512502849,
+              "bootstrap_samples": 10000,
+              "median": 829.2890399592856,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 3.6220437645710803,
+              "bootstrap_95ci_low": 3.607809405169777,
+              "bootstrap_samples": 10000,
+              "median": 3.6144884101845123,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 603.1267303042114,
+              "bootstrap_95ci_low": 593.4886601753533,
+              "bootstrap_samples": 10000,
+              "median": 599.8826920986176,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r02/workloads/w3_c1/summary.json",
+              "artifact_sha256": "7f0ad20771f2cea433e357f09e192e72b51eacb5afee672471914dc34167e260",
+              "e2e_p99_ms": 736.5885893814266,
+              "output_tokens_s": 825.4268512502849,
+              "repeat": 2,
+              "tpot_p99_ms": 3.6220437645710803,
+              "ttft_p99_ms": 603.1267303042114
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r04/workloads/w3_c1/summary.json",
+              "artifact_sha256": "27611c6c68873cd2a7d783b0ddb7ff798310be89dbb2b0f156fa3901d4ddb5ef",
+              "e2e_p99_ms": 734.5981616526842,
+              "output_tokens_s": 827.6633835185944,
+              "repeat": 4,
+              "tpot_p99_ms": 3.611688200082328,
+              "ttft_p99_ms": 601.172941736877
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r05/workloads/w3_c1/summary.json",
+              "artifact_sha256": "bb0d42e80872a92636cfb5329741aab64f0ce2c5f0a1a0f4b440c83533f48055",
+              "e2e_p99_ms": 733.1581278704107,
+              "output_tokens_s": 829.2890399592856,
+              "repeat": 5,
+              "tpot_p99_ms": 3.607809405169777,
+              "ttft_p99_ms": 599.8826920986176
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r03/workloads/w3_c1/summary.json",
+              "artifact_sha256": "22734a95b068e30823b61ce7d4488b8904c446aedc7d60ae4d7540e13994e395",
+              "e2e_p99_ms": 726.9284520298243,
+              "output_tokens_s": 836.3959318173106,
+              "repeat": 3,
+              "tpot_p99_ms": 3.6154982155641995,
+              "ttft_p99_ms": 593.4886601753533
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r01/workloads/w3_c1/summary.json",
+              "artifact_sha256": "21e7e71e12ac0107573ba7d6825236d5d9182f1ee41ec7245ed4d12eda7b9fd7",
+              "e2e_p99_ms": 730.673679150641,
+              "output_tokens_s": 832.1088022587033,
+              "repeat": 1,
+              "tpot_p99_ms": 3.6144884101845123,
+              "ttft_p99_ms": 597.1975489519536
+            }
+          ]
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 599.7910518199205,
+              "bootstrap_95ci_low": 574.4517329148948,
+              "bootstrap_samples": 10000,
+              "median": 578.9683759212494,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1226.5899788211439,
+              "bootstrap_95ci_low": 1000.3483682849977,
+              "bootstrap_samples": 10000,
+              "median": 1067.4158135436048,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 4.34274758445099,
+              "bootstrap_95ci_low": 4.325768004895912,
+              "bootstrap_samples": 10000,
+              "median": 4.333506853851889,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 445.85633976385,
+              "bootstrap_95ci_low": 436.43250688910484,
+              "bootstrap_samples": 10000,
+              "median": 440.51664182916284,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r04/workloads/w3_c1/summary.json",
+              "artifact_sha256": "d6ce31c7ab536721ce91f66e2a9727962a8913dad20db78f6d9ebb28b741cab6",
+              "e2e_p99_ms": 578.9683759212494,
+              "output_tokens_s": 1067.4158135436048,
+              "repeat": 4,
+              "tpot_p99_ms": 4.334399779024836,
+              "ttft_p99_ms": 440.97979506477714
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r05/workloads/w3_c1/summary.json",
+              "artifact_sha256": "c4030cb63f64adf72cb55ba387d48656d54e322e781360a03e61722476114ab6",
+              "e2e_p99_ms": 574.4517329148948,
+              "output_tokens_s": 1079.2899811686236,
+              "repeat": 5,
+              "tpot_p99_ms": 4.333506853851889,
+              "ttft_p99_ms": 436.43250688910484
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w3_c1/summary.json",
+              "artifact_sha256": "196cf947b43a80d8fbbc569afb40af62e61e82f7f7f83bc88ecad467088f3ebf",
+              "e2e_p99_ms": 578.0252669937909,
+              "output_tokens_s": 1226.5899788211439,
+              "repeat": 2,
+              "tpot_p99_ms": 4.34274758445099,
+              "ttft_p99_ms": 439.81977505609393
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w3_c1/summary.json",
+              "artifact_sha256": "2b0203d1731e15816dbf52059ec0ddea19f8baad2a799dab29887fb570b6d6cf",
+              "e2e_p99_ms": 599.7910518199205,
+              "output_tokens_s": 1000.3483682849977,
+              "repeat": 3,
+              "tpot_p99_ms": 4.331131125926166,
+              "ttft_p99_ms": 440.51664182916284
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w3_c1/summary.json",
+              "artifact_sha256": "825076cadb4cc3c03dbfa8c0d0aa945d919011141d381ac9d85bc66c172c6fac",
+              "e2e_p99_ms": 587.689699139446,
+              "output_tokens_s": 1034.559565856428,
+              "repeat": 1,
+              "tpot_p99_ms": 4.325768004895912,
+              "ttft_p99_ms": 445.85633976385
+            }
+          ]
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 579.4432829134166,
+              "bootstrap_95ci_low": 540.8433540724218,
+              "bootstrap_samples": 10000,
+              "median": 576.8173937685788,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1165.2765698478859,
+              "bootstrap_95ci_low": 995.7833959155901,
+              "bootstrap_samples": 10000,
+              "median": 1153.7536613909156,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 5.158189204380368,
+              "bootstrap_95ci_low": 5.089137188213713,
+              "bootstrap_samples": 10000,
+              "median": 5.108177024383275,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 418.24912605807185,
+              "bootstrap_95ci_low": 409.7489616833627,
+              "bootstrap_samples": 10000,
+              "median": 411.70445596799254,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r05/workloads/w3_c1/summary.json",
+              "artifact_sha256": "3d491013388c32ce0d9285273b3ca8e8e1d8adba5883427792649e8bcb67f107",
+              "e2e_p99_ms": 576.8173937685788,
+              "output_tokens_s": 1126.8730919386637,
+              "repeat": 5,
+              "tpot_p99_ms": 5.101290852385196,
+              "ttft_p99_ms": 409.7489616833627
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r04/workloads/w3_c1/summary.json",
+              "artifact_sha256": "fbed0d7872c8da002c6e853dd43bd5fc6b389322beae798b45aedf21f9c17cbf",
+              "e2e_p99_ms": 540.8433540724218,
+              "output_tokens_s": 1153.7536613909156,
+              "repeat": 4,
+              "tpot_p99_ms": 5.089137188213713,
+              "ttft_p99_ms": 411.70445596799254
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w3_c1/summary.json",
+              "artifact_sha256": "55ad549589e8e1a5fcc757cf9e541d4474969074c8abe346ced1311f89f8af2c",
+              "e2e_p99_ms": 578.6076807416975,
+              "output_tokens_s": 1163.1369966214484,
+              "repeat": 3,
+              "tpot_p99_ms": 5.108177024383275,
+              "ttft_p99_ms": 411.4611307159066
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w3_c1/summary.json",
+              "artifact_sha256": "3cce455a3162549670c8573cc1c023194af7ca3d291315852e020fde3c978c55",
+              "e2e_p99_ms": 548.3676721341908,
+              "output_tokens_s": 1165.2765698478859,
+              "repeat": 2,
+              "tpot_p99_ms": 5.108916162941101,
+              "ttft_p99_ms": 418.24912605807185
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w3_c1/summary.json",
+              "artifact_sha256": "dfcf61010e57f1fc8f6d0ce947894e1c06d002b504fdda70bbf473c663501902",
+              "e2e_p99_ms": 579.4432829134166,
+              "output_tokens_s": 995.7833959155901,
+              "repeat": 1,
+              "tpot_p99_ms": 5.158189204380368,
+              "ttft_p99_ms": 412.1989859268069
+            }
+          ]
+        },
+        "w4a16_ep4_static_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 622.8148192167282,
+              "bootstrap_95ci_low": 610.8216899447143,
+              "bootstrap_samples": 10000,
+              "median": 615.1062273420393,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 864.409382790237,
+              "bootstrap_95ci_low": 847.764028261289,
+              "bootstrap_samples": 10000,
+              "median": 858.3883181959682,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 6.041604530764744,
+              "bootstrap_95ci_low": 6.0297746531432495,
+              "bootstrap_samples": 10000,
+              "median": 6.036906619556248,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 429.8107451759279,
+              "bootstrap_95ci_low": 417.5464538857341,
+              "bootstrap_samples": 10000,
+              "median": 422.1654231660068,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r02/workloads/w3_c1/summary.json",
+              "artifact_sha256": "41fc25fb7391f69b1cbf12076b217271b9ed10c115b5b3848833e053a04a947f",
+              "e2e_p99_ms": 611.5049077197909,
+              "output_tokens_s": 863.4436017346646,
+              "repeat": 2,
+              "tpot_p99_ms": 6.041604530764744,
+              "ttft_p99_ms": 418.80711494013667
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r03/workloads/w3_c1/summary.json",
+              "artifact_sha256": "70434133164e0e7157a7d834ec1b370967513b6655e92486fee32c9a5f658d0b",
+              "e2e_p99_ms": 615.1062273420393,
+              "output_tokens_s": 858.3883181959682,
+              "repeat": 3,
+              "tpot_p99_ms": 6.0297746531432495,
+              "ttft_p99_ms": 422.1654231660068
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r04/workloads/w3_c1/summary.json",
+              "artifact_sha256": "bbd31d52b14f645034365de8da728bd4980de296044f0fcf7108ec1609ab7fce",
+              "e2e_p99_ms": 622.8148192167282,
+              "output_tokens_s": 847.764028261289,
+              "repeat": 4,
+              "tpot_p99_ms": 6.036906619556248,
+              "ttft_p99_ms": 429.8107451759279
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r05/workloads/w3_c1/summary.json",
+              "artifact_sha256": "ad630d3c86bd65381c7ab240badb5884f2ebbe13dc3244abf00ebc6af20b1907",
+              "e2e_p99_ms": 619.5814539678395,
+              "output_tokens_s": 852.188193527508,
+              "repeat": 5,
+              "tpot_p99_ms": 6.035490659996867,
+              "ttft_p99_ms": 426.59670300781727
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r01/workloads/w3_c1/summary.json",
+              "artifact_sha256": "53ec98d66b95fe1511fbfe0a0bb44d239a7e4d74d38b3b93403683ab8513e775",
+              "e2e_p99_ms": 610.8216899447143,
+              "output_tokens_s": 864.409382790237,
+              "repeat": 1,
+              "tpot_p99_ms": 6.041557091521099,
+              "ttft_p99_ms": 417.5464538857341
+            }
+          ]
+        }
+      },
+      "oracle_by_median_e2e_p99": "nvfp4_redhat_ep8_static_sys",
+      "output_tokens": 256,
+      "requests": 16,
+      "workload_id": "w3_c1"
+    },
+    {
+      "concurrency": 8,
+      "id": "w3_c8",
+      "input_tokens": 8192,
+      "measurements": {
+        "fp8_tp2_pix01_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 887.3745519667864,
+              "bootstrap_95ci_low": 863.8133322820067,
+              "bootstrap_samples": 10000,
+              "median": 879.3063620105386,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 703.8557721652621,
+              "bootstrap_95ci_low": 685.1672708580862,
+              "bootstrap_samples": 10000,
+              "median": 691.4541123184925,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 11.93069202221326,
+              "bootstrap_95ci_low": 11.832705208075208,
+              "bootstrap_samples": 10000,
+              "median": 11.91622212629866,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 695.5572138540447,
+              "bootstrap_95ci_low": 672.004362102598,
+              "bootstrap_samples": 10000,
+              "median": 687.4494394287467,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r02/workloads/w3_c8/summary.json",
+              "artifact_sha256": "6c7bf15702301f7888d048228a9cf19c416d54455022353e8ccb152d1bbba6ec",
+              "e2e_p99_ms": 863.8133322820067,
+              "output_tokens_s": 703.8557721652621,
+              "repeat": 2,
+              "tpot_p99_ms": 11.921841839982852,
+              "ttft_p99_ms": 672.004362102598
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r04/workloads/w3_c8/summary.json",
+              "artifact_sha256": "567d1b581fba3ac2972f53aa0878eb407d7569177e04f2c474074bc24baf5eed",
+              "e2e_p99_ms": 879.3063620105386,
+              "output_tokens_s": 691.4541123184925,
+              "repeat": 4,
+              "tpot_p99_ms": 11.93069202221326,
+              "ttft_p99_ms": 687.4494394287467
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r05/workloads/w3_c8/summary.json",
+              "artifact_sha256": "818a551b97b3906086c125d72e1100019643b966930767bf591907f504aaf1a1",
+              "e2e_p99_ms": 879.6764072030783,
+              "output_tokens_s": 691.1632448267306,
+              "repeat": 5,
+              "tpot_p99_ms": 11.91622212629866,
+              "ttft_p99_ms": 687.9558102227747
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r03/workloads/w3_c8/summary.json",
+              "artifact_sha256": "a8784283e496de66c06cab6efb3bbf117c671dd95b760854f7483828c3a2fb46",
+              "e2e_p99_ms": 870.5198029056191,
+              "output_tokens_s": 698.4332785660004,
+              "repeat": 3,
+              "tpot_p99_ms": 11.832705208075208,
+              "ttft_p99_ms": 679.0598081424832
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r01/workloads/w3_c8/summary.json",
+              "artifact_sha256": "adbc89f647d44b8b20caca7deec2242c8cf1da97ff77ae352cca7c20b812fa86",
+              "e2e_p99_ms": 887.3745519667864,
+              "output_tokens_s": 685.1672708580862,
+              "repeat": 1,
+              "tpot_p99_ms": 11.83673510378277,
+              "ttft_p99_ms": 695.5572138540447
+            }
+          ]
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1336.4725061692297,
+              "bootstrap_95ci_low": 1117.4084031954408,
+              "bootstrap_samples": 10000,
+              "median": 1142.0839629136026,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 542.3263314174372,
+              "bootstrap_95ci_low": 453.9253546610778,
+              "bootstrap_samples": 10000,
+              "median": 482.15878350765564,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 17.629582971108682,
+              "bootstrap_95ci_low": 12.546202662633732,
+              "bootstrap_samples": 10000,
+              "median": 15.095942978267416,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 561.2584599293768,
+              "bootstrap_95ci_low": 518.1605219841003,
+              "bootstrap_samples": 10000,
+              "median": 529.0883360430598,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r04/workloads/w3_c8/summary.json",
+              "artifact_sha256": "5d408cca424a956aeb5f07cb0e3895791c634c4002aad3561552d31d59b7001f",
+              "e2e_p99_ms": 1336.4725061692297,
+              "output_tokens_s": 455.6771629710472,
+              "repeat": 4,
+              "tpot_p99_ms": 15.067190750304496,
+              "ttft_p99_ms": 518.1605219841003
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r05/workloads/w3_c8/summary.json",
+              "artifact_sha256": "322be57e48dfd5e033d19d6624b1dfc40d08df48dcc5f9de7bb8b48f227741df",
+              "e2e_p99_ms": 1117.4084031954408,
+              "output_tokens_s": 542.3263314174372,
+              "repeat": 5,
+              "tpot_p99_ms": 15.095942978267416,
+              "ttft_p99_ms": 529.0883360430598
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w3_c8/summary.json",
+              "artifact_sha256": "75608a8120960eac51850e6ae28efef3b1d7dc7fa7d8fb77df767008ae79b81f",
+              "e2e_p99_ms": 1119.126734789461,
+              "output_tokens_s": 453.9253546610778,
+              "repeat": 2,
+              "tpot_p99_ms": 17.629582971108682,
+              "ttft_p99_ms": 526.4661377295852
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w3_c8/summary.json",
+              "artifact_sha256": "1324f00d67f884629e92f32b77a77e26c69727966a681f0b23416b991502a1dc",
+              "e2e_p99_ms": 1142.0839629136026,
+              "output_tokens_s": 487.7049482237905,
+              "repeat": 3,
+              "tpot_p99_ms": 12.546202662633732,
+              "ttft_p99_ms": 535.5451400391757
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w3_c8/summary.json",
+              "artifact_sha256": "97ca7f8391089f80b8f929e20eaf8b7c99a31dc3f4927b7ca2972b4bd2ccd9b0",
+              "e2e_p99_ms": 1333.5855780169368,
+              "output_tokens_s": 482.15878350765564,
+              "repeat": 1,
+              "tpot_p99_ms": 15.233466241625138,
+              "ttft_p99_ms": 561.2584599293768
+            }
+          ]
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1145.869517698884,
+              "bootstrap_95ci_low": 685.2656067349017,
+              "bootstrap_samples": 10000,
+              "median": 891.7690929956734,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 780.7191762463096,
+              "bootstrap_95ci_low": 618.7440969926506,
+              "bootstrap_samples": 10000,
+              "median": 693.0045062718924,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 10.399016199281087,
+              "bootstrap_95ci_low": 9.885494672768825,
+              "bootstrap_samples": 10000,
+              "median": 9.949050523573533,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 454.34744423255324,
+              "bootstrap_95ci_low": 420.96834583207965,
+              "bootstrap_samples": 10000,
+              "median": 442.47695384547114,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r05/workloads/w3_c8/summary.json",
+              "artifact_sha256": "42378822833b7c8e6c1fa76dc99bdc052e89623b5b6bacc738ec2ea3c7954337",
+              "e2e_p99_ms": 850.3536339849234,
+              "output_tokens_s": 727.9324451160925,
+              "repeat": 5,
+              "tpot_p99_ms": 10.089579830936929,
+              "ttft_p99_ms": 420.96834583207965
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r04/workloads/w3_c8/summary.json",
+              "artifact_sha256": "f9e15b64ffc0cb121625da4cb755dcc72ed761e2c6ec173317d711ee3773964b",
+              "e2e_p99_ms": 1145.869517698884,
+              "output_tokens_s": 618.7440969926506,
+              "repeat": 4,
+              "tpot_p99_ms": 10.399016199281087,
+              "ttft_p99_ms": 454.34744423255324
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w3_c8/summary.json",
+              "artifact_sha256": "407cf83cea68d33876ebbd15b209940366b183291fe861d96e9b6ecb2c1507f2",
+              "e2e_p99_ms": 685.2656067349017,
+              "output_tokens_s": 780.7191762463096,
+              "repeat": 3,
+              "tpot_p99_ms": 9.932549350196496,
+              "ttft_p99_ms": 442.47695384547114
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w3_c8/summary.json",
+              "artifact_sha256": "1dafa473314c7ff8b7951c767b231c0ded4d131202baf72eef588cb0da59622f",
+              "e2e_p99_ms": 1142.5457447767258,
+              "output_tokens_s": 628.421228018586,
+              "repeat": 2,
+              "tpot_p99_ms": 9.885494672768825,
+              "ttft_p99_ms": 444.2155980505049
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w3_c8/summary.json",
+              "artifact_sha256": "a92b3588cc1a6de5b690547db569b343c0c8b8c3071b4690affaf36d8cc04f33",
+              "e2e_p99_ms": 891.7690929956734,
+              "output_tokens_s": 693.0045062718924,
+              "repeat": 1,
+              "tpot_p99_ms": 9.949050523573533,
+              "ttft_p99_ms": 440.0483798235655
+            }
+          ]
+        },
+        "w4a16_ep4_static_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1044.5037288591266,
+              "bootstrap_95ci_low": 1022.7353652007878,
+              "bootstrap_samples": 10000,
+              "median": 1029.8413480632007,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 563.1955436359798,
+              "bootstrap_95ci_low": 551.4580600197032,
+              "bootstrap_samples": 10000,
+              "median": 559.3094519687621,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 15.31253062421456,
+              "bootstrap_95ci_low": 15.105241385754198,
+              "bootstrap_samples": 10000,
+              "median": 15.174670217675157,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 532.518413849175,
+              "bootstrap_95ci_low": 513.3851720020175,
+              "bootstrap_samples": 10000,
+              "median": 520.4202057793736,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r02/workloads/w3_c8/summary.json",
+              "artifact_sha256": "6a4ef3e9cf297827b8893a9bb276dc588b96f5077df6d94f15ff2fe9a13d2bbf",
+              "e2e_p99_ms": 1029.8413480632007,
+              "output_tokens_s": 559.3094519687621,
+              "repeat": 2,
+              "tpot_p99_ms": 15.14414641133044,
+              "ttft_p99_ms": 520.4202057793736
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r03/workloads/w3_c8/summary.json",
+              "artifact_sha256": "cb917d5b16a5e4716634ece5f20df29a82a380fd0c38515837e3ec768a95a05b",
+              "e2e_p99_ms": 1030.9412931092083,
+              "output_tokens_s": 558.7127063878155,
+              "repeat": 3,
+              "tpot_p99_ms": 15.174670217675157,
+              "ttft_p99_ms": 522.799925878644
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r04/workloads/w3_c8/summary.json",
+              "artifact_sha256": "1c478ac25ad1145ecc3f9bde7f03c432ed6d45027c40c0c8b8dd5f94ba6af703",
+              "e2e_p99_ms": 1027.5833327323198,
+              "output_tokens_s": 560.5384805808688,
+              "repeat": 4,
+              "tpot_p99_ms": 15.31253062421456,
+              "ttft_p99_ms": 517.4028580076993
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r05/workloads/w3_c8/summary.json",
+              "artifact_sha256": "b2a4c3169b11e35f237262c6438bd68d8a949fe6320c814000db2a57e38049af",
+              "e2e_p99_ms": 1044.5037288591266,
+              "output_tokens_s": 551.4580600197032,
+              "repeat": 5,
+              "tpot_p99_ms": 15.293612814275548,
+              "ttft_p99_ms": 532.518413849175
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r01/workloads/w3_c8/summary.json",
+              "artifact_sha256": "a95224df5b47958149573d6568986f21962ceb48a3956e2a10d88b6179537fac",
+              "e2e_p99_ms": 1022.7353652007878,
+              "output_tokens_s": 563.1955436359798,
+              "repeat": 1,
+              "tpot_p99_ms": 15.105241385754198,
+              "ttft_p99_ms": 513.3851720020175
+            }
+          ]
+        }
+      },
+      "oracle_by_median_e2e_p99": "fp8_tp2_pix01_triton",
+      "output_tokens": 256,
+      "requests": 16,
+      "workload_id": "w3_c8"
+    },
+    {
+      "concurrency": 16,
+      "id": "w3_c16",
+      "input_tokens": 8192,
+      "measurements": {
+        "fp8_tp2_pix01_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1680.4566499777138,
+              "bootstrap_95ci_low": 1646.6146111488342,
+              "bootstrap_samples": 10000,
+              "median": 1653.0059911310673,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 739.0921905830203,
+              "bootstrap_95ci_low": 720.6374529304641,
+              "bootstrap_samples": 10000,
+              "median": 732.6047252686451,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 21.977908355561464,
+              "bootstrap_95ci_low": 21.65731559885112,
+              "bootstrap_samples": 10000,
+              "median": 21.859717429489702,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 1128.001692239195,
+              "bootstrap_95ci_low": 1089.591538067907,
+              "bootstrap_samples": 10000,
+              "median": 1102.739649824798,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r02/workloads/w3_c16/summary.json",
+              "artifact_sha256": "e27ed7d0ebba251dc0b7c59349f07b2573e33e484b3eeebb147390392c19509c",
+              "e2e_p99_ms": 1646.6146111488342,
+              "output_tokens_s": 739.0921905830203,
+              "repeat": 2,
+              "tpot_p99_ms": 21.977908355561464,
+              "ttft_p99_ms": 1089.591538067907
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r04/workloads/w3_c16/summary.json",
+              "artifact_sha256": "ef0c5e09bc5cbe4e186f87bb171b7c1b3dadfc920f6868c551e8846c77ef7e76",
+              "e2e_p99_ms": 1653.0059911310673,
+              "output_tokens_s": 732.6047252686451,
+              "repeat": 4,
+              "tpot_p99_ms": 21.859717429489702,
+              "ttft_p99_ms": 1100.4654029384255
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r05/workloads/w3_c16/summary.json",
+              "artifact_sha256": "67a0d086b09b87ceaf48879710f77c3b7e2c604890912d0c994d3c9281a4630c",
+              "e2e_p99_ms": 1680.4566499777138,
+              "output_tokens_s": 720.6374529304641,
+              "repeat": 5,
+              "tpot_p99_ms": 21.877026160222453,
+              "ttft_p99_ms": 1128.001692239195
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r03/workloads/w3_c16/summary.json",
+              "artifact_sha256": "4d967264d92b42a2517cafad8213f268717fd58e550547b3b03ba9f47f83113d",
+              "e2e_p99_ms": 1650.5249356850982,
+              "output_tokens_s": 733.705970638571,
+              "repeat": 3,
+              "tpot_p99_ms": 21.65731559885112,
+              "ttft_p99_ms": 1102.739649824798
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r01/workloads/w3_c16/summary.json",
+              "artifact_sha256": "bf9b95bd70bb46d0a3dc79f05637804a007841bee2922cf2f555d1ba752934c4",
+              "e2e_p99_ms": 1661.8977217003703,
+              "output_tokens_s": 732.2953657790846,
+              "repeat": 1,
+              "tpot_p99_ms": 21.81207180979687,
+              "ttft_p99_ms": 1107.805429957807
+            }
+          ]
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 2037.6761951483786,
+              "bootstrap_95ci_low": 1861.5236589685082,
+              "bootstrap_samples": 10000,
+              "median": 1970.2096991240978,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 645.6737601772302,
+              "bootstrap_95ci_low": 590.8691493116881,
+              "bootstrap_samples": 10000,
+              "median": 602.1162941583348,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 23.879899687017314,
+              "bootstrap_95ci_low": 18.749973402009346,
+              "bootstrap_samples": 10000,
+              "median": 21.231379750109202,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 912.1709647588432,
+              "bootstrap_95ci_low": 804.4564593583345,
+              "bootstrap_samples": 10000,
+              "median": 862.0722638443112,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r04/workloads/w3_c16/summary.json",
+              "artifact_sha256": "73be29630a328e1673e4eb8a460846e167df15380e50a7061547936b4f2e7018",
+              "e2e_p99_ms": 2037.6761951483786,
+              "output_tokens_s": 590.8691493116881,
+              "repeat": 4,
+              "tpot_p99_ms": 23.879899687017314,
+              "ttft_p99_ms": 804.4564593583345
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r05/workloads/w3_c16/summary.json",
+              "artifact_sha256": "ab8230e040c97af945e104b35454702533f5e81e7a04ba35d5b01f08aa069b0c",
+              "e2e_p99_ms": 2011.85192912817,
+              "output_tokens_s": 645.6737601772302,
+              "repeat": 5,
+              "tpot_p99_ms": 22.86671371566075,
+              "ttft_p99_ms": 843.9545151777565
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w3_c16/summary.json",
+              "artifact_sha256": "2914e4d1ad04eaa2d9bf3d68c97d49c1abfaeee56cb56c0e72f1381cdb79a36b",
+              "e2e_p99_ms": 1861.5236589685082,
+              "output_tokens_s": 638.1868929123815,
+              "repeat": 2,
+              "tpot_p99_ms": 18.749973402009346,
+              "ttft_p99_ms": 867.388753220439
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w3_c16/summary.json",
+              "artifact_sha256": "3aeea4eff9040bee98e327018d0f79a5f629246963d3c771842718efba152de8",
+              "e2e_p99_ms": 1924.8773222789168,
+              "output_tokens_s": 602.1162941583348,
+              "repeat": 3,
+              "tpot_p99_ms": 20.660863272055533,
+              "ttft_p99_ms": 862.0722638443112
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w3_c16/summary.json",
+              "artifact_sha256": "d1c9be8ec89b73f622cabfe97e0cb0d7da62137a92853dd9156f6fc284a78a72",
+              "e2e_p99_ms": 1970.2096991240978,
+              "output_tokens_s": 592.8302964497948,
+              "repeat": 1,
+              "tpot_p99_ms": 21.231379750109202,
+              "ttft_p99_ms": 912.1709647588432
+            }
+          ]
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1636.6631020791829,
+              "bootstrap_95ci_low": 1095.2667710371315,
+              "bootstrap_samples": 10000,
+              "median": 1482.2268369607627,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 1049.0594897825554,
+              "bootstrap_95ci_low": 839.0657494721474,
+              "bootstrap_samples": 10000,
+              "median": 906.7229523991573,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 15.321445722992603,
+              "bootstrap_95ci_low": 12.819972905245693,
+              "bootstrap_samples": 10000,
+              "median": 14.272626154706813,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 708.0607856623828,
+              "bootstrap_95ci_low": 653.5734231583774,
+              "bootstrap_samples": 10000,
+              "median": 670.1289210468531,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r05/workloads/w3_c16/summary.json",
+              "artifact_sha256": "c6ab7463928ccbc0eee5a8e188b94df386ad308d95a172283a1abf5cd00c91c7",
+              "e2e_p99_ms": 1482.2268369607627,
+              "output_tokens_s": 852.0962976150956,
+              "repeat": 5,
+              "tpot_p99_ms": 14.272626154706813,
+              "ttft_p99_ms": 653.5734231583774
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r04/workloads/w3_c16/summary.json",
+              "artifact_sha256": "fe8796e947e61c23aa0aee6fc95eb49c1d9288378a35890363e9c38f0413a2ff",
+              "e2e_p99_ms": 1551.7258341424167,
+              "output_tokens_s": 839.0657494721474,
+              "repeat": 4,
+              "tpot_p99_ms": 15.321445722992603,
+              "ttft_p99_ms": 708.0607856623828
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w3_c16/summary.json",
+              "artifact_sha256": "813b09d23ad4d5e082b77dfb15179d8f94275d232b45e5546959ebcdaf73d876",
+              "e2e_p99_ms": 1095.2667710371315,
+              "output_tokens_s": 1049.0594897825554,
+              "repeat": 3,
+              "tpot_p99_ms": 12.819972905245693,
+              "ttft_p99_ms": 670.1289210468531
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w3_c16/summary.json",
+              "artifact_sha256": "77be49f77ba7f1867935f72b26be9ca665bacb8e879e4116dcbfe5f0504ebfcb",
+              "e2e_p99_ms": 1636.6631020791829,
+              "output_tokens_s": 906.7229523991573,
+              "repeat": 2,
+              "tpot_p99_ms": 14.83133336472692,
+              "ttft_p99_ms": 692.9959249682724
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w3_c16/summary.json",
+              "artifact_sha256": "f28b2528efcc34d8dfb1b0248c8f5d521c703c3259587ad12dbdb461f65da112",
+              "e2e_p99_ms": 1164.1681548207998,
+              "output_tokens_s": 1017.0352067242836,
+              "repeat": 1,
+              "tpot_p99_ms": 13.511002091973117,
+              "ttft_p99_ms": 669.639210216701
+            }
+          ]
+        },
+        "w4a16_ep4_static_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1564.546275883913,
+              "bootstrap_95ci_low": 1536.8441310711205,
+              "bootstrap_samples": 10000,
+              "median": 1557.5766037218273,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 754.7935256072619,
+              "bootstrap_95ci_low": 729.2849163923743,
+              "bootstrap_samples": 10000,
+              "median": 744.7466771317581,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 20.144350055488758,
+              "bootstrap_95ci_low": 19.483633179333992,
+              "bootstrap_samples": 10000,
+              "median": 19.970918190665543,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 870.6543780863285,
+              "bootstrap_95ci_low": 848.4059628099203,
+              "bootstrap_samples": 10000,
+              "median": 853.422624990344,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r02/workloads/w3_c16/summary.json",
+              "artifact_sha256": "e62a69eaa545c6635c1c01f518c6f89241fed8fe6e3a2a0b31ba719bb9a924d3",
+              "e2e_p99_ms": 1564.546275883913,
+              "output_tokens_s": 729.2849163923743,
+              "repeat": 2,
+              "tpot_p99_ms": 19.507095974404365,
+              "ttft_p99_ms": 853.422624990344
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r03/workloads/w3_c16/summary.json",
+              "artifact_sha256": "e59f28d45570ffcb7ebce217741bb7b56d0c41324285fb952d777d03d179089c",
+              "e2e_p99_ms": 1536.8441310711205,
+              "output_tokens_s": 754.7935256072619,
+              "repeat": 3,
+              "tpot_p99_ms": 19.970918190665543,
+              "ttft_p99_ms": 853.3222461119294
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r04/workloads/w3_c16/summary.json",
+              "artifact_sha256": "0941d79f0673aa8c820186b86f4ee18d8d3ff0c64c986ad137e3ca9e837c3ea4",
+              "e2e_p99_ms": 1542.6335637457669,
+              "output_tokens_s": 751.9608202892526,
+              "repeat": 4,
+              "tpot_p99_ms": 20.144350055488758,
+              "ttft_p99_ms": 853.6560228094459
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r05/workloads/w3_c16/summary.json",
+              "artifact_sha256": "436cc7d0dcccc8af0f6b086d1154d022d56c2e9165240d8be143c1f55e595cb7",
+              "e2e_p99_ms": 1557.5766037218273,
+              "output_tokens_s": 744.7466771317581,
+              "repeat": 5,
+              "tpot_p99_ms": 20.119251479627565,
+              "ttft_p99_ms": 870.6543780863285
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r01/workloads/w3_c16/summary.json",
+              "artifact_sha256": "43e3e47556b868bbb9c8e40f55e61b173e295a44b15211f1526fc689f27fb101",
+              "e2e_p99_ms": 1558.786949608475,
+              "output_tokens_s": 731.9794409919766,
+              "repeat": 1,
+              "tpot_p99_ms": 19.483633179333992,
+              "ttft_p99_ms": 848.4059628099203
+            }
+          ]
+        }
+      },
+      "oracle_by_median_e2e_p99": "nvfp4_redhat_ep8_static_sys",
+      "output_tokens": 256,
+      "requests": 32,
+      "workload_id": "w3_c16"
+    },
+    {
+      "concurrency": 1,
+      "id": "w4_c1",
+      "input_tokens": 32768,
+      "measurements": {
+        "fp8_tp2_pix01_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 2146.9207368791103,
+              "bootstrap_95ci_low": 2118.5110891237855,
+              "bootstrap_samples": 10000,
+              "median": 2131.1933072283864,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 124.6158216283825,
+              "bootstrap_95ci_low": 122.96681263779018,
+              "bootstrap_samples": 10000,
+              "median": 123.87426288576872,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 3.5447984118945897,
+              "bootstrap_95ci_low": 3.5411332501098514,
+              "bootstrap_samples": 10000,
+              "median": 3.5441987274680287,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 2034.5201338641346,
+              "bootstrap_95ci_low": 2006.1744032427669,
+              "bootstrap_samples": 10000,
+              "median": 2018.8415641896427,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r02/workloads/w4_c1/summary.json",
+              "artifact_sha256": "795de60c31d8c59bdf50a8a453daf471894d93436bc7a48e914c15c4153d4b0f",
+              "e2e_p99_ms": 2131.1933072283864,
+              "output_tokens_s": 123.87426288576872,
+              "repeat": 2,
+              "tpot_p99_ms": 3.5443017404759303,
+              "ttft_p99_ms": 2018.8415641896427
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r04/workloads/w4_c1/summary.json",
+              "artifact_sha256": "f02a6dfbe38f3875092b4d737dd314fdee1c5e5e4118cad8bb4ee9bc5c360720",
+              "e2e_p99_ms": 2146.9207368791103,
+              "output_tokens_s": 122.96681263779018,
+              "repeat": 4,
+              "tpot_p99_ms": 3.5427243419690058,
+              "ttft_p99_ms": 2034.5201338641346
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r05/workloads/w4_c1/summary.json",
+              "artifact_sha256": "712a8fa1d39467a2a5725543d27ff6aacf2e7dedbbc2246425368d12d4397366",
+              "e2e_p99_ms": 2137.2438399121165,
+              "output_tokens_s": 123.52357511572272,
+              "repeat": 5,
+              "tpot_p99_ms": 3.5441987274680287,
+              "ttft_p99_ms": 2024.8935408890247
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r03/workloads/w4_c1/summary.json",
+              "artifact_sha256": "58c383653a9707491badfd7e6da4940d6ea2e6fbee6a297df1367afbba79b5e0",
+              "e2e_p99_ms": 2118.5110891237855,
+              "output_tokens_s": 124.6158216283825,
+              "repeat": 3,
+              "tpot_p99_ms": 3.5447984118945897,
+              "ttft_p99_ms": 2006.1744032427669
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r01/workloads/w4_c1/summary.json",
+              "artifact_sha256": "5ed1073e3fa7adc5e885abce7b4988ac9c3a460e27ec33b29596fafe8ccb168f",
+              "e2e_p99_ms": 2129.426986910403,
+              "output_tokens_s": 123.97701429671417,
+              "repeat": 1,
+              "tpot_p99_ms": 3.5411332501098514,
+              "ttft_p99_ms": 2017.0809710398316
+            }
+          ]
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1615.0455810129642,
+              "bootstrap_95ci_low": 1537.231391761452,
+              "bootstrap_samples": 10000,
+              "median": 1562.9707579500973,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 215.47379472827805,
+              "bootstrap_95ci_low": 195.83353971914525,
+              "bootstrap_samples": 10000,
+              "median": 203.94607778278208,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 4.348332976114075,
+              "bootstrap_95ci_low": 4.278931248370769,
+              "bootstrap_samples": 10000,
+              "median": 4.324129907347794,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 1428.0350031331182,
+              "bootstrap_95ci_low": 1396.6467850841582,
+              "bootstrap_samples": 10000,
+              "median": 1407.0690087974072,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r04/workloads/w4_c1/summary.json",
+              "artifact_sha256": "271ab4ba58de5f5443e7dee12e59086a1ed38e75471af6063128e692c4929ba0",
+              "e2e_p99_ms": 1549.4291600771248,
+              "output_tokens_s": 203.94607778278208,
+              "repeat": 4,
+              "tpot_p99_ms": 4.324129907347794,
+              "ttft_p99_ms": 1407.0690087974072
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r05/workloads/w4_c1/summary.json",
+              "artifact_sha256": "305c12646a9e0135ba89b13ce4963b0e05d5387f3e77521fcf1c273732cdadf9",
+              "e2e_p99_ms": 1537.231391761452,
+              "output_tokens_s": 213.3706101487805,
+              "repeat": 5,
+              "tpot_p99_ms": 4.296223424929888,
+              "ttft_p99_ms": 1396.6467850841582
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w4_c1/summary.json",
+              "artifact_sha256": "e4731a47d6e21c02b1e44d6b622ba29aad75f622290b62b4e9682f9ec04d6a1b",
+              "e2e_p99_ms": 1562.9707579500973,
+              "output_tokens_s": 197.0606285711673,
+              "repeat": 2,
+              "tpot_p99_ms": 4.348332976114075,
+              "ttft_p99_ms": 1428.0350031331182
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w4_c1/summary.json",
+              "artifact_sha256": "8a09fa96983bee1a90e16e97414ca18e26e97e8d002c3e85dcf74110c1434090",
+              "e2e_p99_ms": 1608.5089431144297,
+              "output_tokens_s": 195.83353971914525,
+              "repeat": 3,
+              "tpot_p99_ms": 4.278931248370769,
+              "ttft_p99_ms": 1408.8145303539932
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w4_c1/summary.json",
+              "artifact_sha256": "96a6d9c854b3bf19ee8e45bb21b2f9647bcc254e5884b7f5fbba494e8cfd4ffd",
+              "e2e_p99_ms": 1615.0455810129642,
+              "output_tokens_s": 215.47379472827805,
+              "repeat": 1,
+              "tpot_p99_ms": 4.339472427233761,
+              "ttft_p99_ms": 1406.0921417549253
+            }
+          ]
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1485.70243595168,
+              "bootstrap_95ci_low": 1339.837966952473,
+              "bootstrap_samples": 10000,
+              "median": 1451.9178899936378,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 242.43795219132016,
+              "bootstrap_95ci_low": 215.69772399967488,
+              "bootstrap_samples": 10000,
+              "median": 237.36992944222155,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 5.137469520171483,
+              "bootstrap_95ci_low": 5.0204563520702665,
+              "bootstrap_samples": 10000,
+              "median": 5.087069411463332,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 1228.1448799185455,
+              "bootstrap_95ci_low": 1201.6195352189243,
+              "bootstrap_samples": 10000,
+              "median": 1213.0341744050384,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r05/workloads/w4_c1/summary.json",
+              "artifact_sha256": "0c49b7c66afe9146f8af1d30a5b611641f8dc18e2a1a825be9b9316be5a377c9",
+              "e2e_p99_ms": 1456.5983382053673,
+              "output_tokens_s": 222.43606319034458,
+              "repeat": 5,
+              "tpot_p99_ms": 5.1234221983967085,
+              "ttft_p99_ms": 1201.6195352189243
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r04/workloads/w4_c1/summary.json",
+              "artifact_sha256": "3215f8621bc865eeae90ba8c1bce48a5634767c49701b375877a49e7685c7ecb",
+              "e2e_p99_ms": 1485.70243595168,
+              "output_tokens_s": 237.59804888108883,
+              "repeat": 4,
+              "tpot_p99_ms": 5.137469520171483,
+              "ttft_p99_ms": 1215.363068971783
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w4_c1/summary.json",
+              "artifact_sha256": "9d95030eac9ac4bb0ac51a9eeaebb8fda1280631cdd364be107dfec97327d9b2",
+              "e2e_p99_ms": 1377.5965673848987,
+              "output_tokens_s": 237.36992944222155,
+              "repeat": 3,
+              "tpot_p99_ms": 5.082570838139338,
+              "ttft_p99_ms": 1213.0341744050384
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w4_c1/summary.json",
+              "artifact_sha256": "a01ec2624b310a25b48b17bd4e4c1b7011e6c15888d7934a9f221cfae69ea11c",
+              "e2e_p99_ms": 1451.9178899936378,
+              "output_tokens_s": 242.43795219132016,
+              "repeat": 2,
+              "tpot_p99_ms": 5.087069411463332,
+              "ttft_p99_ms": 1228.1448799185455
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w4_c1/summary.json",
+              "artifact_sha256": "983dd4861c83ede5584ddf7a70cd45e96c01423475d414e8f546a1d36bff0d66",
+              "e2e_p99_ms": 1339.837966952473,
+              "output_tokens_s": 215.69772399967488,
+              "repeat": 1,
+              "tpot_p99_ms": 5.0204563520702665,
+              "ttft_p99_ms": 1211.8539330549538
+            }
+          ]
+        },
+        "w4a16_ep4_static_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1678.6137949675322,
+              "bootstrap_95ci_low": 1671.0886736400425,
+              "bootstrap_samples": 10000,
+              "median": 1673.0422591790557,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 157.98084456221164,
+              "bootstrap_95ci_low": 157.2726262535608,
+              "bootstrap_samples": 10000,
+              "median": 157.796372776347,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 5.977100721793249,
+              "bootstrap_95ci_low": 5.967866396531463,
+              "bootstrap_samples": 10000,
+              "median": 5.974271902232431,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 1488.4537630714476,
+              "bootstrap_95ci_low": 1480.1852027885616,
+              "bootstrap_samples": 10000,
+              "median": 1482.3950859718025,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r02/workloads/w4_c1/summary.json",
+              "artifact_sha256": "15bcdb753026c14f737fa6a0f6a49ed6d1a18692a5a30284726a68f836670f68",
+              "e2e_p99_ms": 1674.7302222065628,
+              "output_tokens_s": 157.63732958264964,
+              "repeat": 2,
+              "tpot_p99_ms": 5.977100721793249,
+              "ttft_p99_ms": 1484.1819610446692
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r03/workloads/w4_c1/summary.json",
+              "artifact_sha256": "816ac986cedf42482627e485f8d778243f84c25879f3fe1ea1c02163f070d455",
+              "e2e_p99_ms": 1678.6137949675322,
+              "output_tokens_s": 157.2726262535608,
+              "repeat": 3,
+              "tpot_p99_ms": 5.974271902232431,
+              "ttft_p99_ms": 1488.4537630714476
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r04/workloads/w4_c1/summary.json",
+              "artifact_sha256": "5f2745a695a98963a8bfaab7dff0ca14e21bb1875ca999964b33c710f6fa5f21",
+              "e2e_p99_ms": 1671.0886736400425,
+              "output_tokens_s": 157.98084456221164,
+              "repeat": 4,
+              "tpot_p99_ms": 5.967866396531463,
+              "ttft_p99_ms": 1480.1852027885616
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r05/workloads/w4_c1/summary.json",
+              "artifact_sha256": "4b79768190b27a7af3f0ffa4b931f4ca1c8a7113345b33599cecd2fb9ee4f08e",
+              "e2e_p99_ms": 1672.3190755583346,
+              "output_tokens_s": 157.8646108021334,
+              "repeat": 5,
+              "tpot_p99_ms": 5.9758904098998755,
+              "ttft_p99_ms": 1481.6011507064104
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r01/workloads/w4_c1/summary.json",
+              "artifact_sha256": "00dfdcdd01752d0402293c56ad10557d81ac52ec1af4e6c25f7a15eacf91337e",
+              "e2e_p99_ms": 1673.0422591790557,
+              "output_tokens_s": 157.796372776347,
+              "repeat": 1,
+              "tpot_p99_ms": 5.968815501546487,
+              "ttft_p99_ms": 1482.3950859718025
+            }
+          ]
+        }
+      },
+      "oracle_by_median_e2e_p99": "nvfp4_redhat_ep8_static_sys",
+      "output_tokens": 128,
+      "requests": 8,
+      "workload_id": "w4_c1"
+    },
+    {
+      "concurrency": 4,
+      "id": "w4_c4",
+      "input_tokens": 32768,
+      "measurements": {
+        "fp8_tp2_pix01_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 537.5722446478903,
+              "bootstrap_95ci_low": 523.6677089706063,
+              "bootstrap_samples": 10000,
+              "median": 524.8956456780434,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 580.5208050685127,
+              "bootstrap_95ci_low": 565.5053865348274,
+              "bootstrap_samples": 10000,
+              "median": 579.1627393046908,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 7.143359140467805,
+              "bootstrap_95ci_low": 7.071205049853873,
+              "bootstrap_samples": 10000,
+              "median": 7.117202681665485,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 352.4791058152914,
+              "bootstrap_95ci_low": 338.5725971311331,
+              "bootstrap_samples": 10000,
+              "median": 340.3904549777508,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r02/workloads/w4_c4/summary.json",
+              "artifact_sha256": "f1dd727234d53eb72d855e31dbf00b3c0255dbf930040ccb84460774539a0d50",
+              "e2e_p99_ms": 523.6677089706063,
+              "output_tokens_s": 580.5208050685127,
+              "repeat": 2,
+              "tpot_p99_ms": 7.143359140467805,
+              "ttft_p99_ms": 338.5725971311331
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r04/workloads/w4_c4/summary.json",
+              "artifact_sha256": "568b1ab3ad633dcbc8f6a50a4c96ecb0f5b0d4ce5ea57743657e5492157a9cbd",
+              "e2e_p99_ms": 531.9278771057725,
+              "output_tokens_s": 571.5060501323385,
+              "repeat": 4,
+              "tpot_p99_ms": 7.127249978382039,
+              "ttft_p99_ms": 347.7492732927203
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r05/workloads/w4_c4/summary.json",
+              "artifact_sha256": "6310da2d76970182f560382ff579c20ddda9be0d12db639eb0c696a36b49d310",
+              "e2e_p99_ms": 524.2364997975528,
+              "output_tokens_s": 579.8909463904121,
+              "repeat": 5,
+              "tpot_p99_ms": 7.117202681665485,
+              "ttft_p99_ms": 340.3904549777508
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r03/workloads/w4_c4/summary.json",
+              "artifact_sha256": "4efc8751db3d033801851ad8b1cc5ea430939cd89bd33b3a81e5c14e9d6e3fc1",
+              "e2e_p99_ms": 537.5722446478903,
+              "output_tokens_s": 565.5053865348274,
+              "repeat": 3,
+              "tpot_p99_ms": 7.117037246054089,
+              "ttft_p99_ms": 352.4791058152914
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/fp8_tp2_pix01_triton__r01/workloads/w4_c4/summary.json",
+              "artifact_sha256": "5baba0a0f1856592bcd944abc70b4078083c74dba5036bb82b28505637a325db",
+              "e2e_p99_ms": 524.8956456780434,
+              "output_tokens_s": 579.1627393046908,
+              "repeat": 1,
+              "tpot_p99_ms": 7.071205049853873,
+              "ttft_p99_ms": 340.02138674259186
+            }
+          ]
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 745.322726201266,
+              "bootstrap_95ci_low": 572.5786685943604,
+              "bootstrap_samples": 10000,
+              "median": 704.6985351480544,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 516.959531039916,
+              "bootstrap_95ci_low": 419.95230924365757,
+              "bootstrap_samples": 10000,
+              "median": 490.0616156820712,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 8.395121329360538,
+              "bootstrap_95ci_low": 7.8730748226756555,
+              "bootstrap_samples": 10000,
+              "median": 7.955633386066466,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 367.05501610413194,
+              "bootstrap_95ci_low": 347.1478377468884,
+              "bootstrap_samples": 10000,
+              "median": 356.1989520676434,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r04/workloads/w4_c4/summary.json",
+              "artifact_sha256": "7f7e1dda50cd5c51b15d5c6fe46997f2a044aa97cc68bcf1138939d7f0708aa0",
+              "e2e_p99_ms": 745.322726201266,
+              "output_tokens_s": 419.95230924365757,
+              "repeat": 4,
+              "tpot_p99_ms": 7.955633386066466,
+              "ttft_p99_ms": 367.05501610413194
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r05/workloads/w4_c4/summary.json",
+              "artifact_sha256": "5b07d55c939fbdd82e8ded9f75c4b7aa50e91b5d087fa70c5a0d7ca5fbbd0640",
+              "e2e_p99_ms": 704.6985351480544,
+              "output_tokens_s": 479.6377218649781,
+              "repeat": 5,
+              "tpot_p99_ms": 8.008055036153758,
+              "ttft_p99_ms": 353.3704890869558
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w4_c4/summary.json",
+              "artifact_sha256": "55ac076b790f1d00005e0122dd2e9fc6cde743ec84342f9380bfaa168b004fd3",
+              "e2e_p99_ms": 572.5786685943604,
+              "output_tokens_s": 516.959531039916,
+              "repeat": 2,
+              "tpot_p99_ms": 8.395121329360538,
+              "ttft_p99_ms": 365.2836657129228
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w4_c4/summary.json",
+              "artifact_sha256": "a660c1e01b49f79d28566243ae7eab78314de1185983ab326ce389f6e0f248d0",
+              "e2e_p99_ms": 710.1147873327136,
+              "output_tokens_s": 490.0616156820712,
+              "repeat": 3,
+              "tpot_p99_ms": 7.8792189768351175,
+              "ttft_p99_ms": 356.1989520676434
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w4_c4/summary.json",
+              "artifact_sha256": "54e23f97568389190431d6df175d40a39ad28c959b6d615a59f3f9c1427a0437",
+              "e2e_p99_ms": 599.0205202251673,
+              "output_tokens_s": 507.4951353681986,
+              "repeat": 1,
+              "tpot_p99_ms": 7.8730748226756555,
+              "ttft_p99_ms": 347.1478377468884
+            }
+          ]
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 1028.9722811430693,
+              "bootstrap_95ci_low": 603.8169502280653,
+              "bootstrap_samples": 10000,
+              "median": 787.3614341951907,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 462.0605630474932,
+              "bootstrap_95ci_low": 336.25784322939586,
+              "bootstrap_samples": 10000,
+              "median": 408.6287378329521,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 9.491583726440485,
+              "bootstrap_95ci_low": 8.8018641580601,
+              "bootstrap_samples": 10000,
+              "median": 9.04968057787328,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 385.6204291805625,
+              "bootstrap_95ci_low": 365.2487122453749,
+              "bootstrap_samples": 10000,
+              "median": 368.7064750120044,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r05/workloads/w4_c4/summary.json",
+              "artifact_sha256": "bb0d58b5623cadb460cd02582bdb335d5a827978cc62e87586053657452224ca",
+              "e2e_p99_ms": 1028.9722811430693,
+              "output_tokens_s": 336.25784322939586,
+              "repeat": 5,
+              "tpot_p99_ms": 9.472207996893573,
+              "ttft_p99_ms": 368.7064750120044
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r04/workloads/w4_c4/summary.json",
+              "artifact_sha256": "5f714c42ad0aef80e24db02409aaffb605b0b6fc803d6eba41a70b5b267797f7",
+              "e2e_p99_ms": 756.1876378022134,
+              "output_tokens_s": 408.6287378329521,
+              "repeat": 4,
+              "tpot_p99_ms": 8.8018641580601,
+              "ttft_p99_ms": 370.23766012862325
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w4_c4/summary.json",
+              "artifact_sha256": "db63100251efff2dbbfbe2242f6744c65efc144415c72d766d47c7408818ca31",
+              "e2e_p99_ms": 787.3614341951907,
+              "output_tokens_s": 374.6691000957358,
+              "repeat": 3,
+              "tpot_p99_ms": 9.491583726440485,
+              "ttft_p99_ms": 367.73568112403154
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w4_c4/summary.json",
+              "artifact_sha256": "29d5aeded75c7033ab9946fc033aeea1b29ddd323f43430a57e95095e9984c31",
+              "e2e_p99_ms": 803.7689598277211,
+              "output_tokens_s": 445.40162396509226,
+              "repeat": 2,
+              "tpot_p99_ms": 8.872677755513877,
+              "ttft_p99_ms": 365.2487122453749
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w4_c4/summary.json",
+              "artifact_sha256": "ed29c92cb967ff9be1c06e8750d4b6e749d0f06f242300f1443ccb26555136a0",
+              "e2e_p99_ms": 603.8169502280653,
+              "output_tokens_s": 462.0605630474932,
+              "repeat": 1,
+              "tpot_p99_ms": 9.04968057787328,
+              "ttft_p99_ms": 385.6204291805625
+            }
+          ]
+        },
+        "w4a16_ep4_static_triton": {
+          "metrics": {
+            "e2e_p99_ms": {
+              "bootstrap_95ci_high": 745.6757612526417,
+              "bootstrap_95ci_low": 682.0184420794249,
+              "bootstrap_samples": 10000,
+              "median": 731.2722741626203,
+              "n": 5
+            },
+            "output_tokens_s": {
+              "bootstrap_95ci_high": 403.21490304799516,
+              "bootstrap_95ci_low": 367.4519331830156,
+              "bootstrap_samples": 10000,
+              "median": 376.0569212266422,
+              "n": 5
+            },
+            "tpot_p99_ms": {
+              "bootstrap_95ci_high": 12.119340259232558,
+              "bootstrap_95ci_low": 11.885748943313956,
+              "bootstrap_samples": 10000,
+              "median": 11.957049748161808,
+              "n": 5
+            },
+            "ttft_p99_ms": {
+              "bootstrap_95ci_high": 417.5369911827147,
+              "bootstrap_95ci_low": 391.3727020844817,
+              "bootstrap_samples": 10000,
+              "median": 397.4941042251885,
+              "n": 5
+            }
+          },
+          "repeats": [
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r02/workloads/w4_c4/summary.json",
+              "artifact_sha256": "d3c5b9e20e661b7ada9b89b688d86f57e55c20aede08fa14f4745ccd643f5848",
+              "e2e_p99_ms": 719.7264903225005,
+              "output_tokens_s": 380.7001738635798,
+              "repeat": 2,
+              "tpot_p99_ms": 11.957049748161808,
+              "ttft_p99_ms": 391.3727020844817
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r03/workloads/w4_c4/summary.json",
+              "artifact_sha256": "93b80aec99e25ad0895fdd3eb3218001851efc9abc584a88413d2162e6a91f81",
+              "e2e_p99_ms": 731.2722741626203,
+              "output_tokens_s": 376.0569212266422,
+              "repeat": 3,
+              "tpot_p99_ms": 11.957440685364418,
+              "ttft_p99_ms": 397.4941042251885
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r04/workloads/w4_c4/summary.json",
+              "artifact_sha256": "161d2e91a810fa012ee52048fc6aa4409f6affbb0d16765cedb0714022d26623",
+              "e2e_p99_ms": 745.6757612526417,
+              "output_tokens_s": 367.4519331830156,
+              "repeat": 4,
+              "tpot_p99_ms": 12.119340259232558,
+              "ttft_p99_ms": 417.5369911827147
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r05/workloads/w4_c4/summary.json",
+              "artifact_sha256": "70705c1309897291b0922a8d67e396af5cb72c1e6be83eb51d236bad446c4e91",
+              "e2e_p99_ms": 731.8716710433364,
+              "output_tokens_s": 374.38257394140294,
+              "repeat": 5,
+              "tpot_p99_ms": 11.952618369832635,
+              "ttft_p99_ms": 403.874303214252
+            },
+            {
+              "artifact_path": "/data/models/test/qtopomoe_phase8_repeated_v4/runs/w4a16_ep4_static_triton__r01/workloads/w4_c4/summary.json",
+              "artifact_sha256": "408354269b760ad9c95e06fde73de1e32851f8b47957b1826bee9938d2a40267",
+              "e2e_p99_ms": 682.0184420794249,
+              "output_tokens_s": 403.21490304799516,
+              "repeat": 1,
+              "tpot_p99_ms": 11.885748943313956,
+              "ttft_p99_ms": 396.83291083201766
+            }
+          ]
+        }
+      },
+      "oracle_by_median_e2e_p99": "fp8_tp2_pix01_triton",
+      "output_tokens": 128,
+      "requests": 8,
+      "workload_id": "w4_c4"
+    }
+  ],
+  "run_audit": [
+    {
+      "meta_sha256": "a7c78da4e354c993385348f7a60d580135a48400376faeccbd062f420a23d5ec",
+      "peak_selected_gpu_memory_sum_mib": 235894.0,
+      "run_id": "nvfp4_redhat_ep8_static_sys__r05",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "5a034d74ef0ac20f0a13f26a100be7ca1caf09d63c14772d5cafeb577e032939",
+      "peak_selected_gpu_memory_sum_mib": 119652.0,
+      "run_id": "w4a16_ep4_static_triton__r02",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "2c865ae59eac78936c040c8c32c62ad4b91696af05c63fff61b4574da7b36f50",
+      "peak_selected_gpu_memory_sum_mib": 117532.0,
+      "run_id": "nvfp4_redhat_ep4_static_numa0__r04",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "61f9ae49a2751344a0c303b3877b8762ebf26c2e617a769e5fad0b425af16f2a",
+      "peak_selected_gpu_memory_sum_mib": 58878.0,
+      "run_id": "fp8_tp2_pix01_triton__r02",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "a775e914e62bb35fc486e3dec7b3d3fdbeea01cd61263f10e605a1fe4a07bc9e",
+      "peak_selected_gpu_memory_sum_mib": 119652.0,
+      "run_id": "w4a16_ep4_static_triton__r03",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "fe223559e69a13a76d32cae4b4bfee5a4cfa31ec4ed886255977ba7dd15ff776",
+      "peak_selected_gpu_memory_sum_mib": 119652.0,
+      "run_id": "w4a16_ep4_static_triton__r04",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "fe86bbfc1bcd382aab6f0e9f12799c887ccd408dcc4b7de3399c80223dadcff1",
+      "peak_selected_gpu_memory_sum_mib": 235896.0,
+      "run_id": "nvfp4_redhat_ep8_static_sys__r04",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "9ce4e12df4e745b4501375a95be91938f4c268cea839bc6a43be77823e1aa253",
+      "peak_selected_gpu_memory_sum_mib": 117532.0,
+      "run_id": "nvfp4_redhat_ep4_static_numa0__r05",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "4116dc249f09dbd9808915209acc2d636fd0d4b348639ea106a31c33c54e29c1",
+      "peak_selected_gpu_memory_sum_mib": 117532.0,
+      "run_id": "nvfp4_redhat_ep4_static_numa0__r02",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "5d4cc2addd73577e3003af4c29a18bd7bfec0bc2d2550797ba7a6453e7ef1c4d",
+      "peak_selected_gpu_memory_sum_mib": 58878.0,
+      "run_id": "fp8_tp2_pix01_triton__r04",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "c961ea85016db70cf99a7ef8aea3f541c8bb7a9c48d3823dd939bc3bb9f42b1a",
+      "peak_selected_gpu_memory_sum_mib": 119652.0,
+      "run_id": "w4a16_ep4_static_triton__r05",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "5315f89aa87bad88e5e5355b2c190bd5aca9a131d904acc99e49517c5062e86a",
+      "peak_selected_gpu_memory_sum_mib": 117532.0,
+      "run_id": "nvfp4_redhat_ep4_static_numa0__r03",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "8d15eb41356a2286969909467794f9b2c61ed6c05fb736de80b1d1115ebc2604",
+      "peak_selected_gpu_memory_sum_mib": 119652.0,
+      "run_id": "w4a16_ep4_static_triton__r01",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "99790fe87ed3f18e1cdd0bceadab9cb5dbcce7c77f844cc6e10b7bcf80b7c92b",
+      "peak_selected_gpu_memory_sum_mib": 235854.0,
+      "run_id": "nvfp4_redhat_ep8_static_sys__r03",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "c15524423896871cdb2ba54ab70b3ec3a4e48590656cdf4213a6794f034a0d81",
+      "peak_selected_gpu_memory_sum_mib": 117540.0,
+      "run_id": "nvfp4_redhat_ep4_static_numa0__r01",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "eb874416062cac11156747e844e257121b9aab811f483a5918575a237f1c336f",
+      "peak_selected_gpu_memory_sum_mib": 58878.0,
+      "run_id": "fp8_tp2_pix01_triton__r05",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "4875611d6e0452eb5ace465e01628b22707a7806f35df408200cd131384bbaeb",
+      "peak_selected_gpu_memory_sum_mib": 235850.0,
+      "run_id": "nvfp4_redhat_ep8_static_sys__r02",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "0242fa7176e245cb14a06dae04835ac56c7d18d06929f03e8508a96879eca457",
+      "peak_selected_gpu_memory_sum_mib": 58878.0,
+      "run_id": "fp8_tp2_pix01_triton__r03",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "f7bcee087e9d7f444b375c51029202b75757a36a82b6fcaa6f8d7e4cfda59ad7",
+      "peak_selected_gpu_memory_sum_mib": 58878.0,
+      "run_id": "fp8_tp2_pix01_triton__r01",
+      "status": "workload_passed"
+    },
+    {
+      "meta_sha256": "8497873fdaa96a9ebc0d26e6e9c9289225dfdeb111919b7aa842ea6293db3321",
+      "peak_selected_gpu_memory_sum_mib": 235870.0,
+      "run_id": "nvfp4_redhat_ep8_static_sys__r01",
+      "status": "workload_passed"
+    }
+  ],
+  "schedule": "/data/models/test/qtopomoe_phase8_repeated_v4/schedule.json",
+  "schedule_sha256": "9746e1873c9b504d99b10cf4e300cd250a8df1132cd331df923e6aed6c1e8740",
+  "schema_version": "qtopomoe.phase8_repeated_bootstrap.v1",
+  "status": "accepted",
+  "workload_matrix": "/home/k8s-ops/moe/configs/workloads/phase8_single_pass_screen.json",
+  "workload_matrix_sha256": "de91dd4a05fa610d73d2e8554ea4fabb7d4959f0423defc057c1190089a33e74"
+}

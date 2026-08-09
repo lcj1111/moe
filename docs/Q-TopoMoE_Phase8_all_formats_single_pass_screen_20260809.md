@@ -48,14 +48,15 @@ deliberate shutdown, after all workload summaries had been written and every
 inference request returned HTTP 200. It is classified as a shutdown artifact,
 not an inference failure.
 
-## Next ordered step
+## Repeated-run follow-up
 
-Run the four Pareto candidates in seeded randomized order, five independent
-service repetitions per candidate and workload cell, with health check,
-warmup, measurement, clean stop and 30-second cooldown for every repetition.
-Report bootstrap 95% confidence intervals. Prefix-cache 0/50/90% and the
-closed-loop/Poisson/burst traffic dimensions still require their formal runs;
-the current screen only establishes the candidate funnel.
+This ordered step is complete. The four Pareto candidates ran in seed-42
+randomized order with five independent service repetitions, health check,
+warmup, measurement, clean stop and cooldown. The accepted 10,000-resample
+result and interpretation are in
+`docs/Q-TopoMoE_Phase8_all_formats_repeated_bootstrap_20260810.md`; its
+machine-readable evidence is the adjacent `.json` file. Prefix-cache
+0/50/90% and closed-loop/Poisson/burst still require controlled formal runs.
 
 The frozen repeated-run implementation is
 `configs/experiments/phase8_pareto_repeated_v1.json` plus
@@ -73,9 +74,9 @@ backend and EP rank count after warmup, audits every cell, and cools down for
   --output-root /data/models/test/qtopomoe_phase8_repeated_v1
 ```
 
-After all 20 runs pass, generate deterministic 10,000-sample bootstrap median
-intervals with `scripts/aggregate_phase8_repeated.py`. Raw artifacts remain on
-the data volume; only the compact aggregate is committed.
+All 20 runs passed and deterministic intervals were generated with
+`scripts/aggregate_phase8_repeated.py`. Raw artifacts remain on the data
+volume; only the compact aggregate is committed.
 
 Pre-measurement runner corrections and their preserved evidence directories
 are recorded in `docs/Q-TopoMoE_Phase8_repeated_run_incidents_20260809.md`.
