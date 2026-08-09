@@ -93,6 +93,17 @@ result in `docs/Q-TopoMoE_Phase8_NVFP4_selector_screen_replay_20260809.json`;
 the next valid step is repeated service measurement and service-level
 calibration, not hard-coding the twelve oracle answers or adding RL.
 
+## Cross-format single-pass funnel (2026-08-09)
+
+The same exact-token 12-cell screen now covers BF16 TP4, FP8 TP2, W4A16
+TP1 x DP4, W4A16 static EP4, RedHat NVFP4 static EP4 and NVFP4 static EP8.
+All six passed the request/token/topology Gates. The resource-aware Pareto set
+is FP8 TP2, W4A16 EP4, NVFP4 EP4 and NVFP4 EP8. Detailed measurements,
+failure recovery notes and the ordered next step are in
+`docs/Q-TopoMoE_Phase8_all_formats_single_pass_screen_20260809.md`; the
+machine-readable aggregate is the adjacent `.json` file. These are screening
+results only and do not replace randomized five-repeat bootstrap-CI runs.
+
 ## CPU verification
 
 ```bash

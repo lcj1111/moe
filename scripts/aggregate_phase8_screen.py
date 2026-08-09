@@ -102,16 +102,36 @@ def main() -> None:
                 continue
             meta = json.loads(meta_path.read_text(encoding="utf-8"))
             root_gpu_ids = {int(value) for value in str(meta["gpu_ids"]).split(",")}
+            ep_enabled = bool(meta["ep"])
+            expected_ep_ranks = int(meta.get("expected_ep_ranks", 0))
+            actual_ep_ranks = int(meta.get("actual_ep_ranks", 0))
+            if ep_enabled and (expected_ep_ranks <= 0 or
+                               actual_ep_ranks != expected_ep_ranks):
+                errors.append(
+                    f"{candidate_id}: {root} EP ranks actual={actual_ep_ranks} "
+                    f"expected={expected_ep_ranks}")
+            if not ep_enabled and actual_ep_ranks != 0:
+                errors.append(
+                    f"{candidate_id}: {root} EP disabled but actual_ep_ranks="
+                    f"{actual_ep_ranks}")
             if gpu_ids is None:
                 gpu_ids = root_gpu_ids
                 candidate_meta[candidate_id] = {
                     "model_path": meta["model_path"], "tp": meta["tp"],
-                    "dp": meta["dp"], "ep_enabled": bool(meta["ep"]),
-                    "actual_ep_ranks": meta["actual_ep_ranks"],
+                    "dp": meta["dp"], "ep_enabled": ep_enabled,
+                    "expected_ep_ranks": expected_ep_ranks,
+                    "actual_ep_ranks": actual_ep_ranks,
                     "gpu_ids": sorted(root_gpu_ids), "gpu_count": len(root_gpu_ids),
                 }
             elif root_gpu_ids != gpu_ids:
                 errors.append(f"{candidate_id}: inconsistent GPU IDs across roots")
+            elif any((meta["model_path"] != candidate_meta[candidate_id]["model_path"],
+                      meta["tp"] != candidate_meta[candidate_id]["tp"],
+                      meta["dp"] != candidate_meta[candidate_id]["dp"],
+                      ep_enabled != candidate_meta[candidate_id]["ep_enabled"],
+                      expected_ep_ranks != candidate_meta[candidate_id]["expected_ep_ranks"],
+                      actual_ep_ranks != candidate_meta[candidate_id]["actual_ep_ranks"])):
+                errors.append(f"{candidate_id}: inconsistent topology metadata across roots")
             if meta.get("status") != "workload_passed":
                 errors.append(f"{candidate_id}: {root} status={meta.get('status')}")
             stats = peak_gpu_stats(root, root_gpu_ids)
@@ -150,6 +170,10 @@ def main() -> None:
                 continue
             if summary.get("failed") != 0:
                 errors.append(f"{candidate_id}/{cell_id}: failed={summary.get('failed')}")
+            if summary.get("completed") != summary.get("requests"):
+                errors.append(
+                    f"{candidate_id}/{cell_id}: completed={summary.get('completed')} "
+                    f"requests={summary.get('requests')}")
             if summary.get("input_tokens_actual") != cell["input_tokens"]:
                 errors.append(
                     f"{candidate_id}/{cell_id}: actual tokens "
@@ -211,6 +235,8 @@ def main() -> None:
             "failed_zero": not any("failed=" in item for item in errors),
             "token_exact": not any("actual tokens" in item for item in errors),
             "single_chat_template": len(chat_template_hashes) == 1,
+            "ep_rank_truth": not any("EP rank" in item for item in errors),
+            "all_requests_completed": not any("completed=" in item for item in errors),
         },
         "workload_matrix": str(args.workload_matrix),
         "workload_matrix_sha256": sha256(args.workload_matrix),
