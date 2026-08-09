@@ -61,12 +61,14 @@ The frozen repeated-run implementation is
 `configs/experiments/phase8_pareto_repeated_v1.json` plus
 `scripts/run_phase8_repeated.py`. It creates a seed-42 schedule of 20 service
 runs, refuses to overwrite incomplete evidence, verifies idle selected GPUs,
-pins the P2P-enabled environment, checks the exact runtime backend and EP rank
-count after warmup, audits every cell, and cools down for 30 seconds. Run it on
-gpu-111 with:
+pins the P2P-enabled environment, rejects any vLLM version other than the
+cleanroom-frozen `0.26.1rc1.dev343+g33c50587d`, checks the exact runtime
+backend and EP rank count after warmup, audits every cell, and cools down for
+30 seconds. Run it on gpu-111 with:
 
 ```bash
-/data/models/test/vllm_env/bin/python scripts/run_phase8_repeated.py \
+/home/k8s-ops/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python \
+  scripts/run_phase8_repeated.py \
   --plan configs/experiments/phase8_pareto_repeated_v1.json \
   --output-root /data/models/test/qtopomoe_phase8_repeated_v1
 ```

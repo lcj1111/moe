@@ -10,6 +10,11 @@
   "max_model_len": 65536,
   "max_num_seqs": 128,
   "gpu_memory_utilization": 0.9,
+  "software": {
+    "python_bin": "/home/k8s-ops/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python",
+    "vllm_bin": "/home/k8s-ops/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/vllm",
+    "expected_vllm_version": "0.26.1rc1.dev343+g33c50587d"
+  },
   "workload_matrix": "configs/workloads/phase8_single_pass_screen.json",
   "candidates": [
     {

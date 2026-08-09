@@ -47,6 +47,27 @@ def build_schedule(plan: dict[str, Any]) -> list[dict[str, Any]]:
     return [{"order": index + 1, **row} for index, row in enumerate(rows)]
 
 
+def verify_runtime(plan: dict[str, Any], vllm_bin: str,
+                   python_bin: str) -> dict[str, str]:
+    for path in (Path(vllm_bin), Path(python_bin)):
+        if not path.exists():
+            raise RuntimeError(f"missing frozen runtime executable: {path}")
+    code = (
+        "import json,sys,vllm; "
+        "print(json.dumps({'python':sys.executable,'vllm_version':vllm.__version__,"
+        "'vllm_file':vllm.__file__}))")
+    runtime = json.loads(subprocess.run(
+        [python_bin, "-c", code], check=True, capture_output=True,
+        text=True).stdout.strip())
+    expected = plan["software"]["expected_vllm_version"]
+    if runtime["vllm_version"] != expected:
+        raise RuntimeError(
+            f"frozen vLLM Gate failed: actual={runtime['vllm_version']} expected={expected}")
+    runtime.update({"vllm_bin": str(Path(vllm_bin).resolve()),
+                    "vllm_bin_sha256": sha256(Path(vllm_bin))})
+    return runtime
+
+
 def busy_gpu_ids() -> set[int]:
     gpu_rows = subprocess.run(
         ["nvidia-smi", "--query-gpu=index,uuid", "--format=csv,noheader"],
@@ -133,7 +154,7 @@ def service_command(plan: dict[str, Any], candidate: dict[str, Any],
 
 def run_one(plan: dict[str, Any], candidate: dict[str, Any], repeat: int,
             matrix: dict[str, Any], repo: Path, root: Path,
-            vllm_bin: str, python_bin: str) -> None:
+            vllm_bin: str, python_bin: str, runtime: dict[str, str]) -> None:
     run_id = f"{candidate['candidate_id']}__r{repeat:02d}"
     run_dir = root / "runs" / run_id
     meta_path = run_dir / "meta.json"
@@ -162,6 +183,7 @@ def run_one(plan: dict[str, Any], candidate: dict[str, Any], repeat: int,
         "actual_ep_ranks": 0, "moe_backend": candidate.get("moe_backend"),
         "backend_log_pattern": candidate["backend_log_pattern"],
         "numa_args": candidate.get("numa_args", []), "command": command,
+        "runtime": runtime,
         "started_unix": time.time(),
     }
     write_json(meta_path, meta)
@@ -238,12 +260,15 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--plan", type=Path, required=True)
     parser.add_argument("--output-root", type=Path, required=True)
-    parser.add_argument("--vllm-bin", default="/data/models/test/vllm_env/bin/vllm")
-    parser.add_argument("--python-bin", default="/data/models/test/vllm_env/bin/python")
+    parser.add_argument("--vllm-bin")
+    parser.add_argument("--python-bin")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[1]
     plan = load_json(args.plan)
+    vllm_bin = args.vllm_bin or plan["software"]["vllm_bin"]
+    python_bin = args.python_bin or plan["software"]["python_bin"]
+    runtime = verify_runtime(plan, vllm_bin, python_bin)
     matrix_path = repo / plan["workload_matrix"]
     matrix = load_json(matrix_path)
     candidates = {row["candidate_id"]: row for row in plan["candidates"]}
@@ -252,7 +277,7 @@ def main() -> None:
         "schema_version": "qtopomoe.phase8_repeated_schedule.v1",
         "plan": str(args.plan.resolve()), "plan_sha256": sha256(args.plan),
         "workload_matrix": str(matrix_path), "workload_matrix_sha256": sha256(matrix_path),
-        "seed": plan["seed"], "schedule": schedule,
+        "seed": plan["seed"], "runtime": runtime, "schedule": schedule,
     }
     if args.dry_run:
         print(json.dumps(manifest, indent=2, sort_keys=True))
@@ -267,7 +292,7 @@ def main() -> None:
         write_json(status_path, {"status": "running", "current": item,
                                  "updated_unix": time.time()})
         run_one(plan, candidates[item["candidate_id"]], item["repeat"], matrix,
-                repo, args.output_root, args.vllm_bin, args.python_bin)
+                repo, args.output_root, vllm_bin, python_bin, runtime)
         write_json(status_path, {"status": "cooldown", "completed": item,
                                  "updated_unix": time.time()})
         time.sleep(int(plan["cooldown_seconds"]))
