@@ -76,3 +76,6 @@ backend and EP rank count after warmup, audits every cell, and cools down for
 After all 20 runs pass, generate deterministic 10,000-sample bootstrap median
 intervals with `scripts/aggregate_phase8_repeated.py`. Raw artifacts remain on
 the data volume; only the compact aggregate is committed.
+
+Pre-measurement runner corrections and their preserved evidence directories
+are recorded in `docs/Q-TopoMoE_Phase8_repeated_run_incidents_20260809.md`.
