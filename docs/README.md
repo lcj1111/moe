@@ -44,11 +44,14 @@
 - [original upstream gate（报告）](Q-TopoMoE_Qwen35_original_upstream_gate_20260805.md) /
   [original upstream gate（数据）](Q-TopoMoE_Qwen35_original_upstream_gate_20260805.json)
 
-### 量化与 W4A16
+### 量化：NVFP4 与 W4A16
 
 - [NVFP4 官方 checkpoint 验证与质量 Gate](Q-TopoMoE_Phase2_NVFP4_gate_20260807.md) /
   [audit（数据）](Q-TopoMoE_Phase2_NVFP4_audit_20260807.json) /
-  [quality summary（数据）](Q-TopoMoE_Phase2_NVFP4_official_like_v2_summary_20260807.json)
+  [official quality summary（数据）](Q-TopoMoE_Phase2_NVFP4_official_like_v2_summary_20260807.json) /
+  [selfgen Gate（数据）](Q-TopoMoE_Phase2_NVFP4_selfgen_gate_20260809.json) /
+  [selfgen quality summary（数据）](Q-TopoMoE_Phase2_NVFP4_selfgen_official_like_v2_summary_20260809.json)
+- [NVFP4 阶段交接与最终状态](HANDOFF_20260809_NVFP4.md)
 
 - [Phase2 量化预检报告](Q-TopoMoE_Phase2_量化预检报告.md)
 - [Phase2 W4A16 freeze（数据）](Q-TopoMoE_W4A16_freeze_20260805.json)

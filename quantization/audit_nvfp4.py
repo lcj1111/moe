@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Static NVFP4 (compressed-tensors, nvfp4-pack-quantized) coverage audit.
 
 NVFP4 checkpoints produced by llmcompressor's
