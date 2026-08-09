@@ -21,11 +21,15 @@
 
 | 端 | 位置 | HEAD | 备注 |
 |---|---|---|---|
-| 本地 Windows | `C:\Users\29876\Documents\Codex\2026-08-03\new-chat-2\work\moe-push-20260804` | `9a65b87` + 本归档提交 | 官方与 selfgen Gate 已归档 |
-| GitHub | `lcj1111/moe` 分支 `agent/sync-q-topomoe-project` | 同步后填写 | 网络曾间歇断连，必须核验远端 SHA |
-| 服务器 | `gpu-111:/home/k8s-ops/moe` | `9a65b87` + 本归档提交 | bundle 快进同步；`.sync/` 为可恢复备份 |
+| 本地 Windows | `C:\Users\29876\Documents\Codex\2026-08-03\new-chat-2\work\moe-push-20260804` | `9f2db1e` + 本状态提交 | 官方与 selfgen Gate 已归档 |
+| GitHub | `lcj1111/moe` 分支 `agent/sync-q-topomoe-project` | `1c79c34` | **尚未同步**：HTTPS 443 超时；GitHub 应用写 API 返回 403 |
+| 服务器 | `gpu-111:/home/k8s-ops/moe` | `9f2db1e` + 本状态提交 | bundle 快进同步；`.sync/` 为可恢复备份 |
 
-同步方式：本地 commit+push → bundle → scp 服务器 → stash+ff-only merge。
+同步方式：本地 commit → bundle → scp 服务器 → ff-only merge 已完成；待
+`github.com:443` 恢复后，从本地执行
+`git push origin agent/sync-q-topomoe-project`。可恢复 bundle 位于
+`outputs/qtopomoe-9f2db1e.bundle`，服务器副本位于
+`/home/k8s-ops/moe/.sync/qtopomoe-9f2db1e.bundle`。
 
 ## 3. 已完成工作
 
@@ -125,7 +129,10 @@
 1. **GitHub 网络不稳定**：多次 `Failed to connect github.com:443` /
    `Connection was reset`。服务器无法直连 HF（`Network is unreachable`），
    但可连 `hf-mirror.com`、`github.com`、`modelscope.cn`。解决办法：
-   推送失败就等网络恢复重试；大文件走 ModelScope。
+   推送失败就等网络恢复重试；大文件走 ModelScope。2026-08-09 归档时，
+   GitHub 应用的 Git Blob 与 Contents 写接口也返回 403
+   `Resource not accessible by integration`，因此不能作为推送替代；不得把
+   GitHub `1c79c34` 误报为已同步。
 2. **HF 官方 NVFP4 checkpoint 下载失败**：`hf-mirror` 对小文件可用，
    但 safetensors 大文件会 302 重定向到 `us.aws.cdn.hf.co` xet CDN，
    服务器网络不通。解决办法：改用 ModelScope `RedHatAI/...` 镜像下载。
