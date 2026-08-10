@@ -128,8 +128,9 @@ separate formal matrix after transparent selector calibration and replay.
 The five-repeat medians and bootstrap intervals are now bound to the Phase 3
 route trace and exact M-bucket workload records. Service observation and
 uncertainty Gates pass for all four Pareto candidates. Calibration remains
-blocked because the measured kernel DB lacks FP8 M=4/128 and all required
-W4A16 WNA16 rows. The exact coverage audit and ordered remediation are in
+blocked because the measured kernel DB lacks all required W4A16 WNA16 rows.
+FP8 M=4/128 has now been measured with the real Triton FP8 path and merged.
+The exact coverage audit and ordered remediation are in
 `docs/Q-TopoMoE_Phase8_calibration_readiness_20260810.md`. No synthetic or
 cross-format latency is admitted to make the selector appear ready.
 

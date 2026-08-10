@@ -27,7 +27,7 @@ The exact Runbook workload records require M buckets
 
 | Candidate | Cost backend | Missing M buckets | Ready |
 |---|---|---|---|
-| FP8 TP2 Triton | measured FP8 Triton | 4, 128 | no |
+| FP8 TP2 Triton | measured FP8 Triton | none | yes |
 | W4A16 EP4 Triton | W4A16 runtime kernel | all ten | no |
 | NVFP4 EP4 | measured NVFP4 CUTLASS proxy | none | yes |
 | NVFP4 EP8 | measured NVFP4 CUTLASS proxy | none | yes |
@@ -45,8 +45,8 @@ calibration; it is not represented as the runtime kernel itself.
   `5f176527274306bc9d52692fe4599279e9851e026bf669f3a5b30cd9b9957157`
 - Pareto candidate SHA-256:
   `ead089c58f03c8cbc4e86dd23ef584187d653be0569de628c40b4a7db0e29c3f`
-- kernel DB SHA-256 before the missing measurements:
-  `1e2d9598c7a56bbc94b8c9861151af757a8db98b28f3e856ab07d756608af316`
+- kernel DB SHA-256 after adding FP8 M=4/128:
+  `0757a692a64e634bad280ea2eee7a72053217435f574ba4005a55f39150ced1d`
 - Phase 3 route-token count: `119827`
 - derived communication rate: `2827.5621954985104` bytes per trace token
 
@@ -56,12 +56,21 @@ the observation instead of collapsing to one arbitrary repetition.
 
 ## Ordered next action
 
-1. Measure FP8 Triton at M=4 and M=128 with the frozen cleanroom vLLM runtime.
-2. Add a W4A16 benchmark path that invokes the real vLLM WNA16 MoE kernel and
+FP8 M=4/128 is complete with the frozen cleanroom runtime. The valid 50-repeat
+p50/p95 results are 216.31/233.25 us and 631.97/639.16 us respectively. Raw
+compact evidence is
+`docs/Q-TopoMoE_Phase4_triton_moe_fp8_missing_m_20260810.json` (SHA-256
+`3f5a067d28358762b4c72f9e4043ace1ae219282dab115f0349582ce1a4aecc1`).
+The first shell wrapper attempt stopped before Python because of local
+PowerShell expansion of `$PATH`; it allocated no GPU memory and produced no
+measurement. The corrected explicit `env PATH=...` launch produced the
+admitted rows.
+
+1. Add a W4A16 benchmark path that invokes the real vLLM WNA16 MoE kernel and
    its actual packed weight/scaling contract; do not benchmark BF16 tensors and
    label them W4A16.
-3. Measure the ten required W4A16 M buckets, merge only valid finite-output
+2. Measure the ten required W4A16 M buckets, merge only valid finite-output
    rows into the kernel DB, and rerun this readiness Gate.
-4. Only after all four candidates pass coverage, fit the transparent service
+3. Only after all four candidates pass coverage, fit the transparent service
    correction and report held-out top-1, median/p95 regret and controller
    overhead. Do not add RL or hard-code the 12 oracle choices.
