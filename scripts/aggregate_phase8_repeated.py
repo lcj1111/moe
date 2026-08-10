@@ -78,6 +78,40 @@ def dominates(left: dict[str, Any], right: dict[str, Any]) -> bool:
         a < b for a, b in zip(left_values, right_values))
 
 
+def controlled_summary_errors(summary: dict[str, Any], cell: dict[str, Any],
+                              label: str) -> list[str]:
+    """Return formal cache/arrival contract violations for a controlled cell."""
+    if "prefix_cache_pct" not in cell and "arrival_mode" not in cell:
+        return []
+    errors = []
+    prefix = summary.get("prefix_cache", {})
+    arrival = summary.get("arrival", {})
+    expected_mode = cell.get("arrival_mode", "closed_loop")
+    if summary.get("server_prompt_tokens_exact") is not True:
+        errors.append(f"{label}: server prompt-token Gate failed")
+    if prefix.get("target_pct") != cell.get("prefix_cache_pct", 0):
+        errors.append(f"{label}: prefix target Gate failed")
+    if prefix.get("usage_details_complete") is not True:
+        errors.append(f"{label}: cache usage-detail Gate failed")
+    if prefix.get("ratio_gate") is not True:
+        errors.append(f"{label}: cache ratio Gate failed")
+    if arrival.get("mode") != expected_mode:
+        errors.append(f"{label}: arrival mode Gate failed")
+    if arrival.get("schedule_gate") is not True:
+        errors.append(f"{label}: arrival schedule Gate failed")
+    if expected_mode == "closed_loop":
+        if arrival.get("request_rate_target_rps") is not None:
+            errors.append(f"{label}: closed-loop rate must be absent")
+    else:
+        actual_rate = arrival.get("request_rate_target_rps")
+        expected_rate = cell.get("request_rate_rps")
+        if (not isinstance(actual_rate, (int, float)) or
+                not isinstance(expected_rate, (int, float)) or
+                abs(float(actual_rate) - float(expected_rate)) > 1e-9):
+            errors.append(f"{label}: frozen request-rate Gate failed")
+    return errors
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--run-root", type=Path, required=True)
@@ -139,6 +173,8 @@ def main() -> None:
                 errors.append(f"{run_id}/{cell_id}: input-token mismatch")
             if summary.get("concurrency") != cell["concurrency"]:
                 errors.append(f"{run_id}/{cell_id}: concurrency mismatch")
+            errors.extend(controlled_summary_errors(
+                summary, cell, f"{run_id}/{cell_id}"))
             if summary.get("chat_template_sha256"):
                 template_hashes.add(summary["chat_template_sha256"])
             wall = summary.get("wall_time_s")
@@ -150,6 +186,17 @@ def main() -> None:
                 "tpot_p99_ms": summary["tpot_ms"]["p99"],
                 "output_tokens_s": throughput, "artifact_path": str(summary_path),
                 "artifact_sha256": sha256(summary_path),
+                "cache_expected_ratio": summary.get("prefix_cache", {}).get(
+                    "expected_cached_token_ratio"),
+                "cache_actual_ratio": summary.get("prefix_cache", {}).get(
+                    "actual_cached_token_ratio"),
+                "arrival_mode": summary.get("arrival", {}).get("mode"),
+                "request_rate_target_rps": summary.get("arrival", {}).get(
+                    "request_rate_target_rps"),
+                "request_rate_realized_rps": summary.get("arrival", {}).get(
+                    "request_rate_realized_rps"),
+                "arrival_lag_p95_s": summary.get("arrival", {}).get(
+                    "scheduling_lag_s", {}).get("p95"),
             })
 
     if len(template_hashes) != 1:
@@ -207,6 +254,13 @@ def main() -> None:
             "failed_zero": not any("failed=" in error for error in errors),
             "request_complete": not any("incomplete requests" in error for error in errors),
             "token_exact": not any("input-token mismatch" in error for error in errors),
+            "server_prompt_tokens_exact": not any(
+                "server prompt-token Gate" in error for error in errors),
+            "controlled_cache": not any(
+                ("cache " in error or "prefix target" in error) for error in errors),
+            "controlled_arrival": not any(
+                ("arrival " in error or "request-rate" in error or
+                 "closed-loop rate" in error) for error in errors),
             "ep_rank_truth": not any("EP rank" in error for error in errors),
             "single_chat_template": len(template_hashes) == 1,
         },

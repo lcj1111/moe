@@ -57,6 +57,38 @@ class RepeatedPlanTests(unittest.TestCase):
         self.assertIn("--enable-prefix-caching", command)
         self.assertIn("--enable-prompt-tokens-details", command)
 
+    def test_controlled_summary_gate_checks_cache_and_frozen_rate(self):
+        cell = {
+            "prefix_cache_pct": 50,
+            "arrival_mode": "poisson",
+            "request_rate_rps": 2.5,
+        }
+        summary = {
+            "server_prompt_tokens_exact": True,
+            "prefix_cache": {
+                "target_pct": 50,
+                "usage_details_complete": True,
+                "ratio_gate": True,
+            },
+            "arrival": {
+                "mode": "poisson",
+                "schedule_gate": True,
+                "request_rate_target_rps": 2.5,
+            },
+        }
+        self.assertEqual([], AGGREGATOR.controlled_summary_errors(
+            summary, cell, "candidate/cell"))
+        summary["arrival"]["request_rate_target_rps"] = 3.0
+        summary["prefix_cache"]["ratio_gate"] = False
+        errors = AGGREGATOR.controlled_summary_errors(
+            summary, cell, "candidate/cell")
+        self.assertTrue(any("cache ratio" in error for error in errors))
+        self.assertTrue(any("frozen request-rate" in error for error in errors))
+
+    def test_uncontrolled_legacy_summary_is_not_reinterpreted(self):
+        self.assertEqual([], AGGREGATOR.controlled_summary_errors(
+            {}, {"id": "legacy"}, "candidate/legacy"))
+
 
 if __name__ == "__main__":
     unittest.main()
