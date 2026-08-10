@@ -1,0 +1,39 @@
+{
+  "schema_version": "qtopomoe.phase8_formal_controlled_rejection.v1",
+  "snapshot_time": "2026-08-10T12:34:09+08:00",
+  "status": "rejected",
+  "raw_root": "/data/models/test/qtopomoe_phase8_formal_controlled_v1_20260810",
+  "schedule_sha256": "aa716648dabc765639373f6d24c3205666f30b3ef50a94eaff70be3f7607040a",
+  "failed_run": "nvfp4_redhat_ep8_static_sys__r05",
+  "failed_run_meta_sha256": "48446857a93b649e281980266cc71a619ea1e081cfe41da651fb2facc128fae6",
+  "cells_completed_before_stop": 2,
+  "trigger_cell": "w1_c1_p0_poisson",
+  "trigger_summary_sha256": "97ea7c7f38c43a7fab7f371e0541b7d7bc9e296b1e60f1f5a282b6e4135897d7",
+  "control_summary_sha256": "f105266f07c0e05455a469f0ad0f24146000b7987f7444256d4fed6d6385b7b5",
+  "request_result": {
+    "completed": 32,
+    "failed": 0,
+    "server_prompt_tokens_exact": true,
+    "actual_cached_token_ratio": 0.0,
+    "cache_ratio_gate": true,
+    "request_rate_target_rps": 1.783046,
+    "request_rate_realized_at_service_start_rps": 1.6496391048519814
+  },
+  "failed_gate": {
+    "name": "arrival_schedule",
+    "old_metric": "worker HTTP start minus scheduled enqueue",
+    "p95_seconds": 2.277538689747228,
+    "tolerance_seconds": 0.14020950665322152
+  },
+  "root_cause": "The v1 client counted bounded-worker queue/backpressure as scheduler dispatch error and excluded the same queue time from user E2E latency. At concurrency one, Poisson overlap makes that old Gate fail even below measured capacity.",
+  "corrective_action": {
+    "scheduler_gate": "submitted offset minus scheduled arrival",
+    "queue_metric": "worker HTTP start minus submitted offset",
+    "formal_ttft_clock": "scheduled arrival to first token",
+    "formal_e2e_clock": "scheduled arrival to completion",
+    "service_only_latency_retained": true,
+    "implementation_hashes_bound_in_schedule": true,
+    "restart_policy": "Use a new v2 output root; do not overwrite or resume this rejected run."
+  },
+  "gpu_cleanup_passed": true
+}

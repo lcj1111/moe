@@ -49,6 +49,31 @@ class ServiceWorkloadClientTests(unittest.TestCase):
         ]
         self.assertEqual(2, CLIENT.peak_in_flight(rows))
 
+    def test_open_loop_timing_separates_dispatch_from_worker_queue(self):
+        rows = [{
+            "scheduled_offset_s": 1.0,
+            "submitted_offset_s": 1.01,
+            "started_offset_s": 1.50,
+            "finished_offset_s": 2.50,
+            "e2e_ms": 1000.0,
+            "ttft_ms": 100.0,
+        }]
+        timing = CLIENT.arrival_timing(rows, "poisson")
+        self.assertAlmostEqual(0.01, timing["dispatch_lag_s"][0])
+        self.assertAlmostEqual(0.49, timing["queue_delay_s"][0])
+        self.assertAlmostEqual(0.50, timing["service_start_lag_s"][0])
+        self.assertAlmostEqual(1500.0, timing["offered_e2e_ms"][0])
+        self.assertAlmostEqual(600.0, timing["offered_ttft_ms"][0])
+
+    def test_closed_loop_offered_latency_equals_service_latency(self):
+        rows = [{
+            "started_offset_s": 0.0, "finished_offset_s": 1.0,
+            "e2e_ms": 1000.0, "ttft_ms": 100.0,
+        }]
+        timing = CLIENT.arrival_timing(rows, "closed_loop")
+        self.assertEqual([1000.0], timing["offered_e2e_ms"])
+        self.assertEqual([100.0], timing["offered_ttft_ms"])
+
 
 if __name__ == "__main__":
     unittest.main()

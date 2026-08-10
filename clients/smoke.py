@@ -319,6 +319,41 @@ def peak_in_flight(records: list[dict[str, Any]]) -> int:
     return peak
 
 
+def arrival_timing(records: list[dict[str, Any]], mode: str) -> dict[str, list[float]]:
+    """Split client dispatch accuracy from concurrency-cap queueing.
+
+    Open-loop arrival occurs when the scheduler submits a request.  A bounded
+    worker pool may start its HTTP request later; that queue delay is workload
+    backpressure and belongs in offered latency, not in the scheduler Gate.
+    """
+    if mode == "closed_loop":
+        return {
+            "arrival_offsets": sorted(row["started_offset_s"] for row in records),
+            "dispatch_lag_s": [], "queue_delay_s": [], "service_start_lag_s": [],
+            "offered_e2e_ms": [row["e2e_ms"] for row in records],
+            "offered_ttft_ms": [row["ttft_ms"] for row in records
+                                if row["ttft_ms"] is not None],
+        }
+    dispatch_lag = [max(0.0, row["submitted_offset_s"] - row["scheduled_offset_s"])
+                    for row in records]
+    queue_delay = [max(0.0, row["started_offset_s"] - row["submitted_offset_s"])
+                   for row in records]
+    service_start_lag = [max(0.0, row["started_offset_s"] - row["scheduled_offset_s"])
+                         for row in records]
+    offered_e2e = [1000 * (row["finished_offset_s"] - row["scheduled_offset_s"])
+                   for row in records]
+    offered_ttft = [1000 * (row["started_offset_s"] - row["scheduled_offset_s"])
+                    + row["ttft_ms"] for row in records if row["ttft_ms"] is not None]
+    return {
+        "arrival_offsets": sorted(row["submitted_offset_s"] for row in records),
+        "dispatch_lag_s": dispatch_lag,
+        "queue_delay_s": queue_delay,
+        "service_start_lag_s": service_start_lag,
+        "offered_e2e_ms": offered_e2e,
+        "offered_ttft_ms": offered_ttft,
+    }
+
+
 def execute_requests(args: argparse.Namespace, prompts: list[dict[str, Any]]) -> list[dict[str, Any]]:
     epoch = time.perf_counter()
     common = (args.base_url, args.model, args.input_tokens, args.output_tokens,
@@ -454,14 +489,14 @@ def main() -> None:
     cache_ratio_gate = (actual_cache_ratio is not None
                         and abs(actual_cache_ratio - expected_cache_ratio) <= tolerance)
     starts = sorted(row["started_offset_s"] for row in good)
-    realized_interarrivals = [right - left for left, right in zip(starts, starts[1:])]
-    scheduling_lag = [max(0.0, row["started_offset_s"] - row["scheduled_offset_s"])
-                      for row in good if row["scheduled_offset_s"] is not None
-                      and args.arrival_mode != "closed_loop"]
+    timing = arrival_timing(good, args.arrival_mode)
+    arrival_points = timing["arrival_offsets"]
+    realized_interarrivals = [right - left for left, right in zip(
+        arrival_points, arrival_points[1:])]
     scheduled = arrival_offsets(args.arrival_mode, args.requests, args.concurrency,
                                 args.request_rate, args.stream_seed)
     scheduled_interarrivals = [right - left for left, right in zip(scheduled, scheduled[1:])]
-    lag_p95 = percentile(scheduling_lag, .95)
+    lag_p95 = percentile(timing["dispatch_lag_s"], .95)
     lag_tolerance = (args.arrival_lag_tolerance
                      if args.arrival_lag_tolerance is not None
                      else (max(0.05, 0.25 / args.request_rate)
@@ -472,7 +507,7 @@ def main() -> None:
     wall_time = (max((row["finished_offset_s"] for row in good), default=0)
                  - min((row["started_offset_s"] for row in good), default=0))
     summary = {
-        "schema_version": "qtopomoe.service_workload.v2",
+        "schema_version": "qtopomoe.service_workload.v3",
         "base_url": args.base_url,
         "model": args.model,
         "input_tokens_requested": args.input_tokens,
@@ -492,6 +527,8 @@ def main() -> None:
         "ttft_ms": metric_summary(ttft),
         "tpot_ms": metric_summary(tpot),
         "e2e_ms": metric_summary(e2e),
+        "offered_ttft_ms": metric_summary(timing["offered_ttft_ms"]),
+        "offered_e2e_ms": metric_summary(timing["offered_e2e_ms"]),
         "output_tokens_total": sum(row["output_tokens"] for row in good),
         "wall_time_s": wall_time,
         "prefix_cache": {
@@ -517,12 +554,20 @@ def main() -> None:
             "request_rate_scheduled_sample_rps": (
                 (len(scheduled) - 1) / (scheduled[-1] - scheduled[0])
                 if len(scheduled) > 1 and scheduled[-1] > scheduled[0] else None),
-            "request_rate_realized_rps": ((len(starts) - 1) / (starts[-1] - starts[0])
-                                          if len(starts) > 1 and starts[-1] > starts[0]
-                                          else None),
+            "request_rate_realized_rps": (
+                (len(arrival_points) - 1) / (arrival_points[-1] - arrival_points[0])
+                if len(arrival_points) > 1 and arrival_points[-1] > arrival_points[0]
+                else None),
+            "service_start_rate_realized_rps": (
+                (len(starts) - 1) / (starts[-1] - starts[0])
+                if len(starts) > 1 and starts[-1] > starts[0] else None),
             "realized_interarrival_s": metric_summary(realized_interarrivals),
             "scheduled_interarrival_s": metric_summary(scheduled_interarrivals),
-            "scheduling_lag_s": metric_summary(scheduling_lag),
+            "scheduling_lag_semantics": "scheduler submit minus scheduled arrival",
+            "scheduling_lag_s": metric_summary(timing["dispatch_lag_s"]),
+            "dispatch_lag_s": metric_summary(timing["dispatch_lag_s"]),
+            "queue_delay_s": metric_summary(timing["queue_delay_s"]),
+            "service_start_lag_s": metric_summary(timing["service_start_lag_s"]),
             "scheduling_lag_tolerance_s": lag_tolerance,
             "schedule_gate": arrival_schedule_gate,
             "peak_in_flight": peak_in_flight(good),

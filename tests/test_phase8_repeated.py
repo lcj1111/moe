@@ -89,6 +89,21 @@ class RepeatedPlanTests(unittest.TestCase):
         self.assertEqual([], AGGREGATOR.controlled_summary_errors(
             {}, {"id": "legacy"}, "candidate/legacy"))
 
+    def test_controlled_latency_uses_scheduled_arrival_clock(self):
+        summary = {
+            "e2e_ms": {"p99": 100.0},
+            "offered_e2e_ms": {"p99": 250.0},
+            "ttft_ms": {"p99": 20.0},
+            "offered_ttft_ms": {"p99": 170.0},
+        }
+        cell = {"prefix_cache_pct": 0, "arrival_mode": "poisson"}
+        self.assertEqual(250.0, AGGREGATOR.latency_metric(
+            summary, cell, "e2e_ms")["p99"])
+        self.assertEqual(170.0, AGGREGATOR.latency_metric(
+            summary, cell, "ttft_ms")["p99"])
+        self.assertEqual(100.0, AGGREGATOR.latency_metric(
+            summary, {"id": "legacy"}, "e2e_ms")["p99"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -322,6 +322,14 @@ def main() -> None:
         "plan": str(args.plan.resolve()), "plan_sha256": sha256(args.plan),
         "workload_matrix": str(matrix_path), "workload_matrix_sha256": sha256(matrix_path),
         "seed": plan["seed"], "runtime": runtime, "schedule": schedule,
+        "implementation": {
+            "runner": str(Path(__file__).resolve()),
+            "runner_sha256": sha256(Path(__file__)),
+            "client": str((repo / "clients" / "smoke.py").resolve()),
+            "client_sha256": sha256(repo / "clients" / "smoke.py"),
+            "aggregator": str((repo / "scripts" / "aggregate_phase8_repeated.py").resolve()),
+            "aggregator_sha256": sha256(repo / "scripts" / "aggregate_phase8_repeated.py"),
+        },
     }
     if args.dry_run:
         print(json.dumps(manifest, indent=2, sort_keys=True))

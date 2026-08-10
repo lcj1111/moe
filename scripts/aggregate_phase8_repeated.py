@@ -112,6 +112,16 @@ def controlled_summary_errors(summary: dict[str, Any], cell: dict[str, Any],
     return errors
 
 
+def latency_metric(summary: dict[str, Any], cell: dict[str, Any], metric: str) -> Any:
+    """Use scheduled-arrival latency for controlled cells and legacy service latency otherwise."""
+    controlled = "prefix_cache_pct" in cell or "arrival_mode" in cell
+    if controlled and metric in ("e2e_ms", "ttft_ms"):
+        offered = summary.get("offered_" + metric)
+        if offered is not None:
+            return offered
+    return summary[metric]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--run-root", type=Path, required=True)
@@ -180,12 +190,19 @@ def main() -> None:
             wall = summary.get("wall_time_s")
             tokens = summary.get("output_tokens_total")
             throughput = tokens / wall if isinstance(wall, (int, float)) and wall > 0 else None
+            selected_e2e = latency_metric(summary, cell, "e2e_ms")
+            selected_ttft = latency_metric(summary, cell, "ttft_ms")
             records[item["candidate_id"]][cell_id].append({
-                "repeat": item["repeat"], "e2e_p99_ms": summary["e2e_ms"]["p99"],
-                "ttft_p99_ms": summary["ttft_ms"]["p99"],
+                "repeat": item["repeat"], "e2e_p99_ms": selected_e2e["p99"],
+                "ttft_p99_ms": selected_ttft["p99"],
                 "tpot_p99_ms": summary["tpot_ms"]["p99"],
                 "output_tokens_s": throughput, "artifact_path": str(summary_path),
                 "artifact_sha256": sha256(summary_path),
+                "latency_clock": ("scheduled_arrival" if
+                                  ("prefix_cache_pct" in cell or "arrival_mode" in cell)
+                                  else "service_start"),
+                "service_e2e_p99_ms": summary["e2e_ms"]["p99"],
+                "service_ttft_p99_ms": summary["ttft_ms"]["p99"],
                 "cache_expected_ratio": summary.get("prefix_cache", {}).get(
                     "expected_cached_token_ratio"),
                 "cache_actual_ratio": summary.get("prefix_cache", {}).get(
