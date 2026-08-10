@@ -168,6 +168,23 @@ def arrival_offsets(mode: str, requests: int, concurrency: int,
     raise ValueError(f"unknown arrival mode: {mode}")
 
 
+def arrival_batches(offsets: list[float]) -> list[tuple[float, list[int]]]:
+    """Group consecutive requests that share one open-loop arrival instant.
+
+    A burst is a batch arrival, not a sequence of Python ``pool.submit`` calls.
+    The batch therefore receives one scheduler-dispatch timestamp.  Any time
+    spent inserting individual tasks into the worker queue remains visible in
+    worker-start queue delay and in scheduled-arrival TTFT/E2E.
+    """
+    batches: list[tuple[float, list[int]]] = []
+    for request_id, scheduled in enumerate(offsets):
+        if not batches or scheduled != batches[-1][0]:
+            batches.append((scheduled, [request_id]))
+        else:
+            batches[-1][1].append(request_id)
+    return batches
+
+
 def cached_tokens_from_usage(usage: dict[str, Any] | None) -> int | None:
     details = (usage or {}).get("prompt_tokens_details") or {}
     value = details.get("cached_tokens")
@@ -360,9 +377,12 @@ def execute_requests(args: argparse.Namespace, prompts: list[dict[str, Any]]) ->
               args.seed, args.timeout)
 
     def submit(pool: concurrent.futures.ThreadPoolExecutor, request_id: int,
-               scheduled: float) -> concurrent.futures.Future[dict[str, Any]]:
+               scheduled: float,
+               submitted_override: float | None = None
+               ) -> concurrent.futures.Future[dict[str, Any]]:
         prompt = prompts[request_id]
-        submitted = time.perf_counter() - epoch
+        submitted = (time.perf_counter() - epoch
+                     if submitted_override is None else submitted_override)
         return pool.submit(
             one_request, common[0], common[1], common[2], common[3], request_id,
             common[4], common[5], prompt.get("text"), prompt.get("input_tokens_actual"),
@@ -388,11 +408,15 @@ def execute_requests(args: argparse.Namespace, prompts: list[dict[str, Any]]) ->
             offsets = arrival_offsets(args.arrival_mode, args.requests, args.concurrency,
                                       args.request_rate, args.stream_seed)
             futures = []
-            for request_id, scheduled in enumerate(offsets):
+            for scheduled, request_ids in arrival_batches(offsets):
                 remaining = epoch + scheduled - time.perf_counter()
                 if remaining > 0:
                     time.sleep(remaining)
-                futures.append(submit(pool, request_id, scheduled))
+                batch_submitted = time.perf_counter() - epoch
+                for request_id in request_ids:
+                    futures.append(submit(
+                        pool, request_id, scheduled,
+                        submitted_override=batch_submitted))
             records = [future.result() for future in futures]
     return sorted(records, key=lambda row: row["request_id"])
 
@@ -496,6 +520,7 @@ def main() -> None:
     scheduled = arrival_offsets(args.arrival_mode, args.requests, args.concurrency,
                                 args.request_rate, args.stream_seed)
     scheduled_interarrivals = [right - left for left, right in zip(scheduled, scheduled[1:])]
+    scheduled_batches = arrival_batches(scheduled) if args.arrival_mode != "closed_loop" else []
     lag_p95 = percentile(timing["dispatch_lag_s"], .95)
     lag_tolerance = (args.arrival_lag_tolerance
                      if args.arrival_lag_tolerance is not None
@@ -563,7 +588,13 @@ def main() -> None:
                 if len(starts) > 1 and starts[-1] > starts[0] else None),
             "realized_interarrival_s": metric_summary(realized_interarrivals),
             "scheduled_interarrival_s": metric_summary(scheduled_interarrivals),
-            "scheduling_lag_semantics": "scheduler submit minus scheduled arrival",
+            "scheduling_lag_semantics": (
+                "scheduler batch enqueue minus scheduled arrival; requests sharing "
+                "a scheduled offset share one batch enqueue timestamp"),
+            "dispatch_batch_count": len(scheduled_batches),
+            "dispatch_batch_size_max": (
+                max((len(request_ids) for _, request_ids in scheduled_batches), default=1)
+                if args.arrival_mode != "closed_loop" else None),
             "scheduling_lag_s": metric_summary(timing["dispatch_lag_s"]),
             "dispatch_lag_s": metric_summary(timing["dispatch_lag_s"]),
             "queue_delay_s": metric_summary(timing["queue_delay_s"]),

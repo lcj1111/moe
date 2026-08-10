@@ -1,6 +1,8 @@
 import importlib.util
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,6 +23,38 @@ class ServiceWorkloadClientTests(unittest.TestCase):
     def test_burst_schedule_preserves_average_offered_rate(self):
         offsets = CLIENT.arrival_offsets("burst", 8, 4, 2.0, 42)
         self.assertEqual([0.0] * 4 + [2.0] * 4, offsets)
+
+    def test_equal_arrival_offsets_form_dispatch_batches(self):
+        offsets = [0.0, 0.0, 0.0, 2.0, 2.0, 4.0]
+        self.assertEqual([
+            (0.0, [0, 1, 2]),
+            (2.0, [3, 4]),
+            (4.0, [5]),
+        ], CLIENT.arrival_batches(offsets))
+
+    def test_poisson_arrivals_remain_single_request_batches(self):
+        offsets = CLIENT.arrival_offsets("poisson", 8, 4, 2.0, 42)
+        batches = CLIENT.arrival_batches(offsets)
+        self.assertEqual(8, len(batches))
+        self.assertTrue(all(len(request_ids) == 1 for _, request_ids in batches))
+
+    def test_execute_burst_uses_one_shared_batch_timestamp(self):
+        args = SimpleNamespace(
+            base_url="http://unused", model="unused", input_tokens=16,
+            output_tokens=4, seed=42, timeout=1, concurrency=4,
+            arrival_mode="burst", requests=4, request_rate=2.0,
+            stream_seed=42,
+        )
+        prompts = [{"text": "x", "input_tokens_actual": 16,
+                    "cache_salt": "s", "prompt_sha256": "h"}
+                   for _ in range(4)]
+
+        def fake_request(*values):
+            return {"request_id": values[4], "submitted_offset_s": values[13]}
+
+        with mock.patch.object(CLIENT, "one_request", side_effect=fake_request):
+            records = CLIENT.execute_requests(args, prompts)
+        self.assertEqual(1, len({row["submitted_offset_s"] for row in records}))
 
     def test_open_loop_requires_positive_rate(self):
         with self.assertRaises(ValueError):

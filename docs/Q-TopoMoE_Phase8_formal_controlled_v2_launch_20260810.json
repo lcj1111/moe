@@ -1,7 +1,7 @@
 {
   "schema_version": "qtopomoe.phase8_formal_controlled_launch.v2",
   "snapshot_time": "2026-08-10T12:40:19+08:00",
-  "status": "running",
+  "status": "rejected_arrival_instrumentation",
   "host": "gpu-111",
   "raw_root": "/data/models/test/qtopomoe_phase8_formal_controlled_v2_20260810",
   "orchestrator_pid": 4120815,
@@ -47,5 +47,20 @@
     "schedule_runs": 20,
     "cells_per_run": 108,
     "candidate_repeat_cells": 2160
+  },
+  "terminal_gate": {
+    "candidate_id": "nvfp4_redhat_ep8_static_sys",
+    "repeat": 5,
+    "cell": "w1_c128_p0_burst",
+    "process_exit_code": 5,
+    "reason": "A same-offset 128-request burst was timestamped once per sequential Python pool.submit call instead of once at the batch arrival boundary.",
+    "completed_requests": 128,
+    "failed_requests": 0,
+    "dispatch_lag_p95_ms": 79.16449988260865,
+    "dispatch_lag_gate_ms": 50.0,
+    "queue_delay_p95_ms": 2.091139554977417,
+    "offered_e2e_p95_ms": 5288.778576999903,
+    "summary_sha256": "df7c47aa04aaaaa15cac7a50f15cb06ccec57d1887a3b4c6dcd79d66de659ea0",
+    "requests_sha256": "bad8cada7121b2da4b85682e410522a7446096f639a9e7d6ea4b8501bd685a63"
   }
 }
