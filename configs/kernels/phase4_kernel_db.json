@@ -899,6 +899,436 @@
       "min_us": 627.58,
       "max_us": 640.68,
       "repeats": 50
+    },
+    {
+      "schema_version": "qtopomoe.kernel_measurement.v1",
+      "backend": "wna16_triton",
+      "kernel_name": "vllm.fused_experts(wna16_triton)",
+      "m_bucket": 1,
+      "precision": "w4a16",
+      "kernel_config": {
+        "hidden": 2048,
+        "moe_intermediate": 512,
+        "num_experts": 256,
+        "top_k": 8,
+        "total_tokens": 1,
+        "activation": "silu",
+        "apply_router_weight_on_input": false,
+        "group_size": 128,
+        "weight_dtype": "uint8_packed_centered_int4",
+        "weight_layout": "N_first_two_nibbles_per_byte",
+        "checkpoint_source_layout": "int32_K_first_pack_quantized"
+      },
+      "packed_contract_validation": {
+        "accepted": true,
+        "max_abs_error": 7.6194992288947105e-06,
+        "mean_abs_error": 2.271848188684089e-06,
+        "reference": "explicit_centered_int4_dequant_bf16"
+      },
+      "measured": true,
+      "valid": true,
+      "device": "NVIDIA GeForce RTX 5090",
+      "source": "phase4_w4a16_triton_required_m_20260810",
+      "correctness": {
+        "output_shape": [
+          1,
+          2048
+        ],
+        "output_finite": true,
+        "output_abs_max": 0.027099609375
+      },
+      "p50_us": 151.48,
+      "p95_us": 165.05,
+      "min_us": 148.17,
+      "max_us": 165.41,
+      "repeats": 50
+    },
+    {
+      "schema_version": "qtopomoe.kernel_measurement.v1",
+      "backend": "wna16_triton",
+      "kernel_name": "vllm.fused_experts(wna16_triton)",
+      "m_bucket": 4,
+      "precision": "w4a16",
+      "kernel_config": {
+        "hidden": 2048,
+        "moe_intermediate": 512,
+        "num_experts": 256,
+        "top_k": 8,
+        "total_tokens": 4,
+        "activation": "silu",
+        "apply_router_weight_on_input": false,
+        "group_size": 128,
+        "weight_dtype": "uint8_packed_centered_int4",
+        "weight_layout": "N_first_two_nibbles_per_byte",
+        "checkpoint_source_layout": "int32_K_first_pack_quantized"
+      },
+      "packed_contract_validation": {
+        "accepted": true,
+        "max_abs_error": 7.6194992288947105e-06,
+        "mean_abs_error": 2.271848188684089e-06,
+        "reference": "explicit_centered_int4_dequant_bf16"
+      },
+      "measured": true,
+      "valid": true,
+      "device": "NVIDIA GeForce RTX 5090",
+      "source": "phase4_w4a16_triton_required_m_20260810",
+      "correctness": {
+        "output_shape": [
+          4,
+          2048
+        ],
+        "output_finite": true,
+        "output_abs_max": 0.0272216796875
+      },
+      "p50_us": 165.19,
+      "p95_us": 171.16,
+      "min_us": 162.59,
+      "max_us": 180.41,
+      "repeats": 50
+    },
+    {
+      "schema_version": "qtopomoe.kernel_measurement.v1",
+      "backend": "wna16_triton",
+      "kernel_name": "vllm.fused_experts(wna16_triton)",
+      "m_bucket": 8,
+      "precision": "w4a16",
+      "kernel_config": {
+        "hidden": 2048,
+        "moe_intermediate": 512,
+        "num_experts": 256,
+        "top_k": 8,
+        "total_tokens": 8,
+        "activation": "silu",
+        "apply_router_weight_on_input": false,
+        "group_size": 128,
+        "weight_dtype": "uint8_packed_centered_int4",
+        "weight_layout": "N_first_two_nibbles_per_byte",
+        "checkpoint_source_layout": "int32_K_first_pack_quantized"
+      },
+      "packed_contract_validation": {
+        "accepted": true,
+        "max_abs_error": 7.6194992288947105e-06,
+        "mean_abs_error": 2.271848188684089e-06,
+        "reference": "explicit_centered_int4_dequant_bf16"
+      },
+      "measured": true,
+      "valid": true,
+      "device": "NVIDIA GeForce RTX 5090",
+      "source": "phase4_w4a16_triton_required_m_20260810",
+      "correctness": {
+        "output_shape": [
+          8,
+          2048
+        ],
+        "output_finite": true,
+        "output_abs_max": 0.03173828125
+      },
+      "p50_us": 229.04,
+      "p95_us": 233.93,
+      "min_us": 224.88,
+      "max_us": 239.46,
+      "repeats": 50
+    },
+    {
+      "schema_version": "qtopomoe.kernel_measurement.v1",
+      "backend": "wna16_triton",
+      "kernel_name": "vllm.fused_experts(wna16_triton)",
+      "m_bucket": 16,
+      "precision": "w4a16",
+      "kernel_config": {
+        "hidden": 2048,
+        "moe_intermediate": 512,
+        "num_experts": 256,
+        "top_k": 8,
+        "total_tokens": 16,
+        "activation": "silu",
+        "apply_router_weight_on_input": false,
+        "group_size": 128,
+        "weight_dtype": "uint8_packed_centered_int4",
+        "weight_layout": "N_first_two_nibbles_per_byte",
+        "checkpoint_source_layout": "int32_K_first_pack_quantized"
+      },
+      "packed_contract_validation": {
+        "accepted": true,
+        "max_abs_error": 7.6194992288947105e-06,
+        "mean_abs_error": 2.271848188684089e-06,
+        "reference": "explicit_centered_int4_dequant_bf16"
+      },
+      "measured": true,
+      "valid": true,
+      "device": "NVIDIA GeForce RTX 5090",
+      "source": "phase4_w4a16_triton_required_m_20260810",
+      "correctness": {
+        "output_shape": [
+          16,
+          2048
+        ],
+        "output_finite": true,
+        "output_abs_max": 0.033203125
+      },
+      "p50_us": 382.24,
+      "p95_us": 388.6,
+      "min_us": 377.34,
+      "max_us": 390.89,
+      "repeats": 50
+    },
+    {
+      "schema_version": "qtopomoe.kernel_measurement.v1",
+      "backend": "wna16_triton",
+      "kernel_name": "vllm.fused_experts(wna16_triton)",
+      "m_bucket": 32,
+      "precision": "w4a16",
+      "kernel_config": {
+        "hidden": 2048,
+        "moe_intermediate": 512,
+        "num_experts": 256,
+        "top_k": 8,
+        "total_tokens": 32,
+        "activation": "silu",
+        "apply_router_weight_on_input": false,
+        "group_size": 128,
+        "weight_dtype": "uint8_packed_centered_int4",
+        "weight_layout": "N_first_two_nibbles_per_byte",
+        "checkpoint_source_layout": "int32_K_first_pack_quantized"
+      },
+      "packed_contract_validation": {
+        "accepted": true,
+        "max_abs_error": 7.6194992288947105e-06,
+        "mean_abs_error": 2.271848188684089e-06,
+        "reference": "explicit_centered_int4_dequant_bf16"
+      },
+      "measured": true,
+      "valid": true,
+      "device": "NVIDIA GeForce RTX 5090",
+      "source": "phase4_w4a16_triton_required_m_20260810",
+      "correctness": {
+        "output_shape": [
+          32,
+          2048
+        ],
+        "output_finite": true,
+        "output_abs_max": 0.0341796875
+      },
+      "p50_us": 542.75,
+      "p95_us": 549.29,
+      "min_us": 538.65,
+      "max_us": 555.7,
+      "repeats": 50
+    },
+    {
+      "schema_version": "qtopomoe.kernel_measurement.v1",
+      "backend": "wna16_triton",
+      "kernel_name": "vllm.fused_experts(wna16_triton)",
+      "m_bucket": 128,
+      "precision": "w4a16",
+      "kernel_config": {
+        "hidden": 2048,
+        "moe_intermediate": 512,
+        "num_experts": 256,
+        "top_k": 8,
+        "total_tokens": 128,
+        "activation": "silu",
+        "apply_router_weight_on_input": false,
+        "group_size": 128,
+        "weight_dtype": "uint8_packed_centered_int4",
+        "weight_layout": "N_first_two_nibbles_per_byte",
+        "checkpoint_source_layout": "int32_K_first_pack_quantized"
+      },
+      "packed_contract_validation": {
+        "accepted": true,
+        "max_abs_error": 7.6194992288947105e-06,
+        "mean_abs_error": 2.271848188684089e-06,
+        "reference": "explicit_centered_int4_dequant_bf16"
+      },
+      "measured": true,
+      "valid": true,
+      "device": "NVIDIA GeForce RTX 5090",
+      "source": "phase4_w4a16_triton_required_m_20260810",
+      "correctness": {
+        "output_shape": [
+          128,
+          2048
+        ],
+        "output_finite": true,
+        "output_abs_max": 0.04296875
+      },
+      "p50_us": 984.49,
+      "p95_us": 994.43,
+      "min_us": 974.22,
+      "max_us": 997.35,
+      "repeats": 50
+    },
+    {
+      "schema_version": "qtopomoe.kernel_measurement.v1",
+      "backend": "wna16_triton",
+      "kernel_name": "vllm.fused_experts(wna16_triton)",
+      "m_bucket": 256,
+      "precision": "w4a16",
+      "kernel_config": {
+        "hidden": 2048,
+        "moe_intermediate": 512,
+        "num_experts": 256,
+        "top_k": 8,
+        "total_tokens": 256,
+        "activation": "silu",
+        "apply_router_weight_on_input": false,
+        "group_size": 128,
+        "weight_dtype": "uint8_packed_centered_int4",
+        "weight_layout": "N_first_two_nibbles_per_byte",
+        "checkpoint_source_layout": "int32_K_first_pack_quantized"
+      },
+      "packed_contract_validation": {
+        "accepted": true,
+        "max_abs_error": 7.6194992288947105e-06,
+        "mean_abs_error": 2.271848188684089e-06,
+        "reference": "explicit_centered_int4_dequant_bf16"
+      },
+      "measured": true,
+      "valid": true,
+      "device": "NVIDIA GeForce RTX 5090",
+      "source": "phase4_w4a16_triton_required_m_20260810",
+      "correctness": {
+        "output_shape": [
+          256,
+          2048
+        ],
+        "output_finite": true,
+        "output_abs_max": 0.04296875
+      },
+      "p50_us": 2161.31,
+      "p95_us": 2167.74,
+      "min_us": 2153.01,
+      "max_us": 2179.05,
+      "repeats": 50
+    },
+    {
+      "schema_version": "qtopomoe.kernel_measurement.v1",
+      "backend": "wna16_triton",
+      "kernel_name": "vllm.fused_experts(wna16_triton)",
+      "m_bucket": 2048,
+      "precision": "w4a16",
+      "kernel_config": {
+        "hidden": 2048,
+        "moe_intermediate": 512,
+        "num_experts": 256,
+        "top_k": 8,
+        "total_tokens": 2048,
+        "activation": "silu",
+        "apply_router_weight_on_input": false,
+        "group_size": 128,
+        "weight_dtype": "uint8_packed_centered_int4",
+        "weight_layout": "N_first_two_nibbles_per_byte",
+        "checkpoint_source_layout": "int32_K_first_pack_quantized"
+      },
+      "packed_contract_validation": {
+        "accepted": true,
+        "max_abs_error": 7.6194992288947105e-06,
+        "mean_abs_error": 2.271848188684089e-06,
+        "reference": "explicit_centered_int4_dequant_bf16"
+      },
+      "measured": true,
+      "valid": true,
+      "device": "NVIDIA GeForce RTX 5090",
+      "source": "phase4_w4a16_triton_required_m_20260810",
+      "correctness": {
+        "output_shape": [
+          2048,
+          2048
+        ],
+        "output_finite": true,
+        "output_abs_max": 0.04541015625
+      },
+      "p50_us": 3086.01,
+      "p95_us": 3095.8,
+      "min_us": 3080.44,
+      "max_us": 3102.25,
+      "repeats": 50
+    },
+    {
+      "schema_version": "qtopomoe.kernel_measurement.v1",
+      "backend": "wna16_triton",
+      "kernel_name": "vllm.fused_experts(wna16_triton)",
+      "m_bucket": 8192,
+      "precision": "w4a16",
+      "kernel_config": {
+        "hidden": 2048,
+        "moe_intermediate": 512,
+        "num_experts": 256,
+        "top_k": 8,
+        "total_tokens": 8192,
+        "activation": "silu",
+        "apply_router_weight_on_input": false,
+        "group_size": 128,
+        "weight_dtype": "uint8_packed_centered_int4",
+        "weight_layout": "N_first_two_nibbles_per_byte",
+        "checkpoint_source_layout": "int32_K_first_pack_quantized"
+      },
+      "packed_contract_validation": {
+        "accepted": true,
+        "max_abs_error": 7.6194992288947105e-06,
+        "mean_abs_error": 2.271848188684089e-06,
+        "reference": "explicit_centered_int4_dequant_bf16"
+      },
+      "measured": true,
+      "valid": true,
+      "device": "NVIDIA GeForce RTX 5090",
+      "source": "phase4_w4a16_triton_required_m_20260810",
+      "correctness": {
+        "output_shape": [
+          8192,
+          2048
+        ],
+        "output_finite": true,
+        "output_abs_max": 0.04541015625
+      },
+      "p50_us": 9311.19,
+      "p95_us": 9322.88,
+      "min_us": 9302.11,
+      "max_us": 9339.44,
+      "repeats": 50
+    },
+    {
+      "schema_version": "qtopomoe.kernel_measurement.v1",
+      "backend": "wna16_triton",
+      "kernel_name": "vllm.fused_experts(wna16_triton)",
+      "m_bucket": 16384,
+      "precision": "w4a16",
+      "kernel_config": {
+        "hidden": 2048,
+        "moe_intermediate": 512,
+        "num_experts": 256,
+        "top_k": 8,
+        "total_tokens": 16384,
+        "activation": "silu",
+        "apply_router_weight_on_input": false,
+        "group_size": 128,
+        "weight_dtype": "uint8_packed_centered_int4",
+        "weight_layout": "N_first_two_nibbles_per_byte",
+        "checkpoint_source_layout": "int32_K_first_pack_quantized"
+      },
+      "packed_contract_validation": {
+        "accepted": true,
+        "max_abs_error": 7.6194992288947105e-06,
+        "mean_abs_error": 2.271848188684089e-06,
+        "reference": "explicit_centered_int4_dequant_bf16"
+      },
+      "measured": true,
+      "valid": true,
+      "device": "NVIDIA GeForce RTX 5090",
+      "source": "phase4_w4a16_triton_required_m_20260810",
+      "correctness": {
+        "output_shape": [
+          16384,
+          2048
+        ],
+        "output_finite": true,
+        "output_abs_max": 0.04931640625
+      },
+      "p50_us": 17546.67,
+      "p95_us": 17561.61,
+      "min_us": 17503.56,
+      "max_us": 17566.07,
+      "repeats": 50
     }
   ],
   "schema_version": "qtopomoe.kernel_db.v1"

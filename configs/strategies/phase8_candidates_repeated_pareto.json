@@ -27,8 +27,11 @@
     "eplb_policy": "static",
     "redundant_experts": 0,
     "kernel_backend": "triton",
+    "cost_kernel_backend": "wna16_triton",
     "kernel_config": {
-      "kernel": "vllm.wna16_moe"
+      "kernel": "vllm.wna16_moe",
+      "actual_source": "vLLM TRITON WNA16 MoE backend",
+      "cost_source": "measured packed-int4 WNA16 Triton micro-kernel"
     },
     "quality_valid": true,
     "supported": true
