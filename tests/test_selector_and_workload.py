@@ -62,6 +62,46 @@ class SelectorTests(unittest.TestCase):
         self.assertEqual(row["decision_overhead_denominator_ms"], 120.0)
         self.assertEqual(result["top1_accuracy"], 0.0)
 
+    def test_candidate_service_correction_is_explicit_and_default_is_identity(self):
+        db = KernelDatabase([
+            KernelMeasurement("triton", {}, 128, precision="bf16", p95_us=20,
+                              measured=True),
+        ])
+        candidate = StrategyCandidate(
+            "a", "bf16", "ckpt", 1, 1, 1, "map", "none", 0, "triton"
+        )
+        obs = WorkloadObservation({128: 1.0})
+        self.assertAlmostEqual(CostModel().predict_p99_ms(candidate, obs, db), 0.02)
+        calibrated = CostModel(
+            service_scale_by_candidate={"a": 10.0},
+            service_intercept_ms_by_candidate={"a": 3.0},
+        )
+        self.assertAlmostEqual(calibrated.predict_p99_ms(candidate, obs, db), 3.2)
+
+    def test_sequence_compute_counts_prefill_decode_steps_and_layers(self):
+        db = KernelDatabase([
+            KernelMeasurement("triton", {}, 128, precision="bf16", p95_us=20,
+                              measured=True),
+            KernelMeasurement("triton", {}, 8, precision="bf16", p95_us=5,
+                              measured=True),
+        ])
+        candidate = StrategyCandidate(
+            "a", "bf16", "ckpt", 1, 1, 1, "map", "none", 0, "triton"
+        )
+        observation = WorkloadObservation(
+            {8: 0.5, 128: 0.5},
+            placement={
+                "prefill_m_bucket": 128,
+                "decode_m_bucket": 8,
+                "output_tokens": 10,
+            },
+        )
+        model = CostModel(num_model_layers=40)
+        self.assertAlmostEqual(
+            model.predict_p99_ms(candidate, observation, db),
+            40 * (20 + 10 * 5) / 1000,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

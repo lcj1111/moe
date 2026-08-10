@@ -53,6 +53,11 @@ class CostModel:
     communication_us_per_gb_by_mapping: Mapping[str, float] = field(default_factory=dict)
     imbalance_us_per_unit: float = 100.0
     migration_us_per_gb: float = 500.0
+    num_model_layers: int | None = None
+    service_scale_by_candidate: Mapping[str, float] = field(default_factory=dict)
+    service_intercept_ms_by_candidate: Mapping[str, float] = field(
+        default_factory=dict
+    )
 
     def imbalance_penalty(self, route_hist: Mapping[str, float]) -> float:
         values = [float(v) for v in route_hist.values() if float(v) >= 0]
@@ -63,19 +68,47 @@ class CostModel:
 
     def predict_p99_ms(self, candidate: StrategyCandidate, obs: WorkloadObservation,
                        kernel_db: KernelDatabase) -> float | None:
-        compute_us = 0.0
         cost_backend = candidate.cost_kernel_backend or candidate.kernel_backend
-        for raw_bucket, weight in obs.real_M_hist.items():
-            row = kernel_db.best(int(raw_bucket), candidate.quant_format, cost_backend)
-            if row is None or row.score_us is None:
+        if self.num_model_layers is not None:
+            prefill_bucket = obs.placement.get("prefill_m_bucket")
+            decode_bucket = obs.placement.get("decode_m_bucket")
+            output_tokens = obs.placement.get("output_tokens")
+            if prefill_bucket is None or decode_bucket is None or output_tokens is None:
                 return None
-            compute_us += float(weight) * row.score_us
+            prefill_row = kernel_db.best(
+                int(prefill_bucket), candidate.quant_format, cost_backend
+            )
+            decode_row = kernel_db.best(
+                int(decode_bucket), candidate.quant_format, cost_backend
+            )
+            if (
+                prefill_row is None or prefill_row.score_us is None
+                or decode_row is None or decode_row.score_us is None
+            ):
+                return None
+            compute_us = self.num_model_layers * (
+                prefill_row.score_us + float(output_tokens) * decode_row.score_us
+            )
+        else:
+            compute_us = 0.0
+            for raw_bucket, weight in obs.real_M_hist.items():
+                row = kernel_db.best(
+                    int(raw_bucket), candidate.quant_format, cost_backend
+                )
+                if row is None or row.score_us is None:
+                    return None
+                compute_us += float(weight) * row.score_us
         mapping_rate = self.communication_us_per_gb_by_mapping.get(
             candidate.gpu_mapping, self.communication_us_per_gb)
         comm_us = obs.communication_bytes / 1e9 * mapping_rate
         imbalance_us = self.imbalance_penalty(obs.route_hist) * self.imbalance_us_per_unit
         migration_us = obs.migration_bytes / 1e9 * self.migration_us_per_gb
-        return (compute_us + comm_us + imbalance_us + migration_us) / 1000.0
+        raw_ms = (compute_us + comm_us + imbalance_us + migration_us) / 1000.0
+        scale = float(self.service_scale_by_candidate.get(candidate.candidate_id, 1.0))
+        intercept_ms = float(
+            self.service_intercept_ms_by_candidate.get(candidate.candidate_id, 0.0)
+        )
+        return max(0.0, intercept_ms + scale * raw_ms)
 
 
 class StrategySelector:

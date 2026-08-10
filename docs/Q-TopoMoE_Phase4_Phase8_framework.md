@@ -136,6 +136,21 @@ and W4A16 numerical-contract evidence are in
 cross-format latency was admitted to make the selector appear ready; the next
 step is transparent service-level calibration with a held-out replay.
 
+## Transparent service calibration CV (2026-08-10)
+
+The first grouped held-out calibration is complete and is not deployment
+ready. Candidate-specific non-negative affine corrections were fit with
+bootstrap-uncertainty weights while holding out W1/W2/W3/W4 in turn. Correct
+40-layer prefill-plus-decode invocation counting improves median regret from
+33.89% to 13.64% and p95 regret from 101.80% to 54.77%; the required 5%/10%
+Gates still fail. Controller overhead remains below 1%.
+
+The failure is recorded rather than hidden with a higher-capacity fit. Prefix
+caching was enabled but controlled prefix populations were not generated, and
+only closed-loop arrivals were exercised. The diagnostic coefficients are not
+an accepted deployment manifest. Details and the next formal-data action are
+in `docs/Q-TopoMoE_Phase8_service_calibration_cv_20260810.md`.
+
 ## CPU verification
 
 ```bash
