@@ -1,6 +1,9 @@
 import importlib.util
+import json
+import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -103,6 +106,21 @@ class RepeatedPlanTests(unittest.TestCase):
             summary, cell, "ttft_ms")["p99"])
         self.assertEqual(100.0, AGGREGATOR.latency_metric(
             summary, {"id": "legacy"}, "e2e_ms")["p99"])
+
+    def test_schedule_failure_publishes_terminal_failed_status(self):
+        schedule = [{"candidate_id": "a", "repeat": 1, "order": 1}]
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output_root = Path(temp_dir)
+            with mock.patch.object(RUNNER, "run_one", side_effect=RuntimeError("gate")):
+                with self.assertRaisesRegex(RuntimeError, "gate"):
+                    RUNNER.execute_schedule(
+                        {"cooldown_seconds": 0}, {"a": {}}, schedule, {}, ROOT,
+                        output_root, "/vllm", "/python", {})
+            status = json.loads((output_root / "status.json").read_text())
+        self.assertEqual("failed", status["status"])
+        self.assertEqual(schedule[0], status["current"])
+        self.assertEqual(0, status["completed_runs"])
+        self.assertIn("RuntimeError('gate')", status["failure"])
 
 
 if __name__ == "__main__":

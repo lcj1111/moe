@@ -300,6 +300,37 @@ def run_one(plan: dict[str, Any], candidate: dict[str, Any], repeat: int,
         gpu_log.close()
 
 
+def execute_schedule(plan: dict, candidates: dict, schedule: list[dict],
+                     matrix: dict, repo: Path, output_root: Path,
+                     vllm_bin: str, python_bin: str, runtime: dict) -> None:
+    """Run the frozen schedule and always publish an authoritative terminal state."""
+    status_path = output_root / "status.json"
+    current = None
+    completed_runs = 0
+    try:
+        for item in schedule:
+            current = item
+            write_json(status_path, {"status": "running", "current": item,
+                                     "completed_runs": completed_runs,
+                                     "updated_unix": time.time()})
+            run_one(plan, candidates[item["candidate_id"]], item["repeat"], matrix,
+                    repo, output_root, vllm_bin, python_bin, runtime)
+            completed_runs += 1
+            write_json(status_path, {"status": "cooldown", "completed": item,
+                                     "completed_runs": completed_runs,
+                                     "updated_unix": time.time()})
+            time.sleep(int(plan["cooldown_seconds"]))
+    except BaseException as error:
+        write_json(status_path, {
+            "status": "failed", "current": current,
+            "completed_runs": completed_runs,
+            "failed_unix": time.time(), "failure": repr(error),
+        })
+        raise
+    write_json(status_path, {"status": "completed", "completed_runs": completed_runs,
+                             "updated_unix": time.time()})
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--plan", type=Path, required=True)
@@ -339,17 +370,8 @@ def main() -> None:
     if schedule_path.exists() and load_json(schedule_path) != manifest:
         raise RuntimeError("existing schedule does not match frozen plan")
     write_json(schedule_path, manifest)
-    status_path = args.output_root / "status.json"
-    for item in schedule:
-        write_json(status_path, {"status": "running", "current": item,
-                                 "updated_unix": time.time()})
-        run_one(plan, candidates[item["candidate_id"]], item["repeat"], matrix,
-                repo, args.output_root, vllm_bin, python_bin, runtime)
-        write_json(status_path, {"status": "cooldown", "completed": item,
-                                 "updated_unix": time.time()})
-        time.sleep(int(plan["cooldown_seconds"]))
-    write_json(status_path, {"status": "completed", "completed_runs": len(schedule),
-                             "updated_unix": time.time()})
+    execute_schedule(plan, candidates, schedule, matrix, repo, args.output_root,
+                     vllm_bin, python_bin, runtime)
 
 
 if __name__ == "__main__":
