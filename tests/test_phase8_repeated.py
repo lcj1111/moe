@@ -43,6 +43,20 @@ class RepeatedPlanTests(unittest.TestCase):
         self.assertLessEqual(min(values), first["bootstrap_95ci_low"])
         self.assertGreaterEqual(max(values), first["bootstrap_95ci_high"])
 
+    def test_service_command_enables_measured_prefix_cache_usage(self):
+        plan = {
+            "host": "127.0.0.1", "port": 31540, "max_model_len": 65536,
+            "max_num_seqs": 8, "gpu_memory_utilization": 0.9,
+        }
+        candidate = {
+            "model_path": "/model", "tp": 2, "dp": 1,
+            "enable_expert_parallel": False, "moe_backend": "triton",
+            "numa_args": [],
+        }
+        command = RUNNER.service_command(plan, candidate, "/venv/bin/vllm", "served")
+        self.assertIn("--enable-prefix-caching", command)
+        self.assertIn("--enable-prompt-tokens-details", command)
+
 
 if __name__ == "__main__":
     unittest.main()

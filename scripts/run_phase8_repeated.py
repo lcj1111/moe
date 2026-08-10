@@ -120,9 +120,15 @@ def run_client(python_bin: str, repo: Path, base_url: str, served_model: str,
         "--output-tokens", str(cell["output_tokens"]),
         "--concurrency", str(cell["concurrency"]),
         "--requests", str(cell["requests"]), "--seed", str(seed),
+        "--stream-seed", str(cell.get("stream_seed", seed)),
+        "--prefix-cache-pct", str(cell.get("prefix_cache_pct", 0)),
+        "--arrival-mode", str(cell.get("arrival_mode", "closed_loop")),
+        "--require-cache-details",
         "--timeout", str(timeout), "--output", str(output),
         "--summary", str(summary),
     ]
+    if cell.get("arrival_mode", "closed_loop") != "closed_loop":
+        command.extend(["--request-rate", str(cell["request_rate_rps"])])
     subprocess.run(command, cwd=repo, check=True)
 
 
@@ -132,7 +138,14 @@ def audit_summary(path: Path, cell: dict[str, Any]) -> None:
         "failed": summary.get("failed") == 0,
         "completed": summary.get("completed") == summary.get("requests"),
         "input_tokens": summary.get("input_tokens_actual") == cell["input_tokens"],
+        "server_input_tokens": summary.get("server_prompt_tokens_exact") is True,
         "concurrency": summary.get("concurrency") == cell["concurrency"],
+        "prefix_target": summary.get("prefix_cache", {}).get("target_pct")
+                         == cell.get("prefix_cache_pct", 0),
+        "cache_usage": summary.get("prefix_cache", {}).get("usage_details_complete") is True,
+        "cache_ratio": summary.get("prefix_cache", {}).get("ratio_gate") is True,
+        "arrival_mode": summary.get("arrival", {}).get("mode")
+                        == cell.get("arrival_mode", "closed_loop"),
     }
     if not all(checks.values()):
         raise RuntimeError(f"summary Gate failed for {path}: {checks}")
@@ -152,6 +165,8 @@ def service_command(plan: dict[str, Any], candidate: dict[str, Any],
         "--max-model-len", str(plan["max_model_len"]),
         "--max-num-seqs", str(plan["max_num_seqs"]),
         "--gpu-memory-utilization", str(plan["gpu_memory_utilization"]),
+        "--enable-prefix-caching",
+        "--enable-prompt-tokens-details",
     ])
     if candidate["enable_expert_parallel"]:
         command.append("--enable-expert-parallel")
