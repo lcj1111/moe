@@ -37,7 +37,7 @@ class ServiceWorkloadClientTests(unittest.TestCase):
     def test_realizable_cache_ratio_respects_hybrid_page_granularity(self):
         self.assertEqual(0, CLIENT.realizable_cached_tokens(256, 256, 100, 1056))
         self.assertEqual(2112, CLIENT.realizable_cached_tokens(4224, 2112, 50, 1056))
-        self.assertEqual(4224, CLIENT.realizable_cached_tokens(4224, 4224, 100, 1056))
+        self.assertEqual(3168, CLIENT.realizable_cached_tokens(4224, 4224, 100, 1056))
         self.assertEqual(0, CLIENT.realizable_cached_tokens(4224, 4224, 0, 1056))
 
     def test_common_prefix_and_peak_in_flight(self):

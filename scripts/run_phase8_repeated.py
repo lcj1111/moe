@@ -125,6 +125,7 @@ def run_client(python_bin: str, repo: Path, base_url: str, served_model: str,
         "--prefix-cache-pct", str(cell.get("prefix_cache_pct", 0)),
         "--arrival-mode", str(cell.get("arrival_mode", "closed_loop")),
         "--require-cache-details",
+        "--require-arrival-gate",
         "--timeout", str(timeout), "--output", str(output),
         "--summary", str(summary),
     ]
@@ -149,6 +150,7 @@ def audit_summary(path: Path, cell: dict[str, Any]) -> None:
         "cache_ratio": summary.get("prefix_cache", {}).get("ratio_gate") is True,
         "arrival_mode": summary.get("arrival", {}).get("mode")
                         == cell.get("arrival_mode", "closed_loop"),
+        "arrival_schedule": summary.get("arrival", {}).get("schedule_gate") is True,
     }
     if "prefix_cache_pct" in cell:
         checks["cache_block"] = int(

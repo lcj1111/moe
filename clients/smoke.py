@@ -181,7 +181,10 @@ def realizable_cached_tokens(input_tokens: int, rendered_common_prefix_tokens: i
     if prefix_cache_pct == 0:
         return 0
     if cache_block_tokens:
-        return rendered_common_prefix_tokens // cache_block_tokens * cache_block_tokens
+        # vLLM must compute at least the final prompt token to obtain logits
+        # (v1/core/kv_cache_manager.py), so a full-prompt hit is capped at L-1.
+        cacheable_prefix = min(rendered_common_prefix_tokens, input_tokens - 1)
+        return cacheable_prefix // cache_block_tokens * cache_block_tokens
     return round(input_tokens * prefix_cache_pct / 100)
 
 
@@ -382,6 +385,9 @@ def main() -> None:
     parser.add_argument("--cache-ratio-tolerance", type=float, default=None)
     parser.add_argument("--cache-block-tokens", type=int, default=None,
                         help="engine cache block/page size used to derive realizable reuse")
+    parser.add_argument("--arrival-lag-tolerance", type=float, default=None,
+                        help="maximum allowed p95 request-start lag versus open-loop schedule")
+    parser.add_argument("--require-arrival-gate", action="store_true")
     parser.add_argument("--output", required=True)
     parser.add_argument("--summary", default=None)
     args = parser.parse_args()
@@ -452,6 +458,17 @@ def main() -> None:
     scheduling_lag = [max(0.0, row["started_offset_s"] - row["scheduled_offset_s"])
                       for row in good if row["scheduled_offset_s"] is not None
                       and args.arrival_mode != "closed_loop"]
+    scheduled = arrival_offsets(args.arrival_mode, args.requests, args.concurrency,
+                                args.request_rate, args.stream_seed)
+    scheduled_interarrivals = [right - left for left, right in zip(scheduled, scheduled[1:])]
+    lag_p95 = percentile(scheduling_lag, .95)
+    lag_tolerance = (args.arrival_lag_tolerance
+                     if args.arrival_lag_tolerance is not None
+                     else (max(0.05, 0.25 / args.request_rate)
+                           if args.request_rate else None))
+    arrival_schedule_gate = (args.arrival_mode == "closed_loop"
+                             or (lag_p95 is not None and lag_tolerance is not None
+                                 and lag_p95 <= lag_tolerance))
     wall_time = (max((row["finished_offset_s"] for row in good), default=0)
                  - min((row["started_offset_s"] for row in good), default=0))
     summary = {
@@ -497,11 +514,17 @@ def main() -> None:
             "mode": args.arrival_mode,
             "stream_seed": args.stream_seed,
             "request_rate_target_rps": args.request_rate,
+            "request_rate_scheduled_sample_rps": (
+                (len(scheduled) - 1) / (scheduled[-1] - scheduled[0])
+                if len(scheduled) > 1 and scheduled[-1] > scheduled[0] else None),
             "request_rate_realized_rps": ((len(starts) - 1) / (starts[-1] - starts[0])
                                           if len(starts) > 1 and starts[-1] > starts[0]
                                           else None),
             "realized_interarrival_s": metric_summary(realized_interarrivals),
+            "scheduled_interarrival_s": metric_summary(scheduled_interarrivals),
             "scheduling_lag_s": metric_summary(scheduling_lag),
+            "scheduling_lag_tolerance_s": lag_tolerance,
+            "schedule_gate": arrival_schedule_gate,
             "peak_in_flight": peak_in_flight(good),
         },
     }
@@ -517,6 +540,8 @@ def main() -> None:
         raise SystemExit(4)
     if args.require_cache_details and not cache_ratio_gate:
         raise SystemExit(3)
+    if args.require_arrival_gate and not arrival_schedule_gate:
+        raise SystemExit(5)
 
 
 if __name__ == "__main__":
