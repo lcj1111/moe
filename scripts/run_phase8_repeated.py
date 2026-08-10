@@ -111,7 +111,8 @@ def stop_group(process: subprocess.Popen[Any], timeout: int = 60) -> None:
 
 def run_client(python_bin: str, repo: Path, base_url: str, served_model: str,
                tokenizer: str, cell: dict[str, Any], seed: int,
-               output: Path, summary: Path, timeout: int) -> None:
+               output: Path, summary: Path, timeout: int,
+               cache_block_tokens: int | None = None) -> None:
     command = [
         python_bin, str(repo / "clients" / "smoke.py"),
         "--base-url", base_url, "--model", served_model,
@@ -129,6 +130,8 @@ def run_client(python_bin: str, repo: Path, base_url: str, served_model: str,
     ]
     if cell.get("arrival_mode", "closed_loop") != "closed_loop":
         command.extend(["--request-rate", str(cell["request_rate_rps"])])
+    if cache_block_tokens is not None:
+        command.extend(["--cache-block-tokens", str(cache_block_tokens)])
     subprocess.run(command, cwd=repo, check=True)
 
 
@@ -147,6 +150,9 @@ def audit_summary(path: Path, cell: dict[str, Any]) -> None:
         "arrival_mode": summary.get("arrival", {}).get("mode")
                         == cell.get("arrival_mode", "closed_loop"),
     }
+    if "prefix_cache_pct" in cell:
+        checks["cache_block"] = int(
+            summary.get("prefix_cache", {}).get("cache_block_tokens") or 0) > 0
     if not all(checks.values()):
         raise RuntimeError(f"summary Gate failed for {path}: {checks}")
 
@@ -257,7 +263,14 @@ def run_one(plan: dict[str, Any], candidate: dict[str, Any], repeat: int,
         if actual_ep != meta["expected_ep_ranks"]:
             raise RuntimeError(
                 f"EP rank Gate failed: actual={actual_ep} expected={meta['expected_ep_ranks']}")
+        cache_block_matches = re.findall(
+            r"Setting attention block size to (\d+) tokens", log_text)
+        cache_block_tokens = (int(cache_block_matches[-1]) if cache_block_matches
+                              else plan.get("prefix_cache_block_tokens"))
+        if cache_block_tokens is None:
+            raise RuntimeError("prefix-cache block-size discovery Gate failed")
         meta.update({"status": "warmup_passed", "actual_ep_ranks": actual_ep,
+                     "prefix_cache_block_tokens": cache_block_tokens,
                      "warmup_summary_sha256": sha256(run_dir / "warmup.summary.json")})
         write_json(meta_path, meta)
         for index, cell in enumerate(matrix["cells"]):
@@ -267,7 +280,7 @@ def run_one(plan: dict[str, Any], candidate: dict[str, Any], repeat: int,
             summary_path = cell_dir / "summary.json"
             run_client(python_bin, repo, base_url, served_model, candidate["model_path"],
                        cell, cell_seed, cell_dir / "requests.jsonl", summary_path,
-                       int(plan["request_timeout_seconds"]))
+                       int(plan["request_timeout_seconds"]), cache_block_tokens)
             audit_summary(summary_path, cell)
         meta.update({"status": "workload_passed", "completed_unix": time.time(),
                      "completed_cells": len(matrix["cells"])})

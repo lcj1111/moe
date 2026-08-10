@@ -174,6 +174,17 @@ def cached_tokens_from_usage(usage: dict[str, Any] | None) -> int | None:
     return int(value) if value is not None else None
 
 
+def realizable_cached_tokens(input_tokens: int, rendered_common_prefix_tokens: int,
+                             prefix_cache_pct: int,
+                             cache_block_tokens: int | None) -> int:
+    """Apply engine block granularity to a semantically shared prompt prefix."""
+    if prefix_cache_pct == 0:
+        return 0
+    if cache_block_tokens:
+        return rendered_common_prefix_tokens // cache_block_tokens * cache_block_tokens
+    return round(input_tokens * prefix_cache_pct / 100)
+
+
 def one_request(base_url: str, model: str, input_tokens: int, output_tokens: int,
                 request_id: int, seed: int, timeout: float,
                 prompt_text: str | None = None,
@@ -369,6 +380,8 @@ def main() -> None:
     parser.add_argument("--no-prewarm", action="store_true")
     parser.add_argument("--require-cache-details", action="store_true")
     parser.add_argument("--cache-ratio-tolerance", type=float, default=None)
+    parser.add_argument("--cache-block-tokens", type=int, default=None,
+                        help="engine cache block/page size used to derive realizable reuse")
     parser.add_argument("--output", required=True)
     parser.add_argument("--summary", default=None)
     args = parser.parse_args()
@@ -422,14 +435,18 @@ def main() -> None:
     cached_tokens_total = sum(int(row["cached_tokens"] or 0) for row in cached_rows)
     actual_cache_ratio = (cached_tokens_total / prompt_tokens_total
                           if prompt_tokens_total else None)
-    target_cache_ratio = args.prefix_cache_pct / 100
+    semantic_cache_ratio = args.prefix_cache_pct / 100
+    expected_cached_tokens_per_request = realizable_cached_tokens(
+        args.input_tokens, int(prompt_plan["rendered_common_prefix_tokens"]),
+        args.prefix_cache_pct, args.cache_block_tokens)
+    expected_cache_ratio = expected_cached_tokens_per_request / args.input_tokens
     tolerance = (args.cache_ratio_tolerance if args.cache_ratio_tolerance is not None
-                 else max(0.15, 32 / args.input_tokens))
+                 else max(0.02, 1 / args.input_tokens))
     cache_details_complete = len(cached_rows) == len(good)
     server_prompt_tokens_exact = (len(good) > 0 and all(
         row["prompt_tokens_reported"] == args.input_tokens for row in good))
     cache_ratio_gate = (actual_cache_ratio is not None
-                        and abs(actual_cache_ratio - target_cache_ratio) <= tolerance)
+                        and abs(actual_cache_ratio - expected_cache_ratio) <= tolerance)
     starts = sorted(row["started_offset_s"] for row in good)
     realized_interarrivals = [right - left for left, right in zip(starts, starts[1:])]
     scheduling_lag = [max(0.0, row["started_offset_s"] - row["scheduled_offset_s"])
@@ -462,8 +479,12 @@ def main() -> None:
         "wall_time_s": wall_time,
         "prefix_cache": {
             "target_pct": args.prefix_cache_pct,
+            "semantic_shared_ratio": semantic_cache_ratio,
             "rendered_common_prefix_tokens": prompt_plan["rendered_common_prefix_tokens"],
             "rendered_common_prefix_pct": prompt_plan["rendered_common_prefix_pct"],
+            "cache_block_tokens": args.cache_block_tokens,
+            "expected_cached_tokens_per_request": expected_cached_tokens_per_request,
+            "expected_cached_token_ratio": expected_cache_ratio,
             "prewarmed": prewarm_record is not None,
             "usage_details_complete": cache_details_complete,
             "cached_tokens_total": cached_tokens_total,
