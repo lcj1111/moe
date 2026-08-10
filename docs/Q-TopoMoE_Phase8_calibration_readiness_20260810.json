@@ -1,0 +1,163 @@
+{
+  "blockers": [
+    {
+      "candidate_id": "fp8_tp2_pix01_triton",
+      "missing_bootstrap_ci_rows": [],
+      "missing_kernel_m_buckets": [
+        4,
+        128
+      ],
+      "missing_service_observation_rows": []
+    },
+    {
+      "candidate_id": "w4a16_ep4_static_triton",
+      "missing_bootstrap_ci_rows": [],
+      "missing_kernel_m_buckets": [
+        1,
+        4,
+        8,
+        16,
+        32,
+        128,
+        256,
+        2048,
+        8192,
+        16384
+      ],
+      "missing_service_observation_rows": []
+    }
+  ],
+  "candidate_count": 4,
+  "candidate_coverage": [
+    {
+      "calibration_ready": false,
+      "candidate_id": "fp8_tp2_pix01_triton",
+      "cost_kernel_backend": "triton",
+      "missing_bootstrap_ci_rows": [],
+      "missing_kernel_m_buckets": [
+        4,
+        128
+      ],
+      "missing_service_observation_rows": [],
+      "quant_format": "fp8",
+      "required_m_buckets": [
+        1,
+        4,
+        8,
+        16,
+        32,
+        128,
+        256,
+        2048,
+        8192,
+        16384
+      ],
+      "runtime_kernel_backend": "triton"
+    },
+    {
+      "calibration_ready": false,
+      "candidate_id": "w4a16_ep4_static_triton",
+      "cost_kernel_backend": "triton",
+      "missing_bootstrap_ci_rows": [],
+      "missing_kernel_m_buckets": [
+        1,
+        4,
+        8,
+        16,
+        32,
+        128,
+        256,
+        2048,
+        8192,
+        16384
+      ],
+      "missing_service_observation_rows": [],
+      "quant_format": "w4a16",
+      "required_m_buckets": [
+        1,
+        4,
+        8,
+        16,
+        32,
+        128,
+        256,
+        2048,
+        8192,
+        16384
+      ],
+      "runtime_kernel_backend": "triton"
+    },
+    {
+      "calibration_ready": true,
+      "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+      "cost_kernel_backend": "nvfp4_cutlass",
+      "missing_bootstrap_ci_rows": [],
+      "missing_kernel_m_buckets": [],
+      "missing_service_observation_rows": [],
+      "quant_format": "nvfp4",
+      "required_m_buckets": [
+        1,
+        4,
+        8,
+        16,
+        32,
+        128,
+        256,
+        2048,
+        8192,
+        16384
+      ],
+      "runtime_kernel_backend": "marlin"
+    },
+    {
+      "calibration_ready": true,
+      "candidate_id": "nvfp4_redhat_ep8_static_sys",
+      "cost_kernel_backend": "nvfp4_cutlass",
+      "missing_bootstrap_ci_rows": [],
+      "missing_kernel_m_buckets": [],
+      "missing_service_observation_rows": [],
+      "quant_format": "nvfp4",
+      "required_m_buckets": [
+        1,
+        4,
+        8,
+        16,
+        32,
+        128,
+        256,
+        2048,
+        8192,
+        16384
+      ],
+      "runtime_kernel_backend": "marlin"
+    }
+  ],
+  "gate": {
+    "all_candidates_have_bootstrap_ci": true,
+    "all_candidates_have_kernel_coverage": false,
+    "all_candidates_have_service_observations": true
+  },
+  "inputs": {
+    "candidates": "configs\\strategies\\phase8_candidates_repeated_pareto.json",
+    "candidates_sha256": "ead089c58f03c8cbc4e86dd23ef584187d653be0569de628c40b4a7db0e29c3f",
+    "kernel_db": "configs\\kernels\\phase4_kernel_db.json",
+    "kernel_db_sha256": "1e2d9598c7a56bbc94b8c9861151af757a8db98b28f3e856ab07d756608af316",
+    "observations": "configs\\strategies\\phase8_observations_all_formats_repeated.json",
+    "observations_sha256": "5f176527274306bc9d52692fe4599279e9851e026bf669f3a5b30cd9b9957157"
+  },
+  "observation_count": 12,
+  "required_m_buckets": [
+    1,
+    4,
+    8,
+    16,
+    32,
+    128,
+    256,
+    2048,
+    8192,
+    16384
+  ],
+  "schema_version": "qtopomoe.phase8_calibration_readiness.v1",
+  "status": "blocked_missing_calibration_inputs"
+}

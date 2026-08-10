@@ -123,6 +123,16 @@ This completes the randomized repeated Gate for the current closed-loop
 hit ratios and Poisson/burst arrivals were not exercised. They remain a
 separate formal matrix after transparent selector calibration and replay.
 
+## Calibration readiness audit (2026-08-10)
+
+The five-repeat medians and bootstrap intervals are now bound to the Phase 3
+route trace and exact M-bucket workload records. Service observation and
+uncertainty Gates pass for all four Pareto candidates. Calibration remains
+blocked because the measured kernel DB lacks FP8 M=4/128 and all required
+W4A16 WNA16 rows. The exact coverage audit and ordered remediation are in
+`docs/Q-TopoMoE_Phase8_calibration_readiness_20260810.md`. No synthetic or
+cross-format latency is admitted to make the selector appear ready.
+
 ## CPU verification
 
 ```bash
