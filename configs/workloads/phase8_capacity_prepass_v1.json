@@ -1,0 +1,19 @@
+{
+  "schema_version": "qtopomoe.workload_matrix.v2",
+  "purpose": "Controlled p0 closed-loop capacity prepass for candidate-independent formal arrival rates; not a deployment ranking.",
+  "seed": 42,
+  "cells": [
+    {"id": "w1_c1", "input_tokens": 256, "output_tokens": 128, "concurrency": 1, "requests": 32, "prefix_cache_pct": 0, "arrival_mode": "closed_loop", "stream_seed": 4101},
+    {"id": "w1_c8", "input_tokens": 256, "output_tokens": 128, "concurrency": 8, "requests": 32, "prefix_cache_pct": 0, "arrival_mode": "closed_loop", "stream_seed": 4108},
+    {"id": "w1_c32", "input_tokens": 256, "output_tokens": 128, "concurrency": 32, "requests": 64, "prefix_cache_pct": 0, "arrival_mode": "closed_loop", "stream_seed": 4132},
+    {"id": "w1_c128", "input_tokens": 256, "output_tokens": 128, "concurrency": 128, "requests": 128, "prefix_cache_pct": 0, "arrival_mode": "closed_loop", "stream_seed": 4228},
+    {"id": "w2_c1", "input_tokens": 2048, "output_tokens": 256, "concurrency": 1, "requests": 32, "prefix_cache_pct": 0, "arrival_mode": "closed_loop", "stream_seed": 4201},
+    {"id": "w2_c8", "input_tokens": 2048, "output_tokens": 256, "concurrency": 8, "requests": 32, "prefix_cache_pct": 0, "arrival_mode": "closed_loop", "stream_seed": 4208},
+    {"id": "w2_c32", "input_tokens": 2048, "output_tokens": 256, "concurrency": 32, "requests": 64, "prefix_cache_pct": 0, "arrival_mode": "closed_loop", "stream_seed": 4232},
+    {"id": "w3_c1", "input_tokens": 8192, "output_tokens": 256, "concurrency": 1, "requests": 16, "prefix_cache_pct": 0, "arrival_mode": "closed_loop", "stream_seed": 4301},
+    {"id": "w3_c8", "input_tokens": 8192, "output_tokens": 256, "concurrency": 8, "requests": 16, "prefix_cache_pct": 0, "arrival_mode": "closed_loop", "stream_seed": 4308},
+    {"id": "w3_c16", "input_tokens": 8192, "output_tokens": 256, "concurrency": 16, "requests": 32, "prefix_cache_pct": 0, "arrival_mode": "closed_loop", "stream_seed": 4316},
+    {"id": "w4_c1", "input_tokens": 32768, "output_tokens": 128, "concurrency": 1, "requests": 8, "prefix_cache_pct": 0, "arrival_mode": "closed_loop", "stream_seed": 4401},
+    {"id": "w4_c4", "input_tokens": 32768, "output_tokens": 128, "concurrency": 4, "requests": 8, "prefix_cache_pct": 0, "arrival_mode": "closed_loop", "stream_seed": 4404}
+  ]
+}
