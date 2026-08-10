@@ -151,6 +151,34 @@ only closed-loop arrivals were exercised. The diagnostic coefficients are not
 an accepted deployment manifest. Details and the next formal-data action are
 in `docs/Q-TopoMoE_Phase8_service_calibration_cv_20260810.md`.
 
+## Controlled prefix-cache and arrival mechanics Gate (2026-08-10)
+
+The controlled-workload client and service harness now pass a real FP8 TP2
+mechanics pilot across semantic prefix populations 0%/50%/100% and
+closed-loop/Poisson/burst arrivals. The accepted v3 run completed 9/9 cells
+and 108/108 requests with `failed=0`, exact server-side prompt-token counts,
+complete cached-token usage details, and no forbidden backend fallback.
+
+The frozen Qwen3.5 hybrid attention/Mamba engine reports a 1056-token cache
+page. Consequently a 4224-token prompt can expose only three reusable pages
+at nominal 100% prefix sharing: vLLM reserves the final prompt token for logit
+computation, so the measurable ceiling is
+`floor((input_tokens - 1) / cache_page_tokens) * cache_page_tokens`. The
+observed cache ratios are therefore exactly 0.00, 0.50, and 0.75. Earlier v1
+and v2 pilots are retained as rejected diagnostics: v1 used prompts shorter
+than one engine page, while v2 exposed the final-token rule and an overloaded
+open-loop rate. The corrected v3 open-loop p95 scheduling lag is
+0.289--1.644 ms against the 125 ms Gate.
+
+The compact evidence, hashes, per-cell metrics, and rejected-run chain are in
+`docs/Q-TopoMoE_Phase8_cache_arrival_pilot_v3_20260810.md` and the adjacent
+`.json`. This pilot validates workload mechanics only. It is not a candidate
+ranking or selector-calibration result. The next admissible step is a
+candidate-wide controlled closed-loop capacity prepass, followed by freezing
+candidate-independent per-cell Poisson/burst rates from the slowest admissible
+candidate at a documented utilization factor before the formal repeated
+matrix is launched.
+
 ## CPU verification
 
 ```bash
