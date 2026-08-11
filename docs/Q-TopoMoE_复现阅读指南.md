@@ -37,7 +37,7 @@
 
 每个阶段建议“先读 `.md` 报告、再对照 `.json` 原始数据”。
 
-### Phase 0：实机拓扑
+### 阶段 0：实机拓扑
 
 | 文件 | 作用 |
 |---|---|
@@ -45,14 +45,14 @@
 | `docs/Q-TopoMoE_gpu111_phase0实测分析.md` | gpu-111 实机测量结果分析。 |
 | `docs/q_topomoe_phase0_verify.sh` | Phase 0 验证脚本（GPU/NCCL/环境）。 |
 
-### Phase 1：BF16 / FP8 服务实测
+### 阶段 1：BF16 / FP8 服务实测
 
 | 文件 | 作用 |
 |---|---|
 | `docs/results/phase1_service_baseline.md` | 合并后的 BF16/FP8 服务实测叙述报告。 |
 | `docs/Q-TopoMoE_Phase1_statistics_20260804.json` | 统计结论原始数据；按 SHA-256 固定。 |
 
-### Phase 2：量化、canonical checkpoint 与质量 gate
+### 阶段 2：量化、规范化检查点与质量 Gate
 
 | 文件 | 作用 |
 |---|---|
@@ -63,7 +63,7 @@
 | `docs/Q-TopoMoE_Phase2_W4A16_*` 系列 | W4A16 审计、freeze、reblock 与 gate 数据。叙述 failure/load/status 已并入 Phase 2 结果。 |
 | `docs/Q-TopoMoE_Phase2_WikiText_calibration_manifest.json` | WikiText 校准集机器可读 manifest；叙述已并入 Phase 2 结果。 |
 
-### Phase 3：route trace 采集与漂移分析
+### 阶段 3：route trace 采集与漂移分析
 
 | 文件 | 作用 |
 |---|---|
@@ -71,7 +71,7 @@
 | `docs/Q-TopoMoE_Phase3_route_drift_bf16_vs_w4_20260806.json` | 全量漂移原始数据（40 层逐层指标）。 |
 | `traces/manifests/bf16_full_capture_manifest.json` / `w4a16_full_capture_manifest.json` | 两套全量采集的协议与文件 SHA-256 钉住记录。 |
 
-### Phase 3c：full-set 官方协议评测
+### 阶段 3c：full-set 官方协议评测
 
 | 文件 | 作用 |
 |---|---|
@@ -79,7 +79,7 @@
 | `docs/Q-TopoMoE_Phase3c_pilot_*_20260806.json` | 官方协议 vs thinking 模式两轮 pilot 的计时/输出统计。 |
 | `configs/evaluation/full_set_official_protocol_v1.manifest.json` | 官方协议 full-set（24,374 条）的 SHA-256 与协议参数。 |
 
-### Phase 4/8
+### 阶段 4/8
 
 | 文件 | 作用 |
 |---|---|
@@ -157,7 +157,7 @@
 | `topology/run_nccl_formal.sh` / `topology/parse_nccl_formal.py` | NCCL 正式矩阵执行与解析。 |
 | `scripts/build_nccl_cost_db.py` / `scripts/aggregate_phase1.py` / `scripts/analyze_phase1.py` / `scripts/phase1_matrix.sh` | Phase 1 矩阵执行、聚合、分析，通信成本入库。 |
 
-### 6.3 Phase 4/8 selector
+### 6.3 阶段 4/8 选择器
 
 | 文件 | 作用 |
 |---|---|

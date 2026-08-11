@@ -1,4 +1,4 @@
-# BF16 checkpoint manifest
+# BF16 检查点 manifest
 
 本机 BF16 checkpoint 已补齐，项目环境变量固定为：
 

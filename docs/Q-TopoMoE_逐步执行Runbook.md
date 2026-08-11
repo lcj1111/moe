@@ -66,7 +66,7 @@ export RUN_DIR="$ARTIFACT_ROOT/raw/$RUN_ID"
 install -d "$RUN_DIR"/{server,client,metrics,env,profiles}
 ```
 
-## 3. Phase 0：硬件与通信画像
+## 3. 阶段 0：硬件与通信画像
 
 如果已有同一硬件、驱动、内核和 NCCL 版本下的正式结果，可以直接登记并跳过；任一版本变化则重跑。
 
@@ -196,7 +196,7 @@ sha256sum <CALIBRATION_JSONL> <EVAL_MANIFEST_JSONL> \
 
 量化建议使用同一组 256 条校准样本、最大长度 4096、seed 42。
 
-## 5. Phase 1：BF16/FP8 服务基线
+## 5. 阶段 1：BF16/FP8 服务基线
 
 ### 步骤 5.1：定义拓扑配置
 
@@ -312,7 +312,7 @@ TP8-SYS
 
 Gate：BF16 和 FP8 至少各一个配置通过真实服务；每种格式保留最多两个 Pareto 配置。
 
-## 6. Phase 2：量化 checkpoint
+## 6. 阶段 2：量化检查点
 
 ### 步骤 6.1：创建独立量化环境
 
@@ -394,7 +394,7 @@ ModelOpt mixed（NVFP4 experts + FP8 attention）只有在 FP8、W4A16 和纯 NV
 
 Gate G1：FP8/W4A16 必须稳定多卡；NVFP4 通过 TP1/2、concurrency 1/32 后才准入 EP/EPLB。
 
-## 7. Phase 3：质量和路由漂移
+## 7. 阶段 3：质量和路由漂移
 
 ### 步骤 7.1：质量评测
 
@@ -433,7 +433,7 @@ python3 "$PROJECT_ROOT/analysis/route_drift.py" \
 
 输出逐层 top-k Jaccard、router probability KL、expert load CV/Gini、最大/均值、跨 NUMA token 比例，并与 p99 TPOT 做相关分析。
 
-## 8. Phase 4：SM120 Level 1 kernel/backend selector
+## 8. 阶段 4：SM120 Level 1 kernel/backend 选择器
 
 ### 步骤 8.1：锁定第三方仓库
 
@@ -485,7 +485,7 @@ python3 "$PROJECT_ROOT/kernels/triton_tuner/run_search.py" \
 
 每个 shape 测 M=0、M=1、小 M、非对齐和极端偏斜；记录误差、p50/p95 latency、TFLOPS、DRAM bytes、launch 数。至少一个重要 M 桶稳定改善 ≥10%，否则只交付 selector，不开发新 kernel。
 
-## 9. Phase 5：Level 2 CUDA 增强
+## 9. 阶段 5：Level 2 CUDA 增强
 
 只选一个目标，优先 `permute + activation quant/scale + pack` 融合。
 
@@ -501,7 +501,7 @@ ncu --set full --target-processes all \
 
 实现顺序：Torch reference → CUDA/CUTLASS → 极端 shape 正确性 → 真实 trace → vLLM modular experts 接入 → 端到端 A/B。两周内关键 M 桶无正确且可重复的 ≥10% micro 收益，则停止 Level 2。
 
-## 10. Phase 6：TP/DP/EP 系统矩阵
+## 10. 阶段 6：TP/DP/EP 系统矩阵
 
 ### 步骤 10.1：普通 TP/DP
 
@@ -533,7 +533,7 @@ grep -E -- '--tensor-parallel-size|--data-parallel-size|--enable-expert-parallel
 
 只对通过 G1 的 checkpoint 加 `--enable-expert-parallel` 和通用 PCIe All-to-All backend（如锁定版本支持的 `allgather_reducescatter`）。每一步先 32 请求 smoke 和并发正确性，再做性能。
 
-## 11. Phase 7：拓扑+量化感知 EPLB
+## 11. 阶段 7：拓扑+量化感知 EPLB
 
 ### 步骤 11.1：测迁移成本
 
@@ -561,7 +561,7 @@ EMA alpha：0.2
 
 严格比较：static EP、原生 EPLB、自研 load-only、load+topology、load+topology+quant-aware。每次只改变策略。
 
-## 12. Phase 8：联合策略选择器
+## 12. 阶段 8：联合策略选择器
 
 候选字段：`quant_format,checkpoint,tp,dp,ep,gpu_mapping,eplb_policy,redundant_experts,kernel_backend,kernel_config`。
 

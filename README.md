@@ -7,13 +7,13 @@ SM120 算子研究工程。
 
 | 阶段 | 内容 | 状态 |
 |---|---|---|
-| Phase 0 | 实机拓扑评估与实验矩阵 | 完成 |
-| Phase 1 | BF16 / FP8 服务实测 | 完成 |
-| Phase 2 | W4A16 量化、canonical checkpoint 与质量 gate | 完成（official-like v2） |
-| Phase 3a | Route trace 全量采集（BF16 + W4A16-triton） | 完成（116 prompts × 全 token） |
-| Phase 3b | 全量 trace 漂移分析（Jaccard / flip / 相关 / CV） | 完成 |
-| Phase 3c | Full-set 官方协议评测（MMLU-Pro + C-Eval test） | 资产已冻结，计时 pilot 待跑 |
-| Phase 4/8 | Kernel benchmark 与策略回放 | 框架就绪，待实测数据填充 |
+| 阶段 0 | 实机拓扑评估与实验矩阵 | 完成 |
+| 阶段 1 | BF16 / FP8 服务实测 | 完成 |
+| 阶段 2 | W4A16 量化、规范化检查点与质量 Gate | 完成（official-like v2） |
+| 阶段 3a | Route trace 全量采集（BF16 + W4A16-triton） | 完成（116 prompts × 全 token） |
+| 阶段 3b | 全量 trace 漂移分析（Jaccard / flip / 相关 / CV） | 完成 |
+| 阶段 3c | Full-set 官方协议评测（MMLU-Pro + C-Eval test） | 资产已冻结，计时 pilot 待跑 |
+| 阶段 4/8 | kernel 基准与策略回放 | 框架就绪，待实测数据填充 |
 
 结果与报告统一归档在 `docs/`，按阶段索引见 [docs/README.md](docs/README.md)。
 

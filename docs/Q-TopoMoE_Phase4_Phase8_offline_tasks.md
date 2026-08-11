@@ -1,8 +1,8 @@
-# 量化期间可执行的 Phase 4/8 离线任务
+# 量化期间可执行的阶段 4/8 离线任务
 
 这些产物只依赖 M-bucket 清单、已有 NCCL 正式矩阵和 BF16/FP8 结果，不读取或启动 W4A16 模型。
 
-## Phase 4 kernel benchmark plan
+## 阶段 4 kernel 基准计划
 
 ```bash
 python3 scripts/plan_phase4_kernel_benchmark.py \
@@ -22,7 +22,7 @@ python3 scripts/build_nccl_cost_db.py \
 
 已归一化 132 个 `time_us` 实测点，覆盖 6 个 mapping，所有点 `wrong_total=0`。`effective_us_per_gb` 是描述性指标；不同 collective 和消息大小不能直接压成一个线性带宽常数，Phase 8 应优先按 collective/size 查点或拟合后再注入 mapping cost。
 
-## Phase 8 offline replay
+## 阶段 8 离线回放
 
 ```bash
 python3 scripts/replay_phase8.py \
