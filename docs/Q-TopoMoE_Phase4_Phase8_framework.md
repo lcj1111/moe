@@ -100,7 +100,7 @@ TP1 x DP4, W4A16 static EP4, RedHat NVFP4 static EP4 and NVFP4 static EP8.
 All six passed the request/token/topology Gates. The resource-aware Pareto set
 is FP8 TP2, W4A16 EP4, NVFP4 EP4 and NVFP4 EP8. Detailed measurements,
 failure recovery notes and the ordered next step are in
-`docs/Q-TopoMoE_Phase8_all_formats_single_pass_screen_20260809.md`; the
+`docs/results/phase8_benchmark_history.md`; the
 machine-readable aggregate is the adjacent `.json` file. These are screening
 results only and do not replace randomized five-repeat bootstrap-CI runs.
 
@@ -111,7 +111,7 @@ and all 240 candidate/repetition/workload summaries. Request completion,
 failed-zero, exact-token, common-chat-template and EP-rank-truth Gates all
 passed. The accepted 10,000-resample aggregate and the uncertainty audit are
 documented in
-`docs/Q-TopoMoE_Phase8_all_formats_repeated_bootstrap_20260810.md`; the
+`docs/results/phase8_benchmark_history.md`; the
 adjacent `.json` retains per-cell medians, bootstrap 95% intervals and hashed
 source-artifact references. FP8 TP2 wins 7/12 median-e2e cells, NVFP4 EP8 wins
 4/12 and W4A16 EP4 wins 1/12. NVFP4 EP8 has materially higher repeated-run
@@ -132,7 +132,7 @@ M=4/128 rows and all ten packed-int4 Triton WNA16 rows are measured and merged.
 All four candidates now pass kernel, service-observation and bootstrap-CI
 coverage, so the readiness audit status is `ready`. The exact coverage audit
 and W4A16 numerical-contract evidence are in
-`docs/Q-TopoMoE_Phase8_calibration_readiness_20260810.md`. No synthetic or
+`docs/results/phase8_benchmark_history.md`. No synthetic or
 cross-format latency was admitted to make the selector appear ready; the next
 step is transparent service-level calibration with a held-out replay.
 
@@ -149,7 +149,7 @@ The failure is recorded rather than hidden with a higher-capacity fit. Prefix
 caching was enabled but controlled prefix populations were not generated, and
 only closed-loop arrivals were exercised. The diagnostic coefficients are not
 an accepted deployment manifest. Details and the next formal-data action are
-in `docs/Q-TopoMoE_Phase8_service_calibration_cv_20260810.md`.
+in `docs/results/phase8_benchmark_history.md`.
 
 ## Controlled prefix-cache and arrival mechanics Gate (2026-08-10)
 
@@ -171,7 +171,7 @@ open-loop rate. The corrected v3 open-loop p95 scheduling lag is
 0.289--1.644 ms against the 125 ms Gate.
 
 The compact evidence, hashes, per-cell metrics, and rejected-run chain are in
-`docs/Q-TopoMoE_Phase8_cache_arrival_pilot_v3_20260810.md` and the adjacent
+`docs/results/phase8_benchmark_history.md` and the adjacent
 `.json`. This pilot validates workload mechanics only. It is not a candidate
 ranking or selector-calibration result. The next admissible step is a
 candidate-wide controlled closed-loop capacity prepass, followed by freezing

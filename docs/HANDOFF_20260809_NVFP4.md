@@ -54,7 +54,7 @@
     weight coverage 无警告，116/116 无失败。
   - 边界说明：C-Eval 单项 -1.92pp 略超 1.5pp 门槛（仅 1 题之差），
     已在报告中如实标注；总体达标。
-- 报告与数据：`docs/Q-TopoMoE_Phase2_NVFP4_gate_20260807.md`（本地已提交），
+- 报告与数据：`docs/results/phase2_quantization_quality.md`（本地已提交），
   `docs/Q-TopoMoE_Phase2_NVFP4_audit_20260807.json`，
   `docs/Q-TopoMoE_Phase2_NVFP4_official_like_v2_summary_20260807.json`，
   审计脚本 `quantization/audit_nvfp4.py`。

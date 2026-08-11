@@ -49,25 +49,25 @@
 
 | 文件 | 作用 |
 |---|---|
-| `docs/Q-TopoMoE_Phase1_BF16_实测报告.md` / `docs/Q-TopoMoE_Phase1_BF16_FP8_实测报告.md` | 服务端实测报告（吞吐/延迟）。 |
-| `docs/Q-TopoMoE_Phase1_statistics_20260804.md` / `.json` | 统计结论报告与原始数据。 |
+| `docs/results/phase1_service_baseline.md` | 合并后的 BF16/FP8 服务实测叙述报告。 |
+| `docs/Q-TopoMoE_Phase1_statistics_20260804.json` | 统计结论原始数据；按 SHA-256 固定。 |
 
 ### Phase 2：量化、canonical checkpoint 与质量 gate
 
 | 文件 | 作用 |
 |---|---|
-| `docs/Q-TopoMoE_Phase2_量化预检报告.md` | W4A16 量化预检结论。 |
+| `docs/results/phase2_quantization_quality.md` | W4A16 量化预检结论。 |
 | `docs/Q-TopoMoE_Qwen35_compat_baseline_20260805.md` + `Qwen35_cleanroom_pins_20260805.json` + `Qwen35_canonical_*` 系列 | 兼容基线、cleanroom 版本 pin、canonical checkpoint 的 tp1/tp2 gate 与 smoke 记录。 |
-| `docs/Q-TopoMoE_Phase2_quality_smoke_and_backend_gate_20260805.md` + `quality_smoke_*_20260805.json` | 质量 smoke 与 vLLM/SGLang、Marlin/Triton backend 隔离记录。 |
-| `docs/Q-TopoMoE_Phase2_official_like_v2_BF16_W4_results_20260805.md` + 三个 summary/compare json | 116 条 official-like v2 冻结样本的 BF16 vs W4（Triton）质量对比，gate_pass=true。 |
-| `docs/Q-TopoMoE_Phase2_W4A16_*` 系列 | W4A16 审计、failure log、load gate、run status。 |
-| `docs/Q-TopoMoE_Phase2_WikiText_calibration_*` | WikiText 校准集报告与 manifest。 |
+| `docs/results/phase2_quantization_quality.md` + `docs/Q-TopoMoE_quality_smoke_*_20260805.json` | 质量 smoke 与 vLLM/SGLang、Marlin/Triton backend 隔离记录。 |
+| `docs/results/phase2_quantization_quality.md` + `docs/Q-TopoMoE_Phase2_official_like_v2_*_20260805.json` | 116 条 official-like v2 冻结样本的 BF16 vs W4（Triton）质量对比。 |
+| `docs/Q-TopoMoE_Phase2_W4A16_*` 系列 | W4A16 审计、freeze、reblock 与 gate 数据。叙述 failure/load/status 已并入 Phase 2 结果。 |
+| `docs/Q-TopoMoE_Phase2_WikiText_calibration_manifest.json` | WikiText 校准集机器可读 manifest；叙述已并入 Phase 2 结果。 |
 
 ### Phase 3：route trace 采集与漂移分析
 
 | 文件 | 作用 |
 |---|---|
-| `docs/Q-TopoMoE_Phase3_route_trace_full_drift_20260806.md` | 全量 trace 采集与漂移分析报告（Jaccard/flip/相关/CV）。 |
+| `docs/results/phase3_route_and_official_eval.md` | 全量 trace 采集与漂移分析报告（Jaccard/flip/相关/CV）。 |
 | `docs/Q-TopoMoE_Phase3_route_drift_bf16_vs_w4_20260806.json` | 全量漂移原始数据（40 层逐层指标）。 |
 | `traces/manifests/bf16_full_capture_manifest.json` / `w4a16_full_capture_manifest.json` | 两套全量采集的协议与文件 SHA-256 钉住记录。 |
 
@@ -75,7 +75,7 @@
 
 | 文件 | 作用 |
 |---|---|
-| `docs/Q-TopoMoE_Phase3c_full_set_official_protocol_20260806.md` | 官方协议核实（MMLU-Pro/C-Eval harness 源码）、冻结结果、计时 pilot 与外推。 |
+| `docs/results/phase3_route_and_official_eval.md` | 官方协议核实（MMLU-Pro/C-Eval harness 源码）、冻结结果、计时 pilot 与外推。 |
 | `docs/Q-TopoMoE_Phase3c_pilot_*_20260806.json` | 官方协议 vs thinking 模式两轮 pilot 的计时/输出统计。 |
 | `configs/evaluation/full_set_official_protocol_v1.manifest.json` | 官方协议 full-set（24,374 条）的 SHA-256 与协议参数。 |
 
