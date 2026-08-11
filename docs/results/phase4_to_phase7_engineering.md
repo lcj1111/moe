@@ -1,10 +1,10 @@
-# Phase 4–7 — kernels, fusion, communication and EPLB
+# 阶段 4–7：kernel、融合、通信与 EPLB 工程
 
-> Consolidated from the dated reports listed below. Source content is retained; only trailing whitespace was normalized. SHA-256 values are computed from the UTF-8 Git blob (LF-normalized); machine-readable artifacts keep their original paths for reproducibility.
+> 以下为按日期合并的历史报告。源内容已保留，仅规范化了行尾空格；SHA-256 按 UTF-8 Git blob（LF 换行）计算，机器可读产物保持原始路径以确保复现。
 
-## Source integrity
+## 源文件完整性
 
-| Original file | UTF-8 bytes | SHA-256 of Git blob |
+| 原始文件 | UTF-8 字节数 | Git blob 的 SHA-256 |
 |---|---:|---|
 | `docs/Q-TopoMoE_Phase4_Phase8_progress_20260806.md` | 3843 | `AEC891E2CA92D82659F931DB30880B287E1CDAA58C82D23E7076AB4B1C3FA12E` |
 | `docs/Q-TopoMoE_Phase5_progress_20260806.md` | 3834 | `476E1C6518EDEE2ABED56A681AF47EB361B43AA342D68B6968C5D442ADE349A9` |
@@ -13,7 +13,7 @@
 
 ---
 
-## Source: `docs/Q-TopoMoE_Phase4_Phase8_progress_20260806.md`
+## 源文件： `docs/Q-TopoMoE_Phase4_Phase8_progress_20260806.md`
 
 # Q-TopoMoE Phase 4/8 进展：Triton MoE kernel 实测与策略回放
 
@@ -95,7 +95,7 @@ p95=28.27%（由预测值极小的 smoke observation 拉高——预测 0.56ms �
 
 ---
 
-## Source: `docs/Q-TopoMoE_Phase5_progress_20260806.md`
+## 源文件： `docs/Q-TopoMoE_Phase5_progress_20260806.md`
 
 # Q-TopoMoE Phase 5：Level 2 融合 kernel（permute + quant/scale + pack）
 
@@ -193,7 +193,7 @@ A/B 数据：[Q-TopoMoE_Phase5_prepare_ab_20260807.json](../Q-TopoMoE_Phase5_pre
 
 ---
 
-## Source: `docs/Q-TopoMoE_Phase6_progress_20260807.md`
+## 源文件： `docs/Q-TopoMoE_Phase6_progress_20260807.md`
 
 # Q-TopoMoE Phase 6：TP/DP/EP 系统矩阵（P2P 后全量）
 
@@ -298,7 +298,7 @@ A/B 数据：[Q-TopoMoE_Phase5_prepare_ab_20260807.json](../Q-TopoMoE_Phase5_pre
 
 ---
 
-## Source: `docs/Q-TopoMoE_Phase7_progress_20260807.md`
+## 源文件： `docs/Q-TopoMoE_Phase7_progress_20260807.md`
 
 # Q-TopoMoE Phase 7：量化感知 EPLB（离线 placement 与迁移成本）
 

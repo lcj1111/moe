@@ -1,10 +1,10 @@
-# Phase 3 — route traces and official-like evaluation
+# 阶段 3：route trace 与 official-like 评测
 
-> Consolidated from the dated reports listed below. Source content is retained; only trailing whitespace was normalized. SHA-256 values are computed from the UTF-8 Git blob (LF-normalized); machine-readable artifacts keep their original paths for reproducibility.
+> 以下为按日期合并的历史报告。源内容已保留，仅规范化了行尾空格；SHA-256 按 UTF-8 Git blob（LF 换行）计算，机器可读产物保持原始路径以确保复现。
 
-## Source integrity
+## 源文件完整性
 
-| Original file | UTF-8 bytes | SHA-256 of Git blob |
+| 原始文件 | UTF-8 字节数 | Git blob 的 SHA-256 |
 |---|---:|---|
 | `docs/Q-TopoMoE_Phase3_route_trace_full_drift_20260806.md` | 3687 | `A8A5394F3CB33B8316776F5F06AC55D6354AEEEF1BF5EFF011E6EEB8ADC2D268` |
 | `docs/Q-TopoMoE_Phase3c_full_set_official_protocol_20260806.md` | 5126 | `BCDDFFB2A6640878E88BC5930A3BE05701D8AECFD7F6910AF3DE81EC9A3F1EFC` |
@@ -13,7 +13,7 @@
 
 ---
 
-## Source: `docs/Q-TopoMoE_Phase3_route_trace_full_drift_20260806.md`
+## 源文件： `docs/Q-TopoMoE_Phase3_route_trace_full_drift_20260806.md`
 
 # Q-TopoMoE Phase 3：全量 route trace 采集与漂移分析报告
 
@@ -96,7 +96,7 @@ router-probability KL，也不伪造 kernel 延迟数据。
 
 ---
 
-## Source: `docs/Q-TopoMoE_Phase3c_full_set_official_protocol_20260806.md`
+## 源文件： `docs/Q-TopoMoE_Phase3c_full_set_official_protocol_20260806.md`
 
 # Q-TopoMoE Phase 3c：full-set 官方协议冻结与计时 pilot
 
@@ -212,7 +212,7 @@ port 8080，PID 见 gate 记录），释放全部 8 卡：
 
 ---
 
-## Source: `docs/Q-TopoMoE_Phase3c_full_official_W4_results_20260806.md`
+## 源文件： `docs/Q-TopoMoE_Phase3c_full_official_W4_results_20260806.md`
 
 # Q-TopoMoE Phase 3c：W4A16 full-set 官方协议评测结果
 
@@ -279,51 +279,36 @@ advanced_mathematics 2 等）。响应尾部显示模型进入"最终猜测/自�
 
 ---
 
-## Source: `docs/Q-TopoMoE_Phase3_NVFP4_route_and_Phase7_EPLB_20260809.md`
+## 源文件： `docs/Q-TopoMoE_Phase3_NVFP4_route_and_Phase7_EPLB_20260809.md`
 
-# Phase 3 NVFP4 route trace and Phase 7 EPLB checkpoint
+# 阶段 3 NVFP4 路由 trace 与阶段 7 EPLB 检查点
 
-## Accepted route-trace Gate
+## 已接受的 route-trace Gate
 
-The RedHatAI NVFP4 checkpoint was captured with the same frozen protocol as
-BF16/W4A16: 116 prompts, manifest order 0..115, seed 42, 16 generated tokens,
-TP4 on GPU0-3 and `max_model_len=8192`.  Runtime evidence confirms the native
-`VLLM_CUTLASS` MoE backend.
+RedHatAI NVFP4 检查点使用与 BF16/W4A16 相同的冻结协议采集：116 条 prompt、manifest 顺序 0..115、seed 42、生成 16 token、GPU0-3 TP4、`max_model_len=8192`。运行时证据确认使用原生 `VLLM_CUTLASS` MoE backend。
 
-- prompt count: 116/116
-- prompt ID/order, prompt-token SHA-256 and prompt-token counts: all match BF16
-- token positions: 119,827
-- layer-token rows: 4,793,080 (`[token, 40, 8]`, `uint8`)
-- expert range: 0..255
-- 116 array SHA-256 values: all match the capture manifest
-- `routed_experts is None`: absent
-- capture manifest SHA-256: `114c2180d15d85b94a96b4c6914c24496f4422bb0a400e9e21d7d5646efdd4ab`
+- prompt 数量：116/116；
+- prompt ID/顺序、prompt-token SHA-256 与 token 数：全部匹配 BF16；
+- token 位置：119,827；
+- layer-token 行：4,793,080（`[token, 40, 8]`、`uint8`）；
+- expert 范围：0..255；
+- 116 个数组 SHA-256：全部匹配 capture manifest；
+- 没有出现 `routed_experts is None`；
+- capture manifest SHA-256：`114c2180d15d85b94a96b4c6914c24496f4422bb0a400e9e21d7d5646efdd4ab`。
 
-BF16 to NVFP4 route drift is `mean_jaccard=0.794115`,
-`mean_flip_rate=0.660875`, and `mean_count_correlation=0.99898`.  Quantization
-therefore changes many token-level top-k memberships while preserving the
-aggregate expert-load shape very closely.  This is an input to placement, not
-a replacement for the already accepted quality Gate.
+BF16 到 NVFP4 的路由漂移为 `mean_jaccard=0.794115`、`mean_flip_rate=0.660875`、`mean_count_correlation=0.99898`。也就是说，量化改变了许多 token 级 top-k 成员，但整体 expert 负载形状仍高度接近。该结果是 placement 的输入，不替代已经接受的质量 Gate。
 
-The real workload mix derived from the trace is M=1: 0.007198, M=2048:
-0.897493 and M=8192: 0.095309.
+trace 得到的实际 workload 混合比例为 M=1：0.007198，M=2048：0.897493，M=8192：0.095309。
 
-## Quantization-aware expert bytes
+## 量化感知的 expert 字节数
 
-Safetensors metadata was audited without loading model tensors.  All 40x256
-routed experts are present.  Each expert contains 12 stored tensors and is
-exactly 1,769,496 bytes; total routed-expert storage is 18,119,639,040 bytes.
-The audit includes packed U8 weights, FP8 scales and FP32 global scales rather
-than estimating storage from nominal 4-bit weights.
+在不加载模型张量的情况下审计 Safetensors metadata。40×256 个 routed expert 全部存在；每个 expert 包含 12 个存储张量，精确大小为 1,769,496 bytes，routed-expert 总存储为 18,119,639,040 bytes。审计使用 packed U8 权重、FP8 scale 和 FP32 global scale 的真实存储，而不是按名义 4-bit 权重估算。
 
-## Topology and migration primitives
+## 拓扑与迁移基础操作
 
-`configs/experiments/topology_gpu111.yaml` now records the live P2P state:
-all off-diagonal read/write pairs are `OK`.  Formal NCCL five-run data remains
-the mapping source; NODE-preferred groups are intentionally retained because
-the host's measured NCCL result is better than the PIX negative control.
+`configs/experiments/topology_gpu111.yaml` 已记录当前 P2P 状态：所有非对角读写对均为 `OK`。正式 NCCL 五次运行数据仍是 mapping 来源；保留 NODE 优先分组，是因为主机实测 NCCL 结果优于 PIX 负控制。
 
-Exact-size (1,769,496-byte) migration microbench, five repeats:
+精确大小（1,769,496-byte）的迁移 microbench，重复五次：
 
 | primitive | mean us | p95 us | effective GB/s |
 |---|---:|---:|---:|
@@ -333,61 +318,30 @@ Exact-size (1,769,496-byte) migration microbench, five repeats:
 | same-NUMA NODE 0->2 | 43.1823 | 43.4161 | 40.98 |
 | cross-NUMA SYS 0->4 | 66.1044 | 66.6786 | 26.77 |
 
-All copies verified content and reported peer access enabled.  These are
-primitive costs only; block time, recovery time, and affected service p99 are
-still required before online migration is accepted.
+所有复制均验证内容一致，并报告 peer access enabled。这些只是基础操作成本；在线迁移接受前仍必须测量 block time、恢复时间和受影响服务的 p99。
 
-## Native NVFP4 kernel and EP admission
+## 原生 NVFP4 kernel 与 EP 准入
 
-The native vLLM CUTLASS NVFP4 MoE primitive was measured for the real trace
-buckets with 50 repeats: p95 is 250.42 us at M=1, 728.23 us at M=2048, and
-2219.58 us at M=8192.  Applying the frozen token-weighted M mixture and
-dividing by `M * top_k` yields an auditable offline placement proxy of
-0.268434768470764 us per routed assignment.  It is not an end-to-end service
-latency.
+原生 vLLM CUTLASS NVFP4 MoE 基础操作按真实 trace bucket 重复 50 次：M=1、2048、8192 的 p95 分别为 250.42、728.23、2219.58 us。使用冻结的 token 加权 M 混合并除以 `M * top_k`，得到可审计的离线 placement proxy：每个 routed assignment 为 0.268434768470764 us；这不是端到端服务延迟。
 
-Official RedHatAI NVFP4 passed both real expert-parallel admission cells:
+官方 RedHatAI NVFP4 通过两个真实 expert-parallel 准入 cell：
 
 | cell | actual EP ranks | backend | completed/failed | e2e p50/p95 ms |
 |---|---:|---|---:|---:|
 | TP4 + EP4 static | 4 | MARLIN | 32/0 | 751.95 / 1682.29 |
 | TP8 + EP8 static | 8 | MARLIN | 32/0 | 823.76 / 1996.98 |
 
-The backend change from `VLLM_CUTLASS` in non-EP serving to `MARLIN` in the
-sharded EP cells is runtime-selected and explicitly recorded; CUTLASS
-microbench rows are not presented as EP MARLIN timings.  EP8 peak HBM is
-29027--29109 MiB per GPU.  After subtracting the exact 1280 local routed
-experts per GPU, measured non-expert/KV headroom is 26.24--26.32 GiB.
+非 EP 服务使用 `VLLM_CUTLASS`，分片 EP cell 使用 `MARLIN`，这是运行时选择且已明确记录；CUTLASS microbench 行不冒充 EP MARLIN 计时。EP8 峰值 HBM 为每 GPU 29027--29109 MiB；扣除每卡精确 1280 个本地 routed expert 后，实测非 expert/KV headroom 为 26.24--26.32 GiB。
 
-## EPLB implementation status
+## EPLB 实现状态
 
-`selector/eplb_policy.py` now provides:
+`selector/eplb_policy.py` 现在提供：
 
-- deterministic offline placement using per-expert load, exact quantized
-  bytes, HBM headroom, source-GPU weights, and measured pair costs;
-- optional redundant-expert placement;
-- predicted cross-NUMA bytes, dispatch cost, HBM use, migration bytes, and a
-  stable plan SHA-256;
-- the Runbook online state machine (500 ms/1000 requests, EMA 0.2, CV >0.25
-  for three windows, benefit >=5%, benefit/cost >=2, residency 10, cooldown
-  20, and rollback after three >5% p99-regression windows).
+- 按 expert 负载、精确量化字节数、HBM headroom、源 GPU 权重和实测 pair cost 做确定性离线 placement；
+- 可选的冗余 expert placement；
+- 预测跨 NUMA 字节数、dispatch cost、HBM 使用、迁移字节数和稳定的 plan SHA-256；
+- Runbook 在线状态机（500 ms/1000 requests、EMA 0.2、连续三个窗口 CV >0.25、benefit >=5%、benefit/cost >=2、residency 10、cooldown 20，连续三个 p99 回退超过 5% 窗口后回滚）。
 
-The measured-input full-domain plan covers 10,240 experts.  Its offline inputs
-are ready: exact expert bytes, accepted route load, measured kernel proxy,
-measured EP8 HBM headroom, and measured topology are all bound to the plan.
-The load span is below 0.81 us across eight GPUs and the stable plan SHA-256 is
-`d53bb6653abed0fe67163888dd838a8f2aef60d2d86968cc89f0c3d0430865d6`.
-Overall `formal_ready` remains false until live-service migration
-block/recovery/p99 impact and runtime placement-plan application pass.
+按实测输入生成的全域 plan 覆盖 10,240 个 expert；精确 expert bytes、已接受 route load、实测 kernel proxy、实测 EP8 HBM headroom 与实测 topology 均已绑定。八张 GPU 的 load span 小于 0.81 us，稳定 plan SHA-256 为 `d53bb6653abed0fe67163888dd838a8f2aef60d2d86968cc89f0c3d0430865d6`。在完成在线服务迁移的 block/recovery/p99 影响及 placement-plan application 验证前，整体 `formal_ready` 仍为 false。
 
-The native vLLM EPLB admission cell was also executed with a real TP8/EP8
-world.  It failed during model construction, before serving, with
-`NotImplementedError: EPLB is not supported
-CompressedTensorsW4A4Nvfp4MoEMethod.`  The frozen vLLM build and current
-upstream main both leave EPLB disabled for this compressed-tensors NVFP4
-method.  A historical upstream implementation supports the different
-`ModelOptNvFp4FusedMoE` path; it is not evidence that changing the capability
-property for the current path is safe.  The project therefore does not
-hot-patch the serving venv.  Static EP4/EP8 remain admitted, while native EPLB
-and custom runtime plan application are marked unavailable/pending rather
-than reported as successful.
+原生 vLLM EPLB admission cell 也在真实 TP8/EP8 world 上执行，但在模型构造阶段、尚未服务前失败：`NotImplementedError: EPLB is not supported CompressedTensorsW4A4Nvfp4MoEMethod.` 冻结的 vLLM 构建与当前 upstream main 对该 compressed-tensors NVFP4 method 都保持 EPLB disabled。历史 upstream 实现支持的是另一条 `ModelOptNvFp4FusedMoE` 路径，不能证明修改当前路径的 capability property 是安全的。因此项目不对 serving venv 做 hot-patch；静态 EP4/EP8 继续允许，原生 EPLB 与自定义运行时 plan 应用标记为 unavailable/pending，而不是报告为成功。

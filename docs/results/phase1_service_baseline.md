@@ -1,10 +1,10 @@
-# Phase 1 — BF16/FP8 service baseline
+# 阶段 1：BF16/FP8 服务基线
 
-> Consolidated from the dated reports listed below. Source content is retained; only trailing whitespace was normalized. SHA-256 values are computed from the UTF-8 Git blob (LF-normalized); machine-readable artifacts keep their original paths for reproducibility.
+> 以下为按日期合并的历史报告。源内容已保留，仅规范化了行尾空格；SHA-256 按 UTF-8 Git blob（LF 换行）计算，机器可读产物保持原始路径以确保复现。
 
-## Source integrity
+## 源文件完整性
 
-| Original file | UTF-8 bytes | SHA-256 of Git blob |
+| 原始文件 | UTF-8 字节数 | Git blob 的 SHA-256 |
 |---|---:|---|
 | `docs/Q-TopoMoE_Phase1_BF16_FP8_实测报告.md` | 3670 | `106AD62B9E3D22CF98B524888EF6B095090E27A5869F2F3B0CE524D9FB047E7A` |
 | `docs/Q-TopoMoE_Phase1_BF16_实测报告.md` | 2096 | `05F39ACF3FB85508F57C68AA56FAC4584D8738455E535ACAF0CAED9D3F9A03D8` |
@@ -12,7 +12,7 @@
 
 ---
 
-## Source: `docs/Q-TopoMoE_Phase1_BF16_FP8_实测报告.md`
+## 源文件： `docs/Q-TopoMoE_Phase1_BF16_FP8_实测报告.md`
 
 # Q-TopoMoE Phase 1：BF16/FP8 服务基线实测报告
 
@@ -83,7 +83,7 @@ FORMAT=fp8 RUN_ID=<RUN_ID> scripts/phase1_matrix.sh
 
 ---
 
-## Source: `docs/Q-TopoMoE_Phase1_BF16_实测报告.md`
+## 源文件： `docs/Q-TopoMoE_Phase1_BF16_实测报告.md`
 
 # Q-TopoMoE Phase 1：BF16 服务基线实测报告
 
@@ -136,14 +136,14 @@ RUN_ID=<RUN_ID> FORMAT=bf16 \
 
 ---
 
-## Source: `docs/Q-TopoMoE_Phase1_statistics_20260804.md`
+## 源文件： `docs/Q-TopoMoE_Phase1_statistics_20260804.md`
 
-# Q-TopoMoE Phase 1 BF16/FP8 statistical analysis
+# 阶段 1 BF16/FP8 统计分析
 
-Completed means `failed == 0` and `completed == requests`; the legacy `acceptance` flag is reported but not used to discard measurements.
+“完成”定义为 `failed == 0` 且 `completed == requests`；旧版 `acceptance` 字段只记录，不用于丢弃测量结果。
 
-- Matrix rows: 78 (completed: 78, failed/incomplete: 0)
-- acceptance=true rows: 0
+- 矩阵行数：78（completed：78，failed/incomplete：0）
+- `acceptance=true` 的行数：0
 
 ## Grouped medians
 
