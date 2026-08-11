@@ -50,7 +50,7 @@ router-probability KL，也不伪造 kernel 延迟数据。
 ## 2. 漂移指标（BF16 reference → W4A16-triton candidate）
 
 分析脚本：`analysis/route_drift.py`；全量输出见
-[Q-TopoMoE_Phase3_route_drift_bf16_vs_w4_20260806.json](Q-TopoMoE_Phase3_route_drift_bf16_vs_w4_20260806.json)。
+[Q-TopoMoE_Phase3_route_drift_bf16_vs_w4_20260806.json](../Q-TopoMoE_Phase3_route_drift_bf16_vs_w4_20260806.json)。
 
 | 指标 | 全量值 | 12 题 pilot | 说明 |
 |---|---:|---:|---|
@@ -235,7 +235,7 @@ sampled 对比结论（drop≤5 gate pass）一致：**W4A16 量化未造成明�
 ## 2. 评测协议
 
 与 benchmark 官方 harness 对齐（详见
-[Phase3c 官方协议冻结报告](Q-TopoMoE_Phase3c_full_set_official_protocol_20260806.md)）：
+[Phase3c 官方协议冻结报告（本合并文件）](phase3_route_and_official_eval.md)）：
 
 - MMLU-Pro：5-shot CoT，temperature 0，max_tokens 4000，thinking 关；
   答案按 "The answer is (X)" 正则提取。
@@ -266,7 +266,7 @@ sampled 对比结论（drop≤5 gate pass）一致：**W4A16 量化未造成明�
 advanced_mathematics 2 等）。响应尾部显示模型进入"最终猜测/自我怀疑"
 状态，继续提高上限预期难以收敛。按官方 answer-only 协议视为未完成、
 不计分（占总量 0.17%），完整 ID 清单见
-[合并 summary](Q-TopoMoE_Phase3c_full_official_w4_merged_summary_20260806.json)。
+[合并 summary](../Q-TopoMoE_Phase3c_full_official_w4_merged_summary_20260806.json)。
 
 ## 5. 边界与说明
 

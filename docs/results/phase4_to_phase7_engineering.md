@@ -26,7 +26,7 @@
 ## 1. Phase 4：Triton MoE kernel 实测
 
 基准脚本：`scripts/bench_moe_kernel.py`；原始数据：
-[Q-TopoMoE_Phase4_triton_moe_bf16_kernel_20260806.json](Q-TopoMoE_Phase4_triton_moe_bf16_kernel_20260806.json)。
+[Q-TopoMoE Phase4 Triton BF16 kernel v3](../Q-TopoMoE_Phase4_triton_moe_bf16_kernel_20260806_v3.json)。
 
 实测对象为 vLLM cleanroom `fused_experts`（Triton MoE kernel），与服务
 实际执行路径一致，几何参数取 Qwen3.6-35B-A3B text config
@@ -65,7 +65,7 @@ num_tokens 放大 32 倍、16384 单卡 OOM），已用 v3 正确语义数据替
 prompt/gen token 分布生成，real_M_hist 为批次 token 数语义）。
 
 回放结果：
-[Q-TopoMoE_Phase8_replay_20260806.json](Q-TopoMoE_Phase8_replay_20260806.json)。
+[Phase 8 P2P replay data](../Q-TopoMoE_Phase8_replay_20260807_p2p.json)。
 
 | 项 | 值 |
 |---|---|
@@ -159,7 +159,7 @@ prefill 极值 M=16,384：
 
 prefill 类大 M 收益 2.4-8.6x；decode 类小 M（≤256）受 Triton 启动开销
 影响反而更慢（0.45-0.56x）。原始数据：
-[Q-TopoMoE_Phase5_permute_quant_fusion_20260806.json](Q-TopoMoE_Phase5_permute_quant_fusion_20260806.json)。
+[Q-TopoMoE_Phase5_permute_quant_fusion_20260806.json](../Q-TopoMoE_Phase5_permute_quant_fusion_20260806.json)。
 
 ## 5. 结论与边界
 
@@ -189,7 +189,7 @@ vLLM 服务路径无端到端收益，按 Runbook"两周内关键 M 桶无 ≥10
 收益则停止 Level 2"的规则，**Phase 5 Level 2 停止**；融合 kernel 保留为
 研究参考（`scripts/fused_permute_quant.py`），不接入 vLLM。
 
-A/B 数据：[Q-TopoMoE_Phase5_prepare_ab_20260807.json](Q-TopoMoE_Phase5_prepare_ab_20260807.json)。
+A/B 数据：[Q-TopoMoE_Phase5_prepare_ab_20260807.json](../Q-TopoMoE_Phase5_prepare_ab_20260807.json)。
 
 ---
 
@@ -226,7 +226,7 @@ A/B 数据：[Q-TopoMoE_Phase5_prepare_ab_20260807.json](Q-TopoMoE_Phase5_prepar
 | TP1×DP4 | W4A16 | 238.3 ms | 11.32 ms | 1,010.2 ms | 1,072.3 ms | 32/32 |
 | EP4 static | W4A16 | 194.0 ms | 8.17 ms | 711.6 ms | 735.4 ms | 32/32 |
 
-原始数据：[Q-TopoMoE_Phase6_matrix_4gpu_p2p_20260807.json](Q-TopoMoE_Phase6_matrix_4gpu_p2p_20260807.json)。
+原始数据：[Q-TopoMoE_Phase6_matrix_4gpu_p2p_20260807.json](../Q-TopoMoE_Phase6_matrix_4gpu_p2p_20260807.json)。
 
 ### 2.1 新旧对比（P2P 启用前后，4 卡）
 
@@ -263,7 +263,7 @@ A/B 数据：[Q-TopoMoE_Phase5_prepare_ab_20260807.json](Q-TopoMoE_Phase5_prepar
 | TP2+EP2+原生 EPLB | W4A16 | 182.2 ms | 16.28 ms | 1,221.5 ms | 1,234.6 ms | 32/32 |
 | TP2+EP2+原生 EPLB（重复） | W4A16 | 199.1 ms | 15.87 ms | 1,200.7 ms | — | 32/32 |
 
-原始数据：[Q-TopoMoE_Phase6_matrix_8gpu_p2p_20260807.json](Q-TopoMoE_Phase6_matrix_8gpu_p2p_20260807.json)。
+原始数据：[Q-TopoMoE_Phase6_matrix_8gpu_p2p_20260807.json](../Q-TopoMoE_Phase6_matrix_8gpu_p2p_20260807.json)。
 
 > 注：EP2+EPLB 行额外做了一次重复运行（run2）以检查稳定性，e2e 1,221.5
 > →1,200.7 ms（-1.7%），TTFT/TPOT 波动在 smoke 样本正常范围。
@@ -350,5 +350,5 @@ load-aware 策略把不均衡从 2-3% 压到 0.02%，预测 p99 略降（0.234 �
    定义，待接入真实服务（需要 vLLM EP + 动态路由）后验证。
 
 原始数据：
-[placement](Q-TopoMoE_Phase7_placement_20260807.json) /
-[migration cost](Q-TopoMoE_Phase7_migration_cost_20260807.json)。
+[placement](../Q-TopoMoE_Phase7_placement_20260807.json) /
+[migration cost](../Q-TopoMoE_Phase7_migration_cost_p2p_20260807.json)。

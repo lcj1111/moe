@@ -147,10 +147,10 @@ compressed-tensors 版本、MoE linearization/独立 pipeline 或样本执行次
    配方重新量化、重新跑完整 Gate，不覆盖当前 v1 证据。
 
 原始数据：
-[audit](Q-TopoMoE_Phase2_NVFP4_audit_20260807.json) /
-[official quality summary](Q-TopoMoE_Phase2_NVFP4_official_like_v2_summary_20260807.json) /
-[selfgen gate](Q-TopoMoE_Phase2_NVFP4_selfgen_gate_20260809.json) /
-[selfgen quality summary](Q-TopoMoE_Phase2_NVFP4_selfgen_official_like_v2_summary_20260809.json)。
+[audit](../Q-TopoMoE_Phase2_NVFP4_audit_20260807.json) /
+[official quality summary](../Q-TopoMoE_Phase2_NVFP4_official_like_v2_summary_20260807.json) /
+[selfgen gate](../Q-TopoMoE_Phase2_NVFP4_selfgen_gate_20260809.json) /
+[selfgen quality summary](../Q-TopoMoE_Phase2_NVFP4_selfgen_official_like_v2_summary_20260809.json)。
 
 ---
 
