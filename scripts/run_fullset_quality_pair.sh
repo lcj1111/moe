@@ -14,8 +14,8 @@ OUT_ROOT="$2"
 PROJECT_ROOT="${PROJECT_ROOT:-/data/moe}"
 QUALITY_ROOT="${QUALITY_ROOT:-/data/models/test/qtopomoe_quality}"
 VLLM_ENV="${VLLM_ENV:-/data/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129}"
-VLLM_BIN="$VLLM_ENV/bin/vllm"
 PYTHON_BIN="$VLLM_ENV/bin/python"
+VLLM_COMMAND=("$PYTHON_BIN" -m vllm.entrypoints.cli.main)
 PORT_A="${PORT_A:-31620}"
 PORT_B="${PORT_B:-31621}"
 SEED="${SEED:-42}"
@@ -45,7 +45,7 @@ case "$FORMAT" in
     ;;
 esac
 
-for required in "$VLLM_BIN" "$PYTHON_BIN" "$PROJECT_ROOT/clients/quality_eval.py" \
+for required in "$PYTHON_BIN" "$PROJECT_ROOT/clients/quality_eval.py" \
   "$PROJECT_ROOT/serving/acceptance.sh" \
   "$QUALITY_ROOT/full_set_protocol_shard_a.jsonl" \
   "$QUALITY_ROOT/full_set_protocol_shard_b.jsonl"; do
@@ -120,7 +120,7 @@ launch_server() {
   local served_name="qtopomoe-${FORMAT}-full-${shard}"
   local shard_dir="$OUT_ROOT/shard_${shard}"
   local command=(numactl "--cpunodebind=$numa_node" "--membind=$numa_node"
-    "$VLLM_BIN" serve "$MODEL_PATH"
+    "${VLLM_COMMAND[@]}" serve "$MODEL_PATH"
     --host 127.0.0.1 --port "$port" --served-model-name "$served_name"
     --tensor-parallel-size "$TP_SIZE" --data-parallel-size 1
     --max-model-len "$MAX_MODEL_LEN" --max-num-seqs "$MAX_NUM_SEQS"
