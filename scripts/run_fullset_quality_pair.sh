@@ -160,10 +160,17 @@ if ! wait_ready "$PORT_A" "$SERVER_PID_A" || ! wait_ready "$PORT_B" "$SERVER_PID
   exit 1
 fi
 
-ROOT_URL="http://127.0.0.1:$PORT_A" SERVED_NAME="qtopomoe-${FORMAT}-full-a" \
-  OUT_DIR="$OUT_ROOT/shard_a/acceptance" bash "$PROJECT_ROOT/serving/acceptance.sh"
-ROOT_URL="http://127.0.0.1:$PORT_B" SERVED_NAME="qtopomoe-${FORMAT}-full-b" \
-  OUT_DIR="$OUT_ROOT/shard_b/acceptance" bash "$PROJECT_ROOT/serving/acceptance.sh"
+write_status "running_acceptance"
+if ! ROOT_URL="http://127.0.0.1:$PORT_A" SERVED_NAME="qtopomoe-${FORMAT}-full-a" \
+  OUT_DIR="$OUT_ROOT/shard_a/acceptance" bash "$PROJECT_ROOT/serving/acceptance.sh"; then
+  write_status "acceptance_failed" "分片 A 服务验收失败"
+  exit 1
+fi
+if ! ROOT_URL="http://127.0.0.1:$PORT_B" SERVED_NAME="qtopomoe-${FORMAT}-full-b" \
+  OUT_DIR="$OUT_ROOT/shard_b/acceptance" bash "$PROJECT_ROOT/serving/acceptance.sh"; then
+  write_status "acceptance_failed" "分片 B 服务验收失败"
+  exit 1
+fi
 
 write_status "running_clients"
 "$PYTHON_BIN" "$PROJECT_ROOT/clients/quality_eval.py" \
