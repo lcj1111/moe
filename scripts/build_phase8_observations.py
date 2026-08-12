@@ -58,13 +58,16 @@ def build_observations(bucket_data: Mapping[str, Any], screen: Mapping[str, Any]
             "input_tokens": screen_row["input_tokens"],
             "output_tokens": screen_row["output_tokens"],
             "concurrency": screen_row["concurrency"],
-            "prefix_cache_pct": 0,
-            "arrival_mode": "closed_loop",
+            "base_cell_id": screen_row.get("base_cell_id"),
+            "prefix_cache_pct": screen_row.get("prefix_cache_pct", 0),
+            "arrival_mode": screen_row.get("arrival_mode", "closed_loop"),
             "prefill_m_bucket": m_record["prefill_m_bucket"],
             "decode_m_bucket": m_record["decode_m_bucket"],
             "communication_estimator": (
                 "phase3_trace_bytes_per_token * active_window_tokens"),
         }
+        if screen_row.get("request_rate_rps") is not None:
+            placement["request_rate_rps"] = float(screen_row["request_rate_rps"])
         if intervals:
             placement["measured_p99_bootstrap_95ci_by_candidate"] = intervals
         observations.append({

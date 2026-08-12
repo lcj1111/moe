@@ -12,7 +12,7 @@
 
 数据文件名保留日期和版本，因为它们是来源信息而不是冗余。人类可读的阶段归档见 `docs/results/phase*.md`；没有改名或删除任何机器可读路径。
 
-已跟踪的机器可读产物数量： **124**
+已跟踪的机器可读产物数量： **129**
 
 | 路径 | 类型 / 数据说明 | 复现指引 | SHA-256 |
 |---|---|---|---|
@@ -152,3 +152,12 @@
 | `docs/results/phase8_benchmark_history.md` | Phase 8 校准、回放、容量与故障叙述 |
 
 合并文件记录源文件字节数和 SHA-256。Git 历史仍保留原始文件名，因此合并可逆。
+# 2026-08-12 新增机器可读产物
+
+| 路径 | 数据说明 | SHA-256 |
+|---|---|---|
+| `configs/strategies/phase8_observations_formal_controlled_v1.json` | 108-cell 正式 selector 观测；包含 M 桶、路由、prefix-cache、到达模式、冻结请求率与四候选五重复中位数/区间 | `C2E3E0F891A0047D39A737F20318E37963C790936328E1A575F262267AC20C24` |
+| `docs/Q-TopoMoE_Phase7_migration_microbench_20260812.json` | 2026-08-12 专家迁移微基准；`all_verified=true` | `1267D44D657E85685B8B3CB6837CB4B74E2379186C51EC78CBB606E23C5343BA` |
+| `docs/Q-TopoMoE_Phase8_formal_controlled_combined_20260812.json` | 四候选、108-cell、五重复、10,000 次 bootstrap 正式聚合 | `8A61710AD796CEC3309A664DA2E53B6A58B93594E498D195A5371E3B00AA428D` |
+| `docs/Q-TopoMoE_Phase8_formal_controlled_merge_manifest_20260812.json` | GPU0–3 与 EP8 分拆运行的来源 schedule、SHA-256 与无损合并方式 | `A350F225375528B851A5682FA80FBD069A646E3394A3F4B04319113BCF32737F` |
+| `docs/Q-TopoMoE_Phase8_formal_selector_nearest_gate_20260812.json` | 留 W1/W2/W3/W4 族交叉验证；median regret 通过、p95 regret 失败 | `44B266B46E6C4623A9D12D01D4B378588DCA77FEAA791F17CF5EEA3FD03978E0` |

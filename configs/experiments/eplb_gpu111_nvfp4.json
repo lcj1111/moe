@@ -17,7 +17,7 @@
     "5-7": 33485.1326011251
   },
   "default_us_per_gb": 34938.159457759764,
-  "topology_cost_source": "/home/k8s-ops/artifacts/q_topomoe_phase0/nccl/formal5/formal5-statistics.csv:all_reduce:64MiB:5runs",
+  "topology_cost_source": "/data/moe/artifacts/q_topomoe_phase0/nccl/formal5/formal5-statistics.csv:all_reduce:64MiB:5runs",
   "gpu_capacity_bytes": {"0": 34190917632, "1": 34190917632, "2": 34190917632, "3": 34190917632, "4": 34190917632, "5": 34190917632, "6": 34190917632, "7": 34190917632},
   "hbm_headroom_bytes": {"0": 28172060672, "1": 28241266688, "2": 28174157824, "3": 28239169536, "4": 28190935040, "5": 28258043904, "6": 28190935040, "7": 28255946752},
   "hbm_budget_source": "measured_ep_load_gate",
@@ -40,14 +40,29 @@
     "caveat": "offline placement proxy; not an end-to-end EP serving latency"
   },
   "activation_bytes_per_token": 4096,
-  "migration_service_gate": "pending",
-  "runtime_plan_application_gate": "pending",
+  "migration_service_gate": {
+    "status": "accepted",
+    "artifact": "docs/Q-TopoMoE_Phase7_migration_microbench_20260812.json",
+    "all_verified": true
+  },
+  "runtime_plan_application_gate": {
+    "status": "accepted",
+    "mode": "opt_in_runtime_bridge",
+    "artifact": "docs/Q-TopoMoE_在线placement-plan与服务迁移实验_20260812.md",
+    "runtime_plan_sha256": "d7d7240007c8d69cce9350ff6e4deca250713282c651d32c954b077b383763fd",
+    "requests": 384,
+    "failed": 0,
+    "stable_e2e_p99_ms": 1082.04,
+    "migration_e2e_p99_ms": 2166.96,
+    "recovery_e2e_p99_ms": 988.83
+  },
   "native_vllm_eplb_gate": {
     "status": "unsupported",
     "quant_method": "CompressedTensorsW4A4Nvfp4MoEMethod",
     "vllm": "0.26.1rc1.dev343+g33c50587d",
     "error": "NotImplementedError: EPLB is not supported CompressedTensorsW4A4Nvfp4MoEMethod.",
-    "fallback": "static EP4/EP8"
+    "fallback": "static EP4/EP8",
+    "note": "该项记录原生 vLLM EPLB 的历史限制；2026-08-12 已由显式启用的运行时 bridge 完成独立 Gate，不等价于原生 EPLB 获得支持。"
   },
   "placement_policy": {
     "load_balance_weight": 1.0,

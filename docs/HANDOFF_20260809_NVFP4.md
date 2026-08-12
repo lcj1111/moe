@@ -164,3 +164,12 @@
   总体 -3.45pp，超过门槛，selfgen v1 退出正式系统主线并保留失败证据。
 - 已通过的 RedHatAI NVFP4 可进入 route trace/M-bucket；selfgen v1 不准入
   EP/EPLB。后续若做 v2，必须视为新 checkpoint 并完整重跑 Gate。
+# 2026-08-12 增量交接
+
+本文件后续的 2026-08-09 快照保留作历史背景；当前权威状态如下：
+
+- 服务器仓库已迁移到 `/data/moe`，模型与实验结果仍在 `/data/models/test`；
+- NVFP4 EP8 的在线 placement-plan/迁移/恢复 Gate 已接受，详见[阶段 7–8 正式收尾](results/phase7_phase8_formal_closeout_20260812.md)；
+- Phase 8 四候选正式矩阵已完成并接受：108 个 cell、每候选五次重复、共 20 个运行；
+- 简化 selector 的 median regret 为 0%，但 p95 regret 为 43.17%，正式 Gate 未通过，禁止在线启用；
+- 下一步不是继续在原 108-cell 上调参，而是冻结新特征设计并增加独立测试 workload；full-set FP8/NVFP4 质量评测可与 selector 解耦执行。
