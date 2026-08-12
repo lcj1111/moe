@@ -78,8 +78,9 @@ qtopomoe_use_sglang
 # 配置和结构检查
 python scripts/validate_configs.py
 
-# checkpoint 静态/真实加载 Gate
-bash scripts/gate_qwen35_checkpoint.sh
+# checkpoint 静态/真实加载 Gate（示例；输出目录必须是新目录）
+BACKEND=vllm MODEL_PATH=<checkpoint> OUT_DIR=<新输出目录> \
+  bash scripts/gate_qwen35_checkpoint.sh
 
 # 可断点续跑的 full-set A/B 双分片
 nohup setsid bash scripts/run_fullset_quality_pair.sh nvfp4 <输出目录> \
