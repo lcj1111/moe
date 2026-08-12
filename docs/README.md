@@ -25,7 +25,7 @@
 
 | 阶段 | 聚合报告 |
 |---|---|
-| Phase 0 | [8×5090 拓扑评估](Q-TopoMoE_8x5090实机拓扑评估与首轮实验矩阵.md)、[gpu-111 实测](Q-TopoMoE_gpu111_phase0实测分析.md)、[P2P 重测](Q-TopoMoE_P2P_retest_summary_20260807.md) |
+| Phase 0 | [gpu-111 拓扑与 P2P 合并实测](Q-TopoMoE_gpu111_phase0实测分析.md) |
 | Phase 1 | [BF16/FP8 服务基线](results/phase1_service_baseline.md) |
 | Phase 2 | [量化、canonical checkpoint 与质量 Gate](results/phase2_quantization_quality.md) |
 | Phase 3 | [route trace 与 official-like](results/phase3_route_and_official_eval.md)、[full-set 收尾](results/phase3_fullset_quality_closeout_20260812.md) |

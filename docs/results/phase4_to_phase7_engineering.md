@@ -10,6 +10,8 @@
 | `docs/Q-TopoMoE_Phase5_progress_20260806.md` | 3834 | `476E1C6518EDEE2ABED56A681AF47EB361B43AA342D68B6968C5D442ADE349A9` |
 | `docs/Q-TopoMoE_Phase6_progress_20260807.md` | 5881 | `8095626C7ACB7038F8B0B88D13CA3D8CA75DA25C6B87DB8D98466074E2018A8A` |
 | `docs/Q-TopoMoE_Phase7_progress_20260807.md` | 2314 | `FD6E7474860D52120981F30669BD731AF6300C6226C2E512838B58F0DAECF63F` |
+| `docs/Q-TopoMoE_Phase4_Phase8_framework.md` | 3614 | `72486B691954A41AB3330CDD9670B1187F2FEF37D22E32CB5A1CFDA40224C975` |
+| `docs/Q-TopoMoE_Phase4_Phase8_offline_tasks.md` | 1738 | `3081F3C4F93488B3660F744A2453B234C37E51ED87D5B948E873CDE382E00215` |
 
 ---
 
@@ -355,3 +357,74 @@ load-aware 策略把不均衡从 2-3% 压到 0.02%，预测 p99 略降（0.234 �
 # 2026-08-12 阶段 7 正式补充
 
 在线 placement-plan、服务迁移阻塞与恢复实验已经完成并通过 Gate：384 请求全部完成，稳定/迁移/恢复窗口端到端 p99 分别为 1082.04/2166.96/988.83 ms。详情与机器可读入口见[阶段 7–8 正式收尾](phase7_phase8_formal_closeout_20260812.md)。原生 vLLM NVFP4 EPLB 限制仍然存在，本次通过的是显式 opt-in 的运行时 bridge。
+
+---
+
+## 阶段 4 / 8 控制平面与离线复现入口
+
+该框架实现 CPU 侧控制平面，不把计划值伪装成 CUDA 实测。kernel 数据行只有
+同时满足 `measured: true`、`valid: true` 且包含 p50 或 p95 延迟时才允许被
+默认选择；缺失或无效数据会抛出 `SelectionError`，`allow_unmeasured=True`
+只能用于显式开发 dry-run。
+
+### M-bucket workload
+
+```bash
+python3 phase4/workload/generate_m_buckets.py \
+  --output configs/workloads/m_buckets.json --seed 42
+```
+
+manifest 含 108 个确定性 case：W1（256/128，C=1/8/32/128）、W2
+（2048/256，C=1/8/32）、W3（8192/256，C=1/8/16）、W4（32768/128，
+C=1/4），再与 prefix-cache 0/50/100% 和 closed-loop/Poisson/burst 到达模式
+交叉。`prefill_m=input_tokens*concurrency`、`decode_m=concurrency`，向上取整到
+二次幂 bucket；`real_M_hist` 保存 prefill/decode 混合分布。
+
+Phase 4 计划生成入口：
+
+```bash
+python3 scripts/plan_phase4_kernel_benchmark.py \
+  --m-buckets configs/workloads/m_buckets.json \
+  --output configs/kernels/phase4_benchmark_plan.json
+```
+
+原始计划为 8 个 M bucket × 3 backend × 2 precision，共 48 个 `planned` 单元；
+它只生成计划，不执行 CUDA。实测后应把 backend、kernel config、M bucket、
+precision、p50/p95、`measured=true` 与 source run ID 写入
+`configs/kernels/phase4_kernel_db.json`。
+
+官方 RedHatAI NVFP4 的 `vllm.run_cutlass_moe_fp4` 已有 50 次重复实测：
+M=1/2048/8192 的 p95 分别为 250.42/728.23/2219.58 μs；补充 bucket
+M=4/8/16/32/128/256/16384 的 p50/p95 分别为 235.61/253.71、
+232.72/240.26、285.39/293.39、361.28/369.05、453.48/461.00、
+475.03/485.84、4382.33/4413.00 μs。机器数据见
+`docs/Q-TopoMoE_Phase4_NVFP4_CUTLASS_real_m_20260809.json` 与
+`docs/Q-TopoMoE_Phase4_NVFP4_CUTLASS_phase8_missing_m_20260809.json`。
+这些直接 kernel 测量不能替代 EP 服务数据，因为冻结 vLLM 在专家分片服务中
+选择的是 MARLIN。
+
+### 通信成本和策略回放
+
+```bash
+python3 scripts/build_nccl_cost_db.py \
+  --input artifacts/raw/20260804T040000Z_nccl_formal/nccl/statistics.json \
+  --output configs/communication/nccl_cost_db.json
+
+python3 scripts/replay_phase8.py \
+  --candidates configs/strategies/phase8_candidates.json \
+  --kernel-db configs/kernels/phase4_kernel_db.json \
+  --observations configs/strategies/phase8_observations.json \
+  --output docs/Q-TopoMoE_Phase8_replay_20260804.json
+```
+
+NCCL DB 原始构建归一化 132 个 `time_us` 实测点，覆盖 6 个 mapping 且
+`wrong_total=0`；不同 collective/size 应按点查询或拟合，不能直接压成一个线性
+带宽常数。早期空 kernel DB 的回放状态
+`blocked_missing_kernel_measurements` 是预期防误选行为，不是执行故障。
+
+`StrategyCandidate` 包含量化格式/checkpoint、TP/DP/EP、GPU 映射、EPLB、
+冗余 expert、kernel backend/config。`CostModel` 综合真实 M 分布计算、实测通信、
+route 不均衡与迁移成本；`evaluate()` 输出 top-1、median/p95 regret、控制器开销占
+预测 p99 的比例和无效配置率。Gate 为 median regret ≤5%、p95 ≤10%、
+controller overhead <1%；透明模型被证明确实不足前不引入 RL。正式结果、容量
+冻结与校准历史见[阶段 8 基准与校准历史](phase8_benchmark_history.md)。

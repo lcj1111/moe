@@ -9,6 +9,27 @@
 | `docs/Q-TopoMoE_Phase1_BF16_FP8_实测报告.md` | 3670 | `106AD62B9E3D22CF98B524888EF6B095090E27A5869F2F3B0CE524D9FB047E7A` |
 | `docs/Q-TopoMoE_Phase1_BF16_实测报告.md` | 2096 | `05F39ACF3FB85508F57C68AA56FAC4584D8738455E535ACAF0CAED9D3F9A03D8` |
 | `docs/Q-TopoMoE_Phase1_statistics_20260804.md` | 6144 | `A872EB632E2087D072D8E8F86F4CDAFD820AD8FEB90160DD3A952644FC38506B` |
+| `docs/Q-TopoMoE_BF16_checkpoint_manifest.md` | 813 | `67260DA607117134019861CD174C213BBC567959508AC1961D083014AF4B3912` |
+
+---
+
+## BF16 检查点身份
+
+本机 BF16 checkpoint 的项目变量为：
+
+```bash
+QTOPOMOE_BF16_MODEL=/home/k8s-ops/.cache/modelscope/models/Qwen--Qwen3.6-35B-A3B/snapshots/master
+```
+
+用户提供的 ModelScope 根目录为
+`/home/k8s-ops/.cache/modelscope/models/Qwen--Qwen3.6-35B-A3B`。冻结快照为
+`master`，包含 26 个 `model-*.safetensors` 分片，总大小约 67 GB；
+`config.json` SHA-256 为
+`93a4693fa9d8392fbfccd4b3c9873f4bfdcb14fdede978b123d07d19675efe99`，
+`model.safetensors.index.json` SHA-256 为
+`41b9356101ebf8e7519e150dc811f80c4226e727301fbb032b890f006ed0be83`。
+该身份记录本身不代表服务通过，真实加载、模型发现、completion 和 metrics 的
+验收结果见下文。
 
 ---
 

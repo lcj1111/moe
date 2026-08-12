@@ -4,7 +4,12 @@
 > 方案核验日期：2026-08-03
 > 推荐主模型：Qwen3.6-35B-A3B（35B 总参数、3B 激活参数、256 个专家）
 
-> **2026-08-03 实机修订**：gpu-111 的 Phase 0 已完成。该机所有异卡 CUDA P2P 均不可用；在 64–256 MiB 双卡 NCCL AllReduce 中，NODE 对约为 PIX 对的 1.9–2.0 倍。因此本方案的 TP2 首选组改为 `(0,2)`、`(1,3)`、`(4,6)`、`(5,7)`，PIX 对仅作负面对照；EP4 优先限制在单 NUMA，EP8 保留为跨 NUMA 压力项。默认 NCCL 的 ERDMA/RoCE 路径会崩溃，当前服务需设置 `NCCL_IB_DISABLE=1`。完整证据见 `Q-TopoMoE_gpu111_phase0实测分析.md`。
+> **2026-08-07 实机修订**：gpu-111 的 GPU P2P 已启用，8×8 peer access
+> 全部可用；PIX 双卡 256 MiB AllReduce 从约 15.5 提升到 45.0 GB/s，当前
+> TP2 首选恢复为 PIX 对 `(0,1)`、`(2,3)`、`(4,5)`、`(6,7)`。2026-08-03
+> 的“P2P 不可用、NODE 优于 PIX”只保留为配置变更前的历史基线。EP4 仍优先
+> 单 NUMA，EP8 仍作为跨 NUMA 压力项；默认 ERDMA/RoCE 路径的历史崩溃证据
+> 继续保留。完整新旧对比见 `Q-TopoMoE_gpu111_phase0实测分析.md`。
 
 ## 1. 结论
 

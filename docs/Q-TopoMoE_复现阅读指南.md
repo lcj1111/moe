@@ -8,7 +8,7 @@
 
 ```
 第 1 步  项目定位     README.md → docs/README.md
-第 2 步  方案与手册   Runbook → 执行方案 → Phase 4/8 框架
+第 2 步  方案与手册   Runbook → 执行方案 → Phase 4–7 聚合报告
 第 3 步  已有成果     docs/ 下 Phase 0/1/2/3/3c 报告（按阶段）
 第 4 步  环境与配置   env/ → Makefile → configs/ 说明
 第 5 步  复现主线     gate → quality_eval → freeze 系列 → trace → drift
@@ -25,13 +25,15 @@
 | `README.md` | 项目入口：定位、当前阶段进度表、目录约定、快速开始、复现流程、安全边界。先读这里建立全局印象。 |
 | `docs/README.md` | 文档索引：把所有报告按 Phase 0-8 归类，含指向 `.md` 报告与 `.json` 原始数据的链接。找任何历史结果都从这页进。 |
 
-## 第 2 步：方案与手册（3 个文件）
+## 第 2 步：方案与手册（2 个主文件）
 
 | 文件 | 作用 |
 |---|---|
 | `docs/Q-TopoMoE_逐步执行Runbook.md` | 端到端执行手册：从环境、gate、trace、评测到 Phase 4/8 的每一步命令与验收标准。复现前必须通读。 |
 | `docs/Q-TopoMoE_量化与SM120算子协同优化执行方案.md` | 总体技术方案：量化感知 MoE 并行、动态负载均衡、SM120 算子的设计意图与阶段划分。 |
-| `docs/Q-TopoMoE_Phase4_Phase8_framework.md` | Phase 4/8 可执行框架的 CPU 侧说明：M-bucket workload、kernel/backend selector、策略 selector 与 cost model、gate 阈值。 |
+
+Phase 4/8 控制平面、M-bucket、selector 与 cost model 的说明已合并到
+`docs/results/phase4_to_phase7_engineering.md`，在阅读对应阶段成果时一并查看。
 
 ## 第 3 步：已有成果（docs/ 按阶段）
 
@@ -41,8 +43,7 @@
 
 | 文件 | 作用 |
 |---|---|
-| `docs/Q-TopoMoE_8x5090实机拓扑评估与首轮实验矩阵.md` | 8×5090 实机拓扑评估与首轮实验矩阵设计。 |
-| `docs/Q-TopoMoE_gpu111_phase0实测分析.md` | gpu-111 实机测量结果分析。 |
+| `docs/Q-TopoMoE_gpu111_phase0实测分析.md` | gpu-111 静态拓扑、P2P 禁用历史基线、P2P 启用后反转及全阶段重测摘要。当前结论以文内 2026-08-07 更新为准。 |
 | `docs/q_topomoe_phase0_verify.sh` | Phase 0 验证脚本（GPU/NCCL/环境）。 |
 
 ### 阶段 1：BF16 / FP8 服务实测
@@ -57,7 +58,7 @@
 | 文件 | 作用 |
 |---|---|
 | `docs/results/phase2_quantization_quality.md` | W4A16 量化预检结论。 |
-| `docs/Q-TopoMoE_Qwen35_compat_baseline_20260805.md` + `Qwen35_cleanroom_pins_20260805.json` + `Qwen35_canonical_*` 系列 | 兼容基线、cleanroom 版本 pin、canonical checkpoint 的 tp1/tp2 gate 与 smoke 记录。 |
+| `docs/results/phase2_quantization_quality.md` + `Qwen35_cleanroom_pins_20260805.json` + `Qwen35_canonical_*` JSON | 兼容基线、cleanroom 版本 pin、canonical checkpoint 的 TP1/TP2 Gate 与 smoke 记录；叙述文档已归并到阶段报告。 |
 | `docs/results/phase2_quantization_quality.md` + `docs/Q-TopoMoE_quality_smoke_*_20260805.json` | 质量 smoke 与 vLLM/SGLang、Marlin/Triton backend 隔离记录。 |
 | `docs/results/phase2_quantization_quality.md` + `docs/Q-TopoMoE_Phase2_official_like_v2_*_20260805.json` | 116 条 official-like v2 冻结样本的 BF16 vs W4（Triton）质量对比。 |
 | `docs/Q-TopoMoE_Phase2_W4A16_*` 系列 | W4A16 审计、freeze、reblock 与 gate 数据。叙述 failure/load/status 已并入 Phase 2 结果。 |
@@ -83,7 +84,7 @@
 
 | 文件 | 作用 |
 |---|---|
-| `docs/Q-TopoMoE_Phase4_Phase8_offline_tasks.md` | 当前可离线执行的 Phase 4/8 任务与命令。 |
+| `docs/results/phase4_to_phase7_engineering.md` | Phase 4/8 离线任务、M-bucket、kernel DB、通信成本、策略回放和阶段 4–7 实测结论。 |
 | `docs/Q-TopoMoE_Phase8_replay_20260804.json` | 策略回放结果（当前为 blocked_missing_kernel_measurements 预期状态）。 |
 
 ## 第 4 步：环境与配置

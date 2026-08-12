@@ -14,6 +14,11 @@
 | `docs/Q-TopoMoE_Phase2_W4A16_run_status.md` | 1212 | `6305D7D4F17D35E1654B73B5EDCEF43BF3FBAE9B81AC4F5A9779A1EE4864CF11` |
 | `docs/Q-TopoMoE_Phase2_WikiText_calibration_report.md` | 3599 | `C2E3F2E716D46E314504026F6A9BDAE75AC2165CC9386DB9A4F51524C55368E7` |
 | `docs/Q-TopoMoE_Phase2_量化预检报告.md` | 3585 | `C453A1B644C100CB55B7119AC0E6CB349E594C038E54FAE42B7ADC7ABEA17C72` |
+| `docs/Q-TopoMoE_Qwen35_compat_baseline_20260805.md` | 3110 | `4F9372853431572CF9DA68A61FC573953A8C6E3186F458A5818D648978D07F22` |
+| `docs/Q-TopoMoE_Qwen35_original_upstream_gate_20260805.md` | 1647 | `CCB85819FE05F91800E8E2A98DD5F0F579B59D0E44A04A491B7B92EE218B4487` |
+| `docs/Q-TopoMoE_Qwen35_canonical_tp1_gate_20260805.md` | 1200 | `252FF532C1B7C21A4512459471174F022B036BBCCA8905C7E7EF4C1894538A80` |
+| `docs/Q-TopoMoE_Qwen35_canonical_tp2_smoke_20260805.md` | 1152 | `D1F81915C2D9CA4C3BBB3F302F9B1E5B50F37308B992E0667A18608F5781DEC4` |
+| `docs/Q-TopoMoE_W4A16_block64_transform_20260807.md` | 2271 | `F49DB09EC253F76694C39E2FC861BB23B8DF4BD581AE42E9BA0AB5D638CF0542` |
 
 ## 1. 官方 NVFP4 检查点
 
@@ -67,3 +72,57 @@ W4 首次量化失败是 Accelerate hook 处理触发的 `AttributeError: functo
 ## 6. 复现入口
 
 评测输入见 [`configs/evaluation/official_like_smoke_v2.jsonl`](../../configs/evaluation/official_like_smoke_v2.jsonl) 与 [`configs/evaluation/official_like_smoke_v2.manifest.json`](../../configs/evaluation/official_like_smoke_v2.manifest.json)；NVFP4 审计 JSON 位于 `docs/Q-TopoMoE_Phase2_NVFP4_audit_20260807.json`。服务启动、质量抽取和 Gate 判定应严格使用仓库脚本与 manifest，不要手工改写结果。
+
+## 7. Qwen3.5 W4A16 兼容性与规范化 Gate
+
+冻结源检查点 `/data/models/test/qtopomoe_w4a16` 为 compressed-tensors W4A16，
+架构 `Qwen3_5MoeForCausalLM`、model type `qwen3_5_moe_text`，含 93,093 个
+张量。`model.safetensors` 为 20,928,221,896 bytes，SHA-256 为
+`36e5b5ec77c5c35e3ce23f415e31c7fcbd5b14e287f02629ce057698cdd6d94f`；
+八文件 manifest 为 `docs/Q-TopoMoE_W4A16_freeze_20260805.json`。配置虽为 text-only，
+93,092 个张量仍处于 `model.language_model.*` 命名空间，只有
+`lm_head.weight` 位于根级，因此这是导出布局兼容问题，不是量化算法失败。
+
+冻结环境如下：已发布 vLLM 0.26.0（Transformers 5.14.1、
+compressed-tensors 0.17.0）与 SGLang 0.5.16（Transformers 5.12.1、
+compressed-tensors 0.17.2a20260728），均使用 Torch 2.11.0 和 FlashInfer
+0.6.14；clean-room 上游固定 vLLM 提交 `33c50587d2679ba9bacc2a51ae19901f7eb3a129`、
+SGLang 提交 `6c05aaae7e3966469b6c552aa11b545e5d27f8bf`、Transformers 参考提交
+`d24d79da55f7ee6e538a460d3025e41dcc41ab21`。
+
+原始检查点在两个 clean-room 上游后端都进入原生 Qwen3.5 MoE loader 后被拒绝：
+vLLM 报 `There is no module or parameter named 'language_model' in Qwen3_5Model`；
+SGLang 报 `KeyError: 'language_model.layers.0.mlp.experts.w2_weight_packed'`。
+证据分别位于 `cleanroom_original/vllm_33c505_tp1` 与
+`cleanroom_original/sglang_6c05_tp1`。开发期 vLLM adapter 的 smoke 虽通过，
+但依赖类覆盖和 config hook，不能作为最终部署结果；SGLang adapter 因缺权重和
+CUDA Graph attention 接口错误被拒绝。
+
+规范化产物只执行确定性键转换 `model.language_model.* -> model.*`，不改变
+`lm_head.weight`、配置、tokenizer、shape、dtype 或 value，也不覆盖冻结源目录。
+产物 `/data/models/test/qtopomoe_w4a16_canonical_text_v1` 的权重 SHA-256 为
+`0eb2775989321d038ea9534041a6030f536a0d0d2293e7087837390e9738c1d2`；
+93,093/93,093 个张量、20,915,187,456 个张量字节通过完整 value 一致性验证。
+
+TP1 原生 Gate：vLLM 使用 Marlin linear + Marlin WNA16 MoE，21.40 秒加载、
+GPU 权重 19.53 GiB；SGLang 使用 CompressedTensors WNA16 Marlin MoE，
+19.00 秒加载、GPU 权重 19.75 GiB。两者 health/models/completion/metrics 均通过，
+返回 `42`，覆盖警告为 0 bytes。TP2 PIX GPU0-1 的 32 请求 smoke 也均 32/32：
+vLLM TTFT p50/p95 265/779 ms、TPOT 71.4/81.1 ms、E2E 4.76/5.89 s；
+SGLang 为 251/7341 ms、63.7/66.4 ms、4.27/11.33 s。后者长尾包含首次编译，
+只作为功能 smoke；正式比较必须 warmup、重复运行并固定 cache 容量或最大并发。
+
+## 8. W4A16 block128→block64 无损变换
+
+为适配 TP8 分片后宽度 64，将每个 128 宽 scale group 拆成两个 64 宽子组并
+复制同一 scale，packed int4 权重不变，配置 `weights.group_size` 从 128 改为 64。
+脚本为 `quantization/reblock_w4a16_128_to_64.py`，独立产物为
+`/data/models/test/qtopomoe_w4a16_canonical_text_v1_g64`，关系记录在
+`reblock_128_to_64.manifest.json`，不会覆盖 block128 canonical。
+
+六类代表张量的 packed 权重完全一致，scale 维度按两倍扩展，反量化逐位一致
+（max diff = 0.0）。TP8×W4A16 从 group128 格式拒绝变为 32/32 smoke 通过；
+TP1 固定 prompt 输出一致，四个多样 prompt 中 3/4 完全一致，1 个仅在贪心边界
+出现 token 差异。official-like v2 的 block64 为 C-Eval 49/52、MMLU-Pro 59/64，
+block128 为 50/52、58/64，属于 ±1 题边界变化而非系统性退化。该变换解锁 TP8
+格式覆盖，但 Phase 1 已显示 TP8 对该 35B-A3B 模型无明显吞吐收益。

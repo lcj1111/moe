@@ -2,7 +2,7 @@
 
 Picks the best measured kernel (cutlass/triton/flashinfer) for a given
 ``m_bucket`` and precision from ``KernelDatabase``; unmeasured or invalid
-rows are never selected.  See ``docs/Q-TopoMoE_Phase4_Phase8_framework.md``.
+rows are never selected.  See ``docs/results/phase4_to_phase7_engineering.md``.
 """
 from __future__ import annotations
 

@@ -1,10 +1,26 @@
-# Q-TopoMoE：gpu-111 八卡 RTX 5090 Phase 0 实测分析
+# 阶段 0：gpu-111 八卡 RTX 5090 拓扑与 P2P 实测
+
+> **当前结论以 2026-08-07 P2P 启用后的重测为准。** 本文前半部保留
+> 2026-08-03 的 P2P 禁用基线，用于说明通信路径变化前后的因果关系；其中
+> “P2P 不可用、PIX 最慢、TP2 优先 NODE”已被后续实测推翻，不可再作为
+> 当前部署建议。
+
+## 合并来源完整性
+
+| 原始文件 | UTF-8 字节数 | SHA-256 |
+|---|---:|---|
+| `docs/Q-TopoMoE_8x5090实机拓扑评估与首轮实验矩阵.md` | 426 | `747f430ecc392bda5c3aba0e5cc58b5bd64bce840eea522bb5ec38f99c97a981` |
+| `docs/Q-TopoMoE_gpu111_phase0实测分析.md` | 12,273 | `72c6398639a0115d8fba9750a289d2c2f5317bd38728c45b05278cc9885eca10` |
+| `docs/Q-TopoMoE_Phase0_P2P_update_20260807.md` | 2,924 | `5171e64e10d08b6a79ddf5ff1bb06222cd337741e340a399eb0899261080a1b4` |
+| `docs/Q-TopoMoE_P2P_retest_summary_20260807.md` | 3,588 | `2c49bc505aec480d861603f8eec2c3a540ac8ec854d3f3bfa21c3fc310f8b0f8` |
+
+旧文件可从 Git 历史按上表哈希核验；执行入口、原始 JSON 与日志路径没有改动。
 
 > 执行日期：2026-08-03
 > 原始结果目录：`/home/k8s-ops/artifacts/q_topomoe_phase0`
 > 结果性质：关键双卡 AllReduce 与 EP4/EP8 All-to-All 已完成 5 次独立重复；每次 20 次 warmup、100 次正式迭代，报告 95% t 置信区间。8 卡 rank 排序仍为单次机制筛选。
 
-## 1. 结论摘要
+## 1. 2026-08-03 历史结论摘要（P2P 禁用基线）
 
 这台服务器适合研究“无 NVLink、无 CUDA P2P 的 PCIe 多 GPU MoE 推理”，而且实测揭示了一个不能仅凭 `nvidia-smi topo` 推断的关键现象：
 
@@ -205,3 +221,47 @@ PIX TP2 `0,1`、`2,3`、`4,5`、`6,7` 应保留为负面对照，而非最优配
 - PCIe/功耗监控：`nccl/pcie-power-monitor.log`
 
 以上路径均相对于服务器目录 `/home/k8s-ops/artifacts/q_topomoe_phase0`。
+
+---
+
+## 12. 2026-08-07 P2P 启用后的结论反转
+
+P2P 配置生效后，8×8 peer access 全部可用，NCCL 日志显示
+`via P2P/direct pointer`。双卡 AllReduce 五次重复结果如下：
+
+| 组合 | 1 MiB 旧→新 | 64 MiB 旧→新 | 256 MiB 旧→新 |
+|---|---:|---:|---:|
+| PIX (0,1) | 11.7→27.2 GB/s | 15.4→43.3 GB/s | 15.5→45.0 GB/s |
+| NODE (0,2) | 17.1→17.2 GB/s | 29.5→28.7 GB/s | 30.6→29.4 GB/s |
+| SYS (0,4) | 16.5→16.7 GB/s | 28.6→28.1 GB/s | 29.4→28.8 GB/s |
+
+PIX 在 256 MiB 上由最慢变为最快，约提升 2.9 倍。当前 TP2 首选恢复为
+PIX 对 `(0,1)`、`(2,3)`、`(4,5)`、`(6,7)`；TP4 优先单 NUMA，跨 NUMA
+继续作为压力项。通信代价应使用 `configs/communication/nccl_cost_db_p2p.json`
+及原始矩阵 `artifacts/raw/20260807T120000Z_nccl_formal_p2p/`；若驱动、BIOS
+或 P2P 状态变化，必须重测，不能沿用本结论。
+
+新旧 `effective_us_per_gb`：TP2 PIX 65,200.6→23,458.4（-64%），TP2 NODE
+42,025.8→43,015.5（+2%），TP4 NUMA 约 46,824→28,969（-38%），TP4 SYS
+46,983.8→47,480.7（+1%），TP8 SYS 54,982.3→36,669.7（-33%）。矩阵覆盖
+双卡 all_reduce/sendrecv、四卡和八卡 all_gather、reduce_scatter、alltoall，
+共 75 个日志，全部 `rc=0`，每项五次重复并报告 95% 置信区间。
+
+## 13. P2P 生效后的全阶段重测摘要
+
+- Phase 1 SGLang FP8 short/c32：TP2 PIX 的 TTFT/TPOT/e2e 为
+  1107 ms/5.36 ms/1791 ms，优于 TP2 NODE 的 1210/5.72/1937；TP4 NUMA0
+  e2e 由 2310 降至 2035 ms。BF16 TP2 仍因容量 OOM，TP4/TP8 通过。
+- Phase 6 vLLM：BF16 TP8×DP1、TP4×DP2、TP2×DP4 的 e2e 分别为
+  627.6/785.4/1041.6 ms；W4 EP8 为 1024.6 ms，EP4×TP2+EPLB 为
+  1221.5 ms，重复 run2 为 1200.7 ms。`256+1=257` 不能被 EP2/4/8 整除，
+  单冗余专家变体属于框架格式限制。
+- Phase 3c BF16 TP4 pilot：official 协议 p50/mean 为 2066/2001 ms，约比
+  旧值快 15 倍；thinking pilot 为 6839/7449 ms，约快 16 倍。
+- Phase 7 单专家 4 MiB 迁移：同 NUMA 47.71 μs、跨 NUMA 73.45 μs、
+  同 GPU 10.14 μs。
+- Phase 8 修复 cost DB 未接入问题后，四条 observation 均从
+  `fp8_tp2_node02` 反转为 `fp8_tp2_pix01_triton`。
+
+因此，所有 P2P 启用前的多卡延迟、吞吐与耗时只保留作历史对照；质量分数、
+route trace/漂移和单卡 kernel 延迟不受通信路径变化影响，仍可使用。
