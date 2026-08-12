@@ -1,6 +1,6 @@
 # 阶段 7–8：在线迁移与四候选正式选择器收尾
 
-> 更新日期：2026-08-12（Asia/Shanghai）  
+> 更新日期：2026-08-12（Asia/Shanghai）
 > 结论：阶段 7 在线 placement-plan/迁移 Gate 已接受；阶段 8 的四候选正式测量已接受，但选择器 p95 regret 未达标，尚不可在线启用。
 
 ## 1. 阶段 7 在线 placement-plan 与迁移

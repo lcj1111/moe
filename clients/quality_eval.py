@@ -81,10 +81,35 @@ async def run(args: argparse.Namespace) -> int:
         rows = [row for row in rows if row["score_type"] != "deferred_code"]
     semaphore = asyncio.Semaphore(args.concurrency)
     timeout = aiohttp.ClientTimeout(total=args.timeout)
+    row_indexes = {row["id"]: index for index, row in enumerate(rows)}
+    if len(row_indexes) != len(rows):
+        raise ValueError("manifest contains duplicate ids")
     output_rows: list[dict[str, Any] | None] = [None] * len(rows)
+    resumed = 0
+    if args.resume and args.output.exists():
+        for line in args.output.read_text(encoding="utf-8").split("\n"):
+            if not line:
+                continue
+            previous = json.loads(line)
+            index = row_indexes.get(previous.get("id"))
+            if index is not None and not previous.get("error"):
+                output_rows[index] = previous
+                resumed += 1
+    checkpoint_lock = asyncio.Lock()
+    completed_since_checkpoint = 0
+
+    def write_checkpoint() -> None:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        temporary = args.output.with_suffix(args.output.suffix + ".tmp")
+        with temporary.open("w", encoding="utf-8") as handle:
+            for item in output_rows:
+                if item is not None:
+                    handle.write(json.dumps(item, ensure_ascii=False) + "\n")
+        temporary.replace(args.output)
 
     async with aiohttp.ClientSession(timeout=timeout) as session:
         async def one(index: int, row: dict[str, Any]) -> None:
+            nonlocal completed_since_checkpoint
             sampling = row.get("sampling", {})
             payload = {
                 "model": args.model, "messages": row["messages"],
@@ -150,13 +175,18 @@ async def run(args: argparse.Namespace) -> int:
                 "error": error, "usage": usage,
             }
 
-        await asyncio.gather(*(one(i, row) for i, row in enumerate(rows)))
+            async with checkpoint_lock:
+                completed_since_checkpoint += 1
+                if completed_since_checkpoint >= args.checkpoint_every:
+                    write_checkpoint()
+                    completed_since_checkpoint = 0
+
+        await asyncio.gather(*(
+            one(i, row) for i, row in enumerate(rows) if output_rows[i] is None
+        ))
 
     results = [row for row in output_rows if row is not None]
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    with args.output.open("w", encoding="utf-8") as handle:
-        for row in results:
-            handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+    write_checkpoint()
     by_benchmark: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in results:
         by_benchmark[row["benchmark"]].append(row)
@@ -165,6 +195,7 @@ async def run(args: argparse.Namespace) -> int:
         "manifest": str(args.manifest), "seed": args.seed,
         "protocols": sorted({row.get("protocol", "regression_v1") for row in rows}),
         "requested": len(rows), "completed": sum(not row["error"] for row in results),
+        "resumed": resumed,
         "failed": sum(bool(row["error"]) for row in results),
         "truncated": sum(bool(row["truncated"]) for row in results),
         "benchmarks": {},
@@ -208,8 +239,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--concurrency", type=int, default=8)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--timeout", type=float, default=600)
+    parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--checkpoint-every", type=int, default=250)
     parser.add_argument("--include-deferred-code", action="store_true")
-    return parser.parse_args()
+    args = parser.parse_args()
+    if args.checkpoint_every < 1:
+        parser.error("--checkpoint-every must be positive")
+    return args
 
 
 if __name__ == "__main__":
