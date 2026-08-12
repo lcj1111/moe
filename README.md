@@ -1,77 +1,110 @@
 # Q-TopoMoE
 
-面向 8×RTX 5090 PCIe 多 GPU 系统的量化感知 MoE 推理并行、动态负载均衡与
-SM120 算子研究工程。
+Q-TopoMoE 面向 8×RTX 5090 PCIe 服务器，研究量化 MoE 推理中的拓扑感知并行、
+kernel/backend 选择、专家放置与在线迁移。项目覆盖 BF16、FP8、W4A16 和
+NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为准。
 
-## 当前进度（2026-08-06）
+## 当前结论
 
-| 阶段 | 内容 | 状态 |
+> 更新时间：2026-08-12（Asia/Shanghai）
+> 当前运行：NVFP4 EP4 full-set A/B 双分片正在评测；完成前不发布部分准确率。
+
+| 阶段 | 已完成结论 | 当前状态 |
 |---|---|---|
-| 阶段 0 | 实机拓扑评估与实验矩阵 | 完成 |
-| 阶段 1 | BF16 / FP8 服务实测 | 完成 |
-| 阶段 2 | W4A16 量化、规范化检查点与质量 Gate | 完成（official-like v2） |
-| 阶段 3a | Route trace 全量采集（BF16 + W4A16-triton） | 完成（116 prompts × 全 token） |
-| 阶段 3b | 全量 trace 漂移分析（Jaccard / flip / 相关 / CV） | 完成 |
-| 阶段 3c | Full-set 官方协议评测（MMLU-Pro + C-Eval test） | 资产已冻结，计时 pilot 待跑 |
-| 阶段 4/8 | kernel 基准与策略回放 | 框架就绪，待实测数据填充 |
+| Phase 0 | 8 卡拓扑、NUMA、NCCL/P2P 实测 | 已完成；P2P 已生效 |
+| Phase 1 | BF16/FP8 服务基线、矩阵与统计 | 已完成 |
+| Phase 2 | W4A16/NVFP4 审计、真实加载和 official-like Gate | 已完成；RedHatAI NVFP4 准入，自生成 NVFP4 v1 拒绝 |
+| Phase 3 | route trace、漂移分析和冻结官方协议 | route 已完成；NVFP4 full-set 运行中，FP8 排队 |
+| Phase 4–6 | M-bucket、kernel/backend selector、通信矩阵 | 正式实测已归档 |
+| Phase 7 | placement-plan、在线迁移、恢复与 p99 | Gate 已接受 |
+| Phase 8 | 四候选×108 cells×5 重复正式聚合 | 测量 Gate 已接受；selector p95 regret 43.17%，未准入 |
 
-结果与报告统一归档在 `docs/`，按阶段索引见 [docs/README.md](docs/README.md)。
+动态触发、cooldown 和 rollback 闭环必须等待 Phase 8 selector p95 regret Gate
+通过；不能用已失败的 selector 直接控制在线服务。
 
-## 快速开始
+## 从哪里开始
+
+| 目的 | 推荐入口 |
+|---|---|
+| 快速了解当前状态 | [文档索引](docs/README.md)与[阶段 7–8 正式收尾](docs/results/phase7_phase8_formal_closeout_20260812.md) |
+| 从头复现 | [复现阅读指南](docs/Q-TopoMoE_复现阅读指南.md) |
+| 按阶段执行 | [逐步执行 Runbook](docs/Q-TopoMoE_逐步执行Runbook.md) |
+| 查某个 JSON/配置的含义与哈希 | [数据与结果清单](docs/DATA_CATALOG.md) |
+| 查看正在进行的质量收尾 | [FP8/NVFP4 full-set 收尾](docs/results/phase3_fullset_quality_closeout_20260812.md) |
+
+## 快速检查
+
+服务器上的当前仓库根目录是 `/data/moe`：
 
 ```bash
-cd /home/k8s-ops/moe
+cd /data/moe
 source env/activate.sh
+make help
 make check
 qtopomoe_gpu_status
-qtopomoe_new_run fp8_tp2_node
 ```
 
-选择框架环境：
+选择隔离的服务环境：
 
 ```bash
-qtopomoe_use_sglang
-# 或新开 shell 后：
 qtopomoe_use_vllm
+# 或在新 shell 中
+qtopomoe_use_sglang
 ```
 
-`env/activate.sh` 只设置项目、CUDA 和 NCCL 环境，不会自动占用 GPU 或启动服务。
+`env/activate.sh` 只设置项目、CUDA 和 NCCL 环境，不会占用 GPU 或启动服务。
 
-## 目录结构
+## 目录职责
 
-- `configs/`：模型、拓扑、workload、策略与评测配置（frozen 输入 + manifest）。
-- `env/`：项目变量、环境检查和依赖锁。
-- `topology/`：硬件采集与通信成本模型。
-- `quantization/`：LLM Compressor、ModelOpt 和 checkpoint 审计。
-- `traces/`：路由捕获（`capture_routes.py`）与采集 manifest。
-- `analysis/`：route trace 漂移分析（`route_drift.py`）。
-- `evaluation/`：评测输入冻结、官方资产抓取、full-set 冻结与对比。
-- `clients/`：质量评测与 smoke 客户端。
-- `selector/`、`phase4/`：SM120 内核/后端选择器与 M-bucket workload 生成。
-- `serving/`：服务端启动与验收（与客户端严格分离）。
-- `scripts/`：checkpoint gate、环境 bootstrap、矩阵执行与聚合。
-- `tests/`：单元测试。
-- `docs/`：阶段报告与结果（见 `docs/README.md` 索引）。
+| 目录 | 职责 | 主要入口或产物 |
+|---|---|---|
+| `configs/` | 冻结的模型、拓扑、workload、策略与评测配置 | `configs/evaluation/README.md` |
+| `env/` | 项目变量、环境检查与依赖锁 | `env/activate.sh`、`env/check_env.sh` |
+| `topology/` | GPU/NUMA/P2P/NCCL 采集与成本模型 | `topology/collect_topology.py` |
+| `quantization/` | W4A16/NVFP4 量化及 checkpoint 审计 | `quantization/audit_nvfp4.py` |
+| `serving/` | 独立服务启动与四级服务验收 | `serving/start_server.sh`、`serving/acceptance.sh` |
+| `clients/` | smoke、质量和工作负载客户端 | `clients/quality_eval.py` |
+| `traces/`、`analysis/` | 路由采集与漂移分析 | `traces/capture_routes.py`、`analysis/route_drift.py` |
+| `phase4/`、`selector/` | kernel 数据结构和 backend/策略选择逻辑 | `selector/backend_selector.py`、`selector/strategy_selector.py` |
+| `phase7/` | 专家放置与迁移成本模型 | `phase7/placement.py`、`phase7/migration_cost.py` |
+| `scripts/` | 跨阶段执行、聚合、审计与正式 runner | 见下方常用命令 |
+| `evaluation/` | 评测资产抓取、冻结、切片和质量比较 | `evaluation/freeze_full_set_official.py` |
+| `tests/` | 不依赖大模型权重的单元/结构测试 | `python -m unittest discover -s tests` |
+| `docs/` | 当前结论、历史报告与机器可读结果 | `docs/README.md` |
 
-## 复现流程
+## 常用执行入口
 
-1. **环境**：`env/activate.sh` + `env/requirements-lock/` + `scripts/bootstrap_qwen35_cleanroom.sh`。
-2. **模型 gate**：`scripts/gate_qwen35_checkpoint.sh`（BF16 或 W4A16 canonical + vLLM/SGLang）。
-3. **质量评测**：`clients/quality_eval.py --manifest <frozen jsonl> --summary <out.json>`，
-   对比用 `evaluation/compare_quality.py`。
-4. **Route trace 采集**：`traces/capture_routes.py`（需要 vLLM cleanroom
-   `enable_return_routed_experts`），输出 npy 分片 + `traces.jsonl` +
-   `capture_manifest.json` + `expert_token_histogram.json`。
-5. **漂移分析**：`analysis/route_drift.py --reference-dir <bf16_dir> --candidate-dir <w4_dir>`。
-6. **Full-set 冻结**：`evaluation/fetch_official_protocol_assets.py` →
-   `evaluation/freeze_full_set.py`（大 JSONL 不入库，manifest 钉住 SHA-256）。
+```bash
+# 配置和结构检查
+python scripts/validate_configs.py
 
-大体积产物（`*.jsonl`、`*.parquet`、`*.npz`、`*.log`、trace npy 分片）不提交
-Git，均以 manifest（SHA-256 + 版本 + 采样参数）钉住，保证可复现。
+# checkpoint 静态/真实加载 Gate
+bash scripts/gate_qwen35_checkpoint.sh
 
-## 安全边界
+# 可断点续跑的 full-set A/B 双分片
+nohup setsid bash scripts/run_fullset_quality_pair.sh nvfp4 <输出目录> \
+  > <输出目录>/manager.log 2>&1 < /dev/null &
 
-- 开始实验前检查 GPU PID、命令和端口。
-- 不执行 `pkill python`、`killall` 或清理不属于本项目的进程。
-- 当前主机 NCCL 默认 ERDMA/RoCE 路径已知不稳定，项目默认设置 `NCCL_IB_DISABLE=1`。
-- checkpoint 路径与 API served name 分开记录。
+# Phase 8 正式重复测量与聚合
+python scripts/run_phase8_repeated.py --help
+python scripts/aggregate_phase8_repeated.py --help
+
+# 在线 placement-plan 与迁移结果分析
+python scripts/build_runtime_placement_plan.py --help
+python scripts/analyze_online_eplb_gate.py --help
+```
+
+正式运行前必须检查 GPU PID、监听端口和输出目录；禁止使用 `pkill python`、
+`killall` 或任何无法限定到本项目 PID 的清理命令。
+
+## 证据与复现规则
+
+1. 当前阶段报告说明“结论”，机器可读 JSON/manifest 提供“证据”。二者冲突时，
+   以较新的正式 Gate 和其输入哈希为准。
+2. `docs/archive/` 只保存被拒绝或被替代的历史结果，不得作为当前 Gate。
+3. 大体积 JSONL、日志、模型和 trace 不进入 Git；由 manifest 记录路径、版本、
+   样本参数和 SHA-256。
+4. 机器可读文件保持稳定路径。整理仓库时优先改索引和说明，不随意移动这些文件。
+5. 服务器运行目录、模型目录和本地 Git 镜像是三类不同路径，不得混写。
+
+完整数据说明见 [docs/DATA_CATALOG.md](docs/DATA_CATALOG.md)。

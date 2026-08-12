@@ -1,34 +1,56 @@
 # Q-TopoMoE 文档索引
 
-本目录按“少量稳定入口 + 集中结果 + 集中数据清单”组织。机器可读的 JSON/JSONL/YAML/manifest 保留原路径，避免影响复现；叙述性报告按阶段合并到 `results/`。
+这里区分三类内容：当前结论、复现说明和历史证据。第一次阅读只需要看“当前状态”
+和“执行入口”；按文件查数据时再使用数据清单。
 
-## 先读这三份
+## 当前状态
 
-- [复现阅读指南](Q-TopoMoE_复现阅读指南.md)：按依赖、冻结输入和验收顺序阅读。
-- [逐步执行 Runbook](Q-TopoMoE_逐步执行Runbook.md)：从 Phase 0 到 Phase 8 的执行入口。
-- [量化与 SM120 算子协同优化执行方案](Q-TopoMoE_量化与SM120算子协同优化执行方案.md)：总体技术路线与约束。
-- [NVFP4 当前交接](HANDOFF_20260809_NVFP4.md)：当前阶段状态、Gate 和下一步。
+| 主题 | 状态 | 文档 |
+|---|---|---|
+| FP8/NVFP4 full-set | NVFP4 EP4 A/B 双分片运行中；FP8 排队 | [质量收尾](results/phase3_fullset_quality_closeout_20260812.md) |
+| Phase 7 在线迁移 | placement-plan、阻塞、恢复和 p99 Gate 已接受 | [阶段 7–8 正式收尾](results/phase7_phase8_formal_closeout_20260812.md) |
+| Phase 8 正式矩阵 | 四候选、108 cells、五重复聚合已接受 | [阶段 8 历史与结果](results/phase8_benchmark_history.md) |
+| Phase 8 selector | median regret 通过；p95 regret 43.17%，未准入 | [阶段 7–8 正式收尾](results/phase7_phase8_formal_closeout_20260812.md) |
 
-## 阶段结果（叙述报告）
+正在运行的结果在完成 Gate 前仅表示进度，不表示最终准确率。
 
-- [Phase 1：BF16/FP8 服务基线](results/phase1_service_baseline.md)
-- [Phase 2：量化、canonical checkpoint 与质量 Gate](results/phase2_quantization_quality.md)
-- [Phase 3：route trace 与 official-like 评测](results/phase3_route_and_official_eval.md)
-- [Phase 4–7：kernel、融合、通信与 EPLB 工程](results/phase4_to_phase7_engineering.md)
-- [阶段 8：基准测试与校准历史](results/phase8_benchmark_history.md)
+## 执行入口
 
-## 数据与机器可读输入
+1. [复现阅读指南](Q-TopoMoE_复现阅读指南.md)：依赖、冻结输入和验收顺序。
+2. [逐步执行 Runbook](Q-TopoMoE_逐步执行Runbook.md)：Phase 0–8 的操作步骤。
+3. [量化与 SM120 协同方案](Q-TopoMoE_量化与SM120算子协同优化执行方案.md)：总体技术路线和约束。
+4. [数据与结果清单](DATA_CATALOG.md)：每个跟踪产物的用途、复现约束和 SHA-256。
 
-- [数据与结果清单](DATA_CATALOG.md)：逐文件说明类型、用途、复现约束和 SHA-256。
-- [评测 README](../configs/evaluation/README.md)：冻结评测输入、manifest、样本集和 hash 约束。
-- [Phase 0 拓扑与 P2P](Q-TopoMoE_8x5090实机拓扑评估与首轮实验矩阵.md)、[gpu111 实测分析](Q-TopoMoE_gpu111_phase0实测分析.md)、[P2P 重测总结](Q-TopoMoE_P2P_retest_summary_20260807.md)。
+## 阶段报告
 
-## 归档规则
+| 阶段 | 聚合报告 |
+|---|---|
+| Phase 0 | [8×5090 拓扑评估](Q-TopoMoE_8x5090实机拓扑评估与首轮实验矩阵.md)、[gpu-111 实测](Q-TopoMoE_gpu111_phase0实测分析.md)、[P2P 重测](Q-TopoMoE_P2P_retest_summary_20260807.md) |
+| Phase 1 | [BF16/FP8 服务基线](results/phase1_service_baseline.md) |
+| Phase 2 | [量化、canonical checkpoint 与质量 Gate](results/phase2_quantization_quality.md) |
+| Phase 3 | [route trace 与 official-like](results/phase3_route_and_official_eval.md)、[full-set 收尾](results/phase3_fullset_quality_closeout_20260812.md) |
+| Phase 4–7 | [kernel、融合、通信与 EPLB](results/phase4_to_phase7_engineering.md) |
+| Phase 7–8 | [在线迁移与四候选正式收尾](results/phase7_phase8_formal_closeout_20260812.md) |
+| Phase 8 | [基准测试与校准历史](results/phase8_benchmark_history.md) |
 
-`docs/archive/` 仅保存历史或被拒绝的对照数据；当前 Gate 不得直接引用归档记录。所有原始合并文件仍可从 Git 历史恢复，合并报告内记录了源文件的大小与 SHA-256。
-# 2026-08-12 最新状态
+在线迁移的独立实验说明见[在线 placement-plan 与服务迁移实验](Q-TopoMoE_在线placement-plan与服务迁移实验_20260812.md)。
 
-- [FP8/NVFP4 full-set 质量收尾](results/phase3_fullset_quality_closeout_20260812.md)：NVFP4 EP4 A/B 双分片已通过服务验收并进入 24,374 条正式评测；结果完成前不发布准确率结论。
+## 交接与历史资料
 
-- [阶段 7–8 在线迁移与四候选正式收尾](results/phase7_phase8_formal_closeout_20260812.md)：在线 placement-plan/迁移 Gate 已接受；108-cell、四候选、五重复聚合已接受；选择器因 p95 regret 43.17% 未准入。
-- [在线 placement-plan 与服务迁移实验](Q-TopoMoE_在线placement-plan与服务迁移实验_20260812.md)：384 请求、失败 0，包含稳定、迁移阻塞和恢复窗口。
+- [NVFP4 2026-08-09 交接快照](HANDOFF_20260809_NVFP4.md)：保留当时环境和故障背景；
+  文件顶部列出 2026-08-12 之后的权威状态，旧路径和旧提交号仅用于历史审计。
+- `archive/`：失败、被替代或仅供对照的机器可读结果。
+- 根目录下日期化 JSON：仍被脚本、报告或数据清单引用的稳定证据，不能只因文件多而移动。
+
+## 信息优先级
+
+同一事实出现多个版本时，按以下顺序判断：
+
+1. 最新日期的正式 Gate JSON及其输入哈希；
+2. `results/` 中对应阶段的最新收尾报告；
+3. Runbook 中的预注册门槛和流程；
+4. 日期化交接文档；
+5. `archive/` 中的历史结果。
+
+评测输入的来源、revision、样本索引、tokenizer/chat template 和 SHA-256 统一从
+[数据与结果清单](DATA_CATALOG.md)及 `configs/evaluation/` manifest 查找。
