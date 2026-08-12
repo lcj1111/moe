@@ -28,5 +28,7 @@
 `docs/archive/` 仅保存历史或被拒绝的对照数据；当前 Gate 不得直接引用归档记录。所有原始合并文件仍可从 Git 历史恢复，合并报告内记录了源文件的大小与 SHA-256。
 # 2026-08-12 最新状态
 
+- [FP8/NVFP4 full-set 质量收尾](results/phase3_fullset_quality_closeout_20260812.md)：NVFP4 EP4 A/B 双分片已通过服务验收并进入 24,374 条正式评测；结果完成前不发布准确率结论。
+
 - [阶段 7–8 在线迁移与四候选正式收尾](results/phase7_phase8_formal_closeout_20260812.md)：在线 placement-plan/迁移 Gate 已接受；108-cell、四候选、五重复聚合已接受；选择器因 p95 regret 43.17% 未准入。
 - [在线 placement-plan 与服务迁移实验](Q-TopoMoE_在线placement-plan与服务迁移实验_20260812.md)：384 请求、失败 0，包含稳定、迁移阻塞和恢复窗口。
