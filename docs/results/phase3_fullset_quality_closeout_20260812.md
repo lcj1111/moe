@@ -2,8 +2,9 @@
 
 > 更新日期：2026-08-13（Asia/Shanghai）
 > 当前状态：NVFP4 基础轮与 971 条续跑已完成严格合并，24,374 个 ID 完整且
-> `failed=0`；18 条推理循环样本按“显式未完成”封板。FP8 基础轮 24,374 条
-> 已完成且 `failed=0`；1,019 条截断有限续跑已通过四级服务 Gate，客户端运行中。
+> `failed=0`；18 条推理循环样本按“显式未完成”封板。FP8 基础轮与 1,019 条
+> 续跑也已严格合并，`failed=0`，26 条按同一规则显式封板。两种格式的共同分母
+> 对比已完成。
 
 ## 1. 已冻结的评测输入
 
@@ -142,13 +143,51 @@ C-Eval 的 `max_tokens` 从 2,048 提高到 8,192，MMLU-Pro 从 4,000 提高到
 机器可读基础轮及续跑启动证据见
 [`Q-TopoMoE_Phase3_FP8_fullset_base_20260813.json`](../Q-TopoMoE_Phase3_FP8_fullset_base_20260813.json)。
 
-后续必须按以下顺序执行：
+FP8 续跑 A/B 分别完成 519/519 与 500/500，`failed=0`，残余截断分别为
+15/11 条。26 条均精确达到 8,192 或 12,000 token，`finish_reason=length`，
+响应尾部仍在重复枚举、重新推导、纠结题面或反复验证，没有接近稳定答案。
+因此不再进行无界二次续跑；即使答案抽取碰巧等于标准答案，`correct` 仍保持
+`null`。
 
-1. 持续检查两个续跑客户端、周期 checkpoint、请求失败和残余截断；不以进程存活代替结果完整。
-2. 对残余截断逐条审计响应尾部；有合理收敛空间才允许有限二次补跑，否则显式标为未完成。
-3. 使用同一严格合并工具生成 FP8 唯一结果、哈希与 Gate。
-4. 只在 FP8 `failed=0` 且截断处理闭合后，与 NVFP4 做同分母、同协议比较；
-   部分运行结果不得作为准确率结论。
+使用严格合并工具替换全部 1,019 条基础轮截断记录。FP8 合并结果如下：
+
+| 指标 | 结果 |
+|---|---:|
+| manifest / 合并记录 / 唯一 ID | 24,374 / 24,374 / 24,374 |
+| 使用基础轮 / 使用续跑 | 23,355 / 1,019 |
+| 请求失败 / 显式未完成 | 0 / 26 |
+| 可评分 / 正确 | 24,348 / 21,177 |
+| MMLU-Pro（仅可评分分母） | 10,172 / 12,028 = 84.5693% |
+| C-Eval（仅可评分分母） | 11,005 / 12,320 = 89.3263% |
+
+- 合并目录：`/data/models/test/qtopomoe_quality_runs/full_official_fp8_tp2_pair_merged_v1`
+- 合并 JSONL SHA-256：`6dc2df8a92f83eabd657d43cf1e77aa12a7c2088a40ed3061c50d45c3eb4851f`
+- 合并摘要 SHA-256：`a857d838b5f4e1a45b41f03acbee2e6fd43a7917ade3aa42244b19673d7a4467`
+- Gate：完整性与请求 Gate 接受；总体为 `closed_with_unfinished`。
+
+## 5. FP8 与 NVFP4 的共同分母对比
+
+FP8 有 26 条显式未完成，NVFP4 有 18 条，其中重叠 9 条、并集 35 条。直接比较
+各自 scored-only 分母会引入选择性缺失偏差，因此主结论只使用两种格式均完成的
+24,339 个 ID：
+
+| 基准 | 共同 ID | NVFP4 | FP8 | FP8−NVFP4 |
+|---|---:|---:|---:|---:|
+| 总体 | 24,339 | 86.2977% | 86.9715% | +0.6738 pp |
+| C-Eval | 12,313 | 88.4837% | 89.3202% | +0.8365 pp |
+| MMLU-Pro | 12,026 | 84.0595% | 84.5668% | +0.5072 pp |
+
+共同分母上，二者同时答对 20,372 条、同时答错 2,539 条；NVFP4 独有答对
+632 条，FP8 独有答对 796 条。因此本冻结协议下 FP8 的质量高于该 NVFP4
+checkpoint。这个结论不能替代 BF16 full-set，也不能直接与官方不同 harness、
+prompt 或采样口径的分数混写。
+
+机器可读的 FP8 合并及共同分母对比见
+[`Q-TopoMoE_Phase3_FP8_merge_NVFP4_compare_20260813.json`](../Q-TopoMoE_Phase3_FP8_merge_NVFP4_compare_20260813.json)。
+
+上述基础轮、续跑、残余审计、严格合并和共同分母对比均已完成。后续若要把
+格式质量 Gate 扩展为 BF16/FP8/NVFP4 三方正式结论，必须补跑同一冻结协议的
+BF16 full-set；不得用历史被外部 SIGTERM 中断的 BF16 结果补齐。
 
 执行入口为 [`scripts/run_fullset_quality_pair.sh`](../../scripts/run_fullset_quality_pair.sh)，
 合并入口为 [`scripts/merge_fullset_quality_results.py`](../../scripts/merge_fullset_quality_results.py)，

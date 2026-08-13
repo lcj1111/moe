@@ -8,15 +8,15 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 
 > 更新时间：2026-08-13（Asia/Shanghai）
 > 当前运行：NVFP4 full-set 已完成严格合并，18 条推理循环样本按“显式未完成”
-> 封板；FP8 基础轮 24,374 条已完成且 `failed=0`，1,019 条截断有限续跑的
-> 四级服务 Gate 已通过，A/B 客户端运行中。
+> 封板；FP8 full-set 也已完成严格合并，26 条显式未完成。共同完成的 24,339
+> 条上，FP8 比 NVFP4 高 0.6738 个百分点。
 
 | 阶段 | 已完成结论 | 当前状态 |
 |---|---|---|
 | Phase 0 | 8 卡拓扑、NUMA、NCCL/P2P 实测 | 已完成；P2P 已生效 |
 | Phase 1 | BF16/FP8 服务基线、矩阵与统计 | 已完成 |
 | Phase 2 | W4A16/NVFP4 审计、真实加载和 official-like Gate | 已完成；RedHatAI NVFP4 准入，自生成 NVFP4 v1 拒绝 |
-| Phase 3 | route trace、漂移分析和冻结官方协议 | route 已完成；NVFP4 已合并封板，FP8 截断续跑中 |
+| Phase 3 | route trace、漂移分析和冻结官方协议 | route、NVFP4/FP8 full-set 合并与共同分母对比均已完成 |
 | Phase 4–6 | M-bucket、kernel/backend selector、通信矩阵 | 正式实测已归档 |
 | Phase 7 | placement-plan、在线迁移、恢复与 p99 | Gate 已接受 |
 | Phase 8 | 四候选×108 cells×5 重复正式聚合 | 测量 Gate 已接受；selector p95 regret 43.17%，未准入 |
