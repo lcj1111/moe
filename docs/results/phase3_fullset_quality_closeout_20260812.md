@@ -1,7 +1,8 @@
 # 阶段 3：FP8/NVFP4 full-set 质量收尾
 
-> 更新日期：2026-08-12（Asia/Shanghai）
-> 当前状态：NVFP4 正式 A/B 双分片正在运行；FP8 必须等待 NVFP4 基础轮及截断补跑完成后再启动。
+> 更新日期：2026-08-13（Asia/Shanghai）
+> 当前状态：NVFP4 基础轮 24,374/24,374 完成，`failed=0`，其中 971 条
+> 因输出达到长度上限而进入独立续跑；FP8 必须等待该续跑闭合后再启动。
 
 ## 1. 已冻结的评测输入
 
@@ -26,7 +27,16 @@
 - NVFP4 MoE 后端：两个服务均明确记录为 `MARLIN`。
 - EP truth：每个服务均创建 4 个 EP rank，每 rank 64/256 experts。
 - 四级服务验收：两个服务的 health、model discovery、completion、metrics 均通过；验收回答均为 `42`。
-- 当前状态：`running_clients`；管理 PID `3179645`，A/B 客户端 PID `3188998/3188999`。
+- 基础轮最终状态：`base_completed_rerun_required`；A/B 分片分别有
+  499/472 条截断，合计 971 条（3.98%），请求失败为 0。基础轮服务与客户端
+  已正常退出。
+
+截断续跑使用 `scripts/build_fullset_truncation_manifest.py` 从基础轮结果按 ID
+筛选，不改变 messages、协议、答案、seed 或采样参数。C-Eval 的 `max_tokens`
+由 2048 提高到 8192，MMLU-Pro 由 4000 提高到 12000；服务
+`MAX_MODEL_LEN=32768`，输出写入独立目录
+`/data/models/test/qtopomoe_quality_runs/full_official_nvfp4_ep4_pair_trunc_v1`，
+不覆盖基础轮。
 
 客户端每完成 100 条便原子更新一次结果文件，并使用 `--resume` 跳过已有成功样本。关闭 Codex 或 SSH 不会终止任务。
 
