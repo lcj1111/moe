@@ -7,15 +7,15 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 ## 当前结论
 
 > 更新时间：2026-08-13（Asia/Shanghai）
-> 当前运行：NVFP4 full-set 的 971 条截断续跑已结束，仍有 18 条待尾部审计与合并；
-> Gate 闭合前不发布部分准确率。
+> 当前运行：NVFP4 full-set 已完成严格合并，18 条推理循环样本按“显式未完成”
+> 封板；FP8 TP2 双分片 full-set 的四级服务 Gate 已通过，A/B 客户端运行中。
 
 | 阶段 | 已完成结论 | 当前状态 |
 |---|---|---|
 | Phase 0 | 8 卡拓扑、NUMA、NCCL/P2P 实测 | 已完成；P2P 已生效 |
 | Phase 1 | BF16/FP8 服务基线、矩阵与统计 | 已完成 |
 | Phase 2 | W4A16/NVFP4 审计、真实加载和 official-like Gate | 已完成；RedHatAI NVFP4 准入，自生成 NVFP4 v1 拒绝 |
-| Phase 3 | route trace、漂移分析和冻结官方协议 | route 已完成；NVFP4 剩 18 条截断待审计，FP8 排队 |
+| Phase 3 | route trace、漂移分析和冻结官方协议 | route 已完成；NVFP4 已合并封板，FP8 full-set 运行中 |
 | Phase 4–6 | M-bucket、kernel/backend selector、通信矩阵 | 正式实测已归档 |
 | Phase 7 | placement-plan、在线迁移、恢复与 p99 | Gate 已接受 |
 | Phase 8 | 四候选×108 cells×5 重复正式聚合 | 测量 Gate 已接受；selector p95 regret 43.17%，未准入 |
@@ -87,7 +87,10 @@ BACKEND=vllm MODEL_PATH=<checkpoint> OUT_DIR=<新输出目录> \
 
 # 可断点续跑的 full-set A/B 双分片
 nohup setsid bash scripts/run_fullset_quality_pair.sh nvfp4 <输出目录> \
-  > <输出目录>/manager.log 2>&1 < /dev/null &
+  > <输出目录>.manager.log 2>&1 < /dev/null &
+
+# 严格合并基础轮与截断续跑；重复、缺失、越权替换或身份不一致都会直接失败
+python scripts/merge_fullset_quality_results.py --help
 
 # Phase 8 正式重复测量与聚合
 python scripts/run_phase8_repeated.py --help

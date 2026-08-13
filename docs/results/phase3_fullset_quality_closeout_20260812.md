@@ -1,9 +1,9 @@
 # 阶段 3：FP8/NVFP4 full-set 质量收尾
 
 > 更新日期：2026-08-13（Asia/Shanghai）
-> 当前状态：NVFP4 基础轮 24,374/24,374 完成，`failed=0`；971 条截断续跑
-> 已完成，仍有 18 条达到新长度上限，待尾部审计和最终合并。FP8 必须等待
-> NVFP4 Gate 闭合后再启动。
+> 当前状态：NVFP4 基础轮与 971 条续跑已完成严格合并，24,374 个 ID 完整且
+> `failed=0`；18 条推理循环样本按“显式未完成”封板。FP8 TP2 双分片已于
+> 2026-08-13 10:46（Asia/Shanghai）启动，四级服务 Gate 已通过，客户端运行中。
 
 ## 1. 已冻结的评测输入
 
@@ -47,8 +47,35 @@
 
 续跑 A/B 均 `completed=requested`、`failed=0`，但分别仍有 11/7 条截断；合计
 18 条，其中 C-Eval 15 条、MMLU-Pro 3 条。因此 manager 状态为
-`base_completed_rerun_required`。这 18 条尚未被静默计错，也没有自动启动下一轮；
-应先审计响应尾部和答案抽取，再决定有限二次补跑或按协议标记为未完成。
+`base_completed_rerun_required`。
+
+逐条审计确认，这 18 条全部满足：`finish_reason=length`、实际输出 token 数等于
+新上限，响应尾部仍在重复枚举、重新推导或自我否定，没有接近稳定最终答案。
+继续提高输出上限只会放大无效生成，因此不进行无界二次续跑。即便局部答案抽取
+碰巧等于标准答案，`correct` 仍必须为 `null`，不得静默计对或计错。
+
+使用 [`scripts/merge_fullset_quality_results.py`](../../scripts/merge_fullset_quality_results.py)
+完成严格合并。工具要求基础轮 ID 与冻结 manifest 完全一致、续跑 ID 与基础轮
+截断集合完全一致，并校验 `id/benchmark/expected/score_type` 身份字段；输出按原
+manifest 顺序恢复。任何重复、缺失、额外替换或身份漂移都会直接失败。
+
+合并结果：
+
+| 指标 | 结果 |
+|---|---:|
+| manifest / 合并记录 / 唯一 ID | 24,374 / 24,374 / 24,374 |
+| 使用基础轮 / 使用续跑 | 23,403 / 971 |
+| 请求失败 / 显式未完成 | 0 / 18 |
+| 可评分 / 正确 | 24,356 / 21,014 |
+| MMLU-Pro（仅可评分分母） | 10,111 / 12,029 = 84.0552% |
+| C-Eval（仅可评分分母） | 10,903 / 12,327 = 88.4481% |
+
+- 合并目录：`/data/models/test/qtopomoe_quality_runs/full_official_nvfp4_ep4_pair_merged_v1`
+- 合并 JSONL SHA-256：`d8e17e7106b2575ff1ac7b020ddc7d93f7d3d5698794310b163b959d75601920`
+- 合并摘要 SHA-256：`24449c7e684f3e8ad1539d92009a6cd93991f800b5cc3a891d684d5e7596436f`
+- Gate：完整性与请求 Gate 均接受；总体为 `closed_with_unfinished`，不是
+  “24,374 条全部完成”。机器可读摘要见
+  [`Q-TopoMoE_Phase3_NVFP4_fullset_merge_20260813.json`](../Q-TopoMoE_Phase3_NVFP4_fullset_merge_20260813.json)。
 
 客户端每完成 100 条便原子更新一次结果文件，并使用 `--resume` 跳过已有成功样本。关闭 Codex 或 SSH 不会终止任务。
 
@@ -58,13 +85,32 @@
 
 本轮使用独立 session、持久 PID、状态文件、周期性 checkpoint 和断点续跑，消除了同类风险。
 
-## 4. 后续顺序与 Gate
+## 4. FP8 正式任务与后续 Gate
 
-1. 审计 18 条残余截断的 `finish_reason`、响应尾部和答案抽取。
-2. 如有合理收敛空间，仅对残余样本有限提高 `max_tokens`；否则明确列为未完成。
-3. 合并基础轮与最终补跑，并保证每个样本只有一个最终记录。
-4. 生成 NVFP4 全量摘要、输入/输出哈希和 Gate。
-5. 使用同一冻结输入与协议运行 FP8 TP2 双分片，并执行相同补跑/合并流程。
-6. 只在两种格式均 `failed=0` 且截断处理闭合后比较质量；部分结果不得作为准确率结论。
+FP8 于 2026-08-13 10:46（Asia/Shanghai）启动。启动前确认外部 RobustGEMQ
+CUDA 测试已自然退出、端口空闲、目标目录不存在，未终止任何其他项目进程。
 
-执行入口为 [`scripts/run_fullset_quality_pair.sh`](../../scripts/run_fullset_quality_pair.sh)，客户端为 [`clients/quality_eval.py`](../../clients/quality_eval.py)。
+- 输出根目录：`/data/models/test/qtopomoe_quality_runs/full_official_fp8_tp2_pair_v1`
+- 分片 A：GPU0–1、TP2、NUMA0、端口 31620。
+- 分片 B：GPU4–5、TP2、NUMA1、端口 31621。
+- 模型：`/data/models/test/models/Qwen--Qwen3.6-35B-A3B-FP8/snapshots/master`。
+- vLLM：`0.26.1rc1.dev343+g33c50587d` cleanroom。
+- MoE 后端：命令行固定 `--moe-backend triton`。
+- 冻结输入、seed=42、每分片并发 4 与 NVFP4 完全相同。
+- manager PID：`1447425`；启动脚本 SHA-256：
+  `34dc03fac99bd28d959f2a30dcbb5dc336e465a71c9934dadcfd997e9655b1f7`。
+- A/B 的 health、model discovery、completion、metrics 四级验收均通过，验收回答
+  均为 `42`。2026-08-13 10:51:39 manager 进入 `running_clients`，客户端 PID
+  分别为 `1466816` 和 `1466817`。
+
+后续必须按以下顺序执行：
+
+1. 持续检查两个客户端、周期 checkpoint、请求失败和截断；不以进程存活代替结果完整。
+2. 基础轮结束后只对截断 ID 生成独立续跑 manifest，保持其他协议字段不变。
+3. 使用同一严格合并工具生成 FP8 唯一结果、哈希与 Gate。
+4. 只在 FP8 `failed=0` 且截断处理闭合后，与 NVFP4 做同分母、同协议比较；
+   部分运行结果不得作为准确率结论。
+
+执行入口为 [`scripts/run_fullset_quality_pair.sh`](../../scripts/run_fullset_quality_pair.sh)，
+合并入口为 [`scripts/merge_fullset_quality_results.py`](../../scripts/merge_fullset_quality_results.py)，
+客户端为 [`clients/quality_eval.py`](../../clients/quality_eval.py)。
