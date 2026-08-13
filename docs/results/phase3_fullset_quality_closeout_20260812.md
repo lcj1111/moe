@@ -38,6 +38,13 @@
 `/data/models/test/qtopomoe_quality_runs/full_official_nvfp4_ep4_pair_trunc_v1`，
 不覆盖基础轮。
 
+续跑已于 2026-08-13 09:34（Asia/Shanghai）启动，状态为
+`running_clients`，管理 PID 为 `1193994`，A/B 客户端 PID 为
+`1212200/1212201`。A/B 续跑 manifest 分别为 499/472 条，SHA-256 为
+`6610d7ebbdf4c5787e775c5d56439b821baef3bf46ff0c774f1ba746336fea5b`
+和 `8d6bc412e88e1d3757d0d82ce7549d72cdddbe160a86a19df2c66ac7ef2abc6c`。
+两个服务的 health、model discovery、completion 和 metrics 再次全部通过。
+
 客户端每完成 100 条便原子更新一次结果文件，并使用 `--resume` 跳过已有成功样本。关闭 Codex 或 SSH 不会终止任务。
 
 ## 3. 历史 BF16 失败的重新判定
