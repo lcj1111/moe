@@ -4,7 +4,8 @@
 > 当前状态：NVFP4 基础轮与 971 条续跑已完成严格合并，24,374 个 ID 完整且
 > `failed=0`；18 条推理循环样本按“显式未完成”封板。FP8 基础轮与 1,019 条
 > 续跑也已严格合并，`failed=0`，26 条按同一规则显式封板。两种格式的共同分母
-> 对比已完成。
+> 对比已完成。同协议 BF16 full-set 已于 2026-08-13 启动并通过服务验收，
+> 正在运行 A/B 双分片；在 BF16 完整合并前不得发布三格式最终质量结论。
 
 ## 1. 已冻结的评测输入
 
@@ -192,3 +193,34 @@ BF16 full-set；不得用历史被外部 SIGTERM 中断的 BF16 结果补齐。
 执行入口为 [`scripts/run_fullset_quality_pair.sh`](../../scripts/run_fullset_quality_pair.sh)，
 合并入口为 [`scripts/merge_fullset_quality_results.py`](../../scripts/merge_fullset_quality_results.py)，
 客户端为 [`clients/quality_eval.py`](../../clients/quality_eval.py)。
+
+## 6. BF16 同协议补测
+
+BF16 full-set 于 2026-08-13 15:38（Asia/Shanghai）启动。它不是对历史中断目录
+的续写，而是在独立输出目录中重新执行全部 24,374 条冻结样本：
+
+- 输出根目录：`/data/models/test/qtopomoe_quality_runs/full_official_bf16_tp4_pair_v2`
+- 模型：`/data/models/REAP/models/Qwen3.6-35B-A3B`
+- 模型大小与分片：67 GiB、26 个 safetensors 权重分片
+- `config.json` SHA-256：`93a4693fa9d8392fbfccd4b3c9873f4bfdcb14fdede978b123d07d19675efe99`
+- 分片 A：GPU0–3、TP4、NUMA0、端口 31620
+- 分片 B：GPU4–7、TP4、NUMA1、端口 31621
+- vLLM：`0.26.1rc1.dev343+g33c50587d` cleanroom
+- 服务参数：`max_model_len=8192`、`max_num_seqs=8`、显存利用率 0.90、
+  prefix caching 开启、`--enforce-eager`
+- 客户端参数：seed 42、每分片并发 4、超时 1,200 秒、每 100 条原子 checkpoint、
+  `--resume`
+- manager PID：`2580631`
+- A/B 服务 PID：`2580635` / `2580637`
+- A/B 客户端 PID：`2593122` / `2593123`
+- 启动脚本 GitHub commit：`029847a`
+- 启动脚本 SHA-256：`f51210735fcf831378ae1df55b40f692e1d54bbace346a77d3f8ae4bbc5ee894`
+
+15:40 左右两个服务均完成 26/26 权重加载；每张 GPU 的 BF16 权重占用约
+16.52 GiB，总显存占用约 29 GiB。日志明确记录 `quantization=None` 路径采用
+Triton unquantized MoE backend，没有把 FP8/NVFP4 量化后端误用于 BF16。
+
+A/B 两套服务的 health、model discovery、completion、metrics 四项验收均为
+`true`，验收 completion 均返回 `42`。manager 已进入 `running_clients`。
+当前结果只说明任务启动和服务 Gate 正常，不代表质量评测已完成；完整性、失败、
+截断、续跑、严格合并和三格式共同分母分析仍须在两片基础轮自然结束后依次执行。
