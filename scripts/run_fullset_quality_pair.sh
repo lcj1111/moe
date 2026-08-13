@@ -5,7 +5,7 @@ set -euo pipefail
 # 这样 SSH 或上层客户端退出不会向服务进程传播 SIGHUP。
 
 if [[ $# -ne 2 ]]; then
-  echo "用法：$0 <nvfp4|fp8> <输出目录>" >&2
+  echo "用法：$0 <bf16|nvfp4|fp8> <输出目录>" >&2
   exit 2
 fi
 
@@ -25,6 +25,15 @@ MAX_NUM_SEQS="${MAX_NUM_SEQS:-8}"
 GPU_MEMORY_UTILIZATION="${GPU_MEMORY_UTILIZATION:-0.90}"
 
 case "$FORMAT" in
+  bf16)
+    MODEL_PATH="${MODEL_PATH:-/data/models/REAP/models/Qwen3.6-35B-A3B}"
+    TP_SIZE=4
+    GPU_A="0,1,2,3"
+    GPU_B="4,5,6,7"
+    # BF16 full-set 是质量基线，不参与吞吐性能比较。沿用历史已验证配置，
+    # 禁用编译/CUDA Graph，减少长时间双服务运行中的额外变量。
+    EXTRA_ARGS=(--enforce-eager)
+    ;;
   nvfp4)
     MODEL_PATH="${MODEL_PATH:-/data/models/test/redhatai_qwen36_nvfp4}"
     TP_SIZE=4
