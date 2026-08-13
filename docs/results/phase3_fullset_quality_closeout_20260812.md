@@ -2,8 +2,8 @@
 
 > 更新日期：2026-08-13（Asia/Shanghai）
 > 当前状态：NVFP4 基础轮与 971 条续跑已完成严格合并，24,374 个 ID 完整且
-> `failed=0`；18 条推理循环样本按“显式未完成”封板。FP8 TP2 双分片已于
-> 2026-08-13 10:46（Asia/Shanghai）启动，四级服务 Gate 已通过，客户端运行中。
+> `failed=0`；18 条推理循环样本按“显式未完成”封板。FP8 基础轮 24,374 条
+> 已完成且 `failed=0`；1,019 条截断有限续跑已通过四级服务 Gate，客户端运行中。
 
 ## 1. 已冻结的评测输入
 
@@ -103,10 +103,49 @@ CUDA 测试已自然退出、端口空闲、目标目录不存在，未终止任
   均为 `42`。2026-08-13 10:51:39 manager 进入 `running_clients`，客户端 PID
   分别为 `1466816` 和 `1466817`。
 
+FP8 基础轮于 2026-08-13 13:50 左右结束，manager 状态为
+`base_completed_rerun_required`。这里的 `client_rc_a=1/client_rc_b=1` 表示存在
+截断项，并非请求、服务或 CUDA 失败。完整性审计结果如下：
+
+| 指标 | 分片 A | 分片 B | 合计 |
+|---|---:|---:|---:|
+| manifest / 结果 / 唯一 ID | 12,187 | 12,187 | 24,374 |
+| 请求失败 | 0 | 0 | 0 |
+| 截断 | 519 | 500 | 1,019 |
+| C-Eval 截断 | 232 | 195 | 427 |
+| MMLU-Pro 截断 | 287 | 305 | 592 |
+
+- A 片结果 SHA-256：`19eac38fdb045ade96d2d5dce7116fd51c8c79bc68957aef529ad5e9f2875a5d`
+- B 片结果 SHA-256：`35ab64803ea3afe4eb7f48d81a526a95f5ac6b2c00713c5ad85c618f1269c7d9`
+- 两片 ID 均与冻结 manifest 完全相等、顺序一致且无重复；所有截断项的
+  `correct` 均为 `null`。
+
+使用 `scripts/build_fullset_truncation_manifest.py` 只提取上述 1,019 个 ID。
+C-Eval 的 `max_tokens` 从 2,048 提高到 8,192，MMLU-Pro 从 4,000 提高到
+12,000，messages、协议、答案、seed 和采样参数保持不变：
+
+- A 片续跑 manifest：519 条，SHA-256
+  `be6de5c8c6c98093ae9fcc61cb54c0f8b9ba79e8ea78ca22ab6b175479771113`
+- B 片续跑 manifest：500 条，SHA-256
+  `5f3be6f53fd6e74dafabb065a9704f4bb9f02c3978520a95283e40c0d2324855`
+
+续跑于 2026-08-13 13:56（Asia/Shanghai）启动，输出目录为
+`/data/models/test/qtopomoe_quality_runs/full_official_fp8_tp2_pair_trunc_v1`。
+服务使用相同 FP8 checkpoint、TP2 GPU0–1/4–5 和 Triton MoE backend，仅将
+`MAX_MODEL_LEN` 提高到 32,768。A/B 四级验收再次全部通过，验收回答均为
+`42`；manager 于 14:00:53 进入 `running_clients`：
+
+- manager PID：`2159292`
+- A/B 服务 PID：`2159307` / `2159309`
+- A/B 客户端 PID：`2182950` / `2182951`
+
+机器可读基础轮及续跑启动证据见
+[`Q-TopoMoE_Phase3_FP8_fullset_base_20260813.json`](../Q-TopoMoE_Phase3_FP8_fullset_base_20260813.json)。
+
 后续必须按以下顺序执行：
 
-1. 持续检查两个客户端、周期 checkpoint、请求失败和截断；不以进程存活代替结果完整。
-2. 基础轮结束后只对截断 ID 生成独立续跑 manifest，保持其他协议字段不变。
+1. 持续检查两个续跑客户端、周期 checkpoint、请求失败和残余截断；不以进程存活代替结果完整。
+2. 对残余截断逐条审计响应尾部；有合理收敛空间才允许有限二次补跑，否则显式标为未完成。
 3. 使用同一严格合并工具生成 FP8 唯一结果、哈希与 Gate。
 4. 只在 FP8 `failed=0` 且截断处理闭合后，与 NVFP4 做同分母、同协议比较；
    部分运行结果不得作为准确率结论。

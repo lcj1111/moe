@@ -74,6 +74,7 @@
 | `docs/Q-TopoMoE_Phase2_official_like_v2_W4A16_summary_20260805.json` | 证据 / 结果 | 只读记录；解释结果时请结合对应阶段报告或交接文档。 | `EAC8EFE05A796A34260F1D6CED2CCF736DD3C5FBDDC2215F2E35E1ABC456CBC9` |
 | `docs/Q-TopoMoE_Phase3_route_drift_BF16_vs_NVFP4_20260809.json` | 证据 / 结果 | 只读记录；解释结果时请结合对应阶段报告或交接文档。 | `63D3646C146C5E1AD689D3B9CAE1DA3FAFCAA76E731A2DF1DCF8A4E26009606C` |
 | `docs/Q-TopoMoE_Phase3_NVFP4_fullset_merge_20260813.json` | 证据 / 结果 | NVFP4 24,374 条基础轮与 971 条续跑的合并审计、哈希、18 条显式未完成 ID 和 Gate。 | `0FE3433CD615D9D305C7594A8C0E649A3E5CEC3103588A6CA0BC26F0176625F0` |
+| `docs/Q-TopoMoE_Phase3_FP8_fullset_base_20260813.json` | 证据 / 结果 | FP8 24,374 条基础轮审计、1,019 条截断 manifest 哈希及有限续跑启动 Gate。 | `4E3CA57C9E476B471E556896C839CD2FE61646C62C1A3E1FBCAD03C0C2AB97E4` |
 | `docs/Q-TopoMoE_Phase3_route_drift_bf16_vs_w4_20260806.json` | 证据 / 结果 | 只读记录；解释结果时请结合对应阶段报告或交接文档。 | `9B8F761299223C99F87A7EE3E22E45E8B78E3C77094918FCA2AB29CC99B140D7` |
 | `docs/Q-TopoMoE_Phase3c_full_official_w4_merged_summary_20260806.json` | 证据 / 结果 | 只读记录；解释结果时请结合对应阶段报告或交接文档。 | `B1A1C06CFF29BBA2E6797B46A9FC0C507E435F891C22B6EEC8C67191FE7DA0C3` |
 | `docs/Q-TopoMoE_Phase3c_pilot_p2p_20260807.json` | 证据 / 结果 | 只读记录；解释结果时请结合对应阶段报告或交接文档。 | `2B216D209ADDD104E78832BD87A22346C2E4D05107C87D6858BE7D6B0CD85CF3` |

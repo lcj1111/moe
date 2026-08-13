@@ -1,0 +1,98 @@
+{
+  "schema_version": "qtopomoe.fullset_fp8_base_audit.v1",
+  "说明": "FP8 full-set 基础轮完整性审计与 1,019 条截断有限续跑启动证据。",
+  "格式": "fp8",
+  "基础轮": {
+    "输出目录": "/data/models/test/qtopomoe_quality_runs/full_official_fp8_tp2_pair_v1",
+    "最终状态": "需要截断续跑",
+    "总记录数": 24374,
+    "唯一ID数": 24374,
+    "请求失败数": 0,
+    "截断数": 1019,
+    "检查": {
+      "两片结果均为合法JSONL": true,
+      "两片ID均与manifest完全一致": true,
+      "两片顺序均与manifest一致": true,
+      "两片均无重复ID": true,
+      "所有截断项correct均为null": true
+    },
+    "分片": {
+      "A": {
+        "记录数": 12187,
+        "请求失败数": 0,
+        "截断数": 519,
+        "C-Eval截断数": 232,
+        "MMLU-Pro截断数": 287,
+        "结果sha256": "19eac38fdb045ade96d2d5dce7116fd51c8c79bc68957aef529ad5e9f2875a5d"
+      },
+      "B": {
+        "记录数": 12187,
+        "请求失败数": 0,
+        "截断数": 500,
+        "C-Eval截断数": 195,
+        "MMLU-Pro截断数": 305,
+        "结果sha256": "35ab64803ea3afe4eb7f48d81a526a95f5ac6b2c00713c5ad85c618f1269c7d9"
+      }
+    }
+  },
+  "有限续跑": {
+    "输入目录": "/data/models/test/qtopomoe_quality/fp8_trunc_v1",
+    "输出目录": "/data/models/test/qtopomoe_quality_runs/full_official_fp8_tp2_pair_trunc_v1",
+    "启动时间_Asia_Shanghai": "2026-08-13 13:56",
+    "进入客户端运行时间_Asia_Shanghai": "2026-08-13 14:00:53",
+    "状态": "客户端运行中",
+    "max_model_len": 32768,
+    "seed": 42,
+    "每片并发": 4,
+    "模型": "/data/models/test/models/Qwen--Qwen3.6-35B-A3B-FP8/snapshots/master",
+    "MoE后端": "triton",
+    "GPU分配": {
+      "A": "0,1",
+      "B": "4,5"
+    },
+    "输出上限": {
+      "C-Eval": 8192,
+      "MMLU-Pro": 12000
+    },
+    "manifest": {
+      "A": {
+        "记录数": 519,
+        "sha256": "be6de5c8c6c98093ae9fcc61cb54c0f8b9ba79e8ea78ca22ab6b175479771113"
+      },
+      "B": {
+        "记录数": 500,
+        "sha256": "5f3be6f53fd6e74dafabb065a9704f4bb9f02c3978520a95283e40c0d2324855"
+      }
+    },
+    "四级服务Gate": {
+      "A": {
+        "health": true,
+        "model_discovery": true,
+        "completion": true,
+        "metrics": true,
+        "验收回答": "42"
+      },
+      "B": {
+        "health": true,
+        "model_discovery": true,
+        "completion": true,
+        "metrics": true,
+        "验收回答": "42"
+      }
+    },
+    "PID": {
+      "manager": 2159292,
+      "服务A": 2159307,
+      "服务B": 2159309,
+      "客户端A": 2182950,
+      "客户端B": 2182951
+    }
+  },
+  "后续Gate": [
+    "续跑两片completed必须等于requested",
+    "请求失败必须为0",
+    "逐条审计残余截断，不得静默计错",
+    "严格合并时续跑ID必须与基础轮截断集合完全一致",
+    "FP8闭合后再与NVFP4进行同协议比较"
+  ]
+}
