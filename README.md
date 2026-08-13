@@ -27,6 +27,7 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 | 目的 | 推荐入口 |
 |---|---|
 | 快速了解当前状态 | [文档索引](docs/README.md)与[阶段 7–8 正式收尾](docs/results/phase7_phase8_formal_closeout_20260812.md) |
+| 回顾完整执行顺序与故障处置 | [项目执行全史与问题处置](docs/Q-TopoMoE_项目执行全史与问题处置_20260813.md) |
 | 从头复现 | [复现阅读指南](docs/Q-TopoMoE_复现阅读指南.md) |
 | 按阶段执行 | [逐步执行 Runbook](docs/Q-TopoMoE_逐步执行Runbook.md) |
 | 查某个 JSON/配置的含义与哈希 | [数据与结果清单](docs/DATA_CATALOG.md) |
