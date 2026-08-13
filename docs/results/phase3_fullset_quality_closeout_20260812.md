@@ -1,8 +1,9 @@
 # 阶段 3：FP8/NVFP4 full-set 质量收尾
 
 > 更新日期：2026-08-13（Asia/Shanghai）
-> 当前状态：NVFP4 基础轮 24,374/24,374 完成，`failed=0`，其中 971 条
-> 因输出达到长度上限而进入独立续跑；FP8 必须等待该续跑闭合后再启动。
+> 当前状态：NVFP4 基础轮 24,374/24,374 完成，`failed=0`；971 条截断续跑
+> 已完成，仍有 18 条达到新长度上限，待尾部审计和最终合并。FP8 必须等待
+> NVFP4 Gate 闭合后再启动。
 
 ## 1. 已冻结的评测输入
 
@@ -38,12 +39,16 @@
 `/data/models/test/qtopomoe_quality_runs/full_official_nvfp4_ep4_pair_trunc_v1`，
 不覆盖基础轮。
 
-续跑已于 2026-08-13 09:34（Asia/Shanghai）启动，状态为
-`running_clients`，管理 PID 为 `1193994`，A/B 客户端 PID 为
-`1212200/1212201`。A/B 续跑 manifest 分别为 499/472 条，SHA-256 为
+续跑于 2026-08-13 09:34（Asia/Shanghai）启动并于 10:27 左右完成。A/B
+续跑 manifest 分别为 499/472 条，SHA-256 为
 `6610d7ebbdf4c5787e775c5d56439b821baef3bf46ff0c774f1ba746336fea5b`
 和 `8d6bc412e88e1d3757d0d82ce7549d72cdddbe160a86a19df2c66ac7ef2abc6c`。
 两个服务的 health、model discovery、completion 和 metrics 再次全部通过。
+
+续跑 A/B 均 `completed=requested`、`failed=0`，但分别仍有 11/7 条截断；合计
+18 条，其中 C-Eval 15 条、MMLU-Pro 3 条。因此 manager 状态为
+`base_completed_rerun_required`。这 18 条尚未被静默计错，也没有自动启动下一轮；
+应先审计响应尾部和答案抽取，再决定有限二次补跑或按协议标记为未完成。
 
 客户端每完成 100 条便原子更新一次结果文件，并使用 `--resume` 跳过已有成功样本。关闭 Codex 或 SSH 不会终止任务。
 
@@ -55,10 +60,11 @@
 
 ## 4. 后续顺序与 Gate
 
-1. NVFP4 基础轮完成后审计 `failed`、`truncated`、答案抽取与分科准确率。
-2. 仅补跑截断样本，提高 `max_tokens` 后合并，并保证每个样本只有一个最终记录。
-3. 生成 NVFP4 全量摘要、输入/输出哈希和 Gate。
-4. 使用同一冻结输入与协议运行 FP8 TP2 双分片，并执行相同补跑/合并流程。
-5. 只在两种格式均 `failed=0` 且截断闭合后比较质量；运行中的部分结果不得作为准确率结论。
+1. 审计 18 条残余截断的 `finish_reason`、响应尾部和答案抽取。
+2. 如有合理收敛空间，仅对残余样本有限提高 `max_tokens`；否则明确列为未完成。
+3. 合并基础轮与最终补跑，并保证每个样本只有一个最终记录。
+4. 生成 NVFP4 全量摘要、输入/输出哈希和 Gate。
+5. 使用同一冻结输入与协议运行 FP8 TP2 双分片，并执行相同补跑/合并流程。
+6. 只在两种格式均 `failed=0` 且截断处理闭合后比较质量；部分结果不得作为准确率结论。
 
 执行入口为 [`scripts/run_fullset_quality_pair.sh`](../../scripts/run_fullset_quality_pair.sh)，客户端为 [`clients/quality_eval.py`](../../clients/quality_eval.py)。

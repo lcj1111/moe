@@ -6,15 +6,16 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 
 ## 当前结论
 
-> 更新时间：2026-08-12（Asia/Shanghai）
-> 当前运行：NVFP4 EP4 full-set A/B 双分片正在评测；完成前不发布部分准确率。
+> 更新时间：2026-08-13（Asia/Shanghai）
+> 当前运行：NVFP4 full-set 的 971 条截断续跑已结束，仍有 18 条待尾部审计与合并；
+> Gate 闭合前不发布部分准确率。
 
 | 阶段 | 已完成结论 | 当前状态 |
 |---|---|---|
 | Phase 0 | 8 卡拓扑、NUMA、NCCL/P2P 实测 | 已完成；P2P 已生效 |
 | Phase 1 | BF16/FP8 服务基线、矩阵与统计 | 已完成 |
 | Phase 2 | W4A16/NVFP4 审计、真实加载和 official-like Gate | 已完成；RedHatAI NVFP4 准入，自生成 NVFP4 v1 拒绝 |
-| Phase 3 | route trace、漂移分析和冻结官方协议 | route 已完成；NVFP4 full-set 运行中，FP8 排队 |
+| Phase 3 | route trace、漂移分析和冻结官方协议 | route 已完成；NVFP4 剩 18 条截断待审计，FP8 排队 |
 | Phase 4–6 | M-bucket、kernel/backend selector、通信矩阵 | 正式实测已归档 |
 | Phase 7 | placement-plan、在线迁移、恢复与 p99 | Gate 已接受 |
 | Phase 8 | 四候选×108 cells×5 重复正式聚合 | 测量 Gate 已接受；selector p95 regret 43.17%，未准入 |
@@ -27,6 +28,7 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 | 目的 | 推荐入口 |
 |---|---|
 | 快速了解当前状态 | [文档索引](docs/README.md)与[阶段 7–8 正式收尾](docs/results/phase7_phase8_formal_closeout_20260812.md) |
+| 独立接管和操作项目 | [项目接管与操作手册](docs/Q-TopoMoE_项目接管与操作手册_20260813.md) |
 | 回顾完整执行顺序与故障处置 | [项目执行全史与问题处置](docs/Q-TopoMoE_项目执行全史与问题处置_20260813.md) |
 | 从头复现 | [复现阅读指南](docs/Q-TopoMoE_复现阅读指南.md) |
 | 按阶段执行 | [逐步执行 Runbook](docs/Q-TopoMoE_逐步执行Runbook.md) |
@@ -61,7 +63,7 @@ qtopomoe_use_sglang
 |---|---|---|
 | `configs/` | 冻结的模型、拓扑、workload、策略与评测配置 | `configs/evaluation/README.md` |
 | `env/` | 项目变量、环境检查与依赖锁 | `env/activate.sh`、`env/check_env.sh` |
-| `topology/` | GPU/NUMA/P2P/NCCL 采集与成本模型 | `topology/collect_topology.py` |
+| `topology/` | GPU/NUMA/P2P/NCCL 采集与成本模型 | `topology/collect_hardware.sh`、`topology/gpu_peer_bf16.py` |
 | `quantization/` | W4A16/NVFP4 量化及 checkpoint 审计 | `quantization/audit_nvfp4.py` |
 | `serving/` | 独立服务启动与四级服务验收 | `serving/start_server.sh`、`serving/acceptance.sh` |
 | `clients/` | smoke、质量和工作负载客户端 | `clients/quality_eval.py` |

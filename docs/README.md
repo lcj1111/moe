@@ -7,7 +7,7 @@
 
 | 主题 | 状态 | 文档 |
 |---|---|---|
-| FP8/NVFP4 full-set | NVFP4 EP4 A/B 双分片运行中；FP8 排队 | [质量收尾](results/phase3_fullset_quality_closeout_20260812.md) |
+| FP8/NVFP4 full-set | NVFP4 续跑后剩 18 条截断待审计与合并；FP8 排队 | [质量收尾](results/phase3_fullset_quality_closeout_20260812.md) |
 | Phase 7 在线迁移 | placement-plan、阻塞、恢复和 p99 Gate 已接受 | [阶段 7–8 正式收尾](results/phase7_phase8_formal_closeout_20260812.md) |
 | Phase 8 正式矩阵 | 四候选、108 cells、五重复聚合已接受 | [阶段 8 历史与结果](results/phase8_benchmark_history.md) |
 | Phase 8 selector | median regret 通过；p95 regret 43.17%，未准入 | [阶段 7–8 正式收尾](results/phase7_phase8_formal_closeout_20260812.md) |
@@ -16,11 +16,12 @@
 
 ## 执行入口
 
-1. [项目执行全史与问题处置](Q-TopoMoE_项目执行全史与问题处置_20260813.md)：按时间说明完成顺序、阶段依赖、全部已记录问题及应对方式。
-2. [复现阅读指南](Q-TopoMoE_复现阅读指南.md)：依赖、冻结输入和验收顺序。
-3. [逐步执行 Runbook](Q-TopoMoE_逐步执行Runbook.md)：Phase 0–8 的操作步骤。
-4. [量化与 SM120 协同方案](Q-TopoMoE_量化与SM120算子协同优化执行方案.md)：总体技术路线和约束。
-5. [数据与结果清单](DATA_CATALOG.md)：每个跟踪产物的用途、复现约束和 SHA-256。
+1. [项目接管与操作手册](Q-TopoMoE_项目接管与操作手册_20260813.md)：面向项目负责人的详细架构、模块实现、操作流程、故障树和接管演练。
+2. [项目执行全史与问题处置](Q-TopoMoE_项目执行全史与问题处置_20260813.md)：按时间说明完成顺序、阶段依赖、全部已记录问题及应对方式。
+3. [复现阅读指南](Q-TopoMoE_复现阅读指南.md)：依赖、冻结输入和验收顺序。
+4. [逐步执行 Runbook](Q-TopoMoE_逐步执行Runbook.md)：Phase 0–8 的操作步骤。
+5. [量化与 SM120 协同方案](Q-TopoMoE_量化与SM120算子协同优化执行方案.md)：总体技术路线和约束。
+6. [数据与结果清单](DATA_CATALOG.md)：每个跟踪产物的用途、复现约束和 SHA-256。
 
 ## 阶段报告
 
