@@ -64,9 +64,18 @@ def validate_base_results(
         if result_row.get("truncated"):
             if result_row.get("correct") is not None:
                 raise ValueError(f"truncated result must keep correct=null: {row_id}")
-            if result_row.get("finish_reason") != "length":
+            usage = result_row.get("usage") or {}
+            completion_tokens = usage.get(
+                "completion_tokens", usage.get("output_tokens")
+            )
+            reached_token_limit = (
+                completion_tokens is not None
+                and int(completion_tokens) >= int(manifest_row["max_tokens"])
+            )
+            if result_row.get("finish_reason") != "length" and not reached_token_limit:
                 raise ValueError(
-                    f"truncated result must have finish_reason=length: {row_id}"
+                    "truncated result lacks length evidence "
+                    f"(finish_reason or completion_tokens): {row_id}"
                 )
         elif not isinstance(result_row.get("correct"), bool):
             raise ValueError(f"completed result must have boolean correct: {row_id}")
@@ -138,7 +147,7 @@ def main() -> int:
             "identity_fields_match": True,
             "request_failures_zero": True,
             "truncated_correct_is_null": True,
-            "truncated_finish_reason_is_length": True,
+            "truncated_has_length_evidence": True,
         },
         "protocol_counts": dict(sorted(protocols.items())),
         "original_max_tokens": {str(k): v for k, v in sorted(original_limits.items())},

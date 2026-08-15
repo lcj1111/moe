@@ -36,6 +36,7 @@ def result_row(row_id: str, *, truncated: bool = False) -> dict:
         "truncated": truncated,
         "finish_reason": "length" if truncated else "stop",
         "error": None,
+        "usage": {"completion_tokens": 4000 if truncated else 10},
     }
 
 
@@ -69,6 +70,18 @@ class ValidateBaseResultsTest(unittest.TestCase):
         changed = result_row("a")
         changed["error"] = "HTTP 500"
         with self.assertRaisesRegex(ValueError, "request failure"):
+            MODULE.validate_base_results([manifest_row("a")], [changed])
+
+    def test_accepts_stop_at_exact_token_limit_as_truncated(self) -> None:
+        changed = result_row("a", truncated=True)
+        changed["finish_reason"] = "stop"
+        MODULE.validate_base_results([manifest_row("a")], [changed])
+
+    def test_rejects_truncation_without_length_evidence(self) -> None:
+        changed = result_row("a", truncated=True)
+        changed["finish_reason"] = "stop"
+        changed["usage"]["completion_tokens"] = 3999
+        with self.assertRaisesRegex(ValueError, "lacks length evidence"):
             MODULE.validate_base_results([manifest_row("a")], [changed])
 
 
