@@ -4,8 +4,9 @@
 > 当前状态：NVFP4 基础轮与 971 条续跑已完成严格合并，24,374 个 ID 完整且
 > `failed=0`；18 条推理循环样本按“显式未完成”封板。FP8 基础轮与 1,019 条
 > 续跑也已严格合并，`failed=0`，26 条按同一规则显式封板。两种格式的共同分母
-> 对比已完成。同协议 BF16 full-set 已于 2026-08-13 启动并通过服务验收，
-> 正在运行 A/B 双分片；在 BF16 完整合并前不得发布三格式最终质量结论。
+> 对比已完成。同协议 BF16 full-set 基础轮已完成，24,374 个 ID 完整且
+> `failed=0`；1,008 条截断样本的独立续跑已于 2026-08-15 启动。在 BF16
+> 严格合并前不得发布三格式最终质量结论。
 
 ## 1. 已冻结的评测输入
 
@@ -221,6 +222,52 @@ BF16 full-set 于 2026-08-13 15:38（Asia/Shanghai）启动。它不是对历史
 Triton unquantized MoE backend，没有把 FP8/NVFP4 量化后端误用于 BF16。
 
 A/B 两套服务的 health、model discovery、completion、metrics 四项验收均为
-`true`，验收 completion 均返回 `42`。manager 已进入 `running_clients`。
-当前结果只说明任务启动和服务 Gate 正常，不代表质量评测已完成；完整性、失败、
-截断、续跑、严格合并和三格式共同分母分析仍须在两片基础轮自然结束后依次执行。
+`true`，验收 completion 均返回 `42`。基础轮于 2026-08-15 03:59 左右自然
+结束，服务与客户端正常退出并释放 8 张 GPU；manager 状态为
+`base_completed_rerun_required`，其中 `client_rc_a=1/client_rc_b=1` 仅表示
+存在截断项，不是请求、服务、CUDA 或 NCCL 失败。
+
+基础轮严格审计结果：
+
+| 指标 | 分片 A | 分片 B | 合计 |
+|---|---:|---:|---:|
+| manifest / 结果 / 唯一 ID | 12,187 | 12,187 | 24,374 |
+| 请求失败 | 0 | 0 | 0 |
+| 截断 | 524 | 484 | 1,008 |
+| C-Eval 截断 | 226 | 196 | 422 |
+| MMLU-Pro 截断 | 298 | 288 | 586 |
+
+- A 片基础结果 SHA-256：`24315bef13678dcc0dd91e9bc3fc78cc5f202c27d487f8e97b284c0a98fdda85`
+- B 片基础结果 SHA-256：`419748a64723b97292e00e2ca487755cae1c03724ffb0ab2dd3376d021933ca7`
+- C-Eval 临时 scored-only：10,713 / 11,920 = 89.8742%
+- MMLU-Pro 临时 scored-only：9,904 / 11,446 = 86.5280%
+
+临时分数排除了截断项，不能作为 BF16 封板结果。生成续跑 manifest 前，工具会
+强制校验 manifest/result 数量、ID 唯一性与顺序、benchmark/答案/评分类型/
+`max_tokens` 身份字段、`failed=0`、截断项 `correct=null` 以及长度证据。
+长度证据与客户端语义一致：`finish_reason=length`，或 completion token 数达到
+请求上限。后者用于兼容 vLLM 偶尔返回 `finish_reason=stop` 但 token 数精确达到
+上限的响应；这类记录仍按截断处理，没有修改原始结果。
+
+严格审计和续跑清单生成工具对应 GitHub commit 为 `f458b88` 与 `1b567e4`。
+BF16 续跑清单如下：
+
+- A：524 条；SHA-256：`fc066c407713ed5c0a1a86f219fa101b1a5dbbb08c6e4973821a003269509eb5`
+- B：484 条；SHA-256：`0cb590461ef5b1726ee957028a2998c74a4921e5e34b8e9c5e48486159fc1b93`
+- 输入目录：`/data/models/test/qtopomoe_quality/bf16_trunc_v1`
+- C-Eval `max_tokens`：2,048 → 8,192
+- MMLU-Pro `max_tokens`：4,000 → 12,000
+- messages、答案、协议、seed 和采样参数保持不变
+
+续跑于 2026-08-15 11:00（Asia/Shanghai）启动，输出目录为
+`/data/models/test/qtopomoe_quality_runs/full_official_bf16_tp4_pair_trunc_v1`。
+服务仍使用相同 BF16 checkpoint、TP4 GPU0–3/4–7 和 `--enforce-eager`，仅将
+`MAX_MODEL_LEN` 提高到 32,768。A/B 四项服务验收再次全部通过，验收回答均为
+`42`；manager 已进入 `running_clients`：
+
+- manager PID：`1541696`
+- A/B 服务 PID：`1541701` / `1541703`
+- A/B 客户端 PID：`1549993` / `1549994`
+
+续跑结束后仍须执行残余截断审计、严格合并和 BF16/FP8/NVFP4 三格式共同分母
+分析。在这些 Gate 完成前，不把临时 scored-only 分数写成最终质量结论。
