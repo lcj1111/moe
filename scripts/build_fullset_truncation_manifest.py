@@ -11,6 +11,14 @@ from collections import Counter
 from typing import Any
 
 
+IDENTITY_FIELDS = (
+    ("benchmark", "benchmark"),
+    ("score_type", "score_type"),
+    ("answer", "expected"),
+    ("max_tokens", "max_tokens"),
+)
+
+
 def sha256(path: pathlib.Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -21,6 +29,47 @@ def sha256(path: pathlib.Path) -> str:
 
 def read_jsonl(path: pathlib.Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").split("\n") if line]
+
+
+def validate_base_results(
+    manifest: list[dict[str, Any]], results: list[dict[str, Any]]
+) -> None:
+    """在提取截断项前验证基础轮与冻结 manifest 完全一致。"""
+
+    manifest_ids = [row["id"] for row in manifest]
+    result_ids = [row["id"] for row in results]
+    if len(set(manifest_ids)) != len(manifest_ids):
+        raise ValueError("base manifest contains duplicate ids")
+    if len(set(result_ids)) != len(result_ids):
+        raise ValueError("base results contain duplicate ids")
+    if result_ids != manifest_ids:
+        missing = sorted(set(manifest_ids) - set(result_ids))
+        extra = sorted(set(result_ids) - set(manifest_ids))
+        raise ValueError(
+            "base result ids/order do not match manifest: "
+            f"missing={missing[:5]} extra={extra[:5]}"
+        )
+
+    for manifest_row, result_row in zip(manifest, results, strict=True):
+        row_id = manifest_row["id"]
+        for manifest_key, result_key in IDENTITY_FIELDS:
+            if manifest_row.get(manifest_key) != result_row.get(result_key):
+                raise ValueError(
+                    f"identity mismatch for {row_id}: "
+                    f"manifest.{manifest_key}={manifest_row.get(manifest_key)!r} "
+                    f"result.{result_key}={result_row.get(result_key)!r}"
+                )
+        if result_row.get("error") is not None:
+            raise ValueError(f"base result contains request failure: {row_id}")
+        if result_row.get("truncated"):
+            if result_row.get("correct") is not None:
+                raise ValueError(f"truncated result must keep correct=null: {row_id}")
+            if result_row.get("finish_reason") != "length":
+                raise ValueError(
+                    f"truncated result must have finish_reason=length: {row_id}"
+                )
+        elif not isinstance(result_row.get("correct"), bool):
+            raise ValueError(f"completed result must have boolean correct: {row_id}")
 
 
 def main() -> int:
@@ -35,9 +84,8 @@ def main() -> int:
 
     manifest = read_jsonl(args.base_manifest)
     results = read_jsonl(args.base_results)
+    validate_base_results(manifest, results)
     by_id = {row["id"]: row for row in results}
-    if len(by_id) != len(results):
-        raise ValueError("base results contain duplicate ids")
 
     selected: list[dict[str, Any]] = []
     original_limits: Counter[int] = Counter()
@@ -84,6 +132,14 @@ def main() -> int:
         "output": str(args.output),
         "output_sha256": sha256(args.output),
         "samples": len(selected),
+        "checks": {
+            "manifest_and_results_same_length": len(manifest) == len(results),
+            "ids_unique_and_ordered": True,
+            "identity_fields_match": True,
+            "request_failures_zero": True,
+            "truncated_correct_is_null": True,
+            "truncated_finish_reason_is_length": True,
+        },
         "protocol_counts": dict(sorted(protocols.items())),
         "original_max_tokens": {str(k): v for k, v in sorted(original_limits.items())},
         "rerun_max_tokens": {str(k): v for k, v in sorted(updated_limits.items())},
