@@ -1,12 +1,11 @@
-# 阶段 3：FP8/NVFP4 full-set 质量收尾
+# 阶段 3：BF16/FP8/NVFP4 full-set 质量收尾
 
-> 更新日期：2026-08-13（Asia/Shanghai）
-> 当前状态：NVFP4 基础轮与 971 条续跑已完成严格合并，24,374 个 ID 完整且
-> `failed=0`；18 条推理循环样本按“显式未完成”封板。FP8 基础轮与 1,019 条
-> 续跑也已严格合并，`failed=0`，26 条按同一规则显式封板。两种格式的共同分母
-> 对比已完成。同协议 BF16 full-set 基础轮已完成，24,374 个 ID 完整且
-> `failed=0`；1,008 条截断样本的独立续跑已于 2026-08-15 启动。在 BF16
-> 严格合并前不得发布三格式最终质量结论。
+> 更新日期：2026-08-16（Asia/Shanghai）
+> 当前状态：BF16、FP8、NVFP4 三种格式的基础轮、有限截断续跑、残余审计和
+> 严格合并均已完成；请求失败均为 0。三格式共同完成的 24,330 条样本上，
+> BF16/FP8/NVFP4 的准确率分别为 86.9955%/86.9749%/86.3009%。BF16 与 FP8
+> 总体近似持平，NVFP4 相对 BF16 下降 0.6946 个绝对百分点，仍在项目预注册的
+> 1.5 点门槛内。19/26/18 条长输出分别按“显式未完成”封板，不静默计对或计错。
 
 ## 1. 已冻结的评测输入
 
@@ -187,9 +186,9 @@ prompt 或采样口径的分数混写。
 机器可读的 FP8 合并及共同分母对比见
 [`Q-TopoMoE_Phase3_FP8_merge_NVFP4_compare_20260813.json`](../Q-TopoMoE_Phase3_FP8_merge_NVFP4_compare_20260813.json)。
 
-上述基础轮、续跑、残余审计、严格合并和共同分母对比均已完成。后续若要把
-格式质量 Gate 扩展为 BF16/FP8/NVFP4 三方正式结论，必须补跑同一冻结协议的
-BF16 full-set；不得用历史被外部 SIGTERM 中断的 BF16 结果补齐。
+上述 FP8/NVFP4 基础轮、续跑、残余审计、严格合并和共同分母对比均已完成。
+三格式正式结论要求重新执行同一冻结协议的 BF16 full-set；该要求已由下述
+第 6、7 节完成，不使用历史被外部 SIGTERM 中断的 BF16 结果补齐。
 
 执行入口为 [`scripts/run_fullset_quality_pair.sh`](../../scripts/run_fullset_quality_pair.sh)，
 合并入口为 [`scripts/merge_fullset_quality_results.py`](../../scripts/merge_fullset_quality_results.py)，
@@ -269,5 +268,74 @@ BF16 续跑清单如下：
 - A/B 服务 PID：`1541701` / `1541703`
 - A/B 客户端 PID：`1549993` / `1549994`
 
-续跑结束后仍须执行残余截断审计、严格合并和 BF16/FP8/NVFP4 三格式共同分母
-分析。在这些 Gate 完成前，不把临时 scored-only 分数写成最终质量结论。
+续跑于 2026-08-15 21:52 左右自然结束。A/B 分别完成 524/524 与 484/484，
+`failed=0`；服务日志中没有 `ERROR` 或 `Traceback`。结果 SHA-256 分别为：
+
+- A：`b610eeb029caf49cfb8e1189c0c312cff0db626873986735bab19922f3914326`
+- B：`e0986bb24afb9342095c0e60c419059a6894a717b2040fcf211bfd068b394166`
+
+续跑后仍有 19 条显式未完成：C-Eval 17 条，MMLU-Pro 2 条。逐条核对确认它们
+全部 `finish_reason=length`，completion token 数精确等于各自上限（8,192 或
+12,000），响应尾部仍在重复枚举、自我否定或未收敛推导。它们的 `correct` 均为
+`null`。继续无界提高上限只会放大无效生成，因此不再进行第二轮续跑。
+
+使用 [`scripts/merge_fullset_quality_results.py`](../../scripts/merge_fullset_quality_results.py)
+严格替换全部 1,008 条基础轮截断记录。合并结果如下：
+
+| 指标 | 结果 |
+|---|---:|
+| manifest / 合并记录 / 唯一 ID | 24,374 / 24,374 / 24,374 |
+| 使用基础轮 / 使用续跑 | 23,366 / 1,008 |
+| 请求失败 / 显式未完成 | 0 / 19 |
+| 可评分 / 正确 | 24,355 / 21,183 |
+| 总体（仅可评分分母） | 86.9760% |
+| C-Eval（仅可评分分母） | 10,974 / 12,325 = 89.0385% |
+| MMLU-Pro（仅可评分分母） | 10,209 / 12,030 = 84.8628% |
+
+- 合并目录：`/data/models/test/qtopomoe_quality_runs/full_official_bf16_tp4_pair_merged_v1`
+- 合并 JSONL SHA-256：`98b10220241353f28e8ab31a3d2a17178ef8a613a565a88edc49bdb14863b1f2`
+- 合并摘要 SHA-256：`7c264d35f5bbcdbd71833a3f6c667b59326dd1705350177668c1a6a7caf8eb7a`
+- Gate：完整性和请求 Gate 接受；总体为 `closed_with_unfinished`。
+
+## 7. 三格式共同分母最终比较
+
+三种格式各自的显式未完成数不同（BF16 19、FP8 26、NVFP4 18），因此最终
+格式比较只使用三者均可评分的 24,330 个 ID。比较由
+[`scripts/compare_fullset_quality_results.py`](../../scripts/compare_fullset_quality_results.py)
+执行，并校验每个输入的 ID 唯一性、身份字段、完整性及共同分母。
+
+| 基准 | 共同 ID | BF16 | FP8 | NVFP4 | FP8−BF16 | NVFP4−BF16 |
+|---|---:|---:|---:|---:|---:|---:|
+| 总体 | 24,330 | 86.9955% | 86.9749% | 86.3009% | -0.0206 pp | -0.6946 pp |
+| C-Eval | 12,306 | 89.0704% | 89.3223% | 88.4853% | +0.2519 pp | -0.5851 pp |
+| MMLU-Pro | 12,024 | 84.8719% | 84.5725% | 84.0652% | -0.2994 pp | -0.8067 pp |
+
+总体共同分母上的正确数为 BF16 21,166、FP8 21,161、NVFP4 20,997。
+BF16 与 FP8 只差 5 题：FP8 在 C-Eval 略高，BF16 在 MMLU-Pro 略高，两个方向
+基本抵消。因此只能表述为“本冻结协议下总体近似持平”，不能把 0.0206 点差异
+夸大为稳定优劣。NVFP4 比 BF16/FP8 分别低 0.6946/0.6741 点，但仍通过项目
+预注册的“相对 BF16 不超过 1.5 个绝对百分点”质量门槛。
+
+共同分母正确性组合如下：
+
+| BF16/FP8/NVFP4 正确性 | 样本数 |
+|---|---:|
+| 三者都正确 | 20,048 |
+| 仅 BF16、FP8 正确 | 534 |
+| 仅 BF16、NVFP4 正确 | 311 |
+| 仅 BF16 正确 | 273 |
+| 仅 FP8、NVFP4 正确 | 317 |
+| 仅 FP8 正确 | 262 |
+| 仅 NVFP4 正确 | 321 |
+| 三者都错误 | 2,264 |
+
+- 比较结果目录：`/data/models/test/qtopomoe_quality_runs/full_official_three_format_compare_v1`
+- 比较 JSON SHA-256：`2e34750125da1f420b07952e144b88cd93ab906919ab894422a993b6a2e753c9`
+- 输入 JSONL SHA-256：BF16 `98b10220241353f28e8ab31a3d2a17178ef8a613a565a88edc49bdb14863b1f2`；
+  FP8 `6dc2df8a92f83eabd657d43cf1e77aa12a7c2088a40ed3061c50d45c3eb4851f`；
+  NVFP4 `d8e17e7106b2575ff1ac7b020ddc7d93f7d3d5698794310b163b959d75601920`。
+
+机器可读的最终摘要见
+[`Q-TopoMoE_Phase3_BF16_FP8_NVFP4_质量总结_20260816.json`](../Q-TopoMoE_Phase3_BF16_FP8_NVFP4_质量总结_20260816.json)。
+以上结论只适用于冻结的 24,374 条协议、当前 checkpoint、tokenizer/chat template、
+seed 与采样参数；不得与不同 harness 的官方模型卡分数直接混写。

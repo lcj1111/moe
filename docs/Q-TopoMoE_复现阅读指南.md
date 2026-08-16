@@ -79,6 +79,8 @@ Phase 4/8 控制平面、M-bucket、selector 与 cost model 的说明已合并�
 | `docs/results/phase3_route_and_official_eval.md` | 官方协议核实（MMLU-Pro/C-Eval harness 源码）、冻结结果、计时 pilot 与外推。 |
 | `docs/Q-TopoMoE_Phase3c_pilot_*_20260806.json` | 官方协议 vs thinking 模式两轮 pilot 的计时/输出统计。 |
 | `configs/evaluation/full_set_official_protocol_v1.manifest.json` | 官方协议 full-set（24,374 条）的 SHA-256 与协议参数。 |
+| `docs/results/phase3_fullset_quality_closeout_20260812.md` | BF16/FP8/NVFP4 基础轮、有限续跑、严格合并和三格式共同分母最终结论。 |
+| `docs/Q-TopoMoE_Phase3_BF16_FP8_NVFP4_质量总结_20260816.json` | 三格式最终质量 Gate、共同分母统计、输入/输出哈希和服务器证据路径。 |
 
 ### 阶段 4/8
 

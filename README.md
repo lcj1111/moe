@@ -6,17 +6,17 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 
 ## 当前结论
 
-> 更新时间：2026-08-13（Asia/Shanghai）
-> 当前运行：NVFP4 full-set 已完成严格合并，18 条推理循环样本按“显式未完成”
-> 封板；FP8 full-set 也已完成严格合并，26 条显式未完成。共同完成的 24,339
-> 条上，FP8 比 NVFP4 高 0.6738 个百分点。
+> 更新时间：2026-08-16（Asia/Shanghai）
+> 当前状态：BF16、FP8、NVFP4 full-set 均已完成基础轮、有限续跑、严格合并与
+> 三格式共同分母比较。共同完成的 24,330 条上三者分别为 86.9955%、86.9749%、
+> 86.3009%；BF16 与 FP8 总体近似持平，NVFP4 相对 BF16 下降 0.6946 个百分点。
 
 | 阶段 | 已完成结论 | 当前状态 |
 |---|---|---|
 | Phase 0 | 8 卡拓扑、NUMA、NCCL/P2P 实测 | 已完成；P2P 已生效 |
 | Phase 1 | BF16/FP8 服务基线、矩阵与统计 | 已完成 |
 | Phase 2 | W4A16/NVFP4 审计、真实加载和 official-like Gate | 已完成；RedHatAI NVFP4 准入，自生成 NVFP4 v1 拒绝 |
-| Phase 3 | route trace、漂移分析和冻结官方协议 | route、NVFP4/FP8 full-set 合并与共同分母对比均已完成 |
+| Phase 3 | route trace、漂移分析和冻结官方协议 | route、三格式 full-set 合并与共同分母对比均已完成 |
 | Phase 4–6 | M-bucket、kernel/backend selector、通信矩阵 | 正式实测已归档 |
 | Phase 7 | placement-plan、在线迁移、恢复与 p99 | Gate 已接受 |
 | Phase 8 | 四候选×108 cells×5 重复正式聚合 | 测量 Gate 已接受；selector p95 regret 43.17%，未准入 |
@@ -34,7 +34,7 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 | 从头复现 | [复现阅读指南](docs/Q-TopoMoE_复现阅读指南.md) |
 | 按阶段执行 | [逐步执行 Runbook](docs/Q-TopoMoE_逐步执行Runbook.md) |
 | 查某个 JSON/配置的含义与哈希 | [数据与结果清单](docs/DATA_CATALOG.md) |
-| 查看正在进行的质量收尾 | [FP8/NVFP4 full-set 收尾](docs/results/phase3_fullset_quality_closeout_20260812.md) |
+| 查看三格式全量质量结论 | [BF16/FP8/NVFP4 full-set 收尾](docs/results/phase3_fullset_quality_closeout_20260812.md) |
 
 ## 快速检查
 
@@ -92,6 +92,9 @@ nohup setsid bash scripts/run_fullset_quality_pair.sh nvfp4 <输出目录> \
 
 # 严格合并基础轮与截断续跑；重复、缺失、越权替换或身份不一致都会直接失败
 python scripts/merge_fullset_quality_results.py --help
+
+# 在同一可评分 ID 上比较两个或多个格式
+python scripts/compare_fullset_quality_results.py --help
 
 # Phase 8 正式重复测量与聚合
 python scripts/run_phase8_repeated.py --help
