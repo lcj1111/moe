@@ -83,6 +83,14 @@ def distance(left: dict[str, Any], right: dict[str, Any],
             if (left_value is None and right_value is None
                     and spec.get("allow_both_null") is True):
                 continue
+            if ((left_value is None) != (right_value is None)
+                    and "missing_mismatch_penalty" in spec):
+                penalty = float(spec["missing_mismatch_penalty"])
+                if not math.isfinite(penalty) or penalty < 0:
+                    raise ValueError(
+                        f"{spec['path']}: missing_mismatch_penalty 必须是有限非负数")
+                total += float(spec.get("weight", 1.0)) * penalty
+                continue
             raise ValueError(f"{spec['path']}: selector 特征只有一侧缺失")
         total += float(spec.get("weight", 1.0)) * (
             transformed(left_value, spec) - transformed(right_value, spec)
@@ -101,12 +109,48 @@ def choose(row: dict[str, Any], training: list[dict[str, Any]],
         nested(candidate_row, path) == nested(row, path) for path in strict)]
     if not eligible:
         raise ValueError(f"{row['workload_id']}: 没有满足严格条件的训练样本")
-    nearest = min(eligible, key=lambda candidate_row: (
-        distance(row, candidate_row, config["numeric_features"]),
-        candidate_row["workload_id"],
-    ))
+    ranked = sorted((
+        (distance(row, candidate_row, config["numeric_features"]), candidate_row)
+        for candidate_row in eligible
+    ), key=lambda item: (item[0], item[1]["workload_id"]))
+    nearest = ranked[0][1]
+    selector = config.get("selector", "telemetry_aware_single_nearest_workload")
+    if selector == "telemetry_aware_single_nearest_workload":
+        selected = min(candidates, key=lambda candidate: (
+            measured(nearest, candidate), candidate))
+        return selected, nearest
+    if selector != "telemetry_aware_knn_cost":
+        raise ValueError(f"未知 selector：{selector}")
+    neighbor_count = int(config.get("neighbor_count", 3))
+    if neighbor_count <= 0:
+        raise ValueError("neighbor_count 必须为正整数")
+    neighbors = ranked[:min(neighbor_count, len(ranked))]
+    weighting = config.get("neighbor_weighting", "inverse_distance")
+    normalize = bool(config.get("normalize_training_cost_by_oracle", True))
+    epsilon = float(config.get("distance_epsilon", 1e-9))
+    if not math.isfinite(epsilon) or epsilon <= 0:
+        raise ValueError("distance_epsilon 必须为有限正数")
+
+    def neighbor_weight(value: float) -> float:
+        if weighting == "uniform":
+            return 1.0
+        if weighting == "inverse_distance":
+            return 1.0 / (math.sqrt(value) + epsilon)
+        raise ValueError(f"未知邻居权重：{weighting}")
+
+    predicted_costs: dict[str, float] = {}
+    for candidate in candidates:
+        weighted_sum = weight_sum = 0.0
+        for neighbor_distance, neighbor in neighbors:
+            value = measured(neighbor, candidate)
+            if normalize:
+                value /= min(measured(neighbor, item) for item in candidates)
+            weight = neighbor_weight(neighbor_distance)
+            weighted_sum += weight * value
+            weight_sum += weight
+        predicted_costs[candidate] = weighted_sum / weight_sum
     selected = min(candidates, key=lambda candidate: (
-        measured(nearest, candidate), candidate))
+        predicted_costs[candidate], candidate))
     return selected, nearest
 
 

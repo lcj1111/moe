@@ -19,7 +19,7 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 | Phase 3 | route trace、漂移分析和冻结官方协议 | route、三格式 full-set 合并与共同分母对比均已完成 |
 | Phase 4–6 | M-bucket、kernel/backend selector、通信矩阵 | 正式实测已归档 |
 | Phase 7 | placement-plan、在线迁移、恢复与 p99 | Gate 已接受 |
-| Phase 8 | 四候选×108 cells×5 重复正式聚合 | 测量 Gate 已接受；旧 selector p95 regret 43.17%，未准入；v2 决策前遥测与独立 Gate 正在执行 |
+| Phase 8 | 四候选×108 cells×5 重复正式聚合 | 测量与 v2 决策前状态 Gate 已接受；v2 训练 p95 regret 23.05%（要求 ≤10%），未准入；独立测试未启动 |
 
 动态触发、cooldown 和 rollback 闭环必须等待 Phase 8 selector p95 regret Gate
 通过；不能用已失败的 selector 直接控制在线服务。
@@ -35,6 +35,7 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 | 按阶段执行 | [逐步执行 Runbook](docs/Q-TopoMoE_逐步执行Runbook.md) |
 | 查某个 JSON/配置的含义与哈希 | [数据与结果清单](docs/DATA_CATALOG.md) |
 | 查看三格式全量质量结论 | [BF16/FP8/NVFP4 full-set 收尾](docs/results/phase3_fullset_quality_closeout_20260812.md) |
+| 查看 Phase 8 selector 最新结论 | [selector v2 训练 Gate 失败报告](docs/results/phase8_selector_training_gate_failed_20260816.md) |
 
 ## 快速检查
 

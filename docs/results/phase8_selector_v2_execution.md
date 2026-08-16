@@ -80,8 +80,9 @@ python3 scripts/attach_phase8_predecision_state.py \
 python3 scripts/fit_phase8_selector_state.py \
   --training-aggregate /data/models/test/qtopomoe_phase8_selector_training_v2/aggregate_with_state.json \
   --template configs/strategies/phase8_selector_state_v2.template.json \
-  --output-config /data/models/test/qtopomoe_phase8_selector_training_v2/selector.frozen.json \
-  --output-report /data/models/test/qtopomoe_phase8_selector_training_v2/selector.fit_report.json
+  --output-config /data/models/test/qtopomoe_phase8_selector_training_v2/selector.training_gate_failed.json \
+  --output-report /data/models/test/qtopomoe_phase8_selector_training_v2/selector.fit_report.json \
+  --search-profile formal_v2_extended
 ```
 
 拟合使用 W1/W2/W3/W4 留族交叉验证和固定的组权重网格。只有训练集 median/p95
@@ -117,3 +118,16 @@ python3 scripts/evaluate_phase8_independent_selector.py \
 - 不可行配置误选率为 0。
 
 全部通过前，动态 trigger、cooldown 和 rollback 继续保持禁用。
+
+## 6. 2026-08-16 训练 Gate 结论
+
+决策前窗口已完成 108/108，状态和服务端遥测 Gate 均为 `accepted`。正式扩展搜索
+完成 2,500 组训练侧组合，最佳 selector 的 median regret 为 0%，但 p95 regret 为
+23.0488%，未达到 ≤10% 的门槛，因此训练 Gate 状态为 `failed`。
+
+脚本按设计写出失败配置与完整报告后返回非零退出码；这表示准入被正确拦截，并非脚本
+运行异常。由于训练 Gate 未通过，冻结的 45-cell × 4 候选 × 5 重复（900 次）独立
+测试没有启动，独立标签也没有被读取。
+
+完整原因、折间误差、搜索空间和后续边界见
+[训练 Gate 失败报告](phase8_selector_training_gate_failed_20260816.md)。

@@ -12,7 +12,7 @@
 
 数据文件名保留日期和版本，因为它们是来源信息而不是冗余。人类可读的阶段归档见 `docs/results/phase*.md`；没有改名或删除任何机器可读路径。
 
-已跟踪的机器可读产物数量： **129**
+本次提交完成后的机器可读产物数量： **140**
 
 | 路径 | 类型 / 数据说明 | 复现指引 | SHA-256 |
 |---|---|---|---|
@@ -165,3 +165,16 @@
 | `docs/Q-TopoMoE_Phase8_formal_controlled_combined_20260812.json` | 四候选、108-cell、五重复、10,000 次 bootstrap 正式聚合 | `8A61710AD796CEC3309A664DA2E53B6A58B93594E498D195A5371E3B00AA428D` |
 | `docs/Q-TopoMoE_Phase8_formal_controlled_merge_manifest_20260812.json` | GPU0–3 与 EP8 分拆运行的来源 schedule、SHA-256 与无损合并方式 | `A350F225375528B851A5682FA80FBD069A646E3394A3F4B04319113BCF32737F` |
 | `docs/Q-TopoMoE_Phase8_formal_selector_nearest_gate_20260812.json` | 留 W1/W2/W3/W4 族交叉验证；median regret 通过、p95 regret 失败 | `44B266B46E6C4623A9D12D01D4B378588DCA77FEAA791F17CF5EEA3FD03978E0` |
+
+# 2026-08-16 新增机器可读产物
+
+| 路径 | 数据说明 | SHA-256 |
+|---|---|---|
+| `configs/experiments/phase8_selector_independent_v1.json` | Phase 8 selector 独立 Gate 的冻结实验计划；训练 Gate 通过前不得启动。 | `6CC4EECDB3AF60EAF57BEA1D468B8CD23693A54D01DEA4A12E3381FED5D11E13` |
+| `configs/strategies/nvfp4_runtime_eplb_plan_gpu111.json` | gpu-111 NVFP4 在线 EPLB 的 placement-plan 与迁移控制参数。 | `384AE812C218CDC1934962D9E677E7094B2920930E3C31F2FAC18CBA8123A4CE` |
+| `configs/strategies/phase8_selector_state_v2.template.json` | selector v2 训练模板；状态为草稿，只有训练 Gate 通过后才能产生冻结配置。 | `F23F2AB12877A065B8300B0BCAC479DF0FCA6EFAA5EB5036CE1355B6F96B096C` |
+| `configs/workloads/phase8_selector_independent_design_v1.json` | 与训练参数指纹不重叠的独立 workload 设计规则。 | `66058F64D0EC270FC55E7F6402EA88C6FA40A152CBDA0AA5A3153629DDF29008` |
+| `configs/workloads/phase8_selector_independent_v1.json` | 按冻结设计规则生成的 45-cell 独立 workload；本轮未执行测量。 | `B87110A400AB3B28FEF478ED635B791E3B12DFBAAD41159804E8E2B156DD4728` |
+| `docs/Q-TopoMoE_Phase8_selector_v2_predecision_audit_20260816.json` | 108 个决策前窗口的状态阶段、遥测覆盖和可用性审计；Gate 已接受。 | `FDC83EC5DE1F41EB61A528B4BCC229619116BEF93CCCBD1CEA6ED1E5F7DA85DE` |
+| `docs/Q-TopoMoE_Phase8_selector_v2_training_gate_failed_20260816.json` | 正式扩展搜索所得最佳配置及失败状态；不得作为生产 selector 加载。 | `BB736986E7307AA861B95F323BB780ABDD83BF6F86DD7E48554EA641CCDF92D2` |
+| `docs/Q-TopoMoE_Phase8_selector_v2_fit_report_20260816.json` | 2,500 组训练侧组合、留族交叉验证、最差样本和 Gate 判定的完整报告。 | `69B72779A406CE53ADC9E112BC6A6AA8105BDFD9AE0159DBF5AA0358FF6AF68B` |

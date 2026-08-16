@@ -8,6 +8,7 @@ import itertools
 import json
 import math
 import statistics
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -96,7 +97,9 @@ def evaluate_cv(rows: list[dict[str, Any]], config: dict[str, Any]) -> dict[str,
 
 
 def fit(aggregate: dict[str, Any], template: dict[str, Any],
-        grid: list[float]) -> tuple[dict[str, Any], dict[str, Any]]:
+        grid: list[float], neighbor_grid: list[int] | None = None,
+        search_profile: str = "standard"
+        ) -> tuple[dict[str, Any], dict[str, Any]]:
     if aggregate.get("status") != "accepted":
         raise ValueError("训练 aggregate Gate 未接受")
     if template.get("status") not in ("draft_not_fitted", "training_gate_failed"):
@@ -110,25 +113,104 @@ def fit(aggregate: dict[str, Any], template: dict[str, Any],
         raise ValueError("训练矩阵候选覆盖不一致")
 
     tunable = ("cache", "arrival", "queue", "kv", "short_p99")
+    neighbor_grid = neighbor_grid or [1, 3, 5, 7]
+    standard_models = [{
+        "selector": "telemetry_aware_single_nearest_workload",
+        "neighbor_count": 1,
+        "neighbor_weighting": "nearest",
+        "normalize_training_cost_by_oracle": False,
+    }]
+    standard_models.extend({
+        "selector": "telemetry_aware_knn_cost",
+        "neighbor_count": neighbors,
+        "neighbor_weighting": weighting,
+        "normalize_training_cost_by_oracle": normalize,
+    } for neighbors in neighbor_grid if neighbors > 1
+      for weighting in ("uniform", "inverse_distance")
+      for normalize in (False, True))
+    trial_inputs: list[tuple[dict[str, float], dict[str, Any]]] = []
+    search_space: dict[str, Any]
+    if search_profile == "standard":
+        for model in standard_models:
+            for values in itertools.product(grid, repeat=len(tunable)):
+                trial_inputs.append((
+                    {"shape": 1.0, **dict(zip(tunable, values))}, model))
+        search_space = {
+            "weight_grid": grid,
+            "neighbor_grid": neighbor_grid,
+            "model_spec_count": len(standard_models),
+        }
+    elif search_profile == "formal_v2_extended":
+        low_grid = [0.0, 0.01, 0.0625, 0.25, 1.0]
+        signal_grid = [1.0, 4.0, 16.0, 64.0, 256.0]
+        extended_neighbors = [3, 5, 7, 9, 15]
+        for low, cache, short_p99, neighbors, weighting, normalize in itertools.product(
+                low_grid, signal_grid, signal_grid, extended_neighbors,
+                ("uniform", "inverse_distance"), (False, True)):
+            weights = {
+                "shape": 1.0, "arrival": low, "queue": low, "kv": low,
+                "cache": cache, "short_p99": short_p99,
+            }
+            model = {
+                "selector": "telemetry_aware_knn_cost",
+                "neighbor_count": neighbors,
+                "neighbor_weighting": weighting,
+                "normalize_training_cost_by_oracle": normalize,
+            }
+            trial_inputs.append((weights, model))
+        search_space = {
+            "weak_signal_shared_weight_grid": low_grid,
+            "cache_weight_grid": signal_grid,
+            "short_p99_weight_grid": signal_grid,
+            "neighbor_grid": extended_neighbors,
+            "neighbor_weighting": ["uniform", "inverse_distance"],
+            "normalize_training_cost_by_oracle": [False, True],
+            "说明": "所有组合仅读取训练 aggregate；独立测试 outcome 未读取。",
+        }
+    else:
+        raise ValueError(f"未知搜索配置：{search_profile}")
+
     trials = []
-    for values in itertools.product(grid, repeat=len(tunable)):
-        weights = {"shape": 1.0, **dict(zip(tunable, values))}
+    invalid_reasons: Counter[str] = Counter()
+    for weights, model in trial_inputs:
         config = weighted_config(template, weights)
+        config.update(model)
         try:
             cv = evaluate_cv(rows, config)
-        except ValueError:
+        except ValueError as error:
+            invalid_reasons[str(error)] += 1
             continue
         metrics = cv["metrics"]
-        trials.append({"weights": weights, "metrics": metrics})
+        trials.append({"weights": weights, "model": model, "metrics": metrics})
     if not trials:
-        raise ValueError("没有可评估的权重组合")
+        reasons = "; ".join(
+            f"{count}× {reason}" for reason, count in invalid_reasons.most_common(5))
+        raise ValueError(f"没有可评估的权重组合；原因：{reasons}")
     best = min(trials, key=lambda row: (
         row["metrics"]["p95_regret_pct"],
         row["metrics"]["median_regret_pct"],
         -row["metrics"]["top1_accuracy"],
+        row["model"]["neighbor_count"],
+        row["model"]["neighbor_weighting"],
+        row["model"]["normalize_training_cost_by_oracle"],
         tuple(row["weights"][key] for key in tunable),
     ))
     fitted = weighted_config(template, best["weights"])
+    fitted.update(best["model"])
+    best_cv = evaluate_cv(rows, fitted)
+    worst_rows = sorted(
+        best_cv["rows"], key=lambda row: row["regret_pct"], reverse=True)[:20]
+    fold_metrics = {}
+    for held_out in best_cv["folds"]:
+        fold_rows = [row for row in best_cv["rows"]
+                     if row["held_out_family"] == held_out]
+        regrets = [row["regret_pct"] for row in fold_rows]
+        fold_metrics[held_out] = {
+            "rows": len(fold_rows),
+            "median_regret_pct": statistics.median(regrets),
+            "p95_regret_pct": percentile(regrets, 0.95),
+            "maximum_regret_pct": max(regrets),
+        }
     thresholds = fitted["gates"]
     training_gates = {
         "median_regret": best["metrics"]["median_regret_pct"]
@@ -138,7 +220,7 @@ def fit(aggregate: dict[str, Any], template: dict[str, Any],
     }
     fitted.update({
         "status": "frozen" if all(training_gates.values()) else "training_gate_failed",
-        "fit_method": "leave_one_W_family_out_group_weight_grid_search",
+        "fit_method": "leave_one_W_family_out_cost_sensitive_knn_grid_search",
         "fit_weights": best["weights"],
         "training_metrics": best["metrics"],
         "training_gates": training_gates,
@@ -147,9 +229,16 @@ def fit(aggregate: dict[str, Any], template: dict[str, Any],
     report = {
         "schema_version": "qtopomoe.phase8_selector_fit_report.v1",
         "status": fitted["status"],
+        "search_profile": search_profile,
+        "search_space": search_space,
         "grid": grid,
+        "neighbor_grid": neighbor_grid,
         "trial_count": len(trials),
+        "invalid_trial_count": sum(invalid_reasons.values()),
+        "invalid_trial_reasons": dict(invalid_reasons.most_common(20)),
         "best": best,
+        "best_fold_metrics": fold_metrics,
+        "best_worst_rows": worst_rows,
         "training_gates": training_gates,
         "top_trials": sorted(trials, key=lambda row: (
             row["metrics"]["p95_regret_pct"],
@@ -167,13 +256,21 @@ def main() -> None:
     parser.add_argument("--output-config", type=Path, required=True)
     parser.add_argument("--output-report", type=Path, required=True)
     parser.add_argument("--weight-grid", default="0.25,1,4")
+    parser.add_argument("--neighbor-grid", default="1,3,5,7")
+    parser.add_argument(
+        "--search-profile", choices=("standard", "formal_v2_extended"),
+        default="standard")
     args = parser.parse_args()
     aggregate = json.loads(args.training_aggregate.read_text(encoding="utf-8"))
     template = json.loads(args.template.read_text(encoding="utf-8"))
     grid = [float(value) for value in args.weight_grid.split(",")]
     if any(not math.isfinite(value) or value <= 0 for value in grid):
         raise ValueError("权重网格必须是有限正数")
-    fitted, report = fit(aggregate, template, grid)
+    neighbor_grid = [int(value) for value in args.neighbor_grid.split(",")]
+    if any(value <= 0 for value in neighbor_grid):
+        raise ValueError("邻居网格必须为正整数")
+    fitted, report = fit(
+        aggregate, template, grid, neighbor_grid, args.search_profile)
     source = {
         "training_aggregate": str(args.training_aggregate),
         "training_aggregate_sha256": sha256(args.training_aggregate),

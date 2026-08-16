@@ -1,0 +1,103 @@
+{
+  "fit_method": "leave_one_W_family_out_cost_sensitive_knn_grid_search",
+  "fit_sources": {
+    "template": "configs/strategies/phase8_selector_state_v2.template.json",
+    "template_sha256": "f23f2ab12877a065b8300b0bcac479df0fca6efaa5eb5036ce1355b6f96b096c",
+    "training_aggregate": "/data/models/test/qtopomoe_phase8_selector_training_v2/aggregate_with_state.json",
+    "training_aggregate_sha256": "313676a297ddfe40014f3376bd0e5fde36f628aa7ab9363a4b9f67a19e9b3227"
+  },
+  "fit_weights": {
+    "arrival": 1.0,
+    "cache": 1.0,
+    "kv": 1.0,
+    "queue": 1.0,
+    "shape": 1.0,
+    "short_p99": 16.0
+  },
+  "gates": {
+    "decision_overhead_pct_max": 1.0,
+    "infeasible_misselection_rate_max": 0.0,
+    "median_regret_pct_max": 5.0,
+    "p95_regret_pct_max": 10.0
+  },
+  "independent_test_read": false,
+  "neighbor_count": 7,
+  "neighbor_weighting": "inverse_distance",
+  "normalize_training_cost_by_oracle": true,
+  "numeric_features": [
+    {
+      "path": "input_tokens",
+      "transform": "log2",
+      "weight": 1.0
+    },
+    {
+      "path": "output_tokens",
+      "transform": "log2",
+      "weight": 1.0
+    },
+    {
+      "path": "concurrency",
+      "transform": "log2",
+      "weight": 1.0
+    },
+    {
+      "path": "selector_state.actual_cache_hit_ratio",
+      "scale": 1.0,
+      "transform": "linear",
+      "weight": 1.0
+    },
+    {
+      "allow_both_null": true,
+      "missing_mismatch_penalty": 1.0,
+      "path": "selector_state.recent_arrival_rate_rps",
+      "transform": "log2",
+      "weight": 1.0
+    },
+    {
+      "allow_both_null": true,
+      "missing_mismatch_penalty": 1.0,
+      "path": "selector_state.client_queue_delay_ms.p95",
+      "transform": "log1p",
+      "weight": 1.0
+    },
+    {
+      "path": "selector_state.server_queue_waiting_p95",
+      "transform": "log1p",
+      "weight": 1.0
+    },
+    {
+      "path": "selector_state.server_requests_running_p95",
+      "transform": "log1p",
+      "weight": 1.0
+    },
+    {
+      "path": "selector_state.server_kv_cache_usage_p95",
+      "scale": 1.0,
+      "transform": "linear",
+      "weight": 1.0
+    },
+    {
+      "path": "selector_state.short_window_offered_e2e_p99_ms",
+      "transform": "log1p",
+      "weight": 16.0
+    }
+  ],
+  "require_server_queue_telemetry": true,
+  "schema_version": "qtopomoe.phase8_selector_config.v2",
+  "selector": "telemetry_aware_knn_cost",
+  "status": "training_gate_failed",
+  "strict_match": [
+    "arrival_mode"
+  ],
+  "training_gates": {
+    "median_regret": true,
+    "p95_regret": false
+  },
+  "training_metrics": {
+    "maximum_regret_pct": 84.5343844577432,
+    "median_regret_pct": 0.0,
+    "p95_regret_pct": 23.048775853413645,
+    "top1_accuracy": 0.7037037037037037
+  },
+  "说明": "必须只用训练集拟合并改为 frozen 后，才能读取独立测试集。禁止依据独立测试结果回调权重。"
+}

@@ -152,6 +152,27 @@ class SelectorStateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "不是决策前窗口"):
             INDEPENDENT.evaluate(training, test, config, 1)
 
+    def test_cost_sensitive_knn_aggregates_multiple_neighbors(self):
+        training = [
+            row("near_a", 256, 10, 20),
+            row("near_b", 512, 11, 30),
+            row("near_c", 1024, 40, 10),
+        ]
+        target = row("target", 640, 12, 13)
+        config = {
+            "selector": "telemetry_aware_knn_cost",
+            "strict_match": ["arrival_mode"],
+            "neighbor_count": 3,
+            "neighbor_weighting": "uniform",
+            "normalize_training_cost_by_oracle": True,
+            "numeric_features": [
+                {"path": "input_tokens", "transform": "log2", "weight": 1.0}
+            ],
+        }
+        selected, nearest = INDEPENDENT.choose(target, training, ["a", "b"], config)
+        self.assertEqual("b", selected)
+        self.assertEqual("near_b", nearest["workload_id"])
+
     def test_distance_allows_only_symmetric_not_applicable_feature(self):
         left = {"workload_id": "left", "state": {"queue": None}}
         right = {"workload_id": "right", "state": {"queue": None}}
@@ -163,6 +184,17 @@ class SelectorStateTests(unittest.TestCase):
         right["state"]["queue"] = 0.0
         with self.assertRaisesRegex(ValueError, "只有一侧缺失"):
             INDEPENDENT.distance(left, right, feature)
+
+    def test_distance_uses_explicit_penalty_for_missingness_mismatch(self):
+        left = {"state": {"rate": None}}
+        right = {"state": {"rate": 2.0}}
+        feature = [{
+            "path": "state.rate", "transform": "log2", "weight": 3.0,
+            "allow_both_null": True, "missing_mismatch_penalty": 2.0,
+        }]
+        self.assertEqual(6.0, INDEPENDENT.distance(left, right, feature))
+        right["state"]["rate"] = None
+        self.assertEqual(0.0, INDEPENDENT.distance(left, right, feature))
 
     def test_attach_keeps_outcomes_and_adds_incumbent_state(self):
         outcome_row = row("train", 256, 10, 20)
@@ -209,7 +241,7 @@ class SelectorStateTests(unittest.TestCase):
                 "p95_regret_pct_max": 10.0,
             },
         }
-        fitted, report = FIT.fit(aggregate, template, [1.0])
+        fitted, report = FIT.fit(aggregate, template, [1.0], [1])
         self.assertEqual("frozen", fitted["status"])
         self.assertFalse(fitted["independent_test_read"])
         self.assertEqual(1, report["trial_count"])
