@@ -42,6 +42,21 @@ class CompareFullsetQualityResultsTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "expected"):
             MODULE.compare([row("a", True)], [changed], "left", "right")
 
+    def test_three_format_common_denominator(self):
+        datasets = {
+            "bf16": [row("a", True), row("b", None), row("c", False, "ceval")],
+            "fp8": [row("a", False), row("b", True), row("c", True, "ceval")],
+            "nvfp4": [row("a", True), row("b", False), row("c", None, "ceval")],
+        }
+        result = MODULE.compare_many(datasets)
+        overall = result["common_denominator"]["overall"]
+        self.assertEqual(overall["common_scored"], 1)
+        self.assertEqual(overall["formats"]["bf16"]["correct"], 1)
+        self.assertEqual(overall["formats"]["fp8"]["correct"], 0)
+        self.assertEqual(overall["formats"]["nvfp4"]["correct"], 1)
+        self.assertEqual(result["unfinished"]["union_all_formats"], 2)
+        self.assertTrue(all(result["checks"].values()))
+
 
 if __name__ == "__main__":
     unittest.main()
