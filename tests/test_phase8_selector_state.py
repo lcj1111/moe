@@ -20,6 +20,7 @@ def load_script(name: str):
 AGGREGATOR = load_script("aggregate_phase8_repeated.py")
 INDEPENDENT = load_script("evaluate_phase8_independent_selector.py")
 ATTACH = load_script("attach_phase8_predecision_state.py")
+FIT = load_script("fit_phase8_selector_state.py")
 
 
 def record(request_id: int, started: float, finished: float,
@@ -189,6 +190,29 @@ class SelectorStateTests(unittest.TestCase):
         self.assertTrue(result["rows"][0]["selector_state"]["decision_eligible"])
         self.assertEqual("a", result["predecision_state_manifest"][
             "incumbent_candidate_id"])
+
+    def test_fit_freezes_only_from_training_cross_validation(self):
+        first = row("w1_case", 256, 10, 20)
+        first["base_cell_id"] = "w1_c1"
+        second = row("w2_case", 512, 11, 22)
+        second["base_cell_id"] = "w2_c1"
+        aggregate = {"status": "accepted", "rows": [first, second]}
+        template = {
+            "status": "draft_not_fitted",
+            "strict_match": ["arrival_mode"],
+            "require_server_queue_telemetry": True,
+            "numeric_features": [
+                {"path": "input_tokens", "transform": "log2", "weight": 1.0}
+            ],
+            "gates": {
+                "median_regret_pct_max": 5.0,
+                "p95_regret_pct_max": 10.0,
+            },
+        }
+        fitted, report = FIT.fit(aggregate, template, [1.0])
+        self.assertEqual("frozen", fitted["status"])
+        self.assertFalse(fitted["independent_test_read"])
+        self.assertEqual(1, report["trial_count"])
 
 
 if __name__ == "__main__":

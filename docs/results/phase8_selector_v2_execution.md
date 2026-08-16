@@ -74,6 +74,19 @@ python3 scripts/attach_phase8_predecision_state.py \
   --output /data/models/test/qtopomoe_phase8_selector_training_v2/aggregate_with_state.json
 ```
 
+只用绑定后的训练数据拟合并冻结配置：
+
+```bash
+python3 scripts/fit_phase8_selector_state.py \
+  --training-aggregate /data/models/test/qtopomoe_phase8_selector_training_v2/aggregate_with_state.json \
+  --template configs/strategies/phase8_selector_state_v2.template.json \
+  --output-config /data/models/test/qtopomoe_phase8_selector_training_v2/selector.frozen.json \
+  --output-report /data/models/test/qtopomoe_phase8_selector_training_v2/selector.fit_report.json
+```
+
+拟合使用 W1/W2/W3/W4 留族交叉验证和固定的组权重网格。只有训练集 median/p95
+regret Gate 均通过才会输出 `status=frozen`；失败时禁止读取独立测试结果。
+
 正式独立 Gate 必须使用冻结配置：
 
 ```bash
