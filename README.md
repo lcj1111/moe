@@ -19,7 +19,7 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 | Phase 3 | route trace、漂移分析和冻结官方协议 | route、三格式 full-set 合并与共同分母对比均已完成 |
 | Phase 4–6 | M-bucket、kernel/backend selector、通信矩阵 | 正式实测已归档 |
 | Phase 7 | placement-plan、在线迁移、恢复与 p99 | Gate 已接受 |
-| Phase 8 | 四候选×108 cells×5 重复正式聚合 | 测量 Gate 已接受；selector p95 regret 43.17%，未准入 |
+| Phase 8 | 四候选×108 cells×5 重复正式聚合 | 测量 Gate 已接受；旧 selector p95 regret 43.17%，未准入；v2 决策前遥测与独立 Gate 正在执行 |
 
 动态触发、cooldown 和 rollback 闭环必须等待 Phase 8 selector p95 regret Gate
 通过；不能用已失败的 selector 直接控制在线服务。
@@ -99,6 +99,9 @@ python scripts/compare_fullset_quality_results.py --help
 # Phase 8 正式重复测量与聚合
 python scripts/run_phase8_repeated.py --help
 python scripts/aggregate_phase8_repeated.py --help
+python scripts/run_phase8_predecision_windows.py --help
+python scripts/fit_phase8_selector_state.py --help
+python scripts/evaluate_phase8_independent_selector.py --help
 
 # 在线 placement-plan 与迁移结果分析
 python scripts/build_runtime_placement_plan.py --help

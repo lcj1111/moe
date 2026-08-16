@@ -10,7 +10,7 @@
 | FP8/NVFP4 full-set | NVFP4 续跑后剩 18 条截断待审计与合并；FP8 排队 | [质量收尾](results/phase3_fullset_quality_closeout_20260812.md) |
 | Phase 7 在线迁移 | placement-plan、阻塞、恢复和 p99 Gate 已接受 | [阶段 7–8 正式收尾](results/phase7_phase8_formal_closeout_20260812.md) |
 | Phase 8 正式矩阵 | 四候选、108 cells、五重复聚合已接受 | [阶段 8 历史与结果](results/phase8_benchmark_history.md) |
-| Phase 8 selector | median regret 通过；p95 regret 43.17%，未准入 | [阶段 7–8 正式收尾](results/phase7_phase8_formal_closeout_20260812.md) |
+| Phase 8 selector | 旧版 p95 regret 43.17%，未准入；v2 决策前遥测与独立测试流程正在执行 | [selector v2 执行说明](results/phase8_selector_v2_execution.md) |
 
 正在运行的结果在完成 Gate 前仅表示进度，不表示最终准确率。
 

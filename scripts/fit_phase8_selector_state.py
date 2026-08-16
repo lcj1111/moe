@@ -11,12 +11,14 @@ import statistics
 from pathlib import Path
 from typing import Any
 
-from scripts.evaluate_phase8_independent_selector import (
-    choose,
-    measured,
-    percentile,
-    validate_pre_decision_state,
-)
+try:
+    from scripts.evaluate_phase8_independent_selector import (
+        choose, measured, percentile, validate_pre_decision_state,
+    )
+except ModuleNotFoundError:  # 兼容 ``python scripts/fit_*.py`` 直接执行
+    from evaluate_phase8_independent_selector import (  # type: ignore[no-redef]
+        choose, measured, percentile, validate_pre_decision_state,
+    )
 
 
 GROUPS = {
@@ -164,7 +166,7 @@ def main() -> None:
     parser.add_argument("--template", type=Path, required=True)
     parser.add_argument("--output-config", type=Path, required=True)
     parser.add_argument("--output-report", type=Path, required=True)
-    parser.add_argument("--weight-grid", default="0.125,0.5,1,2,8")
+    parser.add_argument("--weight-grid", default="0.25,1,4")
     args = parser.parse_args()
     aggregate = json.loads(args.training_aggregate.read_text(encoding="utf-8"))
     template = json.loads(args.template.read_text(encoding="utf-8"))

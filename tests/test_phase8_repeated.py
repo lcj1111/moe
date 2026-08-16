@@ -60,6 +60,23 @@ class RepeatedPlanTests(unittest.TestCase):
         self.assertIn("--enable-prefix-caching", command)
         self.assertIn("--enable-prompt-tokens-details", command)
 
+    def test_service_command_supports_relocated_venv_module_entry(self):
+        plan = {
+            "host": "127.0.0.1", "port": 31540, "max_model_len": 65536,
+            "max_num_seqs": 8, "gpu_memory_utilization": 0.9,
+            "software": {"vllm_launch_mode": "python_module"},
+        }
+        candidate = {
+            "model_path": "/model", "tp": 2, "dp": 1,
+            "enable_expert_parallel": False, "moe_backend": "triton",
+            "numa_args": [],
+        }
+        command = RUNNER.service_command(
+            plan, candidate, "/venv/bin/vllm", "served", "/venv/bin/python3")
+        self.assertEqual(
+            ["/venv/bin/python3", "-m", "vllm.entrypoints.cli.main", "serve"],
+            command[:4])
+
     def test_controlled_summary_gate_checks_cache_and_frozen_rate(self):
         cell = {
             "prefix_cache_pct": 50,

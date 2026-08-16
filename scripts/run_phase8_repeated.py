@@ -169,12 +169,19 @@ def audit_summary(path: Path, cell: dict[str, Any]) -> None:
 
 
 def service_command(plan: dict[str, Any], candidate: dict[str, Any],
-                    vllm_bin: str, served_model: str) -> list[str]:
+                    vllm_bin: str, served_model: str,
+                    python_bin: str | None = None) -> list[str]:
     command = []
     if candidate.get("numa_args"):
         command.extend(["numactl", *candidate["numa_args"]])
+    if plan.get("software", {}).get("vllm_launch_mode") == "python_module":
+        if python_bin is None:
+            raise ValueError("python_module 启动模式必须提供 python_bin")
+        command.extend([python_bin, "-m", "vllm.entrypoints.cli.main"])
+    else:
+        command.append(vllm_bin)
     command.extend([
-        vllm_bin, "serve", candidate["model_path"],
+        "serve", candidate["model_path"],
         "--host", plan["host"], "--port", str(plan["port"]),
         "--served-model-name", served_model,
         "--tensor-parallel-size", str(candidate["tp"]),
@@ -211,7 +218,7 @@ def run_one(plan: dict[str, Any], candidate: dict[str, Any], repeat: int,
 
     run_dir.mkdir(parents=True)
     served_model = "qtopomoe-" + run_id.replace("__", "-")
-    command = service_command(plan, candidate, vllm_bin, served_model)
+    command = service_command(plan, candidate, vllm_bin, served_model, python_bin)
     meta = {
         "schema_version": "qtopomoe.phase8_repeated_run.v1",
         "run_id": run_id, "candidate_id": candidate["candidate_id"],

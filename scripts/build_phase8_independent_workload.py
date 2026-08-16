@@ -128,9 +128,9 @@ def main() -> None:
     design = json.loads(args.design.read_text(encoding="utf-8"))
     result = build(training, design)
     result["sources"] = {
-        "training_matrix": str(args.training_matrix),
+        "training_matrix": args.training_matrix.as_posix(),
         "training_matrix_sha256": sha256(args.training_matrix),
-        "design": str(args.design),
+        "design": args.design.as_posix(),
         "design_sha256": sha256(args.design),
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
