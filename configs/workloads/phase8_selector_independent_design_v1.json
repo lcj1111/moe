@@ -1,0 +1,17 @@
+{
+  "schema_version": "qtopomoe.phase8_independent_design.v1",
+  "说明": "所有 shape 均未出现在 108-cell 训练矩阵；速率只能由训练矩阵生成，不得读取独立测试 outcome。",
+  "seed": 20260816,
+  "rate_safety_multiplier": 0.8,
+  "rate_neighbor_count": 2,
+  "minimum_requests": 32,
+  "prefix_cache_pct": [0, 50, 100],
+  "arrival_modes": ["closed_loop", "poisson", "burst"],
+  "base_cells": [
+    {"id": "t1_c4", "input_tokens": 512, "output_tokens": 192, "concurrency": 4},
+    {"id": "t2_c16", "input_tokens": 1536, "output_tokens": 384, "concurrency": 16},
+    {"id": "t3_c4", "input_tokens": 4096, "output_tokens": 192, "concurrency": 4},
+    {"id": "t4_c8", "input_tokens": 12288, "output_tokens": 384, "concurrency": 8},
+    {"id": "t5_c2", "input_tokens": 24576, "output_tokens": 192, "concurrency": 2}
+  ]
+}

@@ -126,6 +126,9 @@ def run_client(python_bin: str, repo: Path, base_url: str, served_model: str,
         "--arrival-mode", str(cell.get("arrival_mode", "closed_loop")),
         "--require-cache-details",
         "--require-arrival-gate",
+        "--sample-service-metrics",
+        "--observation-phase", str(cell.get("observation_phase", "post_workload")),
+        "--selector-window-requests", str(cell.get("selector_window_requests", 16)),
         "--timeout", str(timeout), "--output", str(output),
         "--summary", str(summary),
     ]
@@ -155,6 +158,12 @@ def audit_summary(path: Path, cell: dict[str, Any]) -> None:
     if "prefix_cache_pct" in cell:
         checks["cache_block"] = int(
             summary.get("prefix_cache", {}).get("cache_block_tokens") or 0) > 0
+    if cell.get("require_server_queue_telemetry"):
+        checks["server_queue_telemetry"] = summary.get(
+            "service_telemetry", {}).get("server_queue_depth_available") is True
+    if cell.get("observation_phase") == "pre_decision":
+        checks["selector_state_pre_decision"] = summary.get(
+            "selector_state", {}).get("decision_eligible") is True
     if not all(checks.values()):
         raise RuntimeError(f"summary Gate failed for {path}: {checks}")
 

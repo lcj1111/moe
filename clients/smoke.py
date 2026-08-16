@@ -8,6 +8,7 @@ import hashlib
 import json
 import math
 import random
+import re
 import statistics
 import threading
 import time
@@ -15,6 +16,13 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 from typing import Any
+
+
+PROMETHEUS_SAMPLE_METRICS = (
+    "num_requests_waiting",
+    "num_requests_running",
+    "kv_cache_usage_perc",
+)
 
 
 def prompt_for_tokens(n: int, request_id: int = 0) -> str:
@@ -325,6 +333,144 @@ def metric_summary(values: list[float]) -> dict[str, float | None]:
     }
 
 
+def metrics_url(base_url: str) -> str:
+    """Return the service metrics endpoint for an OpenAI-compatible base URL."""
+    root = base_url.rstrip("/")
+    if root.endswith("/v1"):
+        root = root[:-3]
+    return root + "/metrics"
+
+
+def parse_prometheus_sample(text: str) -> dict[str, float]:
+    """Parse and sum numeric Prometheus series by metric name.
+
+    vLLM metric names and labels have changed between releases.  Keeping the
+    original metric name and matching by stable suffix lets the audit remain
+    version-tolerant without silently treating a missing metric as zero.
+    """
+    values: dict[str, float] = {}
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        match = re.match(
+            r"^([A-Za-z_:][A-Za-z0-9_:]*)(?:\{[^}]*\})?\s+"
+            r"([-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?|NaN|[+-]Inf)",
+            line,
+        )
+        if not match:
+            continue
+        try:
+            value = float(match.group(2))
+        except ValueError:
+            continue
+        if math.isfinite(value):
+            values[match.group(1)] = values.get(match.group(1), 0.0) + value
+    return values
+
+
+def _metric_by_suffix(sample: dict[str, float], suffix: str) -> float | None:
+    matches = [value for name, value in sample.items()
+               if name.replace(":", "_").endswith(suffix)]
+    return sum(matches) if matches else None
+
+
+def collect_service_metrics(url: str, interval_s: float, stop: threading.Event,
+                            samples: list[dict[str, Any]]) -> None:
+    """Collect read-only vLLM Prometheus gauges until ``stop`` is set."""
+    started = time.perf_counter()
+    while not stop.is_set():
+        row: dict[str, Any] = {"offset_s": time.perf_counter() - started}
+        try:
+            with urllib.request.urlopen(url, timeout=max(1.0, interval_s * 4)) as response:
+                parsed = parse_prometheus_sample(
+                    response.read().decode("utf-8", errors="replace"))
+            row["metrics"] = parsed
+        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+            row["error"] = repr(exc)
+        samples.append(row)
+        stop.wait(interval_s)
+
+
+def summarize_service_metrics(samples: list[dict[str, Any]], url: str,
+                              enabled: bool) -> dict[str, Any]:
+    successful = [row for row in samples if isinstance(row.get("metrics"), dict)]
+    result: dict[str, Any] = {
+        "schema_version": "qtopomoe.service_telemetry.v1",
+        "enabled": enabled,
+        "metrics_url": url,
+        "samples": len(samples),
+        "successful_samples": len(successful),
+        "coverage_ratio": len(successful) / len(samples) if samples else None,
+        "errors": len(samples) - len(successful),
+    }
+    for suffix in PROMETHEUS_SAMPLE_METRICS:
+        values = [value for row in successful
+                  if (value := _metric_by_suffix(row["metrics"], suffix)) is not None]
+        result[suffix] = {
+            **metric_summary(values),
+            "max": max(values) if values else None,
+            "observed_samples": len(values),
+        }
+    result["server_queue_depth_available"] = (
+        result["num_requests_waiting"]["observed_samples"] > 0)
+    return result
+
+
+def build_selector_state(records: list[dict[str, Any]], mode: str,
+                         window_requests: int, observation_phase: str,
+                         service_telemetry: dict[str, Any]) -> dict[str, Any]:
+    """Build the selector feature contract from a bounded observation window.
+
+    Only a separately executed ``pre_decision`` window is eligible for an
+    online decision.  Marking ordinary benchmark output ``post_workload``
+    prevents candidate-dependent outcome telemetry from leaking into labels.
+    """
+    ordered = sorted(records, key=lambda row: row["finished_offset_s"])
+    window = ordered[-min(window_requests, len(ordered)):]
+    timing = arrival_timing(window, mode)
+    cached = [row for row in window
+              if row.get("cached_tokens") is not None
+              and row.get("prompt_tokens_reported")]
+    prompt_total = sum(int(row["prompt_tokens_reported"]) for row in cached)
+    cache_total = sum(int(row["cached_tokens"]) for row in cached)
+    arrival_points = timing["arrival_offsets"]
+    recent_rate = (
+        (len(arrival_points) - 1) / (arrival_points[-1] - arrival_points[0])
+        if len(arrival_points) > 1 and arrival_points[-1] > arrival_points[0]
+        else None
+    )
+    decision_eligible = observation_phase == "pre_decision"
+    return {
+        "schema_version": "qtopomoe.selector_state.v1",
+        "observation_phase": observation_phase,
+        "decision_eligible": decision_eligible,
+        "window_requests_requested": window_requests,
+        "window_requests_observed": len(window),
+        "actual_cache_hit_ratio": cache_total / prompt_total if prompt_total else None,
+        "client_queue_delay_ms": metric_summary(
+            [value * 1000 for value in timing["queue_delay_s"]]),
+        "client_peak_in_flight": peak_in_flight(window),
+        "recent_arrival_rate_rps": recent_rate,
+        "short_window_service_e2e_p99_ms": metric_summary(
+            [float(row["e2e_ms"]) for row in window])["p99"],
+        "short_window_offered_e2e_p99_ms": metric_summary(
+            timing["offered_e2e_ms"])["p99"],
+        "server_queue_waiting_p95": service_telemetry.get(
+            "num_requests_waiting", {}).get("p95"),
+        "server_requests_running_p95": service_telemetry.get(
+            "num_requests_running", {}).get("p95"),
+        "server_kv_cache_usage_p95": service_telemetry.get(
+            "kv_cache_usage_perc", {}).get("p95"),
+        "server_queue_depth_available": service_telemetry.get(
+            "server_queue_depth_available", False),
+        "leakage_note": (
+            "仅 pre_decision 独立观测窗口可用于决策；post_workload 数据只用于审计，"
+            "不得作为同一测试单元的选择器输入。"
+        ),
+    }
+
+
 def peak_in_flight(records: list[dict[str, Any]]) -> int:
     events = []
     for row in records:
@@ -447,11 +593,20 @@ def main() -> None:
     parser.add_argument("--arrival-lag-tolerance", type=float, default=None,
                         help="maximum allowed p95 request-start lag versus open-loop schedule")
     parser.add_argument("--require-arrival-gate", action="store_true")
+    parser.add_argument("--sample-service-metrics", action="store_true",
+                        help="sample the vLLM /metrics endpoint during this window")
+    parser.add_argument("--metrics-sample-interval-s", type=float, default=0.2)
+    parser.add_argument("--selector-window-requests", type=int, default=16)
+    parser.add_argument("--observation-phase",
+                        choices=("pre_decision", "post_workload"),
+                        default="post_workload")
     parser.add_argument("--output", required=True)
     parser.add_argument("--summary", default=None)
     args = parser.parse_args()
     if args.concurrency < 1 or args.requests < 1:
         parser.error("concurrency and requests must be positive")
+    if args.metrics_sample_interval_s <= 0 or args.selector_window_requests < 1:
+        parser.error("metrics interval and selector window must be positive")
     if args.arrival_mode != "closed_loop" and (args.request_rate is None
                                                 or args.request_rate <= 0):
         parser.error("positive --request-rate is required for poisson and burst")
@@ -488,7 +643,24 @@ def main() -> None:
         if prewarm_record["status"] != "ok":
             raise RuntimeError(f"prefix cache prewarm failed: {prewarm_record['error']}")
 
-    records = execute_requests(args, prompt_plan["prompts"])
+    service_samples: list[dict[str, Any]] = []
+    service_metrics_url = metrics_url(args.base_url)
+    metrics_stop = threading.Event()
+    metrics_thread = None
+    if args.sample_service_metrics:
+        metrics_thread = threading.Thread(
+            target=collect_service_metrics,
+            args=(service_metrics_url, args.metrics_sample_interval_s,
+                  metrics_stop, service_samples),
+            daemon=True,
+        )
+        metrics_thread.start()
+    try:
+        records = execute_requests(args, prompt_plan["prompts"])
+    finally:
+        metrics_stop.set()
+        if metrics_thread is not None:
+            metrics_thread.join(timeout=max(2.0, args.metrics_sample_interval_s * 4))
     output.write_text("".join(json.dumps(row, ensure_ascii=False) + "\n" for row in records),
                       encoding="utf-8")
     good = [row for row in records if row["status"] == "ok"]
@@ -531,8 +703,13 @@ def main() -> None:
                                  and lag_p95 <= lag_tolerance))
     wall_time = (max((row["finished_offset_s"] for row in good), default=0)
                  - min((row["started_offset_s"] for row in good), default=0))
+    service_telemetry = summarize_service_metrics(
+        service_samples, service_metrics_url, args.sample_service_metrics)
+    selector_state = build_selector_state(
+        good, args.arrival_mode, args.selector_window_requests,
+        args.observation_phase, service_telemetry)
     summary = {
-        "schema_version": "qtopomoe.service_workload.v3",
+        "schema_version": "qtopomoe.service_workload.v4",
         "base_url": args.base_url,
         "model": args.model,
         "input_tokens_requested": args.input_tokens,
@@ -603,6 +780,8 @@ def main() -> None:
             "schedule_gate": arrival_schedule_gate,
             "peak_in_flight": peak_in_flight(good),
         },
+        "service_telemetry": service_telemetry,
+        "selector_state": selector_state,
     }
     summary_path = Path(args.summary) if args.summary else output.with_suffix(".summary.json")
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n",

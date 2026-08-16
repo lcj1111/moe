@@ -44,6 +44,15 @@ class WorkloadObservation:
     placement: Mapping[str, Any] = field(default_factory=dict)
     migration_bytes: float = 0.0
     measured_p99_ms_by_candidate: Mapping[str, float] = field(default_factory=dict)
+    actual_cache_hit_ratio: float | None = None
+    recent_arrival_rate_rps: float | None = None
+    client_queue_delay_p95_ms: float | None = None
+    client_peak_in_flight: int | None = None
+    server_queue_waiting_p95: float | None = None
+    server_requests_running_p95: float | None = None
+    server_kv_cache_usage_p95: float | None = None
+    short_window_p99_ms: float | None = None
+    observation_phase: str | None = None
 
 
 @dataclass(frozen=True)

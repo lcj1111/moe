@@ -1,0 +1,28 @@
+{
+  "schema_version": "qtopomoe.phase8_selector_config.v2",
+  "status": "draft_not_fitted",
+  "说明": "必须只用训练集拟合并改为 frozen 后，才能读取独立测试集。禁止依据独立测试结果回调权重。",
+  "selector": "telemetry_aware_single_nearest_workload",
+  "strict_match": [
+    "arrival_mode"
+  ],
+  "require_server_queue_telemetry": true,
+  "numeric_features": [
+    {"path": "input_tokens", "transform": "log2", "weight": 1.0},
+    {"path": "output_tokens", "transform": "log2", "weight": 1.0},
+    {"path": "concurrency", "transform": "log2", "weight": 1.0},
+    {"path": "selector_state.actual_cache_hit_ratio", "transform": "linear", "scale": 1.0, "weight": 1.0},
+    {"path": "selector_state.recent_arrival_rate_rps", "transform": "log2", "weight": 1.0},
+    {"path": "selector_state.client_queue_delay_ms.p95", "transform": "log1p", "weight": 1.0, "allow_both_null": true},
+    {"path": "selector_state.server_queue_waiting_p95", "transform": "log1p", "weight": 1.0},
+    {"path": "selector_state.server_requests_running_p95", "transform": "log1p", "weight": 1.0},
+    {"path": "selector_state.server_kv_cache_usage_p95", "transform": "linear", "scale": 1.0, "weight": 1.0},
+    {"path": "selector_state.short_window_offered_e2e_p99_ms", "transform": "log1p", "weight": 1.0}
+  ],
+  "gates": {
+    "median_regret_pct_max": 5.0,
+    "p95_regret_pct_max": 10.0,
+    "decision_overhead_pct_max": 1.0,
+    "infeasible_misselection_rate_max": 0.0
+  }
+}

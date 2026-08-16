@@ -122,6 +122,36 @@ def latency_metric(summary: dict[str, Any], cell: dict[str, Any], metric: str) -
     return summary[metric]
 
 
+def repeat_telemetry(summary: dict[str, Any]) -> dict[str, Any]:
+    """Preserve selector-relevant telemetry without changing legacy Gates."""
+    arrival = summary.get("arrival", {})
+    service = summary.get("service_telemetry", {})
+    return {
+        "cache_expected_ratio": summary.get("prefix_cache", {}).get(
+            "expected_cached_token_ratio"),
+        "cache_actual_ratio": summary.get("prefix_cache", {}).get(
+            "actual_cached_token_ratio"),
+        "arrival_mode": arrival.get("mode"),
+        "request_rate_target_rps": arrival.get("request_rate_target_rps"),
+        "request_rate_realized_rps": arrival.get("request_rate_realized_rps"),
+        "service_start_rate_realized_rps": arrival.get(
+            "service_start_rate_realized_rps"),
+        "arrival_lag_p95_s": arrival.get("scheduling_lag_s", {}).get("p95"),
+        "client_queue_delay_p95_s": arrival.get("queue_delay_s", {}).get("p95"),
+        "service_start_lag_p95_s": arrival.get(
+            "service_start_lag_s", {}).get("p95"),
+        "client_peak_in_flight": arrival.get("peak_in_flight"),
+        "server_queue_waiting_p95": service.get(
+            "num_requests_waiting", {}).get("p95"),
+        "server_requests_running_p95": service.get(
+            "num_requests_running", {}).get("p95"),
+        "server_kv_cache_usage_p95": service.get(
+            "kv_cache_usage_perc", {}).get("p95"),
+        "server_telemetry_coverage_ratio": service.get("coverage_ratio"),
+        "selector_state": summary.get("selector_state"),
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--run-root", type=Path, required=True)
@@ -203,17 +233,7 @@ def main() -> None:
                                   else "service_start"),
                 "service_e2e_p99_ms": summary["e2e_ms"]["p99"],
                 "service_ttft_p99_ms": summary["ttft_ms"]["p99"],
-                "cache_expected_ratio": summary.get("prefix_cache", {}).get(
-                    "expected_cached_token_ratio"),
-                "cache_actual_ratio": summary.get("prefix_cache", {}).get(
-                    "actual_cached_token_ratio"),
-                "arrival_mode": summary.get("arrival", {}).get("mode"),
-                "request_rate_target_rps": summary.get("arrival", {}).get(
-                    "request_rate_target_rps"),
-                "request_rate_realized_rps": summary.get("arrival", {}).get(
-                    "request_rate_realized_rps"),
-                "arrival_lag_p95_s": summary.get("arrival", {}).get(
-                    "scheduling_lag_s", {}).get("p95"),
+                **repeat_telemetry(summary),
             })
 
     if len(template_hashes) != 1:
