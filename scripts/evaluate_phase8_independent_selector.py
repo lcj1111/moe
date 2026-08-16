@@ -102,6 +102,78 @@ def measured(row: dict[str, Any], candidate: str) -> float:
     return float(row["measurements"][candidate]["metrics"]["e2e_p99_ms"]["median"])
 
 
+def condition_matches(row: dict[str, Any], condition: dict[str, Any]) -> bool:
+    actual = nested(row, str(condition["path"]))
+    operator = str(condition.get("operator", "eq"))
+    expected = condition.get("value")
+    if operator == "eq":
+        return actual == expected
+    if operator == "in":
+        if not isinstance(expected, list):
+            raise ValueError("regime rule 的 in 条件必须提供列表")
+        return actual in expected
+    if actual is None or expected is None:
+        return False
+    left, right = float(actual), float(expected)
+    if not math.isfinite(left) or not math.isfinite(right):
+        raise ValueError("regime rule 的数值条件必须有限")
+    if operator == "lt":
+        return left < right
+    if operator == "le":
+        return left <= right
+    if operator == "gt":
+        return left > right
+    if operator == "ge":
+        return left >= right
+    raise ValueError(f"未知 regime rule 运算符：{operator}")
+
+
+def validate_regime_rules(candidates: list[str], config: dict[str, Any]) -> list[dict[str, Any]]:
+    rules = config.get("regime_rules")
+    if not isinstance(rules, list) or not rules:
+        raise ValueError("regime selector 缺少有序规则")
+    seen_ids: set[str] = set()
+    supported_operators = {"eq", "in", "lt", "le", "gt", "ge"}
+    for rule in rules:
+        if not isinstance(rule, dict):
+            raise ValueError("regime rule 必须是对象")
+        rule_id = str(rule.get("id", ""))
+        if not rule_id or rule_id in seen_ids:
+            raise ValueError("regime rule id 必须非空且唯一")
+        seen_ids.add(rule_id)
+        conditions = rule.get("all")
+        if not isinstance(conditions, list):
+            raise ValueError(f"{rule_id}: all 必须是条件列表")
+        for condition in conditions:
+            if not isinstance(condition, dict) or not condition.get("path"):
+                raise ValueError(f"{rule_id}: 条件必须包含非空 path")
+            operator = str(condition.get("operator", "eq"))
+            if operator not in supported_operators:
+                raise ValueError(f"{rule_id}: 未知 regime rule 运算符：{operator}")
+            if operator == "in" and not isinstance(condition.get("value"), list):
+                raise ValueError(f"{rule_id}: in 条件必须提供列表")
+        candidate = str(rule.get("candidate", ""))
+        if candidate not in candidates:
+            raise ValueError(f"{rule_id}: 候选不存在：{candidate}")
+    fallback = str(config.get("fallback_candidate", ""))
+    if fallback not in candidates:
+        raise ValueError(f"regime selector 的 fallback 候选不存在：{fallback}")
+    return rules
+
+
+def choose_regime_candidate(row: dict[str, Any], candidates: list[str],
+                            config: dict[str, Any]) -> tuple[str, str]:
+    rules = validate_regime_rules(candidates, config)
+    for rule in rules:
+        rule_id = str(rule.get("id", ""))
+        conditions = rule.get("all")
+        if all(condition_matches(row, condition) for condition in conditions):
+            candidate = str(rule.get("candidate", ""))
+            return candidate, rule_id
+    fallback = str(config.get("fallback_candidate", ""))
+    return fallback, "fallback"
+
+
 def choose(row: dict[str, Any], training: list[dict[str, Any]],
            candidates: list[str], config: dict[str, Any]) -> tuple[str, dict[str, Any]]:
     strict = config["strict_match"]
@@ -118,6 +190,9 @@ def choose(row: dict[str, Any], training: list[dict[str, Any]],
     if selector == "telemetry_aware_single_nearest_workload":
         selected = min(candidates, key=lambda candidate: (
             measured(nearest, candidate), candidate))
+        return selected, nearest
+    if selector == "telemetry_aware_regime_rules":
+        selected, _ = choose_regime_candidate(row, candidates, config)
         return selected, nearest
     if selector != "telemetry_aware_knn_cost":
         raise ValueError(f"未知 selector：{selector}")
@@ -190,6 +265,9 @@ def evaluate(training: dict[str, Any], test: dict[str, Any],
         values = {candidate: measured(row, candidate) for candidate in candidates}
         oracle = min(candidates, key=lambda candidate: (values[candidate], candidate))
         regret = (values[selected] - values[oracle]) / values[oracle] * 100
+        matched_rule_id = None
+        if config.get("selector") == "telemetry_aware_regime_rules":
+            _, matched_rule_id = choose_regime_candidate(row, candidates, config)
         rows.append({
             "workload_id": row["workload_id"],
             "selected_candidate": selected,
@@ -199,6 +277,7 @@ def evaluate(training: dict[str, Any], test: dict[str, Any],
             "regret_pct": regret,
             "nearest_training_workload_id": nearest["workload_id"],
             "nearest_distance": distance(row, nearest, config["numeric_features"]),
+            "matched_rule_id": matched_rule_id,
             "decision_overhead_ms": elapsed_ms,
             "decision_overhead_pct_of_service_p99": elapsed_ms / values[selected] * 100,
             "infeasible_selection": selected not in row["measurements"],

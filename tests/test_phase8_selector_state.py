@@ -173,6 +173,50 @@ class SelectorStateTests(unittest.TestCase):
         self.assertEqual("b", selected)
         self.assertEqual("near_b", nearest["workload_id"])
 
+    def test_regime_rules_are_ordered_and_use_explicit_fallback(self):
+        training = [row("near", 256, 10, 20)]
+        target = row("target", 400, 12, 13)
+        config = {
+            "selector": "telemetry_aware_regime_rules",
+            "strict_match": ["arrival_mode"],
+            "numeric_features": [
+                {"path": "input_tokens", "transform": "log2", "weight": 1.0}
+            ],
+            "regime_rules": [{
+                "id": "small",
+                "all": [{"path": "input_tokens", "operator": "le", "value": 512}],
+                "candidate": "a",
+            }],
+            "fallback_candidate": "b",
+        }
+        selected, nearest = INDEPENDENT.choose(target, training, ["a", "b"], config)
+        self.assertEqual("a", selected)
+        self.assertEqual("near", nearest["workload_id"])
+        target["input_tokens"] = 1024
+        selected, _ = INDEPENDENT.choose(target, training, ["a", "b"], config)
+        self.assertEqual("b", selected)
+
+    def test_regime_rule_rejects_unknown_candidate(self):
+        target = row("target", 400, 12, 13)
+        config = {
+            "regime_rules": [{"id": "bad", "all": [], "candidate": "missing"}],
+            "fallback_candidate": "a",
+        }
+        with self.assertRaisesRegex(ValueError, "候选不存在"):
+            INDEPENDENT.choose_regime_candidate(target, ["a", "b"], config)
+
+    def test_regime_rule_validates_later_duplicate_before_first_match(self):
+        target = row("target", 400, 12, 13)
+        config = {
+            "regime_rules": [
+                {"id": "duplicate", "all": [], "candidate": "a"},
+                {"id": "duplicate", "all": [], "candidate": "b"},
+            ],
+            "fallback_candidate": "a",
+        }
+        with self.assertRaisesRegex(ValueError, "id 必须非空且唯一"):
+            INDEPENDENT.choose_regime_candidate(target, ["a", "b"], config)
+
     def test_distance_allows_only_symmetric_not_applicable_feature(self):
         left = {"workload_id": "left", "state": {"queue": None}}
         right = {"workload_id": "right", "state": {"queue": None}}
@@ -243,6 +287,41 @@ class SelectorStateTests(unittest.TestCase):
         }
         fitted, report = FIT.fit(aggregate, template, [1.0], [1])
         self.assertEqual("frozen", fitted["status"])
+        self.assertFalse(fitted["independent_test_read"])
+        self.assertEqual(1, report["trial_count"])
+
+    def test_v3_regime_fit_keeps_independent_test_unread(self):
+        first = row("w1_case", 256, 10, 20)
+        first["base_cell_id"] = "w1_c1"
+        second = row("w2_case", 512, 11, 22)
+        second["base_cell_id"] = "w2_c1"
+        aggregate = {"status": "accepted", "rows": [first, second]}
+        template = {
+            "status": "draft_not_fitted",
+            "selector": "telemetry_aware_regime_rules",
+            "strict_match": ["arrival_mode"],
+            "require_server_queue_telemetry": True,
+            "numeric_features": [
+                {"path": "input_tokens", "transform": "log2", "weight": 1.0}
+            ],
+            "regime_rules": [{
+                "id": "all",
+                "all": [],
+                "candidate": "a",
+            }],
+            "fallback_candidate": "b",
+            "gates": {
+                "median_regret_pct_max": 5.0,
+                "p95_regret_pct_max": 10.0,
+            },
+        }
+        fitted, report = FIT.fit(
+            aggregate, template, [1.0], [1], "formal_v3_regime_rules")
+        self.assertEqual("frozen", fitted["status"])
+        self.assertEqual(
+            "leave_one_W_family_out_training_derived_regime_rules_frozen_before_independent_test",
+            fitted["fit_method"],
+        )
         self.assertFalse(fitted["independent_test_read"])
         self.assertEqual(1, report["trial_count"])
 

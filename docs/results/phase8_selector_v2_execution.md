@@ -131,3 +131,12 @@ python3 scripts/evaluate_phase8_independent_selector.py \
 
 完整原因、折间误差、搜索空间和后续边界见
 [训练 Gate 失败报告](phase8_selector_training_gate_failed_20260816.md)。
+
+## 7. 2026-08-16 v3 后续状态
+
+v2 失败后建立了新的训练侧区间规则协议。v3 只使用训练 outcome 和决策时可观测字段，
+未读取独立测试 outcome；训练 p95 regret 降至 3.4897%，在不降低 ≤10% 门槛的情况下
+通过并冻结。该结果允许启动独立 900 次验证，但不能直接启用在线动态控制。
+
+实现、留族统计、限制和冻结证据见
+[v3 训练 Gate 通过报告](phase8_selector_v3_training_gate_accepted_20260816.md)。

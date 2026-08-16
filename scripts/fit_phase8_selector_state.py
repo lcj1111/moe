@@ -14,11 +14,13 @@ from typing import Any
 
 try:
     from scripts.evaluate_phase8_independent_selector import (
-        choose, measured, percentile, validate_pre_decision_state,
+        choose, choose_regime_candidate, measured, percentile,
+        validate_pre_decision_state,
     )
 except ModuleNotFoundError:  # 兼容 ``python scripts/fit_*.py`` 直接执行
     from evaluate_phase8_independent_selector import (  # type: ignore[no-redef]
-        choose, measured, percentile, validate_pre_decision_state,
+        choose, choose_regime_candidate, measured, percentile,
+        validate_pre_decision_state,
     )
 
 
@@ -75,12 +77,16 @@ def evaluate_cv(rows: list[dict[str, Any]], config: dict[str, Any]) -> dict[str,
             values = {candidate: measured(row, candidate) for candidate in candidates}
             oracle = min(candidates, key=lambda candidate: (values[candidate], candidate))
             regret = (values[selected] - values[oracle]) / values[oracle] * 100
+            matched_rule_id = None
+            if config.get("selector") == "telemetry_aware_regime_rules":
+                _, matched_rule_id = choose_regime_candidate(row, candidates, config)
             evaluation.append({
                 "workload_id": row["workload_id"],
                 "held_out_family": held_out,
                 "selected_candidate": selected,
                 "oracle_candidate": oracle,
                 "nearest_training_workload_id": nearest["workload_id"],
+                "matched_rule_id": matched_rule_id,
                 "regret_pct": regret,
             })
     regrets = [row["regret_pct"] for row in evaluation]
@@ -167,6 +173,22 @@ def fit(aggregate: dict[str, Any], template: dict[str, Any],
             "normalize_training_cost_by_oracle": [False, True],
             "说明": "所有组合仅读取训练 aggregate；独立测试 outcome 未读取。",
         }
+    elif search_profile == "formal_v3_regime_rules":
+        if template.get("selector") != "telemetry_aware_regime_rules":
+            raise ValueError("v3 regime 搜索必须使用 regime selector 模板")
+        trial_inputs.append((
+            {group: 1.0 for group in GROUPS},
+            {"selector": "telemetry_aware_regime_rules"},
+        ))
+        search_space = {
+            "model": "pre_registered_architecture_aware_regime_rules",
+            "trial_count": 1,
+            "rule_ids": [rule["id"] for rule in template["regime_rules"]],
+            "说明": (
+                "规则由 v2 失败的训练侧误差分析产生并作为 v3 新协议冻结；"
+                "所有条件只使用决策时可观测字段，独立测试 outcome 未读取。"
+            ),
+        }
     else:
         raise ValueError(f"未知搜索配置：{search_profile}")
 
@@ -190,9 +212,9 @@ def fit(aggregate: dict[str, Any], template: dict[str, Any],
         row["metrics"]["p95_regret_pct"],
         row["metrics"]["median_regret_pct"],
         -row["metrics"]["top1_accuracy"],
-        row["model"]["neighbor_count"],
-        row["model"]["neighbor_weighting"],
-        row["model"]["normalize_training_cost_by_oracle"],
+        row["model"].get("neighbor_count", 0),
+        row["model"].get("neighbor_weighting", ""),
+        row["model"].get("normalize_training_cost_by_oracle", False),
         tuple(row["weights"][key] for key in tunable),
     ))
     fitted = weighted_config(template, best["weights"])
@@ -218,9 +240,14 @@ def fit(aggregate: dict[str, Any], template: dict[str, Any],
         "p95_regret": best["metrics"]["p95_regret_pct"]
                       <= thresholds["p95_regret_pct_max"],
     }
+    fit_method = (
+        "leave_one_W_family_out_training_derived_regime_rules_frozen_before_independent_test"
+        if search_profile == "formal_v3_regime_rules"
+        else "leave_one_W_family_out_cost_sensitive_knn_grid_search"
+    )
     fitted.update({
         "status": "frozen" if all(training_gates.values()) else "training_gate_failed",
-        "fit_method": "leave_one_W_family_out_cost_sensitive_knn_grid_search",
+        "fit_method": fit_method,
         "fit_weights": best["weights"],
         "training_metrics": best["metrics"],
         "training_gates": training_gates,
@@ -258,7 +285,8 @@ def main() -> None:
     parser.add_argument("--weight-grid", default="0.25,1,4")
     parser.add_argument("--neighbor-grid", default="1,3,5,7")
     parser.add_argument(
-        "--search-profile", choices=("standard", "formal_v2_extended"),
+        "--search-profile", choices=(
+            "standard", "formal_v2_extended", "formal_v3_regime_rules"),
         default="standard")
     args = parser.parse_args()
     aggregate = json.loads(args.training_aggregate.read_text(encoding="utf-8"))

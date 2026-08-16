@@ -12,7 +12,7 @@
 
 数据文件名保留日期和版本，因为它们是来源信息而不是冗余。人类可读的阶段归档见 `docs/results/phase*.md`；没有改名或删除任何机器可读路径。
 
-本次提交完成后的机器可读产物数量： **140**
+本次提交完成后的机器可读产物数量： **143**
 
 | 路径 | 类型 / 数据说明 | 复现指引 | SHA-256 |
 |---|---|---|---|
@@ -173,8 +173,11 @@
 | `configs/experiments/phase8_selector_independent_v1.json` | Phase 8 selector 独立 Gate 的冻结实验计划；训练 Gate 通过前不得启动。 | `6CC4EECDB3AF60EAF57BEA1D468B8CD23693A54D01DEA4A12E3381FED5D11E13` |
 | `configs/strategies/nvfp4_runtime_eplb_plan_gpu111.json` | gpu-111 NVFP4 在线 EPLB 的 placement-plan 与迁移控制参数。 | `384AE812C218CDC1934962D9E677E7094B2920930E3C31F2FAC18CBA8123A4CE` |
 | `configs/strategies/phase8_selector_state_v2.template.json` | selector v2 训练模板；状态为草稿，只有训练 Gate 通过后才能产生冻结配置。 | `F23F2AB12877A065B8300B0BCAC479DF0FCA6EFAA5EB5036CE1355B6F96B096C` |
+| `configs/strategies/phase8_selector_state_v3.template.json` | selector v3 有序区间规则模板；只允许训练侧拟合，独立结果读取前冻结。 | `F65B8A9411FEF0C53B389ACEF774077187C9B62E2F1D146A7D27DEFF1F4C3D5E` |
 | `configs/workloads/phase8_selector_independent_design_v1.json` | 与训练参数指纹不重叠的独立 workload 设计规则。 | `66058F64D0EC270FC55E7F6402EA88C6FA40A152CBDA0AA5A3153629DDF29008` |
 | `configs/workloads/phase8_selector_independent_v1.json` | 按冻结设计规则生成的 45-cell 独立 workload；本轮未执行测量。 | `B87110A400AB3B28FEF478ED635B791E3B12DFBAAD41159804E8E2B156DD4728` |
 | `docs/Q-TopoMoE_Phase8_selector_v2_predecision_audit_20260816.json` | 108 个决策前窗口的状态阶段、遥测覆盖和可用性审计；Gate 已接受。 | `FDC83EC5DE1F41EB61A528B4BCC229619116BEF93CCCBD1CEA6ED1E5F7DA85DE` |
 | `docs/Q-TopoMoE_Phase8_selector_v2_training_gate_failed_20260816.json` | 正式扩展搜索所得最佳配置及失败状态；不得作为生产 selector 加载。 | `BB736986E7307AA861B95F323BB780ABDD83BF6F86DD7E48554EA641CCDF92D2` |
 | `docs/Q-TopoMoE_Phase8_selector_v2_fit_report_20260816.json` | 2,500 组训练侧组合、留族交叉验证、最差样本和 Gate 判定的完整报告。 | `69B72779A406CE53ADC9E112BC6A6AA8105BDFD9AE0159DBF5AA0358FF6AF68B` |
+| `docs/Q-TopoMoE_Phase8_selector_v3_frozen_20260816.json` | v3 训练 Gate 通过后的冻结 selector；明确记录独立测试结果未读取。 | `77836F21A37132C9FCD9EB8CB348B1890AE321905AD42D81A90CB696712BEFB4` |
+| `docs/Q-TopoMoE_Phase8_selector_v3_fit_report_20260816.json` | v3 训练侧指标、留族审计、最差样本和 Gate 判定的完整报告。 | `7D60B1178B4F9D542FE8E29BBD7D036BC58F5E1A588A35CCEC3ECBEA59237F8F` |
