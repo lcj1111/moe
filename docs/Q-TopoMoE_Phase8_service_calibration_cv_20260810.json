@@ -1,0 +1,476 @@
+{
+  "candidate_count": 4,
+  "caveat": "This is grouped cross-validation over 12 measured workloads, not an independent external test set. Prefix-cache and open-loop arrival matrices remain separate Runbook Gates.",
+  "folds": [
+    {
+      "coefficients": {
+        "fp8_tp2_pix01_triton": {
+          "intercept_ms": 110.39176399108726,
+          "raw_prediction_max_ms": 4854.1824101135635,
+          "raw_prediction_min_ms": 1336.2280094225214,
+          "sample_count": 8,
+          "scale": 0.1793839622273779,
+          "weighted_train_rmse_ms": 381.6160162688826
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "intercept_ms": 493.40927948562916,
+          "raw_prediction_max_ms": 3961.631709865227,
+          "raw_prediction_min_ms": 1461.3654326404762,
+          "sample_count": 8,
+          "scale": 0.11415957866765163,
+          "weighted_train_rmse_ms": 451.44459206673156
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "intercept_ms": 691.6361111137696,
+          "raw_prediction_max_ms": 3963.236975462985,
+          "raw_prediction_min_ms": 1462.0816709366982,
+          "sample_count": 8,
+          "scale": 0.0,
+          "weighted_train_rmse_ms": 391.5272877422443
+        },
+        "w4a16_ep4_static_triton": {
+          "intercept_ms": 0.0,
+          "raw_prediction_max_ms": 6333.233709865225,
+          "raw_prediction_min_ms": 1550.2154326404764,
+          "sample_count": 8,
+          "scale": 0.34004266320120413,
+          "weighted_train_rmse_ms": 258.8097962560665
+        }
+      },
+      "held_out_family": "w1",
+      "held_out_workload_ids": [
+        "w1_c1",
+        "w1_c8",
+        "w1_c32",
+        "w1_c128"
+      ],
+      "train_workload_ids": [
+        "w2_c1",
+        "w2_c8",
+        "w2_c32",
+        "w3_c1",
+        "w3_c8",
+        "w3_c16",
+        "w4_c1",
+        "w4_c4"
+      ]
+    },
+    {
+      "coefficients": {
+        "fp8_tp2_pix01_triton": {
+          "intercept_ms": 0.0,
+          "raw_prediction_max_ms": 3851.256136813342,
+          "raw_prediction_min_ms": 1245.5142888657017,
+          "sample_count": 9,
+          "scale": 0.5256515056152391,
+          "weighted_train_rmse_ms": 475.5230014667513
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "intercept_ms": 317.3826588688198,
+          "raw_prediction_max_ms": 3191.906053024725,
+          "raw_prediction_min_ms": 1259.512455231803,
+          "sample_count": 9,
+          "scale": 0.2097030224811034,
+          "weighted_train_rmse_ms": 477.82119425351596
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "intercept_ms": 812.8005422281202,
+          "raw_prediction_max_ms": 3194.849039953948,
+          "raw_prediction_min_ms": 1259.5793412983762,
+          "sample_count": 9,
+          "scale": 0.0,
+          "weighted_train_rmse_ms": 556.858415319554
+        },
+        "w4a16_ep4_static_triton": {
+          "intercept_ms": 54.26828026594103,
+          "raw_prediction_max_ms": 5797.9726126014275,
+          "raw_prediction_min_ms": 931.7974727185749,
+          "sample_count": 9,
+          "scale": 0.3608805267184771,
+          "weighted_train_rmse_ms": 293.1353505568412
+        }
+      },
+      "held_out_family": "w2",
+      "held_out_workload_ids": [
+        "w2_c1",
+        "w2_c8",
+        "w2_c32"
+      ],
+      "train_workload_ids": [
+        "w1_c1",
+        "w1_c8",
+        "w1_c32",
+        "w1_c128",
+        "w3_c1",
+        "w3_c8",
+        "w3_c16",
+        "w4_c1",
+        "w4_c4"
+      ]
+    },
+    {
+      "coefficients": {
+        "fp8_tp2_pix01_triton": {
+          "intercept_ms": 0.0,
+          "raw_prediction_max_ms": 4854.1824101135635,
+          "raw_prediction_min_ms": 1245.5142888657017,
+          "sample_count": 9,
+          "scale": 0.20218815581942656,
+          "weighted_train_rmse_ms": 309.789466382755
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "intercept_ms": 244.55148197828447,
+          "raw_prediction_max_ms": 3961.631709865227,
+          "raw_prediction_min_ms": 1259.512455231803,
+          "sample_count": 9,
+          "scale": 0.24908752098983278,
+          "weighted_train_rmse_ms": 540.7235586946616
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "intercept_ms": 871.8037014616372,
+          "raw_prediction_max_ms": 3963.236975462985,
+          "raw_prediction_min_ms": 1259.5793412983762,
+          "sample_count": 9,
+          "scale": 0.0,
+          "weighted_train_rmse_ms": 731.9990934109624
+        },
+        "w4a16_ep4_static_triton": {
+          "intercept_ms": 28.489983875466976,
+          "raw_prediction_max_ms": 6333.233709865225,
+          "raw_prediction_min_ms": 931.7974727185749,
+          "sample_count": 9,
+          "scale": 0.3158838265370448,
+          "weighted_train_rmse_ms": 304.2933356825383
+        }
+      },
+      "held_out_family": "w3",
+      "held_out_workload_ids": [
+        "w3_c1",
+        "w3_c8",
+        "w3_c16"
+      ],
+      "train_workload_ids": [
+        "w1_c1",
+        "w1_c8",
+        "w1_c32",
+        "w1_c128",
+        "w2_c1",
+        "w2_c8",
+        "w2_c32",
+        "w4_c1",
+        "w4_c4"
+      ]
+    },
+    {
+      "coefficients": {
+        "fp8_tp2_pix01_triton": {
+          "intercept_ms": 0.0,
+          "raw_prediction_max_ms": 4854.1824101135635,
+          "raw_prediction_min_ms": 1245.5142888657017,
+          "sample_count": 10,
+          "scale": 0.32005604209798083,
+          "weighted_train_rmse_ms": 358.44480378837284
+        },
+        "nvfp4_redhat_ep4_static_numa0": {
+          "intercept_ms": 117.10816569870474,
+          "raw_prediction_max_ms": 3961.631709865227,
+          "raw_prediction_min_ms": 1259.512455231803,
+          "sample_count": 10,
+          "scale": 0.2652133298395006,
+          "weighted_train_rmse_ms": 490.9971410750443
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "intercept_ms": 568.1280534418654,
+          "raw_prediction_max_ms": 3963.236975462985,
+          "raw_prediction_min_ms": 1259.5793412983762,
+          "sample_count": 10,
+          "scale": 0.05106041700333022,
+          "weighted_train_rmse_ms": 544.0625621316128
+        },
+        "w4a16_ep4_static_triton": {
+          "intercept_ms": 0.0,
+          "raw_prediction_max_ms": 6333.233709865225,
+          "raw_prediction_min_ms": 931.7974727185749,
+          "sample_count": 10,
+          "scale": 0.3225543518055078,
+          "weighted_train_rmse_ms": 244.1036559348474
+        }
+      },
+      "held_out_family": "w4",
+      "held_out_workload_ids": [
+        "w4_c1",
+        "w4_c4"
+      ],
+      "train_workload_ids": [
+        "w1_c1",
+        "w1_c8",
+        "w1_c32",
+        "w1_c128",
+        "w2_c1",
+        "w2_c8",
+        "w2_c32",
+        "w3_c1",
+        "w3_c8",
+        "w3_c16"
+      ]
+    }
+  ],
+  "formal_gate_ready": false,
+  "full_data_deployment_coefficients": {
+    "fp8_tp2_pix01_triton": {
+      "intercept_ms": 0.0,
+      "raw_prediction_max_ms": 4854.1824101135635,
+      "raw_prediction_min_ms": 1245.5142888657017,
+      "sample_count": 12,
+      "scale": 0.2870516162248841,
+      "weighted_train_rmse_ms": 337.6972723041593
+    },
+    "nvfp4_redhat_ep4_static_numa0": {
+      "intercept_ms": 281.9319604183012,
+      "raw_prediction_max_ms": 3961.631709865227,
+      "raw_prediction_min_ms": 1259.512455231803,
+      "sample_count": 12,
+      "scale": 0.208553762859042,
+      "weighted_train_rmse_ms": 494.298455802524
+    },
+    "nvfp4_redhat_ep8_static_sys": {
+      "intercept_ms": 752.6030950096423,
+      "raw_prediction_max_ms": 3963.236975462985,
+      "raw_prediction_min_ms": 1259.5793412983762,
+      "sample_count": 12,
+      "scale": 0.0,
+      "weighted_train_rmse_ms": 551.1831929492413
+    },
+    "w4a16_ep4_static_triton": {
+      "intercept_ms": 21.092926763587798,
+      "raw_prediction_max_ms": 6333.233709865225,
+      "raw_prediction_min_ms": 931.7974727185749,
+      "sample_count": 12,
+      "scale": 0.3170161981353509,
+      "weighted_train_rmse_ms": 279.0274332349
+    }
+  },
+  "held_out_evaluation": {
+    "decision_overhead_pct_p95": 0.04751409329528787,
+    "gates": {
+      "controller_overhead_lt_1pct": true,
+      "median_regret_le_5pct": false,
+      "p95_regret_le_10pct": false
+    },
+    "invalid_config_rate": 0.0,
+    "median_regret_pct": 13.641751799742014,
+    "p95_regret_pct": 54.76916707549341,
+    "rows": [
+      {
+        "candidate_count": 4,
+        "chosen": "w4a16_ep4_static_triton",
+        "chosen_measured_p99_ms": 335.4171277023852,
+        "decision_overhead_ms": 0.1786999637261033,
+        "decision_overhead_pct_of_service_p99": 0.05327693458894065,
+        "held_out_family": "w1",
+        "invalid_count": 0,
+        "oracle_candidate": "fp8_tp2_pix01_triton",
+        "oracle_p99_ms": 203.8663369603455,
+        "predicted_p99_ms": 316.85089418737556,
+        "regret_pct": 64.52796116488221,
+        "workload_id": "w1_c1"
+      },
+      {
+        "candidate_count": 4,
+        "chosen": "fp8_tp2_pix01_triton",
+        "chosen_measured_p99_ms": 861.7530539631844,
+        "decision_overhead_ms": 0.15600002370774746,
+        "decision_overhead_pct_of_service_p99": 0.018102636595287547,
+        "held_out_family": "w1",
+        "invalid_count": 0,
+        "oracle_candidate": "fp8_tp2_pix01_triton",
+        "oracle_p99_ms": 861.7530539631844,
+        "predicted_p99_ms": 352.2613641505458,
+        "regret_pct": 0.0,
+        "workload_id": "w1_c8"
+      },
+      {
+        "candidate_count": 4,
+        "chosen": "fp8_tp2_pix01_triton",
+        "chosen_measured_p99_ms": 2427.495754789561,
+        "decision_overhead_ms": 0.14979997649788857,
+        "decision_overhead_pct_of_service_p99": 0.006170967599112225,
+        "held_out_family": "w1",
+        "invalid_count": 0,
+        "oracle_candidate": "fp8_tp2_pix01_triton",
+        "oracle_p99_ms": 2427.495754789561,
+        "predicted_p99_ms": 546.4228514389486,
+        "regret_pct": 0.0,
+        "workload_id": "w1_c32"
+      },
+      {
+        "candidate_count": 4,
+        "chosen": "nvfp4_redhat_ep8_static_sys",
+        "chosen_measured_p99_ms": 6209.835852030665,
+        "decision_overhead_ms": 0.14840002404525876,
+        "decision_overhead_pct_of_service_p99": 0.0023897575971630683,
+        "held_out_family": "w1",
+        "invalid_count": 0,
+        "oracle_candidate": "fp8_tp2_pix01_triton",
+        "oracle_p99_ms": 5093.567908741534,
+        "predicted_p99_ms": 691.6361111137696,
+        "regret_pct": 21.91524611605555,
+        "workload_id": "w1_c128"
+      },
+      {
+        "candidate_count": 4,
+        "chosen": "w4a16_ep4_static_triton",
+        "chosen_measured_p99_ms": 380.6160441599786,
+        "decision_overhead_ms": 0.1629000180400908,
+        "decision_overhead_pct_of_service_p99": 0.04279904132775377,
+        "held_out_family": "w2",
+        "invalid_count": 0,
+        "oracle_candidate": "fp8_tp2_pix01_triton",
+        "oracle_p99_ms": 306.79052509367466,
+        "predicted_p99_ms": 708.9536055110497,
+        "regret_pct": 24.063819781840483,
+        "workload_id": "w2_c1"
+      },
+      {
+        "candidate_count": 4,
+        "chosen": "nvfp4_redhat_ep8_static_sys",
+        "chosen_measured_p99_ms": 1047.341811005026,
+        "decision_overhead_ms": 0.15709997387602925,
+        "decision_overhead_pct_of_service_p99": 0.014999876088712298,
+        "held_out_family": "w2",
+        "invalid_count": 0,
+        "oracle_candidate": "w4a16_ep4_static_triton",
+        "oracle_p99_ms": 904.7394287772477,
+        "predicted_p99_ms": 812.8005422281202,
+        "regret_pct": 15.761707480849497,
+        "workload_id": "w2_c8"
+      },
+      {
+        "candidate_count": 4,
+        "chosen": "nvfp4_redhat_ep8_static_sys",
+        "chosen_measured_p99_ms": 1971.054675988853,
+        "decision_overhead_ms": 0.15119998715817928,
+        "decision_overhead_pct_of_service_p99": 0.007671019429348108,
+        "held_out_family": "w2",
+        "invalid_count": 0,
+        "oracle_candidate": "nvfp4_redhat_ep8_static_sys",
+        "oracle_p99_ms": 1971.054675988853,
+        "predicted_p99_ms": 812.8005422281202,
+        "regret_pct": 0.0,
+        "workload_id": "w2_c32"
+      },
+      {
+        "candidate_count": 4,
+        "chosen": "fp8_tp2_pix01_triton",
+        "chosen_measured_p99_ms": 733.1581278704107,
+        "decision_overhead_ms": 0.159399991389364,
+        "decision_overhead_pct_of_service_p99": 0.02174155687973751,
+        "held_out_family": "w3",
+        "invalid_count": 0,
+        "oracle_candidate": "nvfp4_redhat_ep8_static_sys",
+        "oracle_p99_ms": 576.8173937685788,
+        "predicted_p99_ms": 507.44535849999954,
+        "regret_pct": 27.10402560512182,
+        "workload_id": "w3_c1"
+      },
+      {
+        "candidate_count": 4,
+        "chosen": "fp8_tp2_pix01_triton",
+        "chosen_measured_p99_ms": 879.3063620105386,
+        "decision_overhead_ms": 0.1534000039100647,
+        "decision_overhead_pct_of_service_p99": 0.01744556966008011,
+        "held_out_family": "w3",
+        "invalid_count": 0,
+        "oracle_candidate": "fp8_tp2_pix01_triton",
+        "oracle_p99_ms": 879.3063620105386,
+        "predicted_p99_ms": 559.6339432671097,
+        "regret_pct": 0.0,
+        "workload_id": "w3_c8"
+      },
+      {
+        "candidate_count": 4,
+        "chosen": "fp8_tp2_pix01_triton",
+        "chosen_measured_p99_ms": 1653.0059911310673,
+        "decision_overhead_ms": 0.15259999781847,
+        "decision_overhead_pct_of_service_p99": 0.009231666348290344,
+        "held_out_family": "w3",
+        "invalid_count": 0,
+        "oracle_candidate": "nvfp4_redhat_ep8_static_sys",
+        "oracle_p99_ms": 1482.2268369607627,
+        "predicted_p99_ms": 778.6783758905387,
+        "regret_pct": 11.52179611863453,
+        "workload_id": "w3_c16"
+      },
+      {
+        "candidate_count": 4,
+        "chosen": "fp8_tp2_pix01_triton",
+        "chosen_measured_p99_ms": 2131.1933072283864,
+        "decision_overhead_ms": 0.15709997387602925,
+        "decision_overhead_pct_of_service_p99": 0.007371455857297972,
+        "held_out_family": "w4",
+        "invalid_count": 0,
+        "oracle_candidate": "nvfp4_redhat_ep8_static_sys",
+        "oracle_p99_ms": 1451.9178899936378,
+        "predicted_p99_ms": 433.3892999438732,
+        "regret_pct": 46.784699184175295,
+        "workload_id": "w4_c1"
+      },
+      {
+        "candidate_count": 4,
+        "chosen": "fp8_tp2_pix01_triton",
+        "chosen_measured_p99_ms": 524.8956456780434,
+        "decision_overhead_ms": 0.1550000160932541,
+        "decision_overhead_pct_of_service_p99": 0.02952968220817112,
+        "held_out_family": "w4",
+        "invalid_count": 0,
+        "oracle_candidate": "fp8_tp2_pix01_triton",
+        "oracle_p99_ms": 524.8956456780434,
+        "predicted_p99_ms": 427.6678480362356,
+        "regret_pct": 0.0,
+        "workload_id": "w4_c4"
+      }
+    ],
+    "top1_accuracy": 0.4166666666666667
+  },
+  "inputs": {
+    "candidates": "configs\\strategies\\phase8_candidates_repeated_pareto.json",
+    "candidates_sha256": "cf2fb1e23025f8aa2456a5086bd365c768a20b8ca66d04c8b0bc6f06a772161a",
+    "communication_cost_db": "configs\\communication\\nccl_cost_db.json",
+    "communication_cost_db_sha256": "50140b47b46e7b6a887697153968e0c36d268c282b363ac15bef6a1dd71bd468",
+    "kernel_db": "configs\\kernels\\phase4_kernel_db.json",
+    "kernel_db_sha256": "6ae396bff2ec91156a8c2b9bbf60b7ee14af5d198f42b3c593680e69b82302e8",
+    "observations": "configs\\strategies\\phase8_observations_all_formats_repeated.json",
+    "observations_sha256": "5f176527274306bc9d52692fe4599279e9851e026bf669f3a5b30cd9b9957157"
+  },
+  "method": {
+    "base_features": [
+      "measured_kernel_prefill_plus_output_tokens_times_decode",
+      "num_model_layers",
+      "measured_mapping_communication",
+      "route_imbalance",
+      "migration_bytes"
+    ],
+    "constraints": "scale>=0, intercept_ms>=0",
+    "fit": "weighted_least_squares",
+    "leakage_control": "held-out family medians and oracle labels are excluded from fold fit",
+    "model": "per_candidate_nonnegative_affine",
+    "num_model_layers": 40,
+    "uncertainty_weight": "inverse variance from bootstrap 95% CI with 5% median sigma floor",
+    "validation": "leave_one_workload_family_out_W1_W2_W3_W4"
+  },
+  "observation_count": 12,
+  "schema_version": "qtopomoe.phase8_service_calibration.v1",
+  "status": "gate_failed",
+  "uncalibrated_baseline": {
+    "decision_overhead_pct_p95": 0.04563580879970863,
+    "gates": {
+      "controller_overhead_lt_1pct": true,
+      "median_regret_le_5pct": false,
+      "p95_regret_le_10pct": false
+    },
+    "invalid_config_rate": 0.0,
+    "median_regret_pct": 31.403463171087026,
+    "p95_regret_pct": 73.84764385602026,
+    "top1_accuracy": 0.08333333333333333
+  }
+}

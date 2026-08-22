@@ -1,0 +1,602 @@
+[
+  {
+    "topology": "tp2_node_0_2",
+    "workload": "short",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 78.26671609655023,
+    "tpot_p50": 3.536682165279163,
+    "e2e_p50": 527.425351087004
+  },
+  {
+    "topology": "tp2_node_0_2",
+    "workload": "short",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 370.66416069865227,
+    "tpot_p50": 4.298815910711768,
+    "e2e_p50": 916.6873227804899
+  },
+  {
+    "topology": "tp2_node_0_2",
+    "workload": "short",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1209.9172370508313,
+    "tpot_p50": 5.720060109710834,
+    "e2e_p50": 1937.3680469579995
+  },
+  {
+    "topology": "tp2_node_0_2",
+    "workload": "medium",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 305.9611339122057,
+    "tpot_p50": 3.674914802119196,
+    "e2e_p50": 1213.6650900356472
+  },
+  {
+    "topology": "tp2_node_0_2",
+    "workload": "medium",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 529.1669243015349,
+    "tpot_p50": 4.661517527503228,
+    "e2e_p50": 1570.999070070684
+  },
+  {
+    "topology": "tp2_node_0_2",
+    "workload": "medium",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1563.9016469940543,
+    "tpot_p50": 5.1472640832158625,
+    "e2e_p50": 2766.4421261288226
+  },
+  {
+    "topology": "tp2_node_1_3",
+    "workload": "short",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 77.85957399755716,
+    "tpot_p50": 3.6108332510128265,
+    "e2e_p50": 536.4353968761861
+  },
+  {
+    "topology": "tp2_node_1_3",
+    "workload": "short",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 417.3183310776949,
+    "tpot_p50": 4.359727534722156,
+    "e2e_p50": 971.0048702545464
+  },
+  {
+    "topology": "tp2_node_1_3",
+    "workload": "short",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1264.398423023522,
+    "tpot_p50": 5.078877307709277,
+    "e2e_p50": 1920.2988715842366
+  },
+  {
+    "topology": "tp2_node_1_3",
+    "workload": "medium",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 312.5277110375464,
+    "tpot_p50": 3.732304250904423,
+    "e2e_p50": 1234.4068610109389
+  },
+  {
+    "topology": "tp2_node_1_3",
+    "workload": "medium",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 512.7225047908723,
+    "tpot_p50": 4.732726759227392,
+    "e2e_p50": 1570.5104563385248
+  },
+  {
+    "topology": "tp2_node_1_3",
+    "workload": "medium",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1536.4233129657805,
+    "tpot_p50": 5.288870827306877,
+    "e2e_p50": 2785.585341975093
+  },
+  {
+    "topology": "tp2_node_4_6",
+    "workload": "short",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 76.57252112403512,
+    "tpot_p50": 3.5565025503123837,
+    "e2e_p50": 528.2483450137079
+  },
+  {
+    "topology": "tp2_node_4_6",
+    "workload": "short",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 389.81690211221576,
+    "tpot_p50": 4.306849282909566,
+    "e2e_p50": 936.6708709858358
+  },
+  {
+    "topology": "tp2_node_4_6",
+    "workload": "short",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1324.8559469357133,
+    "tpot_p50": 5.0757656709885035,
+    "e2e_p50": 1967.8621399216354
+  },
+  {
+    "topology": "tp2_node_4_6",
+    "workload": "medium",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 304.94098691269755,
+    "tpot_p50": 3.684486275697165,
+    "e2e_p50": 1215.0090970098972
+  },
+  {
+    "topology": "tp2_node_4_6",
+    "workload": "medium",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 540.2784952893853,
+    "tpot_p50": 4.669770249165595,
+    "e2e_p50": 1584.24464892596
+  },
+  {
+    "topology": "tp2_node_4_6",
+    "workload": "medium",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1543.0211802013218,
+    "tpot_p50": 5.024883974055748,
+    "e2e_p50": 2727.107400074601
+  },
+  {
+    "topology": "tp2_node_5_7",
+    "workload": "short",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 80.65249398350716,
+    "tpot_p50": 3.557955662859237,
+    "e2e_p50": 532.5128631666303
+  },
+  {
+    "topology": "tp2_node_5_7",
+    "workload": "short",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 420.2572610229254,
+    "tpot_p50": 4.3011363155729185,
+    "e2e_p50": 966.8590622022748
+  },
+  {
+    "topology": "tp2_node_5_7",
+    "workload": "short",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1175.5591700784862,
+    "tpot_p50": 5.0426607467527464,
+    "e2e_p50": 1818.2391580194235
+  },
+  {
+    "topology": "tp2_node_5_7",
+    "workload": "medium",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 305.24520110338926,
+    "tpot_p50": 3.6903067118665467,
+    "e2e_p50": 1216.7509589344263
+  },
+  {
+    "topology": "tp2_node_5_7",
+    "workload": "medium",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 561.9438630528748,
+    "tpot_p50": 4.682445561879182,
+    "e2e_p50": 1607.540452387184
+  },
+  {
+    "topology": "tp2_node_5_7",
+    "workload": "medium",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1524.0495610050857,
+    "tpot_p50": 4.988045927313008,
+    "e2e_p50": 2687.9811622202396
+  },
+  {
+    "topology": "tp2_pix_0_1",
+    "workload": "short",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 78.75023875385523,
+    "tpot_p50": 3.5409124670770225,
+    "e2e_p50": 528.4461220726371
+  },
+  {
+    "topology": "tp2_pix_0_1",
+    "workload": "short",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 247.84395284950733,
+    "tpot_p50": 4.269818786355689,
+    "e2e_p50": 789.7621979936957
+  },
+  {
+    "topology": "tp2_pix_0_1",
+    "workload": "short",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1107.1083401329815,
+    "tpot_p50": 5.358624312381341,
+    "e2e_p50": 1790.9221039153636
+  },
+  {
+    "topology": "tp2_pix_0_1",
+    "workload": "medium",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 310.4099566116929,
+    "tpot_p50": 3.800995972173417,
+    "e2e_p50": 1249.2559617385268
+  },
+  {
+    "topology": "tp2_pix_0_1",
+    "workload": "medium",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 346.85637801885605,
+    "tpot_p50": 4.663377696748024,
+    "e2e_p50": 1389.3430321477354
+  },
+  {
+    "topology": "tp2_pix_0_1",
+    "workload": "medium",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1825.3611591644585,
+    "tpot_p50": 5.200184156214858,
+    "e2e_p50": 3024.1374257020652
+  },
+  {
+    "topology": "tp2_pix_2_3",
+    "workload": "short",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 81.09123120084405,
+    "tpot_p50": 3.9938340462216244,
+    "e2e_p50": 588.3081550709903
+  },
+  {
+    "topology": "tp2_pix_2_3",
+    "workload": "short",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 421.95092095062137,
+    "tpot_p50": 5.310451718208593,
+    "e2e_p50": 1096.3046411052346
+  },
+  {
+    "topology": "tp2_pix_2_3",
+    "workload": "short",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1085.2448963560164,
+    "tpot_p50": 5.746187095889661,
+    "e2e_p50": 1819.4171292707324
+  },
+  {
+    "topology": "tp2_pix_2_3",
+    "workload": "medium",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 354.9677641130984,
+    "tpot_p50": 4.120652085011788,
+    "e2e_p50": 1372.7688291110098
+  },
+  {
+    "topology": "tp2_pix_2_3",
+    "workload": "medium",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 498.9963290281594,
+    "tpot_p50": 5.167045487074314,
+    "e2e_p50": 1653.8069290108979
+  },
+  {
+    "topology": "tp2_pix_2_3",
+    "workload": "medium",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1737.4507831409574,
+    "tpot_p50": 5.469602534683349,
+    "e2e_p50": 3019.3958119489253
+  },
+  {
+    "topology": "tp2_pix_4_5",
+    "workload": "short",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 78.02816340699792,
+    "tpot_p50": 3.905878006297303,
+    "e2e_p50": 574.0746702067554
+  },
+  {
+    "topology": "tp2_pix_4_5",
+    "workload": "short",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 388.4589057415724,
+    "tpot_p50": 4.568367331164089,
+    "e2e_p50": 969.5489117875695
+  },
+  {
+    "topology": "tp2_pix_4_5",
+    "workload": "short",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1031.8071260116994,
+    "tpot_p50": 5.24887031560221,
+    "e2e_p50": 1702.860452234745
+  },
+  {
+    "topology": "tp2_pix_4_5",
+    "workload": "medium",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 308.8900758884847,
+    "tpot_p50": 4.023519323889905,
+    "e2e_p50": 1302.6993488892913
+  },
+  {
+    "topology": "tp2_pix_4_5",
+    "workload": "medium",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 493.0497561581433,
+    "tpot_p50": 5.010965088981071,
+    "e2e_p50": 1612.3475851491094
+  },
+  {
+    "topology": "tp2_pix_4_5",
+    "workload": "medium",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1717.0388498343527,
+    "tpot_p50": 5.728918488227552,
+    "e2e_p50": 2979.562875814736
+  },
+  {
+    "topology": "tp2_pix_6_7",
+    "workload": "short",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 83.2182290032506,
+    "tpot_p50": 3.9414315755794367,
+    "e2e_p50": 583.7800391018391
+  },
+  {
+    "topology": "tp2_pix_6_7",
+    "workload": "short",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 333.95052468404174,
+    "tpot_p50": 4.61187309358181,
+    "e2e_p50": 918.8417918048799
+  },
+  {
+    "topology": "tp2_pix_6_7",
+    "workload": "short",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1046.7294389382005,
+    "tpot_p50": 5.285952808555421,
+    "e2e_p50": 1720.9487250074744
+  },
+  {
+    "topology": "tp2_pix_6_7",
+    "workload": "medium",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 308.8475186377764,
+    "tpot_p50": 4.06607614287179,
+    "e2e_p50": 1313.1683259271085
+  },
+  {
+    "topology": "tp2_pix_6_7",
+    "workload": "medium",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 500.1777042634785,
+    "tpot_p50": 4.963427231164782,
+    "e2e_p50": 1609.6611432731152
+  },
+  {
+    "topology": "tp2_pix_6_7",
+    "workload": "medium",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1621.8444490805268,
+    "tpot_p50": 5.432191932406036,
+    "e2e_p50": 2899.6718279086053
+  },
+  {
+    "topology": "tp4_numa0",
+    "workload": "short",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 80.41126886382699,
+    "tpot_p50": 4.384679536474502,
+    "e2e_p50": 637.2655699960887
+  },
+  {
+    "topology": "tp4_numa0",
+    "workload": "short",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 403.83423678576946,
+    "tpot_p50": 5.363512028918022,
+    "e2e_p50": 1084.835385903716
+  },
+  {
+    "topology": "tp4_numa0",
+    "workload": "short",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1030.0776627846062,
+    "tpot_p50": 7.886555694835627,
+    "e2e_p50": 2034.9034308455884
+  },
+  {
+    "topology": "tp4_numa0",
+    "workload": "medium",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 331.13339077681303,
+    "tpot_p50": 4.493926109486742,
+    "e2e_p50": 1396.193878725171
+  },
+  {
+    "topology": "tp4_numa0",
+    "workload": "medium",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 484.88468397408724,
+    "tpot_p50": 5.7823805076893695,
+    "e2e_p50": 1884.2207668349147
+  },
+  {
+    "topology": "tp4_numa0",
+    "workload": "medium",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1479.0539937093854,
+    "tpot_p50": 8.295395544597081,
+    "e2e_p50": 3357.8192670829594
+  },
+  {
+    "topology": "tp4_numa1",
+    "workload": "short",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 81.48393733426929,
+    "tpot_p50": 4.346875591188904,
+    "e2e_p50": 633.5371374152601
+  },
+  {
+    "topology": "tp4_numa1",
+    "workload": "short",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 381.43576588481665,
+    "tpot_p50": 5.315085231348521,
+    "e2e_p50": 1056.2916807830334
+  },
+  {
+    "topology": "tp4_numa1",
+    "workload": "short",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1008.0721089616418,
+    "tpot_p50": 7.819044887726232,
+    "e2e_p50": 2006.5736342221498
+  },
+  {
+    "topology": "tp4_numa1",
+    "workload": "medium",
+    "concurrency": 1,
+    "completed": 1,
+    "failed": 0,
+    "ttft_p50": 336.26179909333587,
+    "tpot_p50": 4.465277316559593,
+    "e2e_p50": 1394.5325231179595
+  },
+  {
+    "topology": "tp4_numa1",
+    "workload": "medium",
+    "concurrency": 8,
+    "completed": 8,
+    "failed": 0,
+    "ttft_p50": 491.90701823681593,
+    "tpot_p50": 5.678772193716903,
+    "e2e_p50": 1811.5307060070336
+  },
+  {
+    "topology": "tp4_numa1",
+    "workload": "medium",
+    "concurrency": 32,
+    "completed": 32,
+    "failed": 0,
+    "ttft_p50": 1484.3489141203463,
+    "tpot_p50": 8.140927033596917,
+    "e2e_p50": 3285.9849659726024
+  }
+]

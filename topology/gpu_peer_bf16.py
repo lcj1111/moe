@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+"""Probe CUDA peer accessibility and BF16 matmul correctness per GPU.
+
+Writes ``torch-gpu.json`` with device properties, peer-access matrix and a
+BF16 GEMM sanity check; used by the Phase 0 hardware profile
+(``topology/collect_hardware.sh`` / ``docs/q_topomoe_phase0_verify.sh``).
+"""
 import argparse
 import json
 import platform

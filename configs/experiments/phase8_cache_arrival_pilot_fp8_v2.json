@@ -1,0 +1,34 @@
+{
+  "schema_version": "qtopomoe.phase8_repeated_plan.v1",
+  "purpose": "One-candidate block-aware mechanics Gate; results are not a deployment ranking.",
+  "seed": 42,
+  "repeats_per_candidate": 1,
+  "cooldown_seconds": 0,
+  "health_timeout_seconds": 1200,
+  "request_timeout_seconds": 300,
+  "host": "127.0.0.1",
+  "port": 31540,
+  "max_model_len": 8192,
+  "max_num_seqs": 8,
+  "gpu_memory_utilization": 0.9,
+  "software": {
+    "python_bin": "/home/k8s-ops/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python",
+    "vllm_bin": "/home/k8s-ops/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/vllm",
+    "expected_vllm_version": "0.26.1rc1.dev343+g33c50587d"
+  },
+  "workload_matrix": "configs/workloads/phase8_cache_arrival_pilot_v2.json",
+  "candidates": [
+    {
+      "candidate_id": "fp8_tp2_pix01_triton_cache_arrival_pilot_v2",
+      "model_path": "/data/models/test/models/Qwen--Qwen3.6-35B-A3B-FP8/snapshots/master",
+      "gpu_ids": [0, 1],
+      "tp": 2,
+      "dp": 1,
+      "enable_expert_parallel": false,
+      "moe_backend": "triton",
+      "numa_args": ["--cpunodebind=0", "--membind=0"],
+      "backend_log_pattern": "Using TRITON Fp8 MoE backend",
+      "forbidden_log_patterns": ["Unknown SF transformation"]
+    }
+  ]
+}

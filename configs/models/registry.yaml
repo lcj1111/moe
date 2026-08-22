@@ -17,7 +17,7 @@ models:
     path_env: QTOPOMOE_BF16_MODEL
     served_name: qwen3.6-35b-a3b-bf16
     precision: bf16
-    status: path_not_configured
+    status: existing_revalidate_before_formal_run
   qwen36_w4a16:
     source: project_quantization_pipeline
     path_env: QTOPOMOE_W4A16_MODEL

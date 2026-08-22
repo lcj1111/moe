@@ -7,6 +7,7 @@ __pycache__/
 
 # Environments and local caches
 .venv/
+.runtime/
 .cache/
 env/local.env
 
@@ -31,5 +32,6 @@ artifacts/**
 *.jsonl
 *.parquet
 *.npz
+*.npy
 core
 core.*

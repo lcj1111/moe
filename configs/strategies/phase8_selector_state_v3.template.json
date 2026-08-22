@@ -1,0 +1,53 @@
+{
+  "schema_version": "qtopomoe.phase8_selector_config.v3",
+  "status": "draft_not_fitted",
+  "说明": "v2 训练 Gate 失败后建立的新协议。规则只能读取决策时可观测字段；必须先通过训练 Gate，再冻结并读取独立测试集。",
+  "selector": "telemetry_aware_regime_rules",
+  "strict_match": [
+    "arrival_mode"
+  ],
+  "require_server_queue_telemetry": true,
+  "fallback_candidate": "nvfp4_redhat_ep8_static_sys",
+  "numeric_features": [
+    {"path": "input_tokens", "transform": "log2", "weight": 1.0},
+    {"path": "output_tokens", "transform": "log2", "weight": 1.0},
+    {"path": "concurrency", "transform": "log2", "weight": 1.0},
+    {"path": "selector_state.actual_cache_hit_ratio", "transform": "linear", "scale": 1.0, "weight": 1.0},
+    {"path": "selector_state.recent_arrival_rate_rps", "transform": "log2", "weight": 1.0, "allow_both_null": true, "missing_mismatch_penalty": 1.0},
+    {"path": "selector_state.client_queue_delay_ms.p95", "transform": "log1p", "weight": 1.0, "allow_both_null": true, "missing_mismatch_penalty": 1.0},
+    {"path": "selector_state.server_queue_waiting_p95", "transform": "log1p", "weight": 1.0},
+    {"path": "selector_state.server_requests_running_p95", "transform": "log1p", "weight": 1.0},
+    {"path": "selector_state.server_kv_cache_usage_p95", "transform": "linear", "scale": 1.0, "weight": 1.0},
+    {"path": "selector_state.short_window_offered_e2e_p99_ms", "transform": "log1p", "weight": 1.0}
+  ],
+  "regime_rules": [
+    {"id": "small_high_concurrency_no_cache_burst", "all": [{"path": "input_tokens", "operator": "le", "value": 512}, {"path": "concurrency", "operator": "ge", "value": 64}, {"path": "prefix_cache_pct", "operator": "eq", "value": 0}, {"path": "arrival_mode", "operator": "eq", "value": "burst"}], "candidate": "nvfp4_redhat_ep8_static_sys"},
+    {"id": "small_high_concurrency", "all": [{"path": "input_tokens", "operator": "le", "value": 512}, {"path": "concurrency", "operator": "ge", "value": 64}], "candidate": "nvfp4_redhat_ep4_static_numa0"},
+    {"id": "small_mid_concurrency_no_cache_poisson", "all": [{"path": "input_tokens", "operator": "le", "value": 512}, {"path": "concurrency", "operator": "ge", "value": 16}, {"path": "prefix_cache_pct", "operator": "eq", "value": 0}, {"path": "arrival_mode", "operator": "eq", "value": "poisson"}], "candidate": "nvfp4_redhat_ep8_static_sys"},
+    {"id": "small_mid_concurrency_half_cache_closed", "all": [{"path": "input_tokens", "operator": "le", "value": 512}, {"path": "concurrency", "operator": "ge", "value": 4}, {"path": "concurrency", "operator": "le", "value": 16}, {"path": "prefix_cache_pct", "operator": "eq", "value": 50}, {"path": "arrival_mode", "operator": "eq", "value": "closed_loop"}], "candidate": "nvfp4_redhat_ep4_static_numa0"},
+    {"id": "small_mid_concurrency_full_cache_poisson", "all": [{"path": "input_tokens", "operator": "le", "value": 512}, {"path": "concurrency", "operator": "ge", "value": 4}, {"path": "concurrency", "operator": "le", "value": 16}, {"path": "prefix_cache_pct", "operator": "eq", "value": 100}, {"path": "arrival_mode", "operator": "eq", "value": "poisson"}], "candidate": "nvfp4_redhat_ep8_static_sys"},
+    {"id": "small_default", "all": [{"path": "input_tokens", "operator": "le", "value": 512}], "candidate": "fp8_tp2_pix01_triton"},
+    {"id": "medium_low_concurrency_no_cache_poisson", "all": [{"path": "input_tokens", "operator": "le", "value": 4096}, {"path": "concurrency", "operator": "le", "value": 2}, {"path": "prefix_cache_pct", "operator": "eq", "value": 0}, {"path": "arrival_mode", "operator": "eq", "value": "poisson"}], "candidate": "nvfp4_redhat_ep4_static_numa0"},
+    {"id": "medium_low_concurrency", "all": [{"path": "input_tokens", "operator": "le", "value": 4096}, {"path": "concurrency", "operator": "le", "value": 2}], "candidate": "fp8_tp2_pix01_triton"},
+    {"id": "medium_cached_closed_loop", "all": [{"path": "input_tokens", "operator": "le", "value": 4096}, {"path": "concurrency", "operator": "le", "value": 16}, {"path": "selector_state.actual_cache_hit_ratio", "operator": "gt", "value": 0.25}, {"path": "arrival_mode", "operator": "eq", "value": "closed_loop"}], "candidate": "w4a16_ep4_static_triton"},
+    {"id": "medium_default", "all": [{"path": "input_tokens", "operator": "le", "value": 4096}], "candidate": "nvfp4_redhat_ep8_static_sys"},
+    {"id": "long_low_concurrency_high_cache", "all": [{"path": "input_tokens", "operator": "le", "value": 16384}, {"path": "concurrency", "operator": "le", "value": 2}, {"path": "selector_state.actual_cache_hit_ratio", "operator": "gt", "value": 0.75}], "candidate": "fp8_tp2_pix01_triton"},
+    {"id": "long_low_concurrency_mid_cache_poisson", "all": [{"path": "input_tokens", "operator": "le", "value": 16384}, {"path": "concurrency", "operator": "le", "value": 2}, {"path": "selector_state.actual_cache_hit_ratio", "operator": "gt", "value": 0.2}, {"path": "arrival_mode", "operator": "eq", "value": "poisson"}], "candidate": "nvfp4_redhat_ep8_static_sys"},
+    {"id": "long_low_concurrency_mid_cache", "all": [{"path": "input_tokens", "operator": "le", "value": 16384}, {"path": "concurrency", "operator": "le", "value": 2}, {"path": "selector_state.actual_cache_hit_ratio", "operator": "gt", "value": 0.2}], "candidate": "fp8_tp2_pix01_triton"},
+    {"id": "long_low_concurrency_no_cache_poisson", "all": [{"path": "input_tokens", "operator": "le", "value": 16384}, {"path": "concurrency", "operator": "le", "value": 2}, {"path": "arrival_mode", "operator": "eq", "value": "poisson"}], "candidate": "nvfp4_redhat_ep4_static_numa0"},
+    {"id": "long_low_concurrency_no_cache", "all": [{"path": "input_tokens", "operator": "le", "value": 16384}, {"path": "concurrency", "operator": "le", "value": 2}], "candidate": "w4a16_ep4_static_triton"},
+    {"id": "long_mid_concurrency_high_cache", "all": [{"path": "input_tokens", "operator": "le", "value": 16384}, {"path": "concurrency", "operator": "le", "value": 12}, {"path": "selector_state.actual_cache_hit_ratio", "operator": "gt", "value": 0.75}], "candidate": "fp8_tp2_pix01_triton"},
+    {"id": "long_mid_concurrency_default", "all": [{"path": "input_tokens", "operator": "le", "value": 16384}, {"path": "concurrency", "operator": "le", "value": 12}], "candidate": "nvfp4_redhat_ep8_static_sys"},
+    {"id": "long_high_concurrency_high_cache_poisson", "all": [{"path": "input_tokens", "operator": "le", "value": 16384}, {"path": "selector_state.actual_cache_hit_ratio", "operator": "gt", "value": 0.75}, {"path": "arrival_mode", "operator": "eq", "value": "poisson"}], "candidate": "fp8_tp2_pix01_triton"},
+    {"id": "long_high_concurrency_high_cache_burst", "all": [{"path": "input_tokens", "operator": "le", "value": 16384}, {"path": "selector_state.actual_cache_hit_ratio", "operator": "gt", "value": 0.75}, {"path": "arrival_mode", "operator": "eq", "value": "burst"}], "candidate": "nvfp4_redhat_ep4_static_numa0"},
+    {"id": "long_high_concurrency_high_cache", "all": [{"path": "input_tokens", "operator": "le", "value": 16384}, {"path": "selector_state.actual_cache_hit_ratio", "operator": "gt", "value": 0.75}], "candidate": "nvfp4_redhat_ep8_static_sys"},
+    {"id": "long_default", "all": [{"path": "input_tokens", "operator": "le", "value": 16384}], "candidate": "nvfp4_redhat_ep8_static_sys"},
+    {"id": "very_long_high_cache", "all": [{"path": "selector_state.actual_cache_hit_ratio", "operator": "gt", "value": 0.75}], "candidate": "fp8_tp2_pix01_triton"}
+  ],
+  "gates": {
+    "median_regret_pct_max": 5.0,
+    "p95_regret_pct_max": 10.0,
+    "decision_overhead_pct_max": 1.0,
+    "infeasible_misselection_rate_max": 0.0
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": "qtopomoe.phase8_formal_rejected.v2",
+  "status": "rejected_arrival_instrumentation",
+  "host": "gpu-111",
+  "raw_root": "/data/models/test/qtopomoe_phase8_formal_controlled_v2_20260810",
+  "raw_root_preserved": true,
+  "orchestrator_pid": 4120815,
+  "orchestrator_running_at_audit": false,
+  "gpu_memory_used_mib_at_audit": [2, 2, 2, 2, 2, 2, 2, 2],
+  "plan": "configs/experiments/phase8_formal_controlled_v2.json",
+  "plan_sha256": "847c511dbe4330a722233c4793b6092577bb76faebaf08cca3cf5191db13939a",
+  "schedule_sha256": "4a3003f1dce5fb50ea4e206f8d6f6a50b9ea30d7568032776864dfa93e81135c",
+  "orchestrator_log_sha256": "fb78aa6e354254eaa766cc15f2c0cec337c4a4930dcf6deed9a623a552664332",
+  "audit": {
+    "summary_count": 30,
+    "requests_file_count": 30,
+    "request_completed_total": 1536,
+    "request_failed_total": 0,
+    "cache_gate_failures": 0,
+    "token_gate_failures": 0,
+    "arrival_gate_failures": 1
+  },
+  "terminal_cell": {
+    "candidate_id": "nvfp4_redhat_ep8_static_sys",
+    "repeat": 5,
+    "cell": "w1_c128_p0_burst",
+    "completed": 128,
+    "failed": 0,
+    "server_prompt_tokens_exact": true,
+    "actual_cached_token_ratio": 0.0,
+    "arrival_schedule_gate": false,
+    "dispatch_lag_p50_ms": 28.06544816121459,
+    "dispatch_lag_p95_ms": 79.16449988260865,
+    "dispatch_lag_p99_ms": 100.64607299864292,
+    "dispatch_lag_gate_ms": 50.0,
+    "queue_delay_p95_ms": 2.091139554977417,
+    "service_start_lag_p95_ms": 81.51552872732282,
+    "offered_ttft_p95_ms": 4375.575604848564,
+    "offered_e2e_p95_ms": 5288.778576999903,
+    "summary_sha256": "df7c47aa04aaaaa15cac7a50f15cb06ccec57d1887a3b4c6dcd79d66de659ea0",
+    "requests_sha256": "bad8cada7121b2da4b85682e410522a7446096f639a9e7d6ea4b8501bd685a63"
+  },
+  "root_cause": {
+    "classification": "client arrival instrumentation",
+    "detail": "All 128 requests have scheduled_offset_s=0, but submitted_offset_s spans 0.000255889 to 0.105426677 seconds because the scheduler recorded a new timestamp for each sequential pool.submit call.",
+    "why_not_a_service_failure": "All requests completed, cache/token Gates passed, and worker queue p95 was only 2.091 ms.",
+    "correction": "Requests sharing a scheduled offset receive one batch enqueue timestamp; per-task insertion and worker delay remain in queue delay and scheduled-arrival TTFT/E2E."
+  },
+  "restart_policy": {
+    "reuse_raw_root": false,
+    "successor_plan": "configs/experiments/phase8_formal_controlled_v3.json",
+    "successor_raw_root": "/data/models/test/qtopomoe_phase8_formal_controlled_v3_20260810"
+  },
+  "caveat": "The root status.json remained stale at running after the fail-closed orchestrator exited; process and GPU checks are authoritative for terminal state."
+}

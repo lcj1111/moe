@@ -1,0 +1,66 @@
+{
+  "schema_version": "qtopomoe.phase8_repeated_plan.v1",
+  "seed": 42,
+  "repeats_per_candidate": 5,
+  "cooldown_seconds": 30,
+  "health_timeout_seconds": 1200,
+  "request_timeout_seconds": 900,
+  "host": "127.0.0.1",
+  "port": 31540,
+  "max_model_len": 65536,
+  "max_num_seqs": 128,
+  "gpu_memory_utilization": 0.9,
+  "software": {
+    "python_bin": "/home/k8s-ops/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python",
+    "vllm_bin": "/home/k8s-ops/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/vllm",
+    "expected_vllm_version": "0.26.1rc1.dev343+g33c50587d"
+  },
+  "workload_matrix": "configs/workloads/phase8_single_pass_screen.json",
+  "candidates": [
+    {
+      "candidate_id": "fp8_tp2_pix01_triton",
+      "model_path": "/data/models/test/models/Qwen--Qwen3.6-35B-A3B-FP8/snapshots/master",
+      "gpu_ids": [0, 1],
+      "tp": 2,
+      "dp": 1,
+      "enable_expert_parallel": false,
+      "moe_backend": "triton",
+      "numa_args": ["--cpunodebind=0", "--membind=0"],
+      "backend_log_pattern": "Using TRITON Fp8 MoE backend",
+      "forbidden_log_patterns": ["Unknown SF transformation"]
+    },
+    {
+      "candidate_id": "w4a16_ep4_static_triton",
+      "model_path": "/data/models/test/qtopomoe_w4a16_canonical_text_v1",
+      "gpu_ids": [0, 1, 2, 3],
+      "tp": 4,
+      "dp": 1,
+      "enable_expert_parallel": true,
+      "moe_backend": "triton",
+      "numa_args": ["--cpunodebind=0", "--membind=0"],
+      "backend_log_pattern": "Using 'TRITON' WNA16 MoE backend"
+    },
+    {
+      "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+      "model_path": "/data/models/test/redhatai_qwen36_nvfp4",
+      "gpu_ids": [0, 1, 2, 3],
+      "tp": 4,
+      "dp": 1,
+      "enable_expert_parallel": true,
+      "moe_backend": null,
+      "numa_args": ["--cpunodebind=0", "--membind=0"],
+      "backend_log_pattern": "Using 'MARLIN' NvFp4 MoE backend"
+    },
+    {
+      "candidate_id": "nvfp4_redhat_ep8_static_sys",
+      "model_path": "/data/models/test/redhatai_qwen36_nvfp4",
+      "gpu_ids": [0, 1, 2, 3, 4, 5, 6, 7],
+      "tp": 8,
+      "dp": 1,
+      "enable_expert_parallel": true,
+      "moe_backend": null,
+      "numa_args": [],
+      "backend_log_pattern": "Using 'MARLIN' NvFp4 MoE backend"
+    }
+  ]
+}

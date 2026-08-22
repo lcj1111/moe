@@ -1,0 +1,1579 @@
+{
+  "candidate_ids": [
+    "fp8_tp2_pix01_triton",
+    "nvfp4_redhat_ep4_static_numa0",
+    "nvfp4_redhat_ep8_static_sys",
+    "w4a16_ep4_static_triton"
+  ],
+  "cells": [
+    {
+      "candidates": [
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 4.689612495504421,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r01/workloads/w1_c1/summary.json",
+              "summary_sha256": "cbfb1c9243c2871c8a42c5b98a8e3236bab1b74a0eaa7f7eed198211481464dc"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 4.698199709159001,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r02/workloads/w1_c1/summary.json",
+              "summary_sha256": "35a6e1fca3673159001cf3454df15d1fb6e6051f7972ba4d51619565b1cbe761"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 4.6931207244656585,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r03/workloads/w1_c1/summary.json",
+              "summary_sha256": "8a330f36001bf6d28c285e1a9696d559c8c82097131d9c87787324b0d36cb4aa"
+            }
+          ],
+          "candidate_id": "fp8_tp2_pix01_triton",
+          "median_request_rps": 4.6931207244656585,
+          "minimum_request_rps": 4.689612495504421,
+          "repeat_request_rps": [
+            4.689612495504421,
+            4.698199709159001,
+            4.6931207244656585
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 3.7716489278970804,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w1_c1/summary.json",
+              "summary_sha256": "4dba44cf2b9a09a8f4d8b8520a55241276ca90f25b12fb012fb72b96242a6688"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 3.9438065903197765,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w1_c1/summary.json",
+              "summary_sha256": "331d615773874f21917656b015bcc1e2a3fbb461e9f0dc8d6f617d2ba1e5478d"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 3.89848275490024,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w1_c1/summary.json",
+              "summary_sha256": "7c9e3bb4ae6df2ab883203ea1edb4e6008b23d9528e3d3aaca62f3929b9eb14a"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+          "median_request_rps": 3.89848275490024,
+          "minimum_request_rps": 3.7716489278970804,
+          "repeat_request_rps": [
+            3.7716489278970804,
+            3.9438065903197765,
+            3.89848275490024
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 3.2383123860163323,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w1_c1/summary.json",
+              "summary_sha256": "868383b66f30c1f496e9bfeb2b1caa10bc8ef79f3ef8866cdc6ff44136c7f0e5"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 2.9052245183120107,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w1_c1/summary.json",
+              "summary_sha256": "8140fe34256ada54d4e672582d470604d142f8b6d4ccd83cb3fef90b6e32f161"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 2.547208604072404,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w1_c1/summary.json",
+              "summary_sha256": "5795cec85cf87c60bb49928c60e7678c26ba6f692a0cd71e30d703f250bd878a"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep8_static_sys",
+          "median_request_rps": 2.9052245183120107,
+          "minimum_request_rps": 2.547208604072404,
+          "repeat_request_rps": [
+            3.2383123860163323,
+            2.9052245183120107,
+            2.547208604072404
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 2.83974732311638,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r01/workloads/w1_c1/summary.json",
+              "summary_sha256": "9f4d526c662be0d1c77e4091c2c4a30133efdc29d005ee45419bd2b47a74b737"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 2.8419312897426563,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r02/workloads/w1_c1/summary.json",
+              "summary_sha256": "5e0e05fd494ed49e5e9f650e18dcf92570a5902384c0707e91bcdb9190e6a52e"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 2.841642580315994,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r03/workloads/w1_c1/summary.json",
+              "summary_sha256": "a0b216a1885927f0f78ff4286897fccbaeaf304591e0ffc09994f79c2891110a"
+            }
+          ],
+          "candidate_id": "w4a16_ep4_static_triton",
+          "median_request_rps": 2.841642580315994,
+          "minimum_request_rps": 2.83974732311638,
+          "repeat_request_rps": [
+            2.83974732311638,
+            2.8419312897426563,
+            2.841642580315994
+          ]
+        }
+      ],
+      "cell_id": "w1_c1",
+      "concurrency": 1,
+      "input_tokens": 256,
+      "minimum_observed_request_rps": 2.547208604072404,
+      "output_tokens": 128,
+      "requests": 32
+    },
+    {
+      "candidates": [
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 8.607580984091959,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r01/workloads/w1_c8/summary.json",
+              "summary_sha256": "6855325965d8e80ef9ba807f9e040ced901673c5fe8a7c184c557564a4d45cc0"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 8.901317532238677,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r02/workloads/w1_c8/summary.json",
+              "summary_sha256": "e003b915d45415393af73885e9f11c15560595c34e3f712b18e6b6235902fd05"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 8.555991979322956,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r03/workloads/w1_c8/summary.json",
+              "summary_sha256": "a20da90e24ee096673bc1ceb46613b6f130ec49515e3d6cf0bfa3f43ccb6281c"
+            }
+          ],
+          "candidate_id": "fp8_tp2_pix01_triton",
+          "median_request_rps": 8.607580984091959,
+          "minimum_request_rps": 8.555991979322956,
+          "repeat_request_rps": [
+            8.607580984091959,
+            8.901317532238677,
+            8.555991979322956
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 8.881359102265169,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w1_c8/summary.json",
+              "summary_sha256": "d697507aef7230a66aaaddc7087cce9de380562f20c12cbbe87349db08aad84c"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 8.56934602905182,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w1_c8/summary.json",
+              "summary_sha256": "b6254326cca821553988ff0af582815ed5a7686c9c8a9631033af93f3a832559"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 9.06161600969127,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w1_c8/summary.json",
+              "summary_sha256": "3aa40618aca74d89d7b7a00a45b33bd532202322d6d52c309d1ae553bfbbd58b"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+          "median_request_rps": 8.881359102265169,
+          "minimum_request_rps": 8.56934602905182,
+          "repeat_request_rps": [
+            8.881359102265169,
+            8.56934602905182,
+            9.06161600969127
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 7.907895793336864,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w1_c8/summary.json",
+              "summary_sha256": "c935cbf0543cb54a8678bd2890ecefecff2faeb03df1e0212a968288ba64379e"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 8.536605677913682,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w1_c8/summary.json",
+              "summary_sha256": "50e51715c63c4627110e669541a771153176597fd6b906e26b6e949cd1a27126"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 8.043391727354054,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w1_c8/summary.json",
+              "summary_sha256": "63840ba29a9de6cd45ecdbf88afbb2065c1a299236aef5dce72fbb1dce0e4b55"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep8_static_sys",
+          "median_request_rps": 8.043391727354054,
+          "minimum_request_rps": 7.907895793336864,
+          "repeat_request_rps": [
+            7.907895793336864,
+            8.536605677913682,
+            8.043391727354054
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 7.157321863656875,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r01/workloads/w1_c8/summary.json",
+              "summary_sha256": "09656543eeed09249897f74f953d5cd57cc3606537ea4b17b4e72fca24b3ddc5"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 7.868093035507144,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r02/workloads/w1_c8/summary.json",
+              "summary_sha256": "b51c0c4173004d874672cc82f82486b0abd2583a53342a68d28c1638a168fe48"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 7.218806391721199,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r03/workloads/w1_c8/summary.json",
+              "summary_sha256": "e0d0f39d77afd07b8f9d0fef64595bb41e4292e0304be04f43b450b3c5207e81"
+            }
+          ],
+          "candidate_id": "w4a16_ep4_static_triton",
+          "median_request_rps": 7.218806391721199,
+          "minimum_request_rps": 7.157321863656875,
+          "repeat_request_rps": [
+            7.157321863656875,
+            7.868093035507144,
+            7.218806391721199
+          ]
+        }
+      ],
+      "cell_id": "w1_c8",
+      "concurrency": 8,
+      "input_tokens": 256,
+      "minimum_observed_request_rps": 7.157321863656875,
+      "output_tokens": 128,
+      "requests": 32
+    },
+    {
+      "candidates": [
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 15.76344969804877,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r01/workloads/w1_c32/summary.json",
+              "summary_sha256": "796281d97cf240f1b3af296fa507d8ab58ab8279171f3a1b41f53b6db019d77a"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 15.764942444818338,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r02/workloads/w1_c32/summary.json",
+              "summary_sha256": "2db356a1f1a60924951c8b565061c965519be5d169b288bd01610305b383b9ee"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 15.330174095465152,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r03/workloads/w1_c32/summary.json",
+              "summary_sha256": "964b38ed2e19db3f6994adf6b3fcbd278ce4d127ef266fd2a606de0517345069"
+            }
+          ],
+          "candidate_id": "fp8_tp2_pix01_triton",
+          "median_request_rps": 15.76344969804877,
+          "minimum_request_rps": 15.330174095465152,
+          "repeat_request_rps": [
+            15.76344969804877,
+            15.764942444818338,
+            15.330174095465152
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 15.306295864525644,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w1_c32/summary.json",
+              "summary_sha256": "024d8f68c7906f00aa5d13710968733022414bf35d94ae7247e325bcbdb188cf"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 14.293731857437525,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w1_c32/summary.json",
+              "summary_sha256": "89e65630db5ac4b70aa520fef9107781154b1869790b8226b00749cb870c8416"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 15.56668175349816,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w1_c32/summary.json",
+              "summary_sha256": "22ea32e25f909ed35399a55c5e6aaff10b6e577d8fff60abc3ac431eda1e64a6"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+          "median_request_rps": 15.306295864525644,
+          "minimum_request_rps": 14.293731857437525,
+          "repeat_request_rps": [
+            15.306295864525644,
+            14.293731857437525,
+            15.56668175349816
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 15.712875012672475,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w1_c32/summary.json",
+              "summary_sha256": "f11dedd16c702a4f7261ce9d88ced3606d232e9b786a1b57c94ea972554393a3"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 17.39582009004109,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w1_c32/summary.json",
+              "summary_sha256": "ff7860981756110a8c2b70d3247c789c7abce91a66525622d1c7cba759054766"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 15.347080010303557,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w1_c32/summary.json",
+              "summary_sha256": "98fba2db30105b18c6f4b4687ccda71ccb1458eba1f82319aace10e13e12c606"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep8_static_sys",
+          "median_request_rps": 15.712875012672475,
+          "minimum_request_rps": 15.347080010303557,
+          "repeat_request_rps": [
+            15.712875012672475,
+            17.39582009004109,
+            15.347080010303557
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 13.217492096838354,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r01/workloads/w1_c32/summary.json",
+              "summary_sha256": "c05c2f609a5168583109035b44cafc3625f570a68d1ae54290c496fe55a2b87e"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 13.241558978900404,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r02/workloads/w1_c32/summary.json",
+              "summary_sha256": "aa0fd246479587186c4abe3a998c273762c40d46faa538e73647da64d38fd3e1"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 14.137475471169848,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r03/workloads/w1_c32/summary.json",
+              "summary_sha256": "2ad659c19418f3c169e8401890bee7dfd0cf4421194eacc4f33b916c39f44ca6"
+            }
+          ],
+          "candidate_id": "w4a16_ep4_static_triton",
+          "median_request_rps": 13.241558978900404,
+          "minimum_request_rps": 13.217492096838354,
+          "repeat_request_rps": [
+            13.217492096838354,
+            13.241558978900404,
+            14.137475471169848
+          ]
+        }
+      ],
+      "cell_id": "w1_c32",
+      "concurrency": 32,
+      "input_tokens": 256,
+      "minimum_observed_request_rps": 13.217492096838354,
+      "output_tokens": 128,
+      "requests": 64
+    },
+    {
+      "candidates": [
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 20.01970830778266,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r01/workloads/w1_c128/summary.json",
+              "summary_sha256": "7ef3a4b81762510d5f1af1acbd17829e99be0e013b16c6c7610caba9f0757a2d"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 21.014033092231468,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r02/workloads/w1_c128/summary.json",
+              "summary_sha256": "8c912dfc9bd0e95ac125fba5c59838c57669739f94892094b7da6fb6145fb10f"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 19.712048080323193,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r03/workloads/w1_c128/summary.json",
+              "summary_sha256": "790cdc4d4381843bfd94f5a2b5dbd45d0dfcad3b2aef6b22f38d970ab43a9dad"
+            }
+          ],
+          "candidate_id": "fp8_tp2_pix01_triton",
+          "median_request_rps": 20.01970830778266,
+          "minimum_request_rps": 19.712048080323193,
+          "repeat_request_rps": [
+            20.01970830778266,
+            21.014033092231468,
+            19.712048080323193
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 20.415415886984462,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w1_c128/summary.json",
+              "summary_sha256": "18bc159ec8b876ee0fabf811741f904bdffc848b14cff96c8e6de747abcbed30"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 19.430842695191416,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w1_c128/summary.json",
+              "summary_sha256": "56b933303d4d4a724e67a6617966c488553f0d0eea9b43b2b0497eab5e28b253"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 21.11346263175126,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w1_c128/summary.json",
+              "summary_sha256": "b7ceeabc4cd90f1eee708ff63a4285d517db5ec463699c9e14afaa7d4908bef0"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+          "median_request_rps": 20.415415886984462,
+          "minimum_request_rps": 19.430842695191416,
+          "repeat_request_rps": [
+            20.415415886984462,
+            19.430842695191416,
+            21.11346263175126
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 20.64063191971627,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w1_c128/summary.json",
+              "summary_sha256": "5d63cb6dd579c8cef1211234c51cdc444a0f0b932bf3ec1343567fd2de6a722e"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 20.31433471481348,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w1_c128/summary.json",
+              "summary_sha256": "f63f8b9a08095d31ff6c2afe850420ff4c59ca82d38d773c10e7ed4a946ab60b"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 19.19539463266791,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w1_c128/summary.json",
+              "summary_sha256": "e9f6c4aa83ed8f59a1289a5ba62a73e2a4d3a2d9e61d4d00bce3d738b04db6b9"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep8_static_sys",
+          "median_request_rps": 20.31433471481348,
+          "minimum_request_rps": 19.19539463266791,
+          "repeat_request_rps": [
+            20.64063191971627,
+            20.31433471481348,
+            19.19539463266791
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 17.4395564416036,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r01/workloads/w1_c128/summary.json",
+              "summary_sha256": "554909e5de1c501275cb876198ec62b8376ea0c2d3a8fd6bf9ac4591e55e2c6d"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 18.82520031977276,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r02/workloads/w1_c128/summary.json",
+              "summary_sha256": "1526d5fd3f09dced5ca5f94f370fe09ee078c5cabc2af4df42d794d7a4379842"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 19.54327256059913,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r03/workloads/w1_c128/summary.json",
+              "summary_sha256": "877b0a96d9a9dcef932dc733b53d051e13573dfd334822100102062c61f0f14b"
+            }
+          ],
+          "candidate_id": "w4a16_ep4_static_triton",
+          "median_request_rps": 18.82520031977276,
+          "minimum_request_rps": 17.4395564416036,
+          "repeat_request_rps": [
+            17.4395564416036,
+            18.82520031977276,
+            19.54327256059913
+          ]
+        }
+      ],
+      "cell_id": "w1_c128",
+      "concurrency": 128,
+      "input_tokens": 256,
+      "minimum_observed_request_rps": 17.4395564416036,
+      "output_tokens": 128,
+      "requests": 128
+    },
+    {
+      "candidates": [
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 2.8439491036234013,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r01/workloads/w2_c1/summary.json",
+              "summary_sha256": "8aa0d420e8559d08e921336001080c56d522c2de6b2494b21401d1981fa0f563"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 2.8447520679355804,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r02/workloads/w2_c1/summary.json",
+              "summary_sha256": "23689dca55406af4b37cfd21c74d036c6dfb6e5ba0b86a7145c01bdda5189aed"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 2.8389842063932975,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r03/workloads/w2_c1/summary.json",
+              "summary_sha256": "e2e9a96a64d717b98710d58f2afbc68b75545999c0ea7720be9f81446e3ae8e8"
+            }
+          ],
+          "candidate_id": "fp8_tp2_pix01_triton",
+          "median_request_rps": 2.8439491036234013,
+          "minimum_request_rps": 2.8389842063932975,
+          "repeat_request_rps": [
+            2.8439491036234013,
+            2.8447520679355804,
+            2.8389842063932975
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 2.6883505601873456,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w2_c1/summary.json",
+              "summary_sha256": "71c4e988162f9f888cb2a55b80e0e6c4dc12bfba39fa20d6ca3ace92faa93dbc"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 2.729266665083354,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w2_c1/summary.json",
+              "summary_sha256": "fa005755eeb54dec6c0bc7877a9c62c7d04210a908d11db5e3e68b226c0dae04"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 2.722925085055153,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w2_c1/summary.json",
+              "summary_sha256": "ce8659300fc9c0e5becb07cd10d93635082cce569e4f5bb27b7644ffd78d0df4"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+          "median_request_rps": 2.722925085055153,
+          "minimum_request_rps": 2.6883505601873456,
+          "repeat_request_rps": [
+            2.6883505601873456,
+            2.729266665083354,
+            2.722925085055153
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 2.7013106398242805,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w2_c1/summary.json",
+              "summary_sha256": "ebc9542cb9a1441c614869f46ca3c9377f99efa86f3550b946e7e0653530a43c"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 2.7405015795427037,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w2_c1/summary.json",
+              "summary_sha256": "01ab23e159a41bda3e8237c66748aecd015cd5468c91f5a5b367089d255afddd"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 2.641338111744286,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w2_c1/summary.json",
+              "summary_sha256": "39956bf5dc50c57df76bcb318d85818ff7cb844a7281c10dea4f58d9e9b8b1bb"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep8_static_sys",
+          "median_request_rps": 2.7013106398242805,
+          "minimum_request_rps": 2.641338111744286,
+          "repeat_request_rps": [
+            2.7013106398242805,
+            2.7405015795427037,
+            2.641338111744286
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 2.089237572009607,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r01/workloads/w2_c1/summary.json",
+              "summary_sha256": "7c2e8f27dc7abe21c0c7ac1c115d9fcaf8a08edbcd2718bd26557ab26a30c13c"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 2.098967812198933,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r02/workloads/w2_c1/summary.json",
+              "summary_sha256": "3cdb874a6115bc2b76994ee7d3549166201f496633000ce318312f11d1086b13"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 2.0876048133148997,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r03/workloads/w2_c1/summary.json",
+              "summary_sha256": "99b163cc2fb923a5bd8653f5fc70658513eb258c3a2ae00620891a2927c776cd"
+            }
+          ],
+          "candidate_id": "w4a16_ep4_static_triton",
+          "median_request_rps": 2.089237572009607,
+          "minimum_request_rps": 2.0876048133148997,
+          "repeat_request_rps": [
+            2.089237572009607,
+            2.098967812198933,
+            2.0876048133148997
+          ]
+        }
+      ],
+      "cell_id": "w2_c1",
+      "concurrency": 1,
+      "input_tokens": 2048,
+      "minimum_observed_request_rps": 2.0876048133148997,
+      "output_tokens": 256,
+      "requests": 32
+    },
+    {
+      "candidates": [
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 4.633283109948699,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r01/workloads/w2_c8/summary.json",
+              "summary_sha256": "810617460983deb5fb0b660132384ea9f9d02f095ea712f6215c3c8858e72cf5"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 4.569183807721,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r02/workloads/w2_c8/summary.json",
+              "summary_sha256": "145c467120f290edb460dc923deff806e0da7d17be13ec227399de6bd19fc17b"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 4.6203429538239735,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r03/workloads/w2_c8/summary.json",
+              "summary_sha256": "3e82e4f84c2a532d8da95aeb110344eb45c95b97397b00c20dd272edaf18ba9c"
+            }
+          ],
+          "candidate_id": "fp8_tp2_pix01_triton",
+          "median_request_rps": 4.6203429538239735,
+          "minimum_request_rps": 4.569183807721,
+          "repeat_request_rps": [
+            4.633283109948699,
+            4.569183807721,
+            4.6203429538239735
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 5.242438959504241,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w2_c8/summary.json",
+              "summary_sha256": "c41cb17ab1c10f33bfe7efc65d2f74023d6d49b4270e1ddecf521e4cc64ece63"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 5.334702201015669,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w2_c8/summary.json",
+              "summary_sha256": "1512552c4ba9206f4908b32a8e790557c7acaf53ed1cdc6089753d5501c438b9"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 5.352441391354842,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w2_c8/summary.json",
+              "summary_sha256": "11ed8ad35f9fafa1bb68293df06798d932aeb642731d65a9e4c0ecefa16c22ab"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+          "median_request_rps": 5.334702201015669,
+          "minimum_request_rps": 5.242438959504241,
+          "repeat_request_rps": [
+            5.242438959504241,
+            5.334702201015669,
+            5.352441391354842
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 6.093493093613419,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w2_c8/summary.json",
+              "summary_sha256": "146d3f369a20af304067f8cfbd000765cdedb14ff05b4ea07fd1aa5d9d27842c"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 5.6394616650949425,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w2_c8/summary.json",
+              "summary_sha256": "db960a51151d82f4cc90987ad3b3dde878432f06ea89547288dd211ef3491d89"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 5.995908603373967,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w2_c8/summary.json",
+              "summary_sha256": "c48406e44f0849b46d70d1ae72b71523ae88fae53c1741d976260132fed2cf34"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep8_static_sys",
+          "median_request_rps": 5.995908603373967,
+          "minimum_request_rps": 5.6394616650949425,
+          "repeat_request_rps": [
+            6.093493093613419,
+            5.6394616650949425,
+            5.995908603373967
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 4.455056716296373,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r01/workloads/w2_c8/summary.json",
+              "summary_sha256": "9d4a76c680840505aa9a0d74285f9e21bbc9dbf2b41ee88e0ca4370c46422982"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 4.524467812979531,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r02/workloads/w2_c8/summary.json",
+              "summary_sha256": "cd99619fe5e83c1eae2a53949b01eeae5fd65c017199c415a62992fad386e8ef"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 4.519254778235353,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r03/workloads/w2_c8/summary.json",
+              "summary_sha256": "a1a2a4b70714608947b2700abe014cf72fc2769f4a7353166d6d23dfa0bdf617"
+            }
+          ],
+          "candidate_id": "w4a16_ep4_static_triton",
+          "median_request_rps": 4.519254778235353,
+          "minimum_request_rps": 4.455056716296373,
+          "repeat_request_rps": [
+            4.455056716296373,
+            4.524467812979531,
+            4.519254778235353
+          ]
+        }
+      ],
+      "cell_id": "w2_c8",
+      "concurrency": 8,
+      "input_tokens": 2048,
+      "minimum_observed_request_rps": 4.455056716296373,
+      "output_tokens": 256,
+      "requests": 32
+    },
+    {
+      "candidates": [
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 5.158418605686356,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r01/workloads/w2_c32/summary.json",
+              "summary_sha256": "2f5be681d173cffb08edbc657273fd22cc00f5ab864dd80239bb2dfde497b641"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 5.134311753169843,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r02/workloads/w2_c32/summary.json",
+              "summary_sha256": "87945a33b1a68663ce634600de29228d60aa0f275d17f329b78354332e12d578"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 5.169296437673072,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r03/workloads/w2_c32/summary.json",
+              "summary_sha256": "3c77287dcee76fbd65f19d7ada225d7661e0c289704b2b3434530a5ba40a28cd"
+            }
+          ],
+          "candidate_id": "fp8_tp2_pix01_triton",
+          "median_request_rps": 5.158418605686356,
+          "minimum_request_rps": 5.134311753169843,
+          "repeat_request_rps": [
+            5.158418605686356,
+            5.134311753169843,
+            5.169296437673072
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 6.804660615570363,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w2_c32/summary.json",
+              "summary_sha256": "de9df3d4af9e0fd0e89ef91d05054088dc991a80d5b68ebac6fcedff24bee836"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 6.822372373625362,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w2_c32/summary.json",
+              "summary_sha256": "35d086f5268a2bdadc3efd90d9f5789fd54c101bb6ffb40c00fa29108e81ed19"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 7.022727300143171,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w2_c32/summary.json",
+              "summary_sha256": "01579edfbc0aa9e908a666bdfad23d8bdd282f0da4dc98db368217492cad537f"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+          "median_request_rps": 6.822372373625362,
+          "minimum_request_rps": 6.804660615570363,
+          "repeat_request_rps": [
+            6.804660615570363,
+            6.822372373625362,
+            7.022727300143171
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 7.543226313999119,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w2_c32/summary.json",
+              "summary_sha256": "4277232fd211b20e2dad11014667f05c7ef226c407100cee101244fb71e2deca"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 7.249100638365241,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w2_c32/summary.json",
+              "summary_sha256": "a66db88270521e63dde2143cfcee9263c168d773b79cdcc580c88c6b017a5014"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 7.554859429739709,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w2_c32/summary.json",
+              "summary_sha256": "1fd631ca9c2175201e29fa0259be03a980324ee2de5ebe75e38512cd0e79a538"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep8_static_sys",
+          "median_request_rps": 7.543226313999119,
+          "minimum_request_rps": 7.249100638365241,
+          "repeat_request_rps": [
+            7.543226313999119,
+            7.249100638365241,
+            7.554859429739709
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 6.2950363350544105,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r01/workloads/w2_c32/summary.json",
+              "summary_sha256": "0f4a413d8ee7a49cf273854a3b4cea4db59c3bda50bcbf2f2847a7824d6e165e"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 6.308133616065178,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r02/workloads/w2_c32/summary.json",
+              "summary_sha256": "c3bac888cd728546ea2a2228112e08c51f5bb46018a8df0da674d8cd3be5a12c"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 6.264213597178413,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r03/workloads/w2_c32/summary.json",
+              "summary_sha256": "5b0537ab9c7c6028e88139bf5b17adcadf0772236f6142ea01f2b8ab97741407"
+            }
+          ],
+          "candidate_id": "w4a16_ep4_static_triton",
+          "median_request_rps": 6.2950363350544105,
+          "minimum_request_rps": 6.264213597178413,
+          "repeat_request_rps": [
+            6.2950363350544105,
+            6.308133616065178,
+            6.264213597178413
+          ]
+        }
+      ],
+      "cell_id": "w2_c32",
+      "concurrency": 32,
+      "input_tokens": 2048,
+      "minimum_observed_request_rps": 5.134311753169843,
+      "output_tokens": 256,
+      "requests": 64
+    },
+    {
+      "candidates": [
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 1.2612075190283942,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r01/workloads/w3_c1/summary.json",
+              "summary_sha256": "2f9ecb1a9a1919d8c006a9321667e893221c1bc0f0ad18b2066893b558597381"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 1.2628974172401022,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r02/workloads/w3_c1/summary.json",
+              "summary_sha256": "c04ddf76d064d1248d02c18be1c6775d41c99e5c7eb046adccacbe7df65aa299"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 1.262648934444018,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r03/workloads/w3_c1/summary.json",
+              "summary_sha256": "51719a1699babc18528203a38f75b56977a8d52e11df56e18e24b74dc52a5630"
+            }
+          ],
+          "candidate_id": "fp8_tp2_pix01_triton",
+          "median_request_rps": 1.262648934444018,
+          "minimum_request_rps": 1.2612075190283942,
+          "repeat_request_rps": [
+            1.2612075190283942,
+            1.2628974172401022,
+            1.262648934444018
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 1.420800337549533,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w3_c1/summary.json",
+              "summary_sha256": "939742c429b29423904700de511fce5053f0ad78636ec54ebb4a8cdc758bbd92"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 1.4323850278234795,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w3_c1/summary.json",
+              "summary_sha256": "b345c8cdcb885b4998ca8b81a184673442c97fd832d6c2d61ff1ec5665fe4705"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 1.4415883760983117,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w3_c1/summary.json",
+              "summary_sha256": "d135191dbad6e1667ce3672b169e1e23a0ea27a89f6e2b8f78fcd49d5e3dd59f"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+          "median_request_rps": 1.4323850278234795,
+          "minimum_request_rps": 1.420800337549533,
+          "repeat_request_rps": [
+            1.420800337549533,
+            1.4323850278234795,
+            1.4415883760983117
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 1.4346414321088663,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w3_c1/summary.json",
+              "summary_sha256": "9bc2862269eff6159021b8a31a3d53bff443c4a60f40f9b0d3c26d190223aab0"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 1.374414918954068,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w3_c1/summary.json",
+              "summary_sha256": "c9e04baa0e703125c68eb7f64c5c983ac1ea4975e43ffc0869ede188677e55a2"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 1.4194956175625197,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w3_c1/summary.json",
+              "summary_sha256": "f0d9df7182c35c239dc49ff39e4191c89da053b347363bdd73d8b75f412318f7"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep8_static_sys",
+          "median_request_rps": 1.4194956175625197,
+          "minimum_request_rps": 1.374414918954068,
+          "repeat_request_rps": [
+            1.4346414321088663,
+            1.374414918954068,
+            1.4194956175625197
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 1.3427858970259436,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r01/workloads/w3_c1/summary.json",
+              "summary_sha256": "3106593d18159fb4bd1578bf206cabb14f0bfce138035d1ad38a143c0468a21c"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 1.3600197996039922,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r02/workloads/w3_c1/summary.json",
+              "summary_sha256": "94f381b3f15fa65ea9b2e4c16e95cb0679e5e4daa4338e15c7b12f89d4c4a23e"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 1.3452702632230022,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r03/workloads/w3_c1/summary.json",
+              "summary_sha256": "e3d201142e04684f61d5c5ebbf66184bb8fead42fbfc6b8805f8952b6270bafb"
+            }
+          ],
+          "candidate_id": "w4a16_ep4_static_triton",
+          "median_request_rps": 1.3452702632230022,
+          "minimum_request_rps": 1.3427858970259436,
+          "repeat_request_rps": [
+            1.3427858970259436,
+            1.3600197996039922,
+            1.3452702632230022
+          ]
+        }
+      ],
+      "cell_id": "w3_c1",
+      "concurrency": 1,
+      "input_tokens": 8192,
+      "minimum_observed_request_rps": 1.2612075190283942,
+      "output_tokens": 256,
+      "requests": 16
+    },
+    {
+      "candidates": [
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 1.538195783067416,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r01/workloads/w3_c8/summary.json",
+              "summary_sha256": "aad1e6ba52f0dba955a095c275578339e9eae0fcee306368e2e4e47b5e1632ba"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 1.5442013582327268,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r02/workloads/w3_c8/summary.json",
+              "summary_sha256": "29d8a73a1d15be52e59d0fa7c9e095c14a0c12f59487156244f5a40c19463a02"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 1.552268849420797,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r03/workloads/w3_c8/summary.json",
+              "summary_sha256": "5a917b20da01c4f14b1fa123b09dc2103132bfcaf7705ec5723f2d32abb394d1"
+            }
+          ],
+          "candidate_id": "fp8_tp2_pix01_triton",
+          "median_request_rps": 1.5442013582327268,
+          "minimum_request_rps": 1.538195783067416,
+          "repeat_request_rps": [
+            1.538195783067416,
+            1.5442013582327268,
+            1.552268849420797
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 2.0715935479541483,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w3_c8/summary.json",
+              "summary_sha256": "f9b53944f27bf33f01890d9fec5b3312df712645bc81372da51b4e79b09ac2ba"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 2.0570615619845904,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w3_c8/summary.json",
+              "summary_sha256": "4203ea15cad896ce10c74914e47a6b9815f50a27fd41661535eccaff2c093d9c"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 2.0494786916266374,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w3_c8/summary.json",
+              "summary_sha256": "fa17ba91f9aaff05034884987e04b831683d9190dc5314879ef6be094c6d3442"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+          "median_request_rps": 2.0570615619845904,
+          "minimum_request_rps": 2.0494786916266374,
+          "repeat_request_rps": [
+            2.0715935479541483,
+            2.0570615619845904,
+            2.0494786916266374
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 2.259644056260004,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w3_c8/summary.json",
+              "summary_sha256": "136ccdb6d8e450b25d84fbeb250743fb8c2c4d8f79244a29bd96743bbcf4613e"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 2.1553435748428393,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w3_c8/summary.json",
+              "summary_sha256": "72e9b530eb418e95618d56e2b069c0336bb23d9ba0b7b6270376aced53746eaa"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 2.0941592049214055,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w3_c8/summary.json",
+              "summary_sha256": "f4d97ddaa6b34af32fada8f8e6a81d18e4613bba5bba360c3c7bc4976ec44a33"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep8_static_sys",
+          "median_request_rps": 2.1553435748428393,
+          "minimum_request_rps": 2.0941592049214055,
+          "repeat_request_rps": [
+            2.259644056260004,
+            2.1553435748428393,
+            2.0941592049214055
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 2.0581275530377194,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r01/workloads/w3_c8/summary.json",
+              "summary_sha256": "d74adc5e132981918a8685268409d2004ca8884316a619a9e8912301da7de42f"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 2.0800389113783786,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r02/workloads/w3_c8/summary.json",
+              "summary_sha256": "7d83b86dcef818c11f71c77dbf7e2ec4fc3e63c87812da6c2f775e8e00659684"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 2.0734427021999946,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r03/workloads/w3_c8/summary.json",
+              "summary_sha256": "db10e78f00fa69da0ca6033524585d21e3683101aa199a4f56c7922d01832c0f"
+            }
+          ],
+          "candidate_id": "w4a16_ep4_static_triton",
+          "median_request_rps": 2.0734427021999946,
+          "minimum_request_rps": 2.0581275530377194,
+          "repeat_request_rps": [
+            2.0581275530377194,
+            2.0800389113783786,
+            2.0734427021999946
+          ]
+        }
+      ],
+      "cell_id": "w3_c8",
+      "concurrency": 8,
+      "input_tokens": 8192,
+      "minimum_observed_request_rps": 1.538195783067416,
+      "output_tokens": 256,
+      "requests": 16
+    },
+    {
+      "candidates": [
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 1.620678796505199,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r01/workloads/w3_c16/summary.json",
+              "summary_sha256": "35a707533eda3ef0faa7afc2d4d666a05aa5eae3a9600ebc0f3816ca9b372a6b"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 1.6161592922923045,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r02/workloads/w3_c16/summary.json",
+              "summary_sha256": "5efdd588eff27fe9b17d263f1f41c26d1aec0df509db2acf5194dcc858831ae1"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 1.6161302791528989,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r03/workloads/w3_c16/summary.json",
+              "summary_sha256": "398589c5087b4e1971d06acbe3f09382896551d58fbe9eae0023d8708d6439a4"
+            }
+          ],
+          "candidate_id": "fp8_tp2_pix01_triton",
+          "median_request_rps": 1.6161592922923045,
+          "minimum_request_rps": 1.6161302791528989,
+          "repeat_request_rps": [
+            1.620678796505199,
+            1.6161592922923045,
+            1.6161302791528989
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 2.1663270821443166,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w3_c16/summary.json",
+              "summary_sha256": "5419e6257e971d1fc313a6d29bdc7373f47279b1ee5ed4a5981038751444c8d2"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 2.210660325224458,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w3_c16/summary.json",
+              "summary_sha256": "a3ef428d7f297ff00c647e52f948df3117daafdb9ede4a4a53f8236bcba15841"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 2.216324917009081,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w3_c16/summary.json",
+              "summary_sha256": "97ce8edf673dd46ac9daba59bbd00d13b999b8eef0c9d6dc6d1b6d945df9841c"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+          "median_request_rps": 2.210660325224458,
+          "minimum_request_rps": 2.1663270821443166,
+          "repeat_request_rps": [
+            2.1663270821443166,
+            2.210660325224458,
+            2.216324917009081
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 2.4286989075572865,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w3_c16/summary.json",
+              "summary_sha256": "5b1782404a5129d4a1bb10f8a39aa761e464c3749691e056c21fd15b44909173"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 2.4159919830587917,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w3_c16/summary.json",
+              "summary_sha256": "e9f733c252db3a9ea23e764e74bfcd895afa815f6f866f171f939af7f7882248"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 2.4670746843257567,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w3_c16/summary.json",
+              "summary_sha256": "8bafa440a57447f702ae2d53f1fe03bf9d75c0cdaee7d9cb4f9be6459e5da45e"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep8_static_sys",
+          "median_request_rps": 2.4286989075572865,
+          "minimum_request_rps": 2.4159919830587917,
+          "repeat_request_rps": [
+            2.4286989075572865,
+            2.4159919830587917,
+            2.4670746843257567
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 2.208443093671678,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r01/workloads/w3_c16/summary.json",
+              "summary_sha256": "91b836cb4d006068f58a9ae0f068b3c8c4c0ff74c172d0a3c76030d3dbc2e2fb"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 2.1913332853161958,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r02/workloads/w3_c16/summary.json",
+              "summary_sha256": "c05d1b841b27552df57852f5df1979beeedb120373a5e618d255e1f992343f2d"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 2.213963606946727,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r03/workloads/w3_c16/summary.json",
+              "summary_sha256": "c67c8a73ab0ed107170337659c994112224dc8f7f06d8b57e32d5e9047509b02"
+            }
+          ],
+          "candidate_id": "w4a16_ep4_static_triton",
+          "median_request_rps": 2.208443093671678,
+          "minimum_request_rps": 2.1913332853161958,
+          "repeat_request_rps": [
+            2.208443093671678,
+            2.1913332853161958,
+            2.213963606946727
+          ]
+        }
+      ],
+      "cell_id": "w3_c16",
+      "concurrency": 16,
+      "input_tokens": 8192,
+      "minimum_observed_request_rps": 1.6161302791528989,
+      "output_tokens": 256,
+      "requests": 32
+    },
+    {
+      "candidates": [
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 0.37048001542154346,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r01/workloads/w4_c1/summary.json",
+              "summary_sha256": "3443612eed2d08faeec8f1546ee531562b931f26746396931d1b02753f0970ac"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 0.3729184756631335,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r02/workloads/w4_c1/summary.json",
+              "summary_sha256": "28a3c3d4dfcf55e1d7a38c81846f6e2bab747c47a9b897654c073fb16ce8c58d"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 0.3725103166349043,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r03/workloads/w4_c1/summary.json",
+              "summary_sha256": "4ac2a09c13c71df213cf4e7f28e5954084514a81ca4bf95200d183a3c1deed27"
+            }
+          ],
+          "candidate_id": "fp8_tp2_pix01_triton",
+          "median_request_rps": 0.3725103166349043,
+          "minimum_request_rps": 0.37048001542154346,
+          "repeat_request_rps": [
+            0.37048001542154346,
+            0.3729184756631335,
+            0.3725103166349043
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 0.4907170517008959,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w4_c1/summary.json",
+              "summary_sha256": "f6ce4cfca457003f54ae56a437ad8d7577b1f0f016d2402c12d4a326fb625a7a"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 0.5120567949804679,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w4_c1/summary.json",
+              "summary_sha256": "6f74fef7d39c063483d34ebc2354aba19d1b3f16de40b89009baafd0be4f3f84"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 0.5099531631877335,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w4_c1/summary.json",
+              "summary_sha256": "21e1e67711873a43b2572e42c290930c20a8d5302518bdd365863ede32aeedb8"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+          "median_request_rps": 0.5099531631877335,
+          "minimum_request_rps": 0.4907170517008959,
+          "repeat_request_rps": [
+            0.4907170517008959,
+            0.5120567949804679,
+            0.5099531631877335
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 0.5620037044378091,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w4_c1/summary.json",
+              "summary_sha256": "37e21c16d2406b4c860481ddee6c4f9347a4ed9059046961ab50ba028be89de6"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 0.5524094994829216,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w4_c1/summary.json",
+              "summary_sha256": "b3a391922d3999a553e5c8d0c055653df232d3943d4059c10d50f98d4ee4a551"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 0.5574807060781269,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w4_c1/summary.json",
+              "summary_sha256": "a8ce23270911c774e405a7e9396d8f642417fcf2efbc0984b6046451b9c82d79"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep8_static_sys",
+          "median_request_rps": 0.5574807060781269,
+          "minimum_request_rps": 0.5524094994829216,
+          "repeat_request_rps": [
+            0.5620037044378091,
+            0.5524094994829216,
+            0.5574807060781269
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 0.4671362316776369,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r01/workloads/w4_c1/summary.json",
+              "summary_sha256": "2cafe14a14d381c88a6f3315d32f10d564693cafc9c5f1b0cac577a77cdda64d"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 0.4671548599111532,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r02/workloads/w4_c1/summary.json",
+              "summary_sha256": "a1ac5d2009bed48697be614130984029b529a9f4e1c8858d31c5b34dac2371e2"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 0.4663038516359907,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r03/workloads/w4_c1/summary.json",
+              "summary_sha256": "8b84911222e815e24885d62080c0c766eea44649d2b0d5281c2c8a26a8b2de30"
+            }
+          ],
+          "candidate_id": "w4a16_ep4_static_triton",
+          "median_request_rps": 0.4671362316776369,
+          "minimum_request_rps": 0.4663038516359907,
+          "repeat_request_rps": [
+            0.4671362316776369,
+            0.4671548599111532,
+            0.4663038516359907
+          ]
+        }
+      ],
+      "cell_id": "w4_c1",
+      "concurrency": 1,
+      "input_tokens": 32768,
+      "minimum_observed_request_rps": 0.37048001542154346,
+      "output_tokens": 128,
+      "requests": 8
+    },
+    {
+      "candidates": [
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 0.3738997449803225,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r01/workloads/w4_c4/summary.json",
+              "summary_sha256": "a84b79f46a39d6200d36727b5e97e3a295cc305662e582943508254e1fd5c55c"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 0.3761655754518101,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r02/workloads/w4_c4/summary.json",
+              "summary_sha256": "bb674b9382dab916a8b5ba95319fac8c2083c97e89d33b07188e1b7ac09c6117"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 0.37637539403649073,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/fp8_tp2_pix01_triton__r03/workloads/w4_c4/summary.json",
+              "summary_sha256": "ee90ba40350079d4a0a524924fb1ce30c49ecae2267136e46bb17fb0e0c51481"
+            }
+          ],
+          "candidate_id": "fp8_tp2_pix01_triton",
+          "median_request_rps": 0.3761655754518101,
+          "minimum_request_rps": 0.3738997449803225,
+          "repeat_request_rps": [
+            0.3738997449803225,
+            0.3761655754518101,
+            0.37637539403649073
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 0.5309683670867749,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r01/workloads/w4_c4/summary.json",
+              "summary_sha256": "7ab5c2455dfe90df556fc4f95255957e96a737ba08fd8cb7f8fe56cc163d1484"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 0.5536593814194368,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r02/workloads/w4_c4/summary.json",
+              "summary_sha256": "0329d755c0343897489ac7a50b1d535d114139ba2ed22252f686caf9befc69c1"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 0.5535089768686122,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep4_static_numa0__r03/workloads/w4_c4/summary.json",
+              "summary_sha256": "c7a53da61c2d41898b3c22e884f382b0f9390311ef9b904d6f7cb6cc62c3ca6b"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+          "median_request_rps": 0.5535089768686122,
+          "minimum_request_rps": 0.5309683670867749,
+          "repeat_request_rps": [
+            0.5309683670867749,
+            0.5536593814194368,
+            0.5535089768686122
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 0.6295206197341751,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r01/workloads/w4_c4/summary.json",
+              "summary_sha256": "7d928a48b2e8a95c280fc7810448e8bb31b3de0eedec208472808baafea17d9a"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 0.6330627267101137,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r02/workloads/w4_c4/summary.json",
+              "summary_sha256": "e535bc759d0f795536a3b1297e00365dec968ac14637103a93f79adf4c283213"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 0.6199808274297723,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/nvfp4_redhat_ep8_static_sys__r03/workloads/w4_c4/summary.json",
+              "summary_sha256": "bb87a987c2af94578c0c768e0a752bea75cb8fbc21baa1ed6b007ddf065c9493"
+            }
+          ],
+          "candidate_id": "nvfp4_redhat_ep8_static_sys",
+          "median_request_rps": 0.6295206197341751,
+          "minimum_request_rps": 0.6199808274297723,
+          "repeat_request_rps": [
+            0.6295206197341751,
+            0.6330627267101137,
+            0.6199808274297723
+          ]
+        },
+        {
+          "artifacts": [
+            {
+              "repeat": 1,
+              "request_rps": 0.5074270868760926,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r01/workloads/w4_c4/summary.json",
+              "summary_sha256": "e6b3dc5e86267afbe1438379706b9d14fae176b3da5a1ac7532650d389b971ec"
+            },
+            {
+              "repeat": 2,
+              "request_rps": 0.5027545690404402,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r02/workloads/w4_c4/summary.json",
+              "summary_sha256": "bc422fc025cd356c576678ff7cc0479e99b8bee08bc8240f900bc01de8156d0f"
+            },
+            {
+              "repeat": 3,
+              "request_rps": 0.5036094896946034,
+              "summary": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/runs/w4a16_ep4_static_triton__r03/workloads/w4_c4/summary.json",
+              "summary_sha256": "e363ab3639242e4e00776c006ace1061048e650e0d0d56d5273ffc3d8c8ca136"
+            }
+          ],
+          "candidate_id": "w4a16_ep4_static_triton",
+          "median_request_rps": 0.5036094896946034,
+          "minimum_request_rps": 0.5027545690404402,
+          "repeat_request_rps": [
+            0.5074270868760926,
+            0.5027545690404402,
+            0.5036094896946034
+          ]
+        }
+      ],
+      "cell_id": "w4_c4",
+      "concurrency": 4,
+      "input_tokens": 32768,
+      "minimum_observed_request_rps": 0.3738997449803225,
+      "output_tokens": 128,
+      "requests": 8
+    }
+  ],
+  "errors": [],
+  "expected_repeats": 3,
+  "rate_basis": "minimum observed closed-loop request/s across all candidates and repeats",
+  "schedule": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810/schedule.json",
+  "schedule_sha256": "a0eaa2e43a32edb29bcde76a7b3c74f094b55e6aaa9909bae0e40664431eae85",
+  "schema_version": "qtopomoe.phase8_capacity_audit.v1",
+  "status": "accepted",
+  "workload_matrix": "/home/k8s-ops/moe/configs/workloads/phase8_capacity_prepass_v1.json",
+  "workload_matrix_sha256": "85e9a513450cd729a754587eed1c218cfd6a3ea6f536424eab006daa6c7a0b2b"
+}

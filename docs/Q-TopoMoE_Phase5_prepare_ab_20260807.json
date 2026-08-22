@@ -1,0 +1,48 @@
+{
+  "schema_version": "qtopomoe.phase5.ab.v1",
+  "note": "Side A = vLLM serving-path prepare (moe_permute + per_token_group_quant_fp8). Side B = fused permute+quant+pack Triton kernel. Same inputs; prepare-stage micro A/B only.",
+  "rows": [
+    {
+      "m": 1,
+      "side_a_vllm_prepare_ms": 0.0874,
+      "side_b_fused_ms": 0.2388,
+      "ab_ratio": 0.366
+    },
+    {
+      "m": 8,
+      "side_a_vllm_prepare_ms": 0.0865,
+      "side_b_fused_ms": 0.2353,
+      "ab_ratio": 0.368
+    },
+    {
+      "m": 32,
+      "side_a_vllm_prepare_ms": 0.0865,
+      "side_b_fused_ms": 0.2675,
+      "ab_ratio": 0.323
+    },
+    {
+      "m": 256,
+      "side_a_vllm_prepare_ms": 0.0884,
+      "side_b_fused_ms": 0.2765,
+      "ab_ratio": 0.32
+    },
+    {
+      "m": 2048,
+      "side_a_vllm_prepare_ms": 0.1569,
+      "side_b_fused_ms": 0.295,
+      "ab_ratio": 0.532
+    },
+    {
+      "m": 8192,
+      "side_a_vllm_prepare_ms": 0.5794,
+      "side_b_fused_ms": 0.3479,
+      "ab_ratio": 1.665
+    },
+    {
+      "m": 16384,
+      "side_a_vllm_prepare_ms": 1.1744,
+      "side_b_fused_ms": 0.691,
+      "ab_ratio": 1.699
+    }
+  ]
+}

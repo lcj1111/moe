@@ -1,0 +1,74 @@
+{
+  "schema_version": "qtopomoe.phase6.nvfp4_ep_admission.v1",
+  "date": "2026-08-09",
+  "checkpoint": "/data/models/test/redhatai_qwen36_nvfp4",
+  "p2p_enabled": true,
+  "rows": [
+    {
+      "run_tag": "nvfp4_ep4_static_p2p_run2",
+      "status": "smoke_passed",
+      "tp": 4,
+      "actual_ep_ranks": 4,
+      "local_experts_per_layer": 64,
+      "moe_backend": "MARLIN",
+      "completed": 32,
+      "failed": 0,
+      "ttft_p50_ms": 180.65002374351025,
+      "ttft_p95_ms": 1342.7022327668965,
+      "tpot_p50_ms": 5.361663414135812,
+      "tpot_p95_ms": 6.71274649600188,
+      "e2e_p50_ms": 751.948325894773,
+      "e2e_p95_ms": 1682.291543111205,
+      "peak_memory_mib": {"0": 28997, "1": 29057, "2": 28991, "3": 29057}
+    },
+    {
+      "run_tag": "nvfp4_ep8_static_tp8_p2p",
+      "status": "smoke_passed",
+      "tp": 8,
+      "actual_ep_ranks": 8,
+      "local_experts_per_layer": 32,
+      "moe_backend": "MARLIN",
+      "completed": 32,
+      "failed": 0,
+      "ttft_p50_ms": 176.60655081272125,
+      "ttft_p95_ms": 1590.3675500303507,
+      "tpot_p50_ms": 6.454407717914335,
+      "tpot_p95_ms": 7.755117099140844,
+      "e2e_p50_ms": 823.7591073848307,
+      "e2e_p95_ms": 1996.980289928615,
+      "peak_memory_mib": {"0": 29027, "1": 29093, "2": 29029, "3": 29091, "4": 29045, "5": 29109, "6": 29045, "7": 29107}
+    }
+  ],
+  "invalid_runs": [
+    {
+      "run_tag": "nvfp4_ep8_static_p2p",
+      "reason": "TP=1 and DP=1 created world_size=1; stopped before smoke"
+    },
+    {
+      "run_tag": "nvfp4_ep4_static_p2p",
+      "reason": "valid world_size=4 startup, but first harness counted rank0 INFO lines instead of the [EP Rank 0/4] denominator; stopped before smoke"
+    },
+    {
+      "run_tag": "nvfp4_ep8_native_eplb_tp8_p2p",
+      "reason": "true TP8/EP8 reached model construction, then exited before serving: CompressedTensorsW4A4Nvfp4MoEMethod does not declare EPLB support in frozen vLLM 0.26.1rc1.dev343+g33c50587d or current upstream main",
+      "error": "NotImplementedError: EPLB is not supported CompressedTensorsW4A4Nvfp4MoEMethod.",
+      "artifact": "/data/models/test/qtopomoe_phase6_nvfp4/nvfp4_ep8_native_eplb_tp8_p2p/server.log"
+    }
+  ],
+  "gate": {
+    "ep4_static": "accepted",
+    "ep8_static": "accepted",
+    "hbm_measurement": "accepted",
+    "native_eplb": "unsupported_current_vllm_compressed_tensors_nvfp4",
+    "runtime_custom_placement": "pending",
+    "fallback": "accepted static EP4/EP8; offline topology+quant-aware plan remains advisory until a supported runtime placement API passes service validation"
+  },
+  "framework_audit": {
+    "frozen_vllm": "0.26.1rc1.dev343+g33c50587d",
+    "checkpoint_quant_method": "CompressedTensorsW4A4Nvfp4MoEMethod",
+    "frozen_supports_eplb": false,
+    "upstream_main_supports_eplb": false,
+    "historical_supported_path": "ModelOptNvFp4FusedMoE in vllm-project/vllm commit a00d889",
+    "decision": "do not bypass the capability check or hot-patch the frozen venv; the historical ModelOpt implementation is a different quantization path and does not validate compressed-tensors NVFP4 rearrangement"
+  }
+}

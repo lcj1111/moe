@@ -1,0 +1,40 @@
+{
+  "schema_version": "qtopomoe.official_full.v1",
+  "path": "/data/models/test/qtopomoe_quality/full_set_official_protocol_v1.jsonl",
+  "records": 24374,
+  "counts": {
+    "mmlu_pro": 12032,
+    "ceval": 12342
+  },
+  "seed": 42,
+  "revisions": {
+    "mmlu_pro": "b189ec765aa7ed75c8acfea42df31fdae71f97be",
+    "ceval_parquet": "8267189d6ba0d516d414a98919558032958c4466"
+  },
+  "fewshot": {
+    "mmlu_pro": 5,
+    "ceval": 5
+  },
+  "max_output_tokens": {
+    "mmlu_pro": 4000,
+    "ceval": 2048
+  },
+  "sampling": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "min_p": 0.0,
+    "presence_penalty": 0.0,
+    "frequency_penalty": 0.0,
+    "repetition_penalty": 1.0,
+    "enable_thinking": false
+  },
+  "sha256": "73fa596dff4ee71055db6e04a71c5dbca640c31c18e1930ca1063466b4c1d1f8",
+  "prompt_token_ids_sha256": "ffdbef548c11a09ef064b69da52b2a7ceff97a04af89b4de6b904b0806a38ab8",
+  "prompt_tokens": {
+    "min": 254,
+    "max": 2897,
+    "mean": 941.0105029949947
+  },
+  "token_ids_equal": true,
+  "note": "Benchmark-official protocol: MMLU-Pro 5-shot CoT (temperature 0, max_tokens 4000) and C-Eval 5-shot answer-only; enable_thinking is False for both. Large JSONL is kept outside git; this manifest pins hashes and protocol."
+}

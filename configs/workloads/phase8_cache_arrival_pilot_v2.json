@@ -1,0 +1,16 @@
+{
+  "schema_version": "qtopomoe.workload_matrix.v2",
+  "purpose": "Mechanics Gate at four frozen 1056-token hybrid cache pages; not a deployment ranking.",
+  "seed": 42,
+  "cells": [
+    {"id": "p0_closed", "input_tokens": 4224, "output_tokens": 16, "concurrency": 4, "requests": 12, "prefix_cache_pct": 0, "arrival_mode": "closed_loop", "stream_seed": 4200},
+    {"id": "p0_poisson", "input_tokens": 4224, "output_tokens": 16, "concurrency": 4, "requests": 12, "prefix_cache_pct": 0, "arrival_mode": "poisson", "request_rate_rps": 4.0, "stream_seed": 4201},
+    {"id": "p0_burst", "input_tokens": 4224, "output_tokens": 16, "concurrency": 4, "requests": 12, "prefix_cache_pct": 0, "arrival_mode": "burst", "request_rate_rps": 4.0, "stream_seed": 4202},
+    {"id": "p50_closed", "input_tokens": 4224, "output_tokens": 16, "concurrency": 4, "requests": 12, "prefix_cache_pct": 50, "arrival_mode": "closed_loop", "stream_seed": 4250},
+    {"id": "p50_poisson", "input_tokens": 4224, "output_tokens": 16, "concurrency": 4, "requests": 12, "prefix_cache_pct": 50, "arrival_mode": "poisson", "request_rate_rps": 4.0, "stream_seed": 4251},
+    {"id": "p50_burst", "input_tokens": 4224, "output_tokens": 16, "concurrency": 4, "requests": 12, "prefix_cache_pct": 50, "arrival_mode": "burst", "request_rate_rps": 4.0, "stream_seed": 4252},
+    {"id": "p100_closed", "input_tokens": 4224, "output_tokens": 16, "concurrency": 4, "requests": 12, "prefix_cache_pct": 100, "arrival_mode": "closed_loop", "stream_seed": 4300},
+    {"id": "p100_poisson", "input_tokens": 4224, "output_tokens": 16, "concurrency": 4, "requests": 12, "prefix_cache_pct": 100, "arrival_mode": "poisson", "request_rate_rps": 4.0, "stream_seed": 4301},
+    {"id": "p100_burst", "input_tokens": 4224, "output_tokens": 16, "concurrency": 4, "requests": 12, "prefix_cache_pct": 100, "arrival_mode": "burst", "request_rate_rps": 4.0, "stream_seed": 4302}
+  ]
+}

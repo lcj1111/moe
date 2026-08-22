@@ -1,0 +1,75 @@
+{
+  "schema_version": "qtopomoe.eplb_inputs.v1",
+  "gpus": [0, 1, 2, 3, 4, 5, 6, 7],
+  "numa_by_gpu": {"0": 0, "1": 0, "2": 0, "3": 0, "4": 1, "5": 1, "6": 1, "7": 1},
+  "pair_us_per_gb": {
+    "0-1": 64876.0866744518,
+    "2-3": 64876.0866744518,
+    "4-5": 64876.0866744518,
+    "6-7": 64876.0866744518,
+    "0-2": 33485.1326011251,
+    "0-3": 33485.1326011251,
+    "1-2": 33485.1326011251,
+    "1-3": 33485.1326011251,
+    "4-6": 33485.1326011251,
+    "4-7": 33485.1326011251,
+    "5-6": 33485.1326011251,
+    "5-7": 33485.1326011251
+  },
+  "default_us_per_gb": 34938.159457759764,
+  "topology_cost_source": "/data/moe/artifacts/q_topomoe_phase0/nccl/formal5/formal5-statistics.csv:all_reduce:64MiB:5runs",
+  "gpu_capacity_bytes": {"0": 34190917632, "1": 34190917632, "2": 34190917632, "3": 34190917632, "4": 34190917632, "5": 34190917632, "6": 34190917632, "7": 34190917632},
+  "hbm_headroom_bytes": {"0": 28172060672, "1": 28241266688, "2": 28174157824, "3": 28239169536, "4": 28190935040, "5": 28258043904, "6": 28190935040, "7": 28255946752},
+  "hbm_budget_source": "measured_ep_load_gate",
+  "hbm_measurement": {
+    "run": "/data/models/test/qtopomoe_phase6_nvfp4/nvfp4_ep8_static_tp8_p2p",
+    "gpu_memory_utilization": 0.9,
+    "peak_mib": {"0": 29027, "1": 29093, "2": 29029, "3": 29091, "4": 29045, "5": 29109, "6": 29045, "7": 29107},
+    "local_expert_bytes_per_gpu": 2264954880,
+    "formula": "peak_memory_bytes - 1280 * exact_expert_bytes"
+  },
+  "service_time_us_per_token": 0.268434768470764,
+  "service_time_source": "measured",
+  "service_time_derivation": {
+    "metric": "token_weighted_p95_us_per_routed_assignment",
+    "formula": "sum(real_M_weight * p95_us / (M * top_k))",
+    "top_k": 8,
+    "real_M_hist": {"1": 0.007198, "2048": 0.897493, "8192": 0.095309},
+    "p95_us": {"1": 250.42, "2048": 728.23, "8192": 2219.58},
+    "measurement": "docs/Q-TopoMoE_Phase4_NVFP4_CUTLASS_real_m_20260809.json",
+    "caveat": "offline placement proxy; not an end-to-end EP serving latency"
+  },
+  "activation_bytes_per_token": 4096,
+  "migration_service_gate": {
+    "status": "accepted",
+    "artifact": "docs/Q-TopoMoE_Phase7_migration_microbench_20260812.json",
+    "all_verified": true
+  },
+  "runtime_plan_application_gate": {
+    "status": "accepted",
+    "mode": "opt_in_runtime_bridge",
+    "artifact": "docs/Q-TopoMoE_在线placement-plan与服务迁移实验_20260812.md",
+    "runtime_plan_sha256": "d7d7240007c8d69cce9350ff6e4deca250713282c651d32c954b077b383763fd",
+    "requests": 384,
+    "failed": 0,
+    "stable_e2e_p99_ms": 1082.04,
+    "migration_e2e_p99_ms": 2166.96,
+    "recovery_e2e_p99_ms": 988.83
+  },
+  "native_vllm_eplb_gate": {
+    "status": "unsupported",
+    "quant_method": "CompressedTensorsW4A4Nvfp4MoEMethod",
+    "vllm": "0.26.1rc1.dev343+g33c50587d",
+    "error": "NotImplementedError: EPLB is not supported CompressedTensorsW4A4Nvfp4MoEMethod.",
+    "fallback": "static EP4/EP8",
+    "note": "该项记录原生 vLLM EPLB 的历史限制；2026-08-12 已由显式启用的运行时 bridge 完成独立 Gate，不等价于原生 EPLB 获得支持。"
+  },
+  "placement_policy": {
+    "load_balance_weight": 1.0,
+    "topology_weight": 1.0,
+    "migration_weight": 1.0,
+    "migration_us_per_gb": 500.0,
+    "max_redundant_experts": 0,
+    "replica_load_threshold": 1.5
+  }
+}

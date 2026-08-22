@@ -1,0 +1,39 @@
+{
+  "schema_version": "qtopomoe.qwen35_cleanroom_pins.v1",
+  "date": "2026-08-05",
+  "checkpoint_manifest": "docs/Q-TopoMoE_W4A16_freeze_20260805.json",
+  "released_environments": {
+    "vllm": {
+      "framework": "0.26.0",
+      "transformers": "5.14.1",
+      "compressed_tensors": "0.17.0",
+      "torch": "2.11.0",
+      "flashinfer_python": "0.6.14"
+    },
+    "sglang": {
+      "framework": "0.5.16",
+      "transformers": "5.12.1",
+      "compressed_tensors": "0.17.2a20260728",
+      "torch": "2.11.0",
+      "flashinfer_python": "0.6.14"
+    }
+  },
+  "pypi_latest": {
+    "vllm": "0.26.0",
+    "sglang": "0.5.16"
+  },
+  "upstream_pins": {
+    "vllm_source_reference": "c416f15710bbaf3e1d843c9e08403ca19fa49427",
+    "vllm_exact_wheel_commit": "33c50587d2679ba9bacc2a51ae19901f7eb3a129",
+    "vllm_exact_wheel_version": "0.26.1rc1.dev343+g33c50587d",
+    "vllm_wheel_sha256": "61a8b9e7421cd9a8e66f0982b87b42ff70f5ccec1579d7bab328b2547e9b847c",
+    "vllm_source_sha256": "11dd2de15dbbf988788b7d32d0e8e40da539c3ae8d13221798e543085a5cbf5d",
+    "sglang": "6c05aaae7e3966469b6c552aa11b545e5d27f8bf",
+    "sglang_version": "0.5.17.dev0+g6c05aaae7e",
+    "sglang_source_sha256": "3e2132fe012c938b328c44d0a2cb704fde21e5e87b9250cac67441f9a506f858",
+    "sglang_kernel": "0.4.5",
+    "sglang_build_rust_exts": "none",
+    "transformers": "d24d79da55f7ee6e538a460d3025e41dcc41ab21"
+  },
+  "policy": "upstream-first; no additional field-by-field adapter patches"
+}

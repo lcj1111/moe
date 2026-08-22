@@ -1,0 +1,24 @@
+{
+  "candidate_count": 4,
+  "combined_schedule": "/data/models/test/qtopomoe_phase8_formal_controlled_combined_v1/schedule.json",
+  "combined_schedule_sha256": "0344c7c42a36742ba22208f8b9d828703bb844fc3e5b516b8eac4f1f15254563",
+  "method": "symbolic_links_to_immutable_source_runs",
+  "run_count": 20,
+  "schema_version": "qtopomoe.phase8_split_merge_manifest.v1",
+  "source_roots": [
+    {
+      "root": "/data/models/test/qtopomoe_phase8_formal_controlled_gpu0_3_v1",
+      "run_count": 15,
+      "schedule": "/data/models/test/qtopomoe_phase8_formal_controlled_gpu0_3_v1/schedule.json",
+      "schedule_sha256": "358a8d5e7df808f32698fe0fd675bae1337866db16ec7fa4321fde34c8d007b1"
+    },
+    {
+      "root": "/data/models/test/qtopomoe_phase8_formal_controlled_ep8_v1",
+      "run_count": 5,
+      "schedule": "/data/models/test/qtopomoe_phase8_formal_controlled_ep8_v1/schedule.json",
+      "schedule_sha256": "0f8a6d03c6c9c5c45a75c2565f153d58e96fa3b20a002ce9bf9352db8d30475d"
+    }
+  ],
+  "workload_matrix": "/data/moe/configs/workloads/phase8_formal_controlled_v1.json",
+  "workload_matrix_sha256": "3fc04a14f481cd008ee6ed6b556d020edf2c3cee4bf14e732d0808878710852e"
+}

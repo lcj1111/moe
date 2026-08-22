@@ -1,0 +1,537 @@
+{
+  "candidate_aggregate": [
+    {
+      "actual_ep_ranks": 4,
+      "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+      "dp": 1,
+      "ep_enabled": true,
+      "expected_cells_completed": 12,
+      "gpu_count": 4,
+      "gpu_ids": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "median_e2e_p99_ms": 1356.0646525584161,
+      "median_output_tokens_s": 928.5849539498013,
+      "median_tpot_p99_ms": 14.592274146609173,
+      "model_path": "/data/models/test/redhatai_qwen36_nvfp4",
+      "oracle_wins": 6,
+      "peak_selected_gpu_memory_sum_mib": 117546.0,
+      "peak_selected_gpu_power_sum_w": 1449.83,
+      "tp": 4
+    },
+    {
+      "actual_ep_ranks": 8,
+      "candidate_id": "nvfp4_redhat_ep8_static_sys",
+      "dp": 1,
+      "ep_enabled": true,
+      "expected_cells_completed": 12,
+      "gpu_count": 8,
+      "gpu_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "median_e2e_p99_ms": 1334.3209519516677,
+      "median_output_tokens_s": 881.5108074073686,
+      "median_tpot_p99_ms": 11.311603608191945,
+      "model_path": "/data/models/test/redhatai_qwen36_nvfp4",
+      "oracle_wins": 6,
+      "peak_selected_gpu_memory_sum_mib": 235898.0,
+      "peak_selected_gpu_power_sum_w": 2142.11,
+      "tp": 8
+    }
+  ],
+  "chat_template_sha256": "e84f32a23fdda27689f868aa4a1a5621f41133e51a48d7f3efcbea2839574259",
+  "errors": [],
+  "extra_non_runbook_cells": {
+    "nvfp4_redhat_ep4_static_numa0": [
+      "w1_c4",
+      "w2_c4",
+      "w3_c4"
+    ],
+    "nvfp4_redhat_ep8_static_sys": [
+      "w1_c4",
+      "w2_c4",
+      "w3_c4"
+    ]
+  },
+  "gate": {
+    "all_expected_cells_present": true,
+    "failed_zero": true,
+    "single_chat_template": true,
+    "token_exact": true
+  },
+  "interpretation": "Single-pass screening selects candidates for later randomized five-repeat runs; it is not a confidence-interval result.",
+  "resource_aware_pareto_candidates": [
+    "nvfp4_redhat_ep4_static_numa0",
+    "nvfp4_redhat_ep8_static_sys"
+  ],
+  "root_audit": [
+    {
+      "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+      "meta_sha256": "445b84a6b0e3ea7f781bfedbc8d3f0660704abd889e8d36ba2fd14ce89609867",
+      "peak_selected_gpu_memory_sum_mib": 117542.0,
+      "peak_selected_gpu_power_sum_w": 1378.3899999999999,
+      "root": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep4_static_phase8_screen_v1",
+      "status": "workload_passed"
+    },
+    {
+      "candidate_id": "nvfp4_redhat_ep4_static_numa0",
+      "meta_sha256": "bf27459bba3a05f0a6f1b1927194bdf5af5ffeb37c4b8e042944fd81a0986dc7",
+      "peak_selected_gpu_memory_sum_mib": 117546.0,
+      "peak_selected_gpu_power_sum_w": 1449.83,
+      "root": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep4_static_phase8_c8_supplement_v1",
+      "status": "workload_passed"
+    },
+    {
+      "candidate_id": "nvfp4_redhat_ep8_static_sys",
+      "meta_sha256": "304d60b374070ee742dd4a8eb0e3b77dd9f21a11632a9c23b9557e03dcbee5e8",
+      "peak_selected_gpu_memory_sum_mib": 235898.0,
+      "peak_selected_gpu_power_sum_w": 1658.77,
+      "root": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep8_static_phase8_screen_v1",
+      "status": "workload_passed"
+    },
+    {
+      "candidate_id": "nvfp4_redhat_ep8_static_sys",
+      "meta_sha256": "abfd28d8c261708108fecb0e6952c9ff22be2de3a495959a70c9d272c405f7a1",
+      "peak_selected_gpu_memory_sum_mib": 235884.0,
+      "peak_selected_gpu_power_sum_w": 2142.11,
+      "root": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep8_static_phase8_c8_supplement_v1",
+      "status": "workload_passed"
+    }
+  ],
+  "rows": [
+    {
+      "concurrency": 1,
+      "id": "w1_c1",
+      "input_tokens": 256,
+      "measurements": {
+        "nvfp4_redhat_ep4_static_numa0": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep4_static_phase8_screen_v1/workloads/w1_c1/summary.json",
+          "artifact_sha256": "b67855ce8b385b6a99f954e320bd353748d70189a9669e1f7307906cf31400bc",
+          "completed": 32,
+          "e2e_p50_ms": 212.5062569975853,
+          "e2e_p95_ms": 410.6312342919409,
+          "e2e_p99_ms": 423.3649102970958,
+          "failed": 0,
+          "output_tokens_s": 3436.7515224135027,
+          "tpot_p99_ms": 4.373481281374286,
+          "ttft_p99_ms": 59.12899924442172
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep8_static_phase8_screen_v1/workloads/w1_c1/summary.json",
+          "artifact_sha256": "e4c453a22043b461e27d73ab8d82b433b6d913d1f73e8a6e17963d4d637a8f92",
+          "completed": 32,
+          "e2e_p50_ms": 244.00461930781603,
+          "e2e_p95_ms": 533.6090661585331,
+          "e2e_p99_ms": 556.4400339499116,
+          "failed": 0,
+          "output_tokens_s": 2798.145181876246,
+          "tpot_p99_ms": 5.10299889720045,
+          "ttft_p99_ms": 60.21679937839508
+        }
+      },
+      "oracle_by_e2e_p99": "nvfp4_redhat_ep4_static_numa0",
+      "output_tokens": 128,
+      "requests": 32,
+      "workload_id": "w1_c1"
+    },
+    {
+      "concurrency": 8,
+      "id": "w1_c8",
+      "input_tokens": 256,
+      "measurements": {
+        "nvfp4_redhat_ep4_static_numa0": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep4_static_phase8_c8_supplement_v1/workloads/w1_c8/summary.json",
+          "artifact_sha256": "d0a9990ddefbde0e8ae52ba3c78910b2c4beb5969bc12e9a1b552ce46caf9b39",
+          "completed": 32,
+          "e2e_p50_ms": 698.9013650454581,
+          "e2e_p95_ms": 1495.9885217249393,
+          "e2e_p99_ms": 1681.4412302337587,
+          "failed": 0,
+          "output_tokens_s": 972.9748328893771,
+          "tpot_p99_ms": 19.828972681306112,
+          "ttft_p99_ms": 403.9571089670062
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep8_static_phase8_c8_supplement_v1/workloads/w1_c8/summary.json",
+          "artifact_sha256": "3336675038d3334b304f3c4f2ded2da573931c3ae8f4506c85ef03dd5ba4317c",
+          "completed": 32,
+          "e2e_p50_ms": 754.5834709890187,
+          "e2e_p95_ms": 934.0577167458832,
+          "e2e_p99_ms": 1921.0055973380804,
+          "failed": 0,
+          "output_tokens_s": 713.1681458390316,
+          "tpot_p99_ms": 18.256447701714933,
+          "ttft_p99_ms": 516.1687126383185
+        }
+      },
+      "oracle_by_e2e_p99": "nvfp4_redhat_ep4_static_numa0",
+      "output_tokens": 128,
+      "requests": 32,
+      "workload_id": "w1_c8"
+    },
+    {
+      "concurrency": 32,
+      "id": "w1_c32",
+      "input_tokens": 256,
+      "measurements": {
+        "nvfp4_redhat_ep4_static_numa0": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep4_static_phase8_screen_v1/workloads/w1_c32/summary.json",
+          "artifact_sha256": "75baa46501c4d87e636a32924a4e3a300e384f0dd481b657ddd26c2a7cdce9b0",
+          "completed": 64,
+          "e2e_p50_ms": 1408.2622951827943,
+          "e2e_p95_ms": 2171.5388759039342,
+          "e2e_p99_ms": 2761.4389141090214,
+          "failed": 0,
+          "output_tokens_s": 984.6367834294588,
+          "tpot_p99_ms": 23.580631312842552,
+          "ttft_p99_ms": 1219.2123858258128
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep8_static_phase8_screen_v1/workloads/w1_c32/summary.json",
+          "artifact_sha256": "c974a0ae544f411866ae87ee4da8fd1c9bf6a5085812fc5a729aaf2c903a17c4",
+          "completed": 64,
+          "e2e_p50_ms": 2030.3709004074335,
+          "e2e_p95_ms": 2486.7535950616,
+          "e2e_p99_ms": 3354.2472571134567,
+          "failed": 0,
+          "output_tokens_s": 845.2451164747558,
+          "tpot_p99_ms": 22.64240175122168,
+          "ttft_p99_ms": 1805.233156774193
+        }
+      },
+      "oracle_by_e2e_p99": "nvfp4_redhat_ep4_static_numa0",
+      "output_tokens": 128,
+      "requests": 64,
+      "workload_id": "w1_c32"
+    },
+    {
+      "concurrency": 128,
+      "id": "w1_c128",
+      "input_tokens": 256,
+      "measurements": {
+        "nvfp4_redhat_ep4_static_numa0": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep4_static_phase8_screen_v1/workloads/w1_c128/summary.json",
+          "artifact_sha256": "61d3cbe962523c05b6ff7fbb49ffff9b34afb203825a42889cfaf4c73da79e9e",
+          "completed": 128,
+          "e2e_p50_ms": 5979.2721113190055,
+          "e2e_p95_ms": 6306.905243080109,
+          "e2e_p99_ms": 6356.346931774169,
+          "failed": 0,
+          "output_tokens_s": 947.1058718261936,
+          "tpot_p99_ms": 52.115725557796836,
+          "ttft_p99_ms": 5479.372076690197
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep8_static_phase8_screen_v1/workloads/w1_c128/summary.json",
+          "artifact_sha256": "2370bf44d3f39f017fe75a636d76c57fa8ee45cfacf7e5ee35a69321f3ce2739",
+          "completed": 128,
+          "e2e_p50_ms": 5836.1602188088,
+          "e2e_p95_ms": 6129.818742163479,
+          "e2e_p99_ms": 6175.1056630164385,
+          "failed": 0,
+          "output_tokens_s": 917.7764983399813,
+          "tpot_p99_ms": 55.9779212045937,
+          "ttft_p99_ms": 5350.023914128542
+        }
+      },
+      "oracle_by_e2e_p99": "nvfp4_redhat_ep8_static_sys",
+      "output_tokens": 128,
+      "requests": 128,
+      "workload_id": "w1_c128"
+    },
+    {
+      "concurrency": 1,
+      "id": "w2_c1",
+      "input_tokens": 2048,
+      "measurements": {
+        "nvfp4_redhat_ep4_static_numa0": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep4_static_phase8_screen_v1/workloads/w2_c1/summary.json",
+          "artifact_sha256": "a625793d2f9e60352f9c1f995ab26d587597ec91b277fe6ba31cc860c7963e63",
+          "completed": 32,
+          "e2e_p50_ms": 228.98715222254395,
+          "e2e_p95_ms": 252.52822879701853,
+          "e2e_p99_ms": 395.98408807069063,
+          "failed": 0,
+          "output_tokens_s": 2765.2626279380243,
+          "tpot_p99_ms": 4.331172589445487,
+          "ttft_p99_ms": 258.4944907575846
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep8_static_phase8_screen_v1/workloads/w2_c1/summary.json",
+          "artifact_sha256": "9ddaf741bd6efe0d803b31cad8d9c5fd3ddad93451e106ad79d235a702234e3c",
+          "completed": 32,
+          "e2e_p50_ms": 200.16371505334973,
+          "e2e_p95_ms": 250.87531469762325,
+          "e2e_p99_ms": 406.8230018019676,
+          "failed": 0,
+          "output_tokens_s": 2782.536864892001,
+          "tpot_p99_ms": 5.10217749979347,
+          "ttft_p99_ms": 153.8204657845199
+        }
+      },
+      "oracle_by_e2e_p99": "nvfp4_redhat_ep4_static_numa0",
+      "output_tokens": 256,
+      "requests": 32,
+      "workload_id": "w2_c1"
+    },
+    {
+      "concurrency": 8,
+      "id": "w2_c8",
+      "input_tokens": 2048,
+      "measurements": {
+        "nvfp4_redhat_ep4_static_numa0": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep4_static_phase8_c8_supplement_v1/workloads/w2_c8/summary.json",
+          "artifact_sha256": "81d045b46d1e29142be492567c01d160714d3f488e055056f171a4bad68d15e9",
+          "completed": 32,
+          "e2e_p50_ms": 599.7881172224879,
+          "e2e_p95_ms": 992.7696697413921,
+          "e2e_p99_ms": 1103.291334118694,
+          "failed": 0,
+          "output_tokens_s": 1017.8635191556627,
+          "tpot_p99_ms": 18.575573667279773,
+          "ttft_p99_ms": 558.1893739290535
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep8_static_phase8_c8_supplement_v1/workloads/w2_c8/summary.json",
+          "artifact_sha256": "793503576e4680b67c026098da6bf96ac46bca83b6357756c4ba4542721064cc",
+          "completed": 32,
+          "e2e_p50_ms": 504.17992984876037,
+          "e2e_p95_ms": 763.9599950052798,
+          "e2e_p99_ms": 765.2840721420944,
+          "failed": 0,
+          "output_tokens_s": 1496.1764417689353,
+          "tpot_p99_ms": 12.48197234235704,
+          "ttft_p99_ms": 556.5936784259975
+        }
+      },
+      "oracle_by_e2e_p99": "nvfp4_redhat_ep8_static_sys",
+      "output_tokens": 256,
+      "requests": 32,
+      "workload_id": "w2_c8"
+    },
+    {
+      "concurrency": 32,
+      "id": "w2_c32",
+      "input_tokens": 2048,
+      "measurements": {
+        "nvfp4_redhat_ep4_static_numa0": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep4_static_phase8_screen_v1/workloads/w2_c32/summary.json",
+          "artifact_sha256": "711b37be9d05488c0420d40b9d4cef538af7f4b42327a7f5b4a9507cf5a55574",
+          "completed": 64,
+          "e2e_p50_ms": 1974.6833289973438,
+          "e2e_p95_ms": 2999.341517686844,
+          "e2e_p99_ms": 3331.9259849376976,
+          "failed": 0,
+          "output_tokens_s": 656.6032126967735,
+          "tpot_p99_ms": 40.78109687543474,
+          "ttft_p99_ms": 1795.8643790334463
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep8_static_phase8_screen_v1/workloads/w2_c32/summary.json",
+          "artifact_sha256": "cee1d3c5a47a050b1cc080bee6ea5302c5dbe0fcc326d238c3f7e3c83e8f3c6e",
+          "completed": 64,
+          "e2e_p50_ms": 1550.9131411090493,
+          "e2e_p95_ms": 2002.1579451858997,
+          "e2e_p99_ms": 2045.2558603137732,
+          "failed": 0,
+          "output_tokens_s": 996.2906621087659,
+          "tpot_p99_ms": 20.1306391536491,
+          "ttft_p99_ms": 1393.7931093387306
+        }
+      },
+      "oracle_by_e2e_p99": "nvfp4_redhat_ep8_static_sys",
+      "output_tokens": 256,
+      "requests": 64,
+      "workload_id": "w2_c32"
+    },
+    {
+      "concurrency": 1,
+      "id": "w3_c1",
+      "input_tokens": 8192,
+      "measurements": {
+        "nvfp4_redhat_ep4_static_numa0": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep4_static_phase8_screen_v1/workloads/w3_c1/summary.json",
+          "artifact_sha256": "b94708b7e6545c8454ec179f6ec4716a8c9f3ca5860436a5ada97386b4554315",
+          "completed": 16,
+          "e2e_p50_ms": 240.78039033338428,
+          "e2e_p95_ms": 301.52428103610873,
+          "e2e_p99_ms": 612.0448429137468,
+          "failed": 0,
+          "output_tokens_s": 910.0640360734089,
+          "tpot_p99_ms": 4.3104860575540975,
+          "ttft_p99_ms": 470.45450704172254
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep8_static_phase8_screen_v1/workloads/w3_c1/summary.json",
+          "artifact_sha256": "cef70356564b695d7796d995965d113a609903242b9c76f041def5c88013d300",
+          "completed": 16,
+          "e2e_p50_ms": 218.19486934691668,
+          "e2e_p95_ms": 423.5308817587793,
+          "e2e_p99_ms": 608.0370238050818,
+          "failed": 0,
+          "output_tokens_s": 1126.5761346460215,
+          "tpot_p99_ms": 5.074199610012206,
+          "ttft_p99_ms": 421.48130806162953
+        }
+      },
+      "oracle_by_e2e_p99": "nvfp4_redhat_ep8_static_sys",
+      "output_tokens": 256,
+      "requests": 16,
+      "workload_id": "w3_c1"
+    },
+    {
+      "concurrency": 8,
+      "id": "w3_c8",
+      "input_tokens": 8192,
+      "measurements": {
+        "nvfp4_redhat_ep4_static_numa0": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep4_static_phase8_c8_supplement_v1/workloads/w3_c8/summary.json",
+          "artifact_sha256": "82a562aa3a284abf41141460d7661519ed9039e596a31a695636c3eeecadabea",
+          "completed": 16,
+          "e2e_p50_ms": 962.2370330616832,
+          "e2e_p95_ms": 1074.0347476676106,
+          "e2e_p99_ms": 1074.7935851104558,
+          "failed": 0,
+          "output_tokens_s": 588.9502959165383,
+          "tpot_p99_ms": 10.608974625938572,
+          "ttft_p99_ms": 786.2381669692695
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep8_static_phase8_c8_supplement_v1/workloads/w3_c8/summary.json",
+          "artifact_sha256": "63f6dba93e400d1e00823df6ddcace0b65730f2aac2e35b7ad81d2315dca846a",
+          "completed": 16,
+          "e2e_p50_ms": 941.0536088980734,
+          "e2e_p95_ms": 1093.5761979781091,
+          "e2e_p99_ms": 1231.2288000248373,
+          "failed": 0,
+          "output_tokens_s": 484.8814452585554,
+          "tpot_p99_ms": 10.14123487402685,
+          "ttft_p99_ms": 751.0719578713179
+        }
+      },
+      "oracle_by_e2e_p99": "nvfp4_redhat_ep4_static_numa0",
+      "output_tokens": 256,
+      "requests": 16,
+      "workload_id": "w3_c8"
+    },
+    {
+      "concurrency": 16,
+      "id": "w3_c16",
+      "input_tokens": 8192,
+      "measurements": {
+        "nvfp4_redhat_ep4_static_numa0": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep4_static_phase8_screen_v1/workloads/w3_c16/summary.json",
+          "artifact_sha256": "94ffa1a30d764bea428878af01ee93e522940b6e8700f30aa17be178f0063f03",
+          "completed": 32,
+          "e2e_p50_ms": 1181.034664157778,
+          "e2e_p95_ms": 1793.3082901872694,
+          "e2e_p99_ms": 2197.2033488564193,
+          "failed": 0,
+          "output_tokens_s": 570.2703851476242,
+          "tpot_p99_ms": 19.43521889880663,
+          "ttft_p99_ms": 1051.7910989001393
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep8_static_phase8_screen_v1/workloads/w3_c16/summary.json",
+          "artifact_sha256": "c8965720bca4ff6e4c8f9a861bdb9bab08636436f0f80e37d19ecbd6d4dc85c5",
+          "completed": 32,
+          "e2e_p50_ms": 1069.533968809992,
+          "e2e_p95_ms": 1546.8028248287737,
+          "e2e_p99_ms": 1761.4470873959363,
+          "failed": 0,
+          "output_tokens_s": 705.102077086023,
+          "tpot_p99_ms": 15.928927474305965,
+          "ttft_p99_ms": 915.3276863507926
+        }
+      },
+      "oracle_by_e2e_p99": "nvfp4_redhat_ep8_static_sys",
+      "output_tokens": 256,
+      "requests": 32,
+      "workload_id": "w3_c16"
+    },
+    {
+      "concurrency": 1,
+      "id": "w4_c1",
+      "input_tokens": 32768,
+      "measurements": {
+        "nvfp4_redhat_ep4_static_numa0": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep4_static_phase8_screen_v1/workloads/w4_c1/summary.json",
+          "artifact_sha256": "d5e985a9653d8620f071fadc38d65817601ff1153ac50af8d3ba673dfc644c13",
+          "completed": 8,
+          "e2e_p50_ms": 226.81146813556552,
+          "e2e_p95_ms": 1608.8379709981382,
+          "e2e_p99_ms": 1608.8379709981382,
+          "failed": 0,
+          "output_tokens_s": 175.28179038753328,
+          "tpot_p99_ms": 4.228475236115938,
+          "ttft_p99_ms": 1472.6329063996673
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep8_static_phase8_screen_v1/workloads/w4_c1/summary.json",
+          "artifact_sha256": "cec3e8ba6d82042b97623818bdd19cad8e8eec1242b45666ed1af1f5d4a16ba3",
+          "completed": 8,
+          "e2e_p50_ms": 255.76555775478482,
+          "e2e_p95_ms": 1437.413103878498,
+          "e2e_p99_ms": 1437.413103878498,
+          "failed": 0,
+          "output_tokens_s": 196.18577237058287,
+          "tpot_p99_ms": 4.9554976525113865,
+          "ttft_p99_ms": 1241.905536968261
+        }
+      },
+      "oracle_by_e2e_p99": "nvfp4_redhat_ep8_static_sys",
+      "output_tokens": 128,
+      "requests": 8,
+      "workload_id": "w4_c1"
+    },
+    {
+      "concurrency": 4,
+      "id": "w4_c4",
+      "input_tokens": 32768,
+      "measurements": {
+        "nvfp4_redhat_ep4_static_numa0": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep4_static_phase8_screen_v1/workloads/w4_c4/summary.json",
+          "artifact_sha256": "ce9750a858ce8ed6434aba21a9bcfde82903a2de389406194968f4c8d1dbccf6",
+          "completed": 8,
+          "e2e_p50_ms": 513.0027728155255,
+          "e2e_p95_ms": 707.6217685826123,
+          "e2e_p99_ms": 707.6217685826123,
+          "failed": 0,
+          "output_tokens_s": 488.9617806600953,
+          "tpot_p99_ms": 7.972308492753655,
+          "ttft_p99_ms": 344.4251106120646
+        },
+        "nvfp4_redhat_ep8_static_sys": {
+          "artifact_path": "/data/models/test/qtopomoe_phase8_screen/nvfp4_ep8_static_phase8_screen_v1/workloads/w4_c4/summary.json",
+          "artifact_sha256": "28836a5c3ce6a44665649a90ceaa2cc893c0193a8708833c3fd0d9c4bb13938e",
+          "completed": 8,
+          "e2e_p50_ms": 576.1587549932301,
+          "e2e_p95_ms": 831.0984647832811,
+          "e2e_p99_ms": 831.0984647832811,
+          "failed": 0,
+          "output_tokens_s": 373.0003280427623,
+          "tpot_p99_ms": 8.846096087698683,
+          "ttft_p99_ms": 401.2608341872692
+        }
+      },
+      "oracle_by_e2e_p99": "nvfp4_redhat_ep4_static_numa0",
+      "output_tokens": 128,
+      "requests": 8,
+      "workload_id": "w4_c4"
+    }
+  ],
+  "schema_version": "qtopomoe.phase8_single_pass_screen.v1",
+  "status": "accepted",
+  "workload_matrix": "configs/workloads/phase8_single_pass_screen.json",
+  "workload_matrix_sha256": "de91dd4a05fa610d73d2e8554ea4fabb7d4959f0423defc057c1190089a33e74"
+}

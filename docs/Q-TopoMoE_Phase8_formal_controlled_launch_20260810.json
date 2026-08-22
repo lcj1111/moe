@@ -1,0 +1,49 @@
+{
+  "schema_version": "qtopomoe.phase8_formal_controlled_launch.v1",
+  "snapshot_time": "2026-08-10T12:29:20.231647+08:00",
+  "status": "running",
+  "host": "gpu-111",
+  "raw_root": "/data/models/test/qtopomoe_phase8_formal_controlled_v1_20260810",
+  "orchestrator_pid": 4102394,
+  "plan": "configs/experiments/phase8_formal_controlled_v1.json",
+  "plan_sha256": "2e42194ce47a6b1e397b7cc9aa7cb9551fa1a82025037f5cc93d16e18879a93e",
+  "workload_matrix": "configs/workloads/phase8_formal_controlled_v1.json",
+  "workload_matrix_sha256": "3fc04a14f481cd008ee6ed6b556d020edf2c3cee4bf14e732d0808878710852e",
+  "schedule_sha256": "aa716648dabc765639373f6d24c3205666f30b3ef50a94eaff70be3f7607040a",
+  "capacity_audit_sha256": "c5a1e98acdf74b710a388d460acc8e00817832f8a970e0815a3461257fd35005",
+  "runtime": {
+    "vllm_version": "0.26.1rc1.dev343+g33c50587d",
+    "vllm_bin_sha256": "ac1228d685d50a61a490694de01891653dffdbe4326fadfc6ed6cf39d9fde763",
+    "ninja_bin_sha256": "696f9628a79d9ce50314cf9556d7cd1a1d1ec52b8fd52828f6f9db1719565b67"
+  },
+  "matrix_scope": {
+    "candidates": 4,
+    "repeats_per_candidate": 5,
+    "schedule_runs": 20,
+    "cells_per_run": 108,
+    "candidate_repeat_cells": 2160,
+    "base_cells": 12,
+    "semantic_prefix_populations": [0, 50, 100],
+    "arrival_modes": ["closed_loop", "poisson", "burst"],
+    "rate_policy": "candidate-independent minimum observed capacity times 0.70"
+  },
+  "prelaunch_gates": {
+    "capacity_audit_accepted": true,
+    "all_capacity_runs_passed": true,
+    "capacity_cells_passed": 144,
+    "dry_run_passed": true,
+    "schedule_balance_passed": true,
+    "matrix_sha_passed": true,
+    "frozen_runtime_passed": true,
+    "all_eight_gpus_idle": true,
+    "cuda_p2p_read_gpu0_through_gpu7": "all pairwise OK",
+    "output_root_was_absent": true
+  },
+  "current_run_at_snapshot": {
+    "schedule_order": 1,
+    "candidate_id": "nvfp4_redhat_ep8_static_sys",
+    "repeat": 5,
+    "stage": "checkpoint loading"
+  },
+  "stop_policy": "The runner stops on the first backend, token, cache-ratio, arrival-schedule, request-completion, or EP-rank Gate failure."
+}

@@ -1,0 +1,677 @@
+{
+  "cells": [
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t1_c4",
+      "concurrency": 4,
+      "id": "t1_c4_p0_closed_loop",
+      "input_tokens": 512,
+      "output_tokens": 192,
+      "prefix_cache_pct": 0,
+      "requests": 32,
+      "stream_seed": 1106410852
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t1_c4",
+      "concurrency": 4,
+      "id": "t1_c4_p0_poisson",
+      "input_tokens": 512,
+      "output_tokens": 192,
+      "prefix_cache_pct": 0,
+      "request_rate_rps": 2.494831,
+      "requests": 32,
+      "stream_seed": 583259637
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t1_c4",
+      "concurrency": 4,
+      "id": "t1_c4_p0_burst",
+      "input_tokens": 512,
+      "output_tokens": 192,
+      "prefix_cache_pct": 0,
+      "request_rate_rps": 2.494831,
+      "requests": 32,
+      "stream_seed": 2594151080
+    },
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t1_c4",
+      "concurrency": 4,
+      "id": "t1_c4_p50_closed_loop",
+      "input_tokens": 512,
+      "output_tokens": 192,
+      "prefix_cache_pct": 50,
+      "requests": 32,
+      "stream_seed": 1201150562
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t1_c4",
+      "concurrency": 4,
+      "id": "t1_c4_p50_poisson",
+      "input_tokens": 512,
+      "output_tokens": 192,
+      "prefix_cache_pct": 50,
+      "request_rate_rps": 2.494831,
+      "requests": 32,
+      "stream_seed": 2643998584
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t1_c4",
+      "concurrency": 4,
+      "id": "t1_c4_p50_burst",
+      "input_tokens": 512,
+      "output_tokens": 192,
+      "prefix_cache_pct": 50,
+      "request_rate_rps": 2.494831,
+      "requests": 32,
+      "stream_seed": 1741363234
+    },
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t1_c4",
+      "concurrency": 4,
+      "id": "t1_c4_p100_closed_loop",
+      "input_tokens": 512,
+      "output_tokens": 192,
+      "prefix_cache_pct": 100,
+      "requests": 32,
+      "stream_seed": 2285289428
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t1_c4",
+      "concurrency": 4,
+      "id": "t1_c4_p100_poisson",
+      "input_tokens": 512,
+      "output_tokens": 192,
+      "prefix_cache_pct": 100,
+      "request_rate_rps": 2.494831,
+      "requests": 32,
+      "stream_seed": 639371575
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t1_c4",
+      "concurrency": 4,
+      "id": "t1_c4_p100_burst",
+      "input_tokens": 512,
+      "output_tokens": 192,
+      "prefix_cache_pct": 100,
+      "request_rate_rps": 2.494831,
+      "requests": 32,
+      "stream_seed": 2892983697
+    },
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t2_c16",
+      "concurrency": 16,
+      "id": "t2_c16_p0_closed_loop",
+      "input_tokens": 1536,
+      "output_tokens": 384,
+      "prefix_cache_pct": 0,
+      "requests": 32,
+      "stream_seed": 4216638878
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t2_c16",
+      "concurrency": 16,
+      "id": "t2_c16_p0_poisson",
+      "input_tokens": 1536,
+      "output_tokens": 384,
+      "prefix_cache_pct": 0,
+      "request_rate_rps": 2.494831,
+      "requests": 32,
+      "stream_seed": 825464454
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t2_c16",
+      "concurrency": 16,
+      "id": "t2_c16_p0_burst",
+      "input_tokens": 1536,
+      "output_tokens": 384,
+      "prefix_cache_pct": 0,
+      "request_rate_rps": 2.494831,
+      "requests": 32,
+      "stream_seed": 4174593328
+    },
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t2_c16",
+      "concurrency": 16,
+      "id": "t2_c16_p50_closed_loop",
+      "input_tokens": 1536,
+      "output_tokens": 384,
+      "prefix_cache_pct": 50,
+      "requests": 32,
+      "stream_seed": 3437834329
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t2_c16",
+      "concurrency": 16,
+      "id": "t2_c16_p50_poisson",
+      "input_tokens": 1536,
+      "output_tokens": 384,
+      "prefix_cache_pct": 50,
+      "request_rate_rps": 2.494831,
+      "requests": 32,
+      "stream_seed": 4241143786
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t2_c16",
+      "concurrency": 16,
+      "id": "t2_c16_p50_burst",
+      "input_tokens": 1536,
+      "output_tokens": 384,
+      "prefix_cache_pct": 50,
+      "request_rate_rps": 2.494831,
+      "requests": 32,
+      "stream_seed": 3662579115
+    },
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t2_c16",
+      "concurrency": 16,
+      "id": "t2_c16_p100_closed_loop",
+      "input_tokens": 1536,
+      "output_tokens": 384,
+      "prefix_cache_pct": 100,
+      "requests": 32,
+      "stream_seed": 152487521
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t2_c16",
+      "concurrency": 16,
+      "id": "t2_c16_p100_poisson",
+      "input_tokens": 1536,
+      "output_tokens": 384,
+      "prefix_cache_pct": 100,
+      "request_rate_rps": 2.494831,
+      "requests": 32,
+      "stream_seed": 2012121737
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t2_c16",
+      "concurrency": 16,
+      "id": "t2_c16_p100_burst",
+      "input_tokens": 1536,
+      "output_tokens": 384,
+      "prefix_cache_pct": 100,
+      "request_rate_rps": 2.494831,
+      "requests": 32,
+      "stream_seed": 3059513429
+    },
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t3_c4",
+      "concurrency": 4,
+      "id": "t3_c4_p0_closed_loop",
+      "input_tokens": 4096,
+      "output_tokens": 192,
+      "prefix_cache_pct": 0,
+      "requests": 32,
+      "stream_seed": 273751118
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t3_c4",
+      "concurrency": 4,
+      "id": "t3_c4_p0_poisson",
+      "input_tokens": 4096,
+      "output_tokens": 192,
+      "prefix_cache_pct": 0,
+      "request_rate_rps": 0.861389,
+      "requests": 32,
+      "stream_seed": 959441790
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t3_c4",
+      "concurrency": 4,
+      "id": "t3_c4_p0_burst",
+      "input_tokens": 4096,
+      "output_tokens": 192,
+      "prefix_cache_pct": 0,
+      "request_rate_rps": 0.861389,
+      "requests": 32,
+      "stream_seed": 1288216578
+    },
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t3_c4",
+      "concurrency": 4,
+      "id": "t3_c4_p50_closed_loop",
+      "input_tokens": 4096,
+      "output_tokens": 192,
+      "prefix_cache_pct": 50,
+      "requests": 32,
+      "stream_seed": 77195922
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t3_c4",
+      "concurrency": 4,
+      "id": "t3_c4_p50_poisson",
+      "input_tokens": 4096,
+      "output_tokens": 192,
+      "prefix_cache_pct": 50,
+      "request_rate_rps": 0.861389,
+      "requests": 32,
+      "stream_seed": 2436234109
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t3_c4",
+      "concurrency": 4,
+      "id": "t3_c4_p50_burst",
+      "input_tokens": 4096,
+      "output_tokens": 192,
+      "prefix_cache_pct": 50,
+      "request_rate_rps": 0.861389,
+      "requests": 32,
+      "stream_seed": 2352482731
+    },
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t3_c4",
+      "concurrency": 4,
+      "id": "t3_c4_p100_closed_loop",
+      "input_tokens": 4096,
+      "output_tokens": 192,
+      "prefix_cache_pct": 100,
+      "requests": 32,
+      "stream_seed": 2013276432
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t3_c4",
+      "concurrency": 4,
+      "id": "t3_c4_p100_poisson",
+      "input_tokens": 4096,
+      "output_tokens": 192,
+      "prefix_cache_pct": 100,
+      "request_rate_rps": 0.861389,
+      "requests": 32,
+      "stream_seed": 3253251622
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t3_c4",
+      "concurrency": 4,
+      "id": "t3_c4_p100_burst",
+      "input_tokens": 4096,
+      "output_tokens": 192,
+      "prefix_cache_pct": 100,
+      "request_rate_rps": 0.861389,
+      "requests": 32,
+      "stream_seed": 901099385
+    },
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t4_c8",
+      "concurrency": 8,
+      "id": "t4_c8_p0_closed_loop",
+      "input_tokens": 12288,
+      "output_tokens": 384,
+      "prefix_cache_pct": 0,
+      "requests": 32,
+      "stream_seed": 2848488205
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t4_c8",
+      "concurrency": 8,
+      "id": "t4_c8_p0_poisson",
+      "input_tokens": 12288,
+      "output_tokens": 384,
+      "prefix_cache_pct": 0,
+      "request_rate_rps": 0.861389,
+      "requests": 32,
+      "stream_seed": 1649722661
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t4_c8",
+      "concurrency": 8,
+      "id": "t4_c8_p0_burst",
+      "input_tokens": 12288,
+      "output_tokens": 384,
+      "prefix_cache_pct": 0,
+      "request_rate_rps": 0.861389,
+      "requests": 32,
+      "stream_seed": 112327906
+    },
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t4_c8",
+      "concurrency": 8,
+      "id": "t4_c8_p50_closed_loop",
+      "input_tokens": 12288,
+      "output_tokens": 384,
+      "prefix_cache_pct": 50,
+      "requests": 32,
+      "stream_seed": 3792715791
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t4_c8",
+      "concurrency": 8,
+      "id": "t4_c8_p50_poisson",
+      "input_tokens": 12288,
+      "output_tokens": 384,
+      "prefix_cache_pct": 50,
+      "request_rate_rps": 0.861389,
+      "requests": 32,
+      "stream_seed": 1176330668
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t4_c8",
+      "concurrency": 8,
+      "id": "t4_c8_p50_burst",
+      "input_tokens": 12288,
+      "output_tokens": 384,
+      "prefix_cache_pct": 50,
+      "request_rate_rps": 0.861389,
+      "requests": 32,
+      "stream_seed": 1479368501
+    },
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t4_c8",
+      "concurrency": 8,
+      "id": "t4_c8_p100_closed_loop",
+      "input_tokens": 12288,
+      "output_tokens": 384,
+      "prefix_cache_pct": 100,
+      "requests": 32,
+      "stream_seed": 3207886664
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t4_c8",
+      "concurrency": 8,
+      "id": "t4_c8_p100_poisson",
+      "input_tokens": 12288,
+      "output_tokens": 384,
+      "prefix_cache_pct": 100,
+      "request_rate_rps": 0.861389,
+      "requests": 32,
+      "stream_seed": 3019580904
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t4_c8",
+      "concurrency": 8,
+      "id": "t4_c8_p100_burst",
+      "input_tokens": 12288,
+      "output_tokens": 384,
+      "prefix_cache_pct": 100,
+      "request_rate_rps": 0.861389,
+      "requests": 32,
+      "stream_seed": 2034314646
+    },
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t5_c2",
+      "concurrency": 2,
+      "id": "t5_c2_p0_closed_loop",
+      "input_tokens": 24576,
+      "output_tokens": 192,
+      "prefix_cache_pct": 0,
+      "requests": 32,
+      "stream_seed": 829132580
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t5_c2",
+      "concurrency": 2,
+      "id": "t5_c2_p0_poisson",
+      "input_tokens": 24576,
+      "output_tokens": 192,
+      "prefix_cache_pct": 0,
+      "request_rate_rps": 0.207468,
+      "requests": 32,
+      "stream_seed": 1061081219
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t5_c2",
+      "concurrency": 2,
+      "id": "t5_c2_p0_burst",
+      "input_tokens": 24576,
+      "output_tokens": 192,
+      "prefix_cache_pct": 0,
+      "request_rate_rps": 0.207468,
+      "requests": 32,
+      "stream_seed": 2945163019
+    },
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t5_c2",
+      "concurrency": 2,
+      "id": "t5_c2_p50_closed_loop",
+      "input_tokens": 24576,
+      "output_tokens": 192,
+      "prefix_cache_pct": 50,
+      "requests": 32,
+      "stream_seed": 2519017274
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t5_c2",
+      "concurrency": 2,
+      "id": "t5_c2_p50_poisson",
+      "input_tokens": 24576,
+      "output_tokens": 192,
+      "prefix_cache_pct": 50,
+      "request_rate_rps": 0.207468,
+      "requests": 32,
+      "stream_seed": 3300084439
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t5_c2",
+      "concurrency": 2,
+      "id": "t5_c2_p50_burst",
+      "input_tokens": 24576,
+      "output_tokens": 192,
+      "prefix_cache_pct": 50,
+      "request_rate_rps": 0.207468,
+      "requests": 32,
+      "stream_seed": 1388861332
+    },
+    {
+      "arrival_mode": "closed_loop",
+      "base_cell_id": "t5_c2",
+      "concurrency": 2,
+      "id": "t5_c2_p100_closed_loop",
+      "input_tokens": 24576,
+      "output_tokens": 192,
+      "prefix_cache_pct": 100,
+      "requests": 32,
+      "stream_seed": 1833453067
+    },
+    {
+      "arrival_mode": "poisson",
+      "base_cell_id": "t5_c2",
+      "concurrency": 2,
+      "id": "t5_c2_p100_poisson",
+      "input_tokens": 24576,
+      "output_tokens": 192,
+      "prefix_cache_pct": 100,
+      "request_rate_rps": 0.207468,
+      "requests": 32,
+      "stream_seed": 1763132966
+    },
+    {
+      "arrival_mode": "burst",
+      "base_cell_id": "t5_c2",
+      "concurrency": 2,
+      "id": "t5_c2_p100_burst",
+      "input_tokens": 24576,
+      "output_tokens": 192,
+      "prefix_cache_pct": 100,
+      "request_rate_rps": 0.207468,
+      "requests": 32,
+      "stream_seed": 712294216
+    }
+  ],
+  "purpose": "Phase 8 冻结 selector 的完全独立测试矩阵",
+  "rate_audit": [
+    {
+      "base_cell_id": "t1_c4",
+      "frozen_request_rate_rps": 2.494831,
+      "minimum_neighbor_rate_rps": 3.118539,
+      "safety_multiplier": 0.8,
+      "training_neighbors": [
+        {
+          "request_rate_rps": 5.010125,
+          "shape": {
+            "concurrency": 8,
+            "input_tokens": 256,
+            "output_tokens": 128
+          },
+          "shape_log_distance": 2.3421811272499484
+        },
+        {
+          "request_rate_rps": 3.118539,
+          "shape": {
+            "concurrency": 8,
+            "input_tokens": 2048,
+            "output_tokens": 256
+          },
+          "shape_log_distance": 5.172256125807636
+        }
+      ]
+    },
+    {
+      "base_cell_id": "t2_c16",
+      "frozen_request_rate_rps": 2.494831,
+      "minimum_neighbor_rate_rps": 3.118539,
+      "safety_multiplier": 0.8,
+      "training_neighbors": [
+        {
+          "request_rate_rps": 3.118539,
+          "shape": {
+            "concurrency": 8,
+            "input_tokens": 2048,
+            "output_tokens": 256
+          },
+          "shape_log_distance": 1.514437253057585
+        },
+        {
+          "request_rate_rps": 3.594018,
+          "shape": {
+            "concurrency": 32,
+            "input_tokens": 2048,
+            "output_tokens": 256
+          },
+          "shape_log_distance": 1.514437253057585
+        }
+      ]
+    },
+    {
+      "base_cell_id": "t3_c4",
+      "frozen_request_rate_rps": 0.861389,
+      "minimum_neighbor_rate_rps": 1.076737,
+      "safety_multiplier": 0.8,
+      "training_neighbors": [
+        {
+          "request_rate_rps": 3.118539,
+          "shape": {
+            "concurrency": 8,
+            "input_tokens": 2048,
+            "output_tokens": 256
+          },
+          "shape_log_distance": 2.1722561258076363
+        },
+        {
+          "request_rate_rps": 1.076737,
+          "shape": {
+            "concurrency": 8,
+            "input_tokens": 8192,
+            "output_tokens": 256
+          },
+          "shape_log_distance": 2.1722561258076363
+        }
+      ]
+    },
+    {
+      "base_cell_id": "t4_c8",
+      "frozen_request_rate_rps": 0.861389,
+      "minimum_neighbor_rate_rps": 1.076737,
+      "safety_multiplier": 0.8,
+      "training_neighbors": [
+        {
+          "request_rate_rps": 1.076737,
+          "shape": {
+            "concurrency": 8,
+            "input_tokens": 8192,
+            "output_tokens": 256
+          },
+          "shape_log_distance": 0.6843622544998973
+        },
+        {
+          "request_rate_rps": 1.131291,
+          "shape": {
+            "concurrency": 16,
+            "input_tokens": 8192,
+            "output_tokens": 256
+          },
+          "shape_log_distance": 1.6843622544998973
+        }
+      ]
+    },
+    {
+      "base_cell_id": "t5_c2",
+      "frozen_request_rate_rps": 0.207468,
+      "minimum_neighbor_rate_rps": 0.259336,
+      "safety_multiplier": 0.8,
+      "training_neighbors": [
+        {
+          "request_rate_rps": 0.259336,
+          "shape": {
+            "concurrency": 1,
+            "input_tokens": 32768,
+            "output_tokens": 128
+          },
+          "shape_log_distance": 1.514437253057585
+        },
+        {
+          "request_rate_rps": 0.261729,
+          "shape": {
+            "concurrency": 4,
+            "input_tokens": 32768,
+            "output_tokens": 128
+          },
+          "shape_log_distance": 1.514437253057585
+        }
+      ]
+    }
+  ],
+  "rate_policy": {
+    "independent_test_outcomes_used": false,
+    "rounding": "向下保留 6 位小数",
+    "safety_multiplier": 0.8,
+    "source": "只读取训练矩阵；取两个最近 shape 冻结速率的较小值"
+  },
+  "schema_version": "qtopomoe.phase8_independent_workload.v1",
+  "seed": 20260816,
+  "sources": {
+    "design": "configs/workloads/phase8_selector_independent_design_v1.json",
+    "design_sha256": "66058f64d0ec270fc55e7f6402ea88c6fa40a152cbda0aa5a3153629ddf29008",
+    "training_matrix": "configs/workloads/phase8_formal_controlled_v1.json",
+    "training_matrix_sha256": "3fc04a14f481cd008ee6ed6b556d020edf2c3cee4bf14e732d0808878710852e"
+  },
+  "training_overlap_gate": true
+}

@@ -1,10 +1,10 @@
 .PHONY: help check snapshot tree
 
 help:
-	@echo "make check     Validate project, CUDA, environments, models, and Phase 0 evidence"
-	@echo "make snapshot  Save a reproducibility snapshot under artifacts/manifests"
-	@echo "make tree      Show the project directory layout"
-	@echo "Activate with: source env/activate.sh"
+	@echo "make check     检查项目配置、CUDA、隔离环境、模型与 Phase 0 证据"
+	@echo "make snapshot  将复现环境快照保存到 artifacts/manifests"
+	@echo "make tree      显示三级目录结构"
+	@echo "使用前执行：source env/activate.sh"
 
 check:
 	@bash -c 'source env/project.env; "$$QTOPOMOE_SGLANG_VENV/bin/python" scripts/validate_configs.py'

@@ -1,0 +1,57 @@
+{
+  "schema_version": "qtopomoe.phase8_capacity_prepass_launch.v1",
+  "snapshot_time": "2026-08-10T11:03:15+08:00",
+  "status": "running",
+  "scope": "Controlled p0 closed-loop capacity prepass only; not a candidate ranking or selector calibration result.",
+  "host": "gpu-111",
+  "raw_root": "/data/models/test/qtopomoe_phase8_capacity_prepass_v1_20260810",
+  "orchestrator_pid": 3849144,
+  "plan": "configs/experiments/phase8_capacity_prepass_v1.json",
+  "plan_sha256": "4646f80ff0c84189b119728737bab13f613872293c6c3b6f36e840f964292b68",
+  "workload_matrix": "configs/workloads/phase8_capacity_prepass_v1.json",
+  "workload_matrix_sha256": "85e9a513450cd729a754587eed1c218cfd6a3ea6f536424eab006daa6c7a0b2b",
+  "schedule_sha256": "a0eaa2e43a32edb29bcde76a7b3c74f094b55e6aaa9909bae0e40664431eae85",
+  "runtime": {
+    "vllm_version": "0.26.1rc1.dev343+g33c50587d",
+    "runs_total": 12,
+    "candidates": 4,
+    "repeats_per_candidate": 3,
+    "base_cells_per_run": 12,
+    "prefix_cache_pct": 0,
+    "arrival_mode": "closed_loop"
+  },
+  "prelaunch_gates": {
+    "all_eight_gpus_idle": true,
+    "cuda_p2p_read_gpu0_through_gpu7": "all pairwise OK",
+    "model_paths_present": true,
+    "frozen_runtime_verified": true,
+    "remote_relevant_tests_passed": 11,
+    "dry_run_schedule_size": 12
+  },
+  "progress": {
+    "completed_run": {
+      "candidate_id": "nvfp4_redhat_ep8_static_sys",
+      "repeat": 2,
+      "cells_passed": 12,
+      "meta_status": "workload_passed",
+      "meta_sha256": "1e1ff1ef8df3f46a94990ad7e914fe0419ec4ae5c38b9383ba31409fb5f4b039",
+      "gpus_released_after_run": true
+    },
+    "current_run_at_snapshot": {
+      "candidate_id": "w4a16_ep4_static_triton",
+      "repeat": 2,
+      "schedule_order": 2
+    }
+  },
+  "rate_freeze_policy_after_completion": {
+    "basis": "minimum observed closed-loop request/s across all four candidates and all three repeats for each base cell",
+    "safety_utilization": 0.7,
+    "rounding": "floor to 6 decimal places",
+    "candidate_independent_poisson_and_burst_rate": true
+  },
+  "github_commits": [
+    "247aec4 phase8: record controlled cache arrival gate",
+    "6ebbaf3 phase8: add controlled capacity rate freeze",
+    "c82b388 phase8: gate formal cache arrival aggregates"
+  ]
+}

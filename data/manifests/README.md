@@ -1,5 +1,7 @@
-# Data freeze status
+# 数据 manifest 说明
 
-The current machine-local smoke seed is copied to `data/manifests/sharegpt_seed.json` by `scripts/freeze_baseline.sh` and verified by SHA-256. It contains 64 records and is frozen for service smoke and screening only.
+`data/manifests/` 只保存输入数据的版本、样本数量和完整性信息，不保存大体积原始数据本身。
 
-The formal 256-sample calibration set and benchmark evaluation manifests are intentionally not fabricated from the 64-record smoke seed. They must be sourced from a pinned dataset revision, then stored with the dataset revision, sample indices, tokenizer revision, chat template, seed, and SHA-256 before formal quantization or quality results.
+当前机器本地的 smoke seed 由 `scripts/freeze_baseline.sh` 复制到 `sharegpt_seed.json`，并通过 SHA-256 校验。该文件包含 64 条记录，只用于服务 smoke 和筛选实验。
+
+正式的 256 条校准集以及 benchmark 评测 manifest 不会从 64 条 smoke seed 人工拼造。它们必须来自固定的数据集 revision，并在量化或质量结论前记录：数据集 revision、样本索引、tokenizer revision、chat template、seed 和 SHA-256。
