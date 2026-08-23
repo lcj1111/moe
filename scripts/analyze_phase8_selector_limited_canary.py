@@ -1,0 +1,141 @@
+#!/usr/bin/env python3
+"""生成 Phase 8 selector 有限 canary 的机器可读 Gate。"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import re
+from pathlib import Path
+from typing import Any
+
+
+def load(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--root", required=True, type=Path)
+    parser.add_argument("--server-log", required=True, type=Path)
+    parser.add_argument("--runtime-plan", required=True, type=Path)
+    parser.add_argument("--canary-plan", required=True, type=Path)
+    parser.add_argument("--rollback-status", required=True, type=Path)
+    parser.add_argument("--output", required=True, type=Path)
+    args = parser.parse_args()
+
+    canary = load(args.canary_plan)
+    runtime = canary["运行环境"]
+    placement = load(args.runtime_plan)
+    rollback = load(args.rollback_status)
+    summaries = {
+        phase: load(args.root / phase / "summary.json")
+        for phase in canary["负载"]["phases"]
+    }
+    log = args.server_log.read_text(encoding="utf-8", errors="replace")
+
+    expected_map_hash = runtime["runtime_map_sha256"]
+    applied = [
+        (int(rank), int(call), digest)
+        for rank, call, digest in re.findall(
+            r"Worker_TP(\d+)_EP\d+.*QTOPOMOE_EPLB_PLAN_APPLIED\] "
+            r"call=(\d+).*sha256=([0-9a-f]{64})",
+            log,
+        )
+    ]
+    first_call = min((call for _, call, _ in applied), default=None)
+    first_rows = [row for row in applied if row[1] == first_call]
+    first_ranks = sorted({rank for rank, _, _ in first_rows})
+    first_hashes = sorted({digest for _, _, digest in first_rows})
+    native_migration = bool(re.search(r"Rearranged experts\s+in ([0-9.]+) s", log))
+
+    failures = {phase: int(value.get("failed", -1)) for phase, value in summaries.items()}
+    complete = {
+        phase: int(value.get("completed", -1)) == int(value.get("requests", -2))
+        for phase, value in summaries.items()
+    }
+    stable_p99 = float(summaries["stable"]["e2e_ms"]["p99"])
+    migration_p99 = float(summaries["migration"]["e2e_ms"]["p99"])
+    recovery_p99 = float(summaries["recovery"]["e2e_ms"]["p99"])
+    recovery_ratio = recovery_p99 / stable_p99
+
+    gates = {
+        "frozen_canary_plan": canary.get("status") == "frozen_before_canary",
+        "runtime_plan_file_hash_matches": (
+            sha256(args.runtime_plan) == runtime["runtime_plan_file_sha256"]
+        ),
+        "runtime_map_hash_matches": (
+            placement.get("physical_to_logical_map_sha256") == expected_map_hash
+        ),
+        "plan_hash_consistent_on_all_8_ranks": (
+            first_call == int(runtime["expected_first_applied_call"])
+            and first_ranks == list(range(8))
+            and first_hashes == [expected_map_hash]
+        ),
+        "native_migration_observed": native_migration,
+        "all_requests_succeeded": (
+            all(value == 0 for value in failures.values()) and all(complete.values())
+        ),
+        "recovery_p99_within_105pct_of_stable": recovery_ratio <= 1.05,
+        "rollback_original_service_available": (
+            rollback.get("health_http") == 200
+            and rollback.get("process_alive") is True
+            and rollback.get("command_matches") is True
+            and rollback.get("gpu_ids") == [4, 5, 6, 7]
+        ),
+    }
+    accepted = all(gates.values())
+    result = {
+        "schema_version": "qtopomoe.phase8_selector_limited_canary_gate.v1",
+        "status": "accepted" if accepted else "rejected",
+        "scope": "12%后续准入政策下的单次有限canary；不等同于自动闭环验收",
+        "canary_plan": {
+            "path": str(args.canary_plan),
+            "sha256": sha256(args.canary_plan),
+            "candidate_id": canary["canary目标"]["candidate_id"],
+            "representative_workload_id": canary["canary目标"]["representative_workload_id"],
+        },
+        "runtime_plan": {
+            "path": str(args.runtime_plan),
+            "file_sha256": sha256(args.runtime_plan),
+            "map_sha256": placement.get("physical_to_logical_map_sha256"),
+            "first_applied_call": first_call,
+            "first_applied_ranks": first_ranks,
+            "first_applied_hashes": first_hashes,
+        },
+        "requests": {
+            "failures": failures,
+            "complete": complete,
+            "total": sum(int(value["requests"]) for value in summaries.values()),
+            "finish_reasons": {
+                phase: value.get("finish_reasons", {}) for phase, value in summaries.items()
+            },
+        },
+        "latency_ms": {
+            "stable_p99": stable_p99,
+            "migration_p99": migration_p99,
+            "recovery_p99": recovery_p99,
+            "recovery_p99_ratio_to_stable": recovery_ratio,
+        },
+        "rollback": rollback,
+        "gates": gates,
+        "后续边界": (
+            "accepted后仅允许进入trigger、cooldown、rollback自动闭环的独立验收；"
+            "rejected则停止上线并保留失败证据。"
+        ),
+    }
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(
+        json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    print(json.dumps({"status": result["status"], "gates": gates}, ensure_ascii=False))
+    return 0 if accepted else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
