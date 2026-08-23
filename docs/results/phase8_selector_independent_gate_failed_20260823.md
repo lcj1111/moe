@@ -1,5 +1,9 @@
 # Phase 8 selector 独立 Gate 失败报告
 
+> 后续状态：2026-08-23 项目另行批准了
+> [12%后续准入政策](phase8_selector_posthoc_12pct_policy_20260823.md)。本报告仍是原始10%
+> 预注册 Gate 的历史结论；按新政策，当前结果可进入有限 canary。
+
 ## 1. 最终结论
 
 2026-08-23，冻结的 Phase 8 selector v3 完成了与训练 workload 参数指纹不重叠的

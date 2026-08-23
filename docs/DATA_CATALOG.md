@@ -188,3 +188,5 @@
 |---|---|---|
 | `docs/Q-TopoMoE_Phase8_selector_independent_gate_failed_20260823.json` | 冻结 selector 在45-cell、四候选、五重复独立集上的完整 Gate 与逐 workload 决策；p95 regret 11.50%，Gate 失败。 | `6F1D79571CB3366FDC581C6B518A7D25ED1AEAAD89D4FBFD05E08EF2FFDA95E4` |
 | `docs/Q-TopoMoE_Phase8_selector_independent_manifest_20260823.json` | 900次正式测量的完整性、输入/输出哈希、Gate 摘要和 SGLang 恢复状态。 | `37F2BAE8810E68E0160CC4DD24D633A1401C75489BE3624C7B839767D4243DCA` |
+| `configs/strategies/phase8_selector_gate_policy_v2_20260823.json` | 独立结果揭晓后批准的12%后续准入政策；保留原始10% Gate，并记录本次指标在新政策下的机器可读判定与有限 canary 边界。 | `89F03F1B23747AD515C9A9B0B9FDF71FEFAF63967B0181D059EBDFF7B2C19D36` |
+| `docs/results/phase8_selector_posthoc_12pct_policy_20260823.md` | 12%后续准入政策的中文说明；区分原始 Gate 与当前运行决策，列明有限 canary 的后续门槛。 | `3A6565552DEF76526AD0EB01DDA3065CA54FD2FF2EBACE8E0B7D72E090D37722` |
