@@ -8,6 +8,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import signal
 import subprocess
 import time
@@ -243,6 +244,9 @@ def start_canary(plan: dict[str, Any], repo: Path, root: Path) -> subprocess.Pop
         }, separators=(",", ":")),
     ]
     environment = os.environ.copy()
+    # python_bin may itself be a symlink to /usr/bin/python. Resolving it would
+    # discard the virtualenv bin directory, so keep the configured parent path.
+    venv_bin = str(Path(python_bin).parent)
     environment.update({
         "CUDA_VISIBLE_DEVICES": ",".join(str(value) for value in runtime["gpu_ids"]),
         "NCCL_IB_DISABLE": "1",
@@ -251,8 +255,10 @@ def start_canary(plan: dict[str, Any], repo: Path, root: Path) -> subprocess.Pop
         "QTOPOMOE_EPLB_PLAN": runtime["runtime_plan"],
         "QTOPOMOE_EPLB_DEFER_CALLS": str(runtime["defer_calls"]),
         "PYTHONPATH": str(repo / "runtime_patches" / "qtopomoe_eplb"),
-        "PATH": str(Path(python_bin).resolve().parent) + os.pathsep + environment.get("PATH", ""),
+        "PATH": venv_bin + os.pathsep + environment.get("PATH", ""),
     })
+    if shutil.which("ninja", path=environment["PATH"]) is None:
+        raise RuntimeError(f"canary虚拟环境缺少ninja: {venv_bin}")
     log = (root / "server.log").open("ab", buffering=0)
     process = subprocess.Popen(
         command, cwd=repo, env=environment, stdout=log, stderr=subprocess.STDOUT,
