@@ -42,6 +42,8 @@
     "health_url": "http://127.0.0.1:30002/health",
     "expected_module": "sglang.launch_server",
     "expected_gpu_ids": [4, 5, 6, 7],
+    "force_pause_authorized": true,
+    "force_pause_authorization": "用户于2026-08-23明确授权可直接暂停GPU4-7服务，并在实验结束后恢复。",
     "idle_samples_required": 3,
     "idle_sample_interval_seconds": 10,
     "idle_wait_timeout_seconds": 3600,

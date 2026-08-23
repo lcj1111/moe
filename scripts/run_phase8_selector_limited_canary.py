@@ -145,6 +145,15 @@ def metrics_load(url: str) -> tuple[float, float]:
 def wait_service_idle(plan: dict[str, Any], update) -> None:
     service = plan["既有服务"]
     metrics_url = service["health_url"].rsplit("/", 1)[0] + "/metrics"
+    if service.get("force_pause_authorized") is True:
+        running, queued = metrics_load(metrics_url)
+        update(
+            "force_pause_authorized",
+            running_requests=running,
+            queued_requests=queued,
+            authorization=service.get("force_pause_authorization"),
+        )
+        return
     needed = int(service["idle_samples_required"])
     interval = int(service["idle_sample_interval_seconds"])
     deadline = time.time() + int(service["idle_wait_timeout_seconds"])
