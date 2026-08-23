@@ -86,6 +86,34 @@ class OnlineControllerTests(unittest.TestCase):
         self.assertEqual(decision.action, "hold")
         self.assertIn("insufficient", decision.reason)
 
+    def test_elapsed_window_is_eligible_and_cooldown_is_ten(self):
+        controller = OnlineEPLBController()
+        self.assertEqual(controller.config.cooldown_windows, 10)
+        for _ in range(3):
+            decision = controller.observe_cv(
+                cv=0.5,
+                requests=32,
+                elapsed_ms=500,
+                current_p99_ms=100.0,
+                candidate_benefit_fraction=0.10,
+                candidate_benefit_us=400,
+                migration_cost_us=100,
+            )
+        self.assertEqual(decision.action, "rebalance")
+        self.assertEqual(decision.cooldown_remaining, 10)
+        for _ in range(10):
+            decision = controller.observe_cv(
+                cv=0.5,
+                requests=32,
+                elapsed_ms=500,
+                current_p99_ms=100.0,
+                candidate_benefit_fraction=0.10,
+                candidate_benefit_us=400,
+                migration_cost_us=100,
+            )
+            self.assertEqual(decision.action, "hold")
+        self.assertEqual(decision.cooldown_remaining, 0)
+
 
 if __name__ == "__main__":
     unittest.main()

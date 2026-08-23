@@ -258,6 +258,7 @@ def start_canary(plan: dict[str, Any], repo: Path, root: Path) -> subprocess.Pop
     # discard the virtualenv bin directory, so keep the configured parent path.
     venv_bin = str(Path(python_bin).parent)
     activation_file = root / "placement_plan.activate"
+    control_file = root / "placement_control.json"
     environment.update({
         "CUDA_VISIBLE_DEVICES": ",".join(str(value) for value in runtime["gpu_ids"]),
         "NCCL_IB_DISABLE": "1",
@@ -269,6 +270,9 @@ def start_canary(plan: dict[str, Any], repo: Path, root: Path) -> subprocess.Pop
         "PYTHONPATH": str(repo / "runtime_patches" / "qtopomoe_eplb"),
         "PATH": venv_bin + os.pathsep + environment.get("PATH", ""),
     })
+    if runtime.get("control_file_mode") is True:
+        environment.pop("QTOPOMOE_EPLB_ACTIVATION_FILE", None)
+        environment["QTOPOMOE_EPLB_CONTROL_FILE"] = str(control_file)
     if shutil.which("ninja", path=environment["PATH"]) is None:
         raise RuntimeError(f"canary虚拟环境缺少ninja: {venv_bin}")
     log = (root / "server.log").open("ab", buffering=0)

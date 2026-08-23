@@ -34,6 +34,7 @@ def _activate() -> None:
 
     import torch
     from vllm.distributed.eplb.eplb_state import EplbState
+    from vllm.distributed.parallel_state import get_ep_group
     from vllm.distributed.eplb.policy.default import DefaultEplbPolicy
     from vllm.model_executor.layers.quantization.compressed_tensors.compressed_tensors_moe.compressed_tensors_moe_w4a4_nvfp4 import (
         CompressedTensorsW4A4Nvfp4MoEMethod,
@@ -43,8 +44,55 @@ def _activate() -> None:
     defer_calls = int(os.environ.get("QTOPOMOE_EPLB_DEFER_CALLS", "0"))
     activation_name = os.environ.get("QTOPOMOE_EPLB_ACTIVATION_FILE")
     activation_path = Path(activation_name).resolve() if activation_name else None
+    control_name = os.environ.get("QTOPOMOE_EPLB_CONTROL_FILE")
+    control_path = Path(control_name).resolve() if control_name else None
     invocation_count = 0
+    last_control_generation = 0
     original_rearrange = EplbState.rearrange
+
+    def _control_command() -> dict[str, object] | None:
+        if control_path is None or not control_path.exists():
+            return None
+        value = json.loads(control_path.read_text(encoding="utf-8"))
+        if value.get("action") not in {"apply", "rollback"}:
+            raise RuntimeError(f"unsupported placement control action: {value}")
+        if int(value.get("generation", 0)) < 1:
+            raise RuntimeError(f"invalid placement control generation: {value}")
+        return value
+
+    def _load_cv(self: object) -> float:
+        logical_windows = []
+        states = list(self.model_states.values())
+        for state in states:
+            physical = state.expert_load_window[:, :, : self.num_valid_physical_experts]
+            logical = torch.zeros(
+                self.expert_load_window_size,
+                state.model.num_moe_layers,
+                state.model.num_logical_experts,
+                dtype=physical.dtype,
+                device=physical.device,
+            )
+            logical.scatter_add_(
+                dim=-1,
+                index=state.physical_to_logical_map[
+                    :, : self.num_valid_physical_experts
+                ].unsqueeze(0).expand_as(physical).long(),
+                src=physical,
+            )
+            logical_windows.append(logical.sum(dim=0))
+        global_windows = self._allreduce_list(logical_windows)
+        rank_loads = None
+        ep_size = get_ep_group().device_group.size()
+        for state, logical in zip(states, global_windows):
+            mapping = state.physical_to_logical_map[:, : self.num_valid_physical_experts].long()
+            counts = torch.zeros_like(logical)
+            counts.scatter_add_(1, mapping, torch.ones_like(mapping, dtype=logical.dtype))
+            per_physical = torch.gather(logical / counts.clamp_min(1), 1, mapping)
+            values = per_physical.reshape(logical.shape[0], ep_size, -1).sum(dim=(0, 2)).float()
+            rank_loads = values if rank_loads is None else rank_loads + values
+        if rank_loads is None or float(rank_loads.mean()) <= 0:
+            return 0.0
+        return float(rank_loads.std(unbiased=False) / rank_loads.mean())
 
     def _supports_eplb(_self: object) -> bool:
         return True
@@ -54,8 +102,33 @@ def _activate() -> None:
         is_profile: bool = False,
         rank_mapping: dict[int, int] | None = None,
     ) -> torch.Tensor | None:
-        if is_profile or rank_mapping is not None or activation_path is None:
+        nonlocal last_control_generation
+        if is_profile or rank_mapping is not None:
             return original_rearrange(self, is_profile=is_profile, rank_mapping=rank_mapping)
+        if control_path is not None:
+            cv = _load_cv(self)
+            command = _control_command()
+            generation = int(command["generation"]) if command else 0
+            action = str(command["action"]) if command else "hold"
+            print(
+                "[QTOPOMOE_EPLB_LOAD_WINDOW] "
+                f"call={invocation_count + 1} cv={cv:.8f} generation={generation} action={action}",
+                file=sys.stderr,
+                flush=True,
+            )
+            if command is None or generation <= last_control_generation:
+                return None
+            result = original_rearrange(self, is_profile=False, rank_mapping=None)
+            last_control_generation = generation
+            print(
+                "[QTOPOMOE_EPLB_CONTROL_COMMITTED] "
+                f"generation={generation} action={action} sha256={command['target_sha256']}",
+                file=sys.stderr,
+                flush=True,
+            )
+            return result
+        if activation_path is None:
+            return original_rearrange(self, is_profile=False, rank_mapping=None)
         if not activation_path.exists():
             if not getattr(self, "_qtopomoe_wait_logged", False):
                 print(
@@ -106,6 +179,39 @@ def _activate() -> None:
         if num_replicas % num_ranks:
             raise RuntimeError(f"{num_replicas=} is not divisible by {num_ranks=}")
         logical_experts = int(weight.shape[1])
+        if control_path is not None:
+            command = _control_command()
+            if command is None:
+                return (
+                    old_global_expert_indices.detach().cpu().to(torch.int64)
+                    if old_global_expert_indices is not None
+                    else torch.arange(num_replicas, dtype=torch.int64).repeat(
+                        int(weight.shape[0]), 1
+                    )
+                )
+            action = str(command["action"])
+            generation = int(command["generation"])
+            target = (
+                frozen_map.clone()
+                if action == "apply"
+                else torch.arange(num_replicas, dtype=torch.int64).repeat(
+                    int(weight.shape[0]), 1
+                )
+            )
+            target_hash = _canonical_sha256(target.tolist())
+            if command.get("target_sha256") != target_hash:
+                raise RuntimeError(
+                    "placement control checksum mismatch: "
+                    f"{command.get('target_sha256')} != {target_hash}"
+                )
+            print(
+                "[QTOPOMOE_EPLB_PLAN_APPLIED] "
+                f"call={invocation_count} generation={generation} action={action} "
+                f"sha256={target_hash} shape={tuple(target.shape)}",
+                file=sys.stderr,
+                flush=True,
+            )
+            return target
         activation_pending = activation_path is not None and not activation_path.exists()
         call_pending = activation_path is None and invocation_count <= defer_calls
         if activation_pending or call_pending:
@@ -149,7 +255,8 @@ def _activate() -> None:
     EplbState.rearrange = _one_shot_rearrange
     print(
         "[QTOPOMOE_EPLB_PATCH_ACTIVE] native_migration=true "
-        f"plan_sha256={actual_sha} activation_file={activation_path}",
+        f"plan_sha256={actual_sha} activation_file={activation_path} "
+        f"control_file={control_path}",
         file=sys.stderr,
         flush=True,
     )
