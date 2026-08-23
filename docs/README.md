@@ -10,7 +10,7 @@
 | BF16/FP8/NVFP4 full-set | 三格式均已完成基础轮、有限续跑、严格合并与共同分母比较 | [质量收尾](results/phase3_fullset_quality_closeout_20260812.md) |
 | Phase 7 在线迁移 | placement-plan、阻塞、恢复和 p99 Gate 已接受 | [阶段 7–8 正式收尾](results/phase7_phase8_formal_closeout_20260812.md) |
 | Phase 8 正式矩阵 | 四候选、108 cells、五重复聚合已接受 | [阶段 8 历史与结果](results/phase8_benchmark_history.md) |
-| Phase 8 selector | 原始10%预注册 Gate 失败；后续政策上限已调整为12%，当前11.50%按新政策准入有限 canary | [12%后续准入政策](results/phase8_selector_posthoc_12pct_policy_20260823.md) |
+| Phase 8 selector | 12%后续政策允许有限 canary；有效 canary 因恢复 p99 为稳定段的136.36%而拒绝，自动闭环停止 | [有限 canary 拒绝报告](results/phase8_selector_limited_canary_rejected_20260823.md) |
 
 正在运行的结果在完成 Gate 前仅表示进度，不表示最终准确率。
 
@@ -39,7 +39,8 @@ Phase 8 selector 的数据隔离协议和命令见
 [selector 执行说明](results/phase8_selector_v2_execution.md)；最新训练结论见
 [v3 训练 Gate 通过报告](results/phase8_selector_v3_training_gate_accepted_20260816.md)，
 原始独立结论见[独立 Gate 失败报告](results/phase8_selector_independent_gate_failed_20260823.md)；
-当前运行决策见[12%后续准入政策](results/phase8_selector_posthoc_12pct_policy_20260823.md)。
+当前运行决策见[12%后续准入政策](results/phase8_selector_posthoc_12pct_policy_20260823.md)，
+最终在线结论见[有限 canary 拒绝报告](results/phase8_selector_limited_canary_rejected_20260823.md)。
 
 在线迁移的独立实验说明见[在线 placement-plan 与服务迁移实验](Q-TopoMoE_在线placement-plan与服务迁移实验_20260812.md)。
 

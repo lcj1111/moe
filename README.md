@@ -6,7 +6,7 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 
 ## 当前结论
 
-> 更新时间：2026-08-16（Asia/Shanghai）
+> 更新时间：2026-08-23（Asia/Shanghai）
 > 当前状态：BF16、FP8、NVFP4 full-set 均已完成基础轮、有限续跑、严格合并与
 > 三格式共同分母比较。共同完成的 24,330 条上三者分别为 86.9955%、86.9749%、
 > 86.3009%；BF16 与 FP8 总体近似持平，NVFP4 相对 BF16 下降 0.6946 个百分点。
@@ -19,10 +19,10 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 | Phase 3 | route trace、漂移分析和冻结官方协议 | route、三格式 full-set 合并与共同分母对比均已完成 |
 | Phase 4–6 | M-bucket、kernel/backend selector、通信矩阵 | 正式实测已归档 |
 | Phase 7 | placement-plan、在线迁移、恢复与 p99 | Gate 已接受 |
-| Phase 8 | 四候选×108 cells×5 重复正式聚合 | v3 训练 p95 regret 已由 23.05% 降至 3.49%，训练 Gate 已冻结；独立 900 次 Gate 待完成 |
+| Phase 8 | selector 训练、900 次独立测试与有限 canary | 12%后续政策下允许有限 canary；有效 canary 因恢复 p99 为稳定段的136.36%而拒绝 |
 
-动态触发、cooldown 和 rollback 闭环必须等待 Phase 8 selector 独立 900 次 Gate
-通过；训练 Gate 通过不等于已经具备在线控制资格。
+动态触发、cooldown 和 rollback 自动闭环当前禁止启动。有限 canary 的请求、plan
+一致性与回滚均通过，但恢复 p99 未达到 105% Gate。
 
 ## 从哪里开始
 
@@ -35,7 +35,7 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 | 按阶段执行 | [逐步执行 Runbook](docs/Q-TopoMoE_逐步执行Runbook.md) |
 | 查某个 JSON/配置的含义与哈希 | [数据与结果清单](docs/DATA_CATALOG.md) |
 | 查看三格式全量质量结论 | [BF16/FP8/NVFP4 full-set 收尾](docs/results/phase3_fullset_quality_closeout_20260812.md) |
-| 查看 Phase 8 selector 最新结论 | [selector v3 训练 Gate 通过报告](docs/results/phase8_selector_v3_training_gate_accepted_20260816.md) |
+| 查看 Phase 8 selector 最新结论 | [有限 canary 拒绝报告](docs/results/phase8_selector_limited_canary_rejected_20260823.md) |
 
 ## 快速检查
 
