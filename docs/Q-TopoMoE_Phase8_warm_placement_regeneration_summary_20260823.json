@@ -1,0 +1,52 @@
+{
+  "schema_version": "qtopomoe.phase8_warm_placement_regeneration_summary.v1",
+  "status": "rejected",
+  "date": "2026-08-23",
+  "说明": "旧 Gate、旧 selector 与旧 placement 均保持历史只读。本轮从最终代表负载的真实暖态逐层专家计数重新生成候选，并执行同进程 A/B/A/B 验证。",
+  "capture": {
+    "status": "accepted",
+    "server_root": "/data/models/test/qtopomoe_phase8_warm_placement_capture_v3_20260823",
+    "exported_windows": 48,
+    "warm_load_jsonl_sha256": "13b418189b2f917595a7639031e7d4f9fa3d53e984f6f41995c65a258acfde12",
+    "requests_per_phase": 128,
+    "phases": 4,
+    "failed_requests": 0,
+    "original_service_restored": true
+  },
+  "generation": {
+    "status": "accepted",
+    "server_root": "/data/models/test/qtopomoe_phase8_warm_placement_candidates_v1_20260823",
+    "selected_candidate_id": "warm_swap_008_slots_per_layer_v1",
+    "selected_candidate_file_sha256": "3386d1457a62f4c2a9cb5cdc56b71225c8f07fae73063a0e51c142f4c0b1f29e",
+    "selected_candidate_map_sha256": "24f09c93ff8e6c410917a3fcb087307130f8914f45c028adf23088c39fc80ac6",
+    "moved_slots": 320,
+    "total_slots": 10240,
+    "moved_fraction": 0.03125,
+    "offline_identity_layer_rank_cv_median": 0.3021722926860942,
+    "offline_candidate_layer_rank_cv_median": 0.04666297397315518,
+    "offline_identity_layer_rank_cv_p95": 0.4159974684755416,
+    "offline_candidate_layer_rank_cv_p95": 0.0898768783158479
+  },
+  "online_abab": {
+    "status": "rejected",
+    "server_root": "/data/models/test/qtopomoe_phase8_warm_placement_abab_v1_20260823",
+    "gate_sha256": "f2ad49bc724a8b2edae357d24835231a06501667191ef7994450ed20fe2be670",
+    "identity_p99_ms": [3385.421110317111, 3519.1100370138884],
+    "candidate_p99_ms": [3531.3486559316516, 3499.5879540219903],
+    "candidate_to_identity_p99_median_ratio": 1.0183076098760893,
+    "identity_rank_cv": [0.07565854, 0.07675593],
+    "candidate_rank_cv": [0.04870387, 0.04800765],
+    "candidate_to_identity_rank_cv_median_ratio": 0.6345297792263425,
+    "identity_logical_expert_cv": [2.17333579, 2.18495941],
+    "candidate_logical_expert_cv": [1.88791132, 1.84801543],
+    "candidate_to_identity_logical_expert_cv_median_ratio": 0.8571991062009752,
+    "all_requests_succeeded_with_fixed_output": true,
+    "all_three_control_generations_committed_on_all_8_ranks": true,
+    "matched_prompts": true,
+    "exact_response_hash_match": false,
+    "identity_repeat_exact_response_hash_matches": 0,
+    "identity_repeat_total_requests": 128,
+    "original_service_restored": true
+  },
+  "结论": "新候选有效降低了 rank 负载不均衡且 p99 未超过 105% 限制，但逻辑专家负载分布相对 identity 系统性变化 14.28%，并且冻结的精确输出哈希 Gate 未通过，因此不得进入自动闭环或上线。"
+}

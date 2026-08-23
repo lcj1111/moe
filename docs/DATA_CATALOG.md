@@ -203,3 +203,8 @@
 | `docs/Q-TopoMoE_Phase8_selector_closed_loop_execution_summary_20260823.json` | 数据说明：合并记录 v1–v4 的目的、结果、服务器目录、产物哈希、代码提交和最终部署边界。 | `F3D8D196A4DA30EC6738D3639AA55FF7F34D8849FAE39182AB88BF8012B75970` |
 | `docs/Q-TopoMoE_Phase8_selector_closed_loop_final_gate_rejected_20260823.json` | 最终机器 Gate；逐窗口记录 expert/rank CV、p99、控制器动作和 SGLang 恢复状态，状态 rejected。 | `09A29EC83FB63630091C3BD6585EEB7184F4E185251C3E28159A39B873AB1D15` |
 | `docs/results/phase8_selector_closed_loop_final_20260823.md` | 自动闭环中文最终报告；说明五轮顺序偏差、四次诊断、最终拒绝理由与下一候选要求。 | `39B13289D9C767DE9F41CAA8C3FBE6D44FE7F75338DB82B243E7B4BCAA36E85C` |
+| `configs/experiments/phase8_warm_placement_capture_v1.json` | 冻结旧 Gate 后的 identity 暖态逐层专家计数采集计划；正式有效结果来自独立 v3 输出目录。 | `D5F55D1A5200FD877E4F2666272FC87ED6C0F93C841C3E4ED86E6DD65FC4DB27` |
+| `configs/experiments/phase8_warm_placement_abab_v1.json` | 新候选同进程 A/B/A/B 冻结计划；迁移提交段先预热且不计入测量。 | `6B59A067002D6280E37607A4E451BE0171212464B6CC92AFE6CEE2128A85C18E` |
+| `configs/strategies/phase8_warm_swap_008_slots_per_layer_v1.json` | 从48个暖态窗口生成的最小迁移量候选；每层交换8个槽位、总计移动320/10240，在线 Gate rejected，禁止直接加载。 | `3386D1457A62F4C2A9CB5CDC56B71225C8F07FAE73063A0E51C142F4C0B1F29E` |
+| `docs/Q-TopoMoE_Phase8_warm_placement_regeneration_summary_20260823.json` | 暖态采集、候选生成、A/B/A/B 指标、哈希、服务恢复状态和最终部署边界的合并机器摘要。 | `5C624CFEC072F90BC075E9C7EADC4DD9F18B4BF55F0A08FC3C054B2FBFA9BBB0` |
+| `docs/results/phase8_warm_placement_regeneration_20260823.md` | 停止调整旧 Gate 后的新候选中文报告；记录 rank CV/p99 改善、路由稳定性拒绝和后续质量等价要求。 | `16BEF6162DA6B6D3834296AB80372E67B7FE516C78BCBF75D1FD5814C8DB8EAF` |
