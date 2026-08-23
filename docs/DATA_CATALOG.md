@@ -175,9 +175,16 @@
 | `configs/strategies/phase8_selector_state_v2.template.json` | selector v2 训练模板；状态为草稿，只有训练 Gate 通过后才能产生冻结配置。 | `F23F2AB12877A065B8300B0BCAC479DF0FCA6EFAA5EB5036CE1355B6F96B096C` |
 | `configs/strategies/phase8_selector_state_v3.template.json` | selector v3 有序区间规则模板；只允许训练侧拟合，独立结果读取前冻结。 | `F65B8A9411FEF0C53B389ACEF774077187C9B62E2F1D146A7D27DEFF1F4C3D5E` |
 | `configs/workloads/phase8_selector_independent_design_v1.json` | 与训练参数指纹不重叠的独立 workload 设计规则。 | `66058F64D0EC270FC55E7F6402EA88C6FA40A152CBDA0AA5A3153629DDF29008` |
-| `configs/workloads/phase8_selector_independent_v1.json` | 按冻结设计规则生成的 45-cell 独立 workload；本轮未执行测量。 | `B87110A400AB3B28FEF478ED635B791E3B12DFBAAD41159804E8E2B156DD4728` |
+| `configs/workloads/phase8_selector_independent_v1.json` | 按冻结设计规则生成的45-cell独立 workload；2026-08-23 已完成四候选、五重复的900次正式测量。 | `B87110A400AB3B28FEF478ED635B791E3B12DFBAAD41159804E8E2B156DD4728` |
 | `docs/Q-TopoMoE_Phase8_selector_v2_predecision_audit_20260816.json` | 108 个决策前窗口的状态阶段、遥测覆盖和可用性审计；Gate 已接受。 | `FDC83EC5DE1F41EB61A528B4BCC229619116BEF93CCCBD1CEA6ED1E5F7DA85DE` |
 | `docs/Q-TopoMoE_Phase8_selector_v2_training_gate_failed_20260816.json` | 正式扩展搜索所得最佳配置及失败状态；不得作为生产 selector 加载。 | `BB736986E7307AA861B95F323BB780ABDD83BF6F86DD7E48554EA641CCDF92D2` |
 | `docs/Q-TopoMoE_Phase8_selector_v2_fit_report_20260816.json` | 2,500 组训练侧组合、留族交叉验证、最差样本和 Gate 判定的完整报告。 | `69B72779A406CE53ADC9E112BC6A6AA8105BDFD9AE0159DBF5AA0358FF6AF68B` |
 | `docs/Q-TopoMoE_Phase8_selector_v3_frozen_20260816.json` | v3 训练 Gate 通过后的冻结 selector；明确记录独立测试结果未读取。 | `77836F21A37132C9FCD9EB8CB348B1890AE321905AD42D81A90CB696712BEFB4` |
 | `docs/Q-TopoMoE_Phase8_selector_v3_fit_report_20260816.json` | v3 训练侧指标、留族审计、最差样本和 Gate 判定的完整报告。 | `7D60B1178B4F9D542FE8E29BBD7D036BC58F5E1A588A35CCEC3ECBEA59237F8F` |
+
+# 2026-08-23 新增机器可读产物
+
+| 路径 | 数据说明 | SHA-256 |
+|---|---|---|
+| `docs/Q-TopoMoE_Phase8_selector_independent_gate_failed_20260823.json` | 冻结 selector 在45-cell、四候选、五重复独立集上的完整 Gate 与逐 workload 决策；p95 regret 11.50%，Gate 失败。 | `6F1D79571CB3366FDC581C6B518A7D25ED1AEAAD89D4FBFD05E08EF2FFDA95E4` |
+| `docs/Q-TopoMoE_Phase8_selector_independent_manifest_20260823.json` | 900次正式测量的完整性、输入/输出哈希、Gate 摘要和 SGLang 恢复状态。 | `37F2BAE8810E68E0160CC4DD24D633A1401C75489BE3624C7B839767D4243DCA` |

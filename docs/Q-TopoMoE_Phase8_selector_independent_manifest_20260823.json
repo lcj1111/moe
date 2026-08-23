@@ -1,0 +1,53 @@
+{
+  "schema_version": "qtopomoe.phase8_independent_gate_release_manifest.v1",
+  "说明": "Phase 8 冻结 selector 的900次独立验证发布清单；原始逐请求数据保留在gpu-111，仓库跟踪完整Gate、摘要、哈希和中文结论。",
+  "日期": "2026-08-23",
+  "状态": "gate_failed",
+  "正式测量": {
+    "独立工作负载数": 45,
+    "候选数": 4,
+    "每候选重复数": 5,
+    "重复轮次": 20,
+    "正式测量单元": 900,
+    "正式请求数": 28800,
+    "通过轮次": 20,
+    "失败请求数": 0,
+    "达到冻结输出上限的请求数": 15,
+    "输出上限审计说明": "15个请求的finish_reason为length，均计为已完成请求；这是预注册性能输出上限，不是质量答案抽取截断，未触发聚合输入Gate失败。",
+    "聚合输入Gate": "accepted",
+    "决策前状态窗口": 45,
+    "决策前状态Gate": "accepted"
+  },
+  "独立Gate": {
+    "median_regret_pct": 0.0,
+    "p95_regret_pct": 11.499972089014864,
+    "decision_overhead_pct_p95": 0.11399977199188943,
+    "infeasible_misselection_rate": 0.0,
+    "top1_accuracy": 0.7111111111111111,
+    "median_regret通过": true,
+    "p95_regret通过": false,
+    "决策开销通过": true,
+    "不可行配置误选通过": true,
+    "正式准入": false
+  },
+  "输入哈希": {
+    "冻结selector": "cb7e32c0b141d5867bb4247872704a7cd6b8689cc5eb305d258aac910c7078c4",
+    "训练聚合": "313676a297ddfe40014f3376bd0e5fde36f628aa7ab9363a4b9f67a19e9b3227",
+    "独立schedule": "6c39b3b28158faaeff67cfdcfa17ffaa6e013938e8ee382cab763c4179897bfd",
+    "独立workload": "b87110a400ab3b28fef478ed635b791e3b12dfbaad41159804e8e2b156dd4728",
+    "决策前状态": "2fddca5e40b8e54f8deadb11f559e78f84f08ad9c2e508b9dace5a2f578ca6fc"
+  },
+  "输出哈希": {
+    "aggregate.json": "f0539c667d227a39c412f921acfebe36b5de49abb0f54039bdfaea976f4f9fbb",
+    "aggregate_with_state.json": "27363d8cd43adeb5c1c6d0435af6e56967f52ada3e3b7d64feb6e82036531112",
+    "independent_gate.json": "6f1d79571cb3366fdc581c6b518a7d25ed1aeaad89d4fbfd05e08ef2ffda95e4"
+  },
+  "服务器证据目录": "/data/models/test/qtopomoe_phase8_selector_independent_v1_20260816",
+  "服务恢复": {
+    "SGLang端口": 30002,
+    "健康检查HTTP状态": 200,
+    "GPU": [4, 5, 6, 7],
+    "状态": "restored"
+  },
+  "后续边界": "停止有限canary和在线闭环；不得用本独立集outcome修改冻结selector。"
+}
