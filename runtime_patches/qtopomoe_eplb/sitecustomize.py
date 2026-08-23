@@ -51,6 +51,7 @@ def _activate() -> None:
     load_export_path = Path(load_export_name).resolve() if load_export_name else None
     load_export_every = max(1, int(os.environ.get("QTOPOMOE_EPLB_LOAD_EXPORT_EVERY", "16")))
     invocation_count = 0
+    load_window_count = 0
     last_control_generation = 0
     original_rearrange = EplbState.rearrange
 
@@ -138,20 +139,21 @@ def _activate() -> None:
         is_profile: bool = False,
         rank_mapping: dict[int, int] | None = None,
     ) -> torch.Tensor | None:
-        nonlocal last_control_generation
+        nonlocal last_control_generation, load_window_count
         if is_profile or rank_mapping is not None:
             return original_rearrange(self, is_profile=is_profile, rank_mapping=rank_mapping)
         if control_path is not None:
+            load_window_count += 1
             expert_cv, rank_cv, logical_windows = _load_metrics(self)
             _export_load_window(
-                logical_windows, invocation_count + 1, expert_cv, rank_cv
+                logical_windows, load_window_count, expert_cv, rank_cv
             )
             command = _control_command()
             generation = int(command["generation"]) if command else 0
             action = str(command["action"]) if command else "hold"
             print(
                 "[QTOPOMOE_EPLB_LOAD_WINDOW] "
-                f"call={invocation_count + 1} cv={expert_cv:.8f} "
+                f"call={load_window_count} cv={expert_cv:.8f} "
                 f"expert_cv={expert_cv:.8f} rank_cv={rank_cv:.8f} "
                 f"generation={generation} action={action}",
                 file=sys.stderr,

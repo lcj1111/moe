@@ -8,7 +8,7 @@
     "python_bin": "/data/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python3",
     "model": "/data/models/test/redhatai_qwen36_nvfp4",
     "runtime_patch": "runtime_patches/qtopomoe_eplb/sitecustomize.py",
-    "runtime_patch_sha256": "dabe95a3f91590c54678f26ed72756f7018ad8f8c3978ce868ce3c8b6ab376ec",
+    "runtime_patch_sha256": "7fbd8a540e9e8f8427ec829299cb1404cfe3b0e37c34aa480bdf762f04d143e4",
     "identity_map_sha256": "46a5de9abf04b3a6d4ae62897b2fe17dc159adf01069a7a99b8b117ec5795671",
     "num_moe_layers": 40,
     "num_logical_experts": 256,
