@@ -33,6 +33,7 @@ def _activate() -> None:
         raise RuntimeError(f"placement plan checksum mismatch: {actual_sha} != {expected_sha}")
 
     import torch
+    from vllm.distributed.eplb.eplb_state import EplbState
     from vllm.distributed.eplb.policy.default import DefaultEplbPolicy
     from vllm.model_executor.layers.quantization.compressed_tensors.compressed_tensors_moe.compressed_tensors_moe_w4a4_nvfp4 import (
         CompressedTensorsW4A4Nvfp4MoEMethod,
@@ -43,9 +44,47 @@ def _activate() -> None:
     activation_name = os.environ.get("QTOPOMOE_EPLB_ACTIVATION_FILE")
     activation_path = Path(activation_name).resolve() if activation_name else None
     invocation_count = 0
+    original_rearrange = EplbState.rearrange
 
     def _supports_eplb(_self: object) -> bool:
         return True
+
+    def _one_shot_rearrange(
+        self: object,
+        is_profile: bool = False,
+        rank_mapping: dict[int, int] | None = None,
+    ) -> torch.Tensor | None:
+        if is_profile or rank_mapping is not None or activation_path is None:
+            return original_rearrange(self, is_profile=is_profile, rank_mapping=rank_mapping)
+        if not activation_path.exists():
+            if not getattr(self, "_qtopomoe_wait_logged", False):
+                print(
+                    "[QTOPOMOE_EPLB_ONE_SHOT_WAITING] "
+                    f"activation_file={activation_path}",
+                    file=sys.stderr,
+                    flush=True,
+                )
+                setattr(self, "_qtopomoe_wait_logged", True)
+            return None
+        if getattr(self, "_qtopomoe_one_shot_committed", False):
+            skipped = int(getattr(self, "_qtopomoe_skipped_rearrangements", 0)) + 1
+            setattr(self, "_qtopomoe_skipped_rearrangements", skipped)
+            if skipped == 1:
+                print(
+                    "[QTOPOMOE_EPLB_ONE_SHOT_SKIPPED] reason=already_committed",
+                    file=sys.stderr,
+                    flush=True,
+                )
+            return None
+        result = original_rearrange(self, is_profile=False, rank_mapping=None)
+        setattr(self, "_qtopomoe_one_shot_committed", True)
+        print(
+            "[QTOPOMOE_EPLB_ONE_SHOT_COMMITTED] "
+            f"call={invocation_count} sha256={actual_sha}",
+            file=sys.stderr,
+            flush=True,
+        )
+        return result
 
     def _fixed_rebalance(
         cls: type,
@@ -107,6 +146,7 @@ def _activate() -> None:
 
     CompressedTensorsW4A4Nvfp4MoEMethod.supports_eplb = property(_supports_eplb)
     DefaultEplbPolicy.rebalance_experts = classmethod(_fixed_rebalance)
+    EplbState.rearrange = _one_shot_rearrange
     print(
         "[QTOPOMOE_EPLB_PATCH_ACTIVE] native_migration=true "
         f"plan_sha256={actual_sha} activation_file={activation_path}",

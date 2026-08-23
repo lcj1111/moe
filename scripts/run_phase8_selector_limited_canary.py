@@ -399,6 +399,8 @@ def main() -> int:
     policy = repo / plan["准入依据"]["policy"]
     evidence = repo / plan["准入依据"]["independent_gate"]
     runtime_plan = Path(plan["运行环境"]["runtime_plan"])
+    runtime_patch_name = plan["运行环境"].get("runtime_patch")
+    runtime_patch = repo / runtime_patch_name if runtime_patch_name else None
     checks = {
         "policy": policy.exists() and sha256(policy) == plan["准入依据"]["policy_sha256"],
         "independent_gate": (
@@ -411,6 +413,14 @@ def main() -> int:
         ),
         "python": Path(plan["运行环境"]["python_bin"]).exists(),
         "model": Path(plan["运行环境"]["model"]).exists(),
+        "runtime_patch": (
+            runtime_patch is None
+            or (
+                runtime_patch.exists()
+                and sha256(runtime_patch)
+                == plan["运行环境"].get("runtime_patch_sha256")
+            )
+        ),
     }
     if not all(checks.values()):
         update("preflight_failed", checks=checks)

@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import re
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -76,6 +77,17 @@ def main() -> int:
     first_rows = [row for row in applied if row[1] == first_call]
     first_ranks = sorted({rank for rank, _, _ in first_rows})
     first_hashes = sorted({digest for _, _, digest in first_rows})
+    applied_per_rank = Counter(rank for rank, _, _ in applied)
+    one_shot_commits = [
+        (int(rank), int(call), digest)
+        for rank, call, digest in re.findall(
+            r"Worker_TP(\d+)_EP\d+.*QTOPOMOE_EPLB_ONE_SHOT_COMMITTED\] "
+            r"call=(\d+).*sha256=([0-9a-f]{64})",
+            log,
+        )
+    ]
+    commit_ranks = sorted({rank for rank, _, _ in one_shot_commits})
+    commit_hashes = sorted({digest for _, _, digest in one_shot_commits})
     native_migration = bool(re.search(r"Rearranged experts\s+in ([0-9.]+) s", log))
 
     failures = {phase: int(value.get("failed", -1)) for phase, value in summaries.items()}
@@ -104,6 +116,11 @@ def main() -> int:
             b"QTOPOMOE_EPLB_PLAN_APPLIED" not in before_activation
             and b"QTOPOMOE_EPLB_PLAN_APPLIED" in after_activation
             and activation.get("runtime_map_sha256") == expected_map_hash
+        ),
+        "one_shot_plan_applied_exactly_once_per_rank": (
+            applied_per_rank == Counter({rank: 1 for rank in range(8)})
+            and commit_ranks == list(range(8))
+            and commit_hashes == [expected_map_hash]
         ),
         "native_migration_observed": native_migration,
         "all_requests_succeeded": (
@@ -137,6 +154,9 @@ def main() -> int:
             "first_applied_ranks": first_ranks,
             "first_applied_hashes": first_hashes,
             "activation": activation,
+            "applied_count_per_rank": dict(sorted(applied_per_rank.items())),
+            "one_shot_commit_ranks": commit_ranks,
+            "one_shot_commit_hashes": commit_hashes,
         },
         "requests": {
             "failures": failures,
