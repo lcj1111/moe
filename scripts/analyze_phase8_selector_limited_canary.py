@@ -19,6 +19,10 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def load_jsonl(path: Path) -> list[dict[str, Any]]:
+    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", required=True, type=Path)
@@ -38,6 +42,21 @@ def main() -> int:
         phase: load(args.root / phase / "summary.json")
         for phase in canary["负载"]["phases"]
     }
+    requests = {
+        phase: load_jsonl(args.root / phase / "requests.jsonl")
+        for phase in canary["负载"]["phases"]
+    }
+    identity_fields = (
+        "request_id", "prompt_sha256", "seed", "input_tokens_requested",
+        "input_tokens_actual", "output_tokens_requested",
+    )
+    request_identities = {
+        phase: [tuple(row.get(field) for field in identity_fields) for row in rows]
+        for phase, rows in requests.items()
+    }
+    matched_request_stream = all(
+        rows == request_identities["stable"] for rows in request_identities.values()
+    )
     log_bytes = args.server_log.read_bytes()
     log = log_bytes.decode("utf-8", errors="replace")
     activation_offset = int(activation["server_log_offset_before_activation"])
@@ -90,6 +109,7 @@ def main() -> int:
         "all_requests_succeeded": (
             all(value == 0 for value in failures.values()) and all(complete.values())
         ),
+        "matched_request_stream_across_phases": matched_request_stream,
         "recovery_p99_within_105pct_of_stable": recovery_ratio <= 1.05,
         "rollback_original_service_available": (
             rollback.get("health_http") == 200
@@ -125,6 +145,8 @@ def main() -> int:
             "finish_reasons": {
                 phase: value.get("finish_reasons", {}) for phase, value in summaries.items()
             },
+            "matched_identity_fields": list(identity_fields),
+            "matched_request_stream_across_phases": matched_request_stream,
         },
         "latency_ms": {
             "stable_p99": stable_p99,

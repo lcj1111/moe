@@ -299,7 +299,7 @@ def wait_canary_health(process: subprocess.Popen[Any], plan: dict[str, Any]) -> 
     raise RuntimeError("canary服务健康检查超时")
 
 
-def run_phase(plan: dict[str, Any], repo: Path, root: Path, phase: str, offset: int) -> None:
+def run_phase(plan: dict[str, Any], repo: Path, root: Path, phase: str) -> None:
     runtime = plan["运行环境"]
     workload = plan["负载"]
     phase_dir = root / phase
@@ -313,8 +313,8 @@ def run_phase(plan: dict[str, Any], repo: Path, root: Path, phase: str, offset: 
         "--output-tokens", str(workload["output_tokens"]),
         "--concurrency", str(workload["concurrency"]),
         "--requests", str(workload["requests_per_phase"]),
-        "--seed", str(int(workload["seed"]) + offset),
-        "--stream-seed", str(int(workload["seed"]) + offset),
+        "--seed", str(workload["seed"]),
+        "--stream-seed", str(workload["seed"]),
         "--prefix-cache-pct", str(workload["prefix_cache_pct"]),
         "--arrival-mode", workload["arrival_mode"],
         "--sample-service-metrics", "--require-arrival-gate",
@@ -430,7 +430,7 @@ def main() -> int:
         CURRENT_CANARY = start_canary(plan, repo, root)
         wait_canary_health(CURRENT_CANARY, plan)
         update("running_stable")
-        run_phase(plan, repo, root, "stable", 0)
+        run_phase(plan, repo, root, "stable")
         server_log = root / "server.log"
         stable_log = server_log.read_bytes()
         if b"QTOPOMOE_EPLB_PLAN_APPLIED" in stable_log:
@@ -450,13 +450,13 @@ def main() -> int:
             "stable_summary_sha256": sha256(root / "stable" / "summary.json"),
         })
         update("running_migration")
-        run_phase(plan, repo, root, "migration", 1)
+        run_phase(plan, repo, root, "migration")
         if "QTOPOMOE_EPLB_PLAN_APPLIED" not in (root / "server.log").read_text(
             encoding="utf-8", errors="replace"
         ):
             raise RuntimeError("migration阶段未观察到计划应用")
         update("running_recovery")
-        run_phase(plan, repo, root, "recovery", 2)
+        run_phase(plan, repo, root, "recovery")
         update("canary_workload_completed")
     except BaseException as error:
         pipeline_error = repr(error)

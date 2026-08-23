@@ -58,10 +58,12 @@
     "arrival_mode": "closed_loop",
     "seed": 420823,
     "request_timeout_seconds": 300,
+    "matched_request_stream_across_phases": true,
     "phases": ["stable", "migration", "recovery"]
   },
   "gates": {
     "all_requests_succeeded": true,
+    "matched_request_stream_across_phases": true,
     "plan_hash_consistent_on_all_8_ranks": true,
     "plan_not_applied_before_explicit_activation": true,
     "recovery_p99_ratio_to_stable_max": 1.05,
