@@ -276,6 +276,8 @@ class ControllerDecision:
     consecutive_trigger_windows: int
     residency_windows: int
     cooldown_remaining: int
+    p99_ema_ms: float
+    rollback_reference_p99_ms: float | None
 
 
 class OnlineEPLBController:
@@ -288,6 +290,7 @@ class OnlineEPLBController:
         self.residency_windows = self.config.min_residency_windows
         self.cooldown_remaining = 0
         self.active_rebalance = False
+        self.p99_ema_ms: float | None = None
         self.pre_rebalance_p99_ms: float | None = None
         self.regression_windows = 0
 
@@ -337,6 +340,13 @@ class OnlineEPLBController:
         self.ema_cv = cv if self.ema_cv is None else (
             self.config.ema_alpha * cv + (1 - self.config.ema_alpha) * self.ema_cv
         )
+        # 回滚基线必须来自迁移前的平滑值。若直接使用触发窗口的单点 p99，
+        # 正常抖动会被误判为连续退化；迁移生效后保持该基线冻结。
+        if not self.active_rebalance:
+            self.p99_ema_ms = current_p99_ms if self.p99_ema_ms is None else (
+                self.config.ema_alpha * current_p99_ms
+                + (1 - self.config.ema_alpha) * self.p99_ema_ms
+            )
         self.residency_windows += 1
         cooldown_active = self.cooldown_remaining > 0
         if cooldown_active:
@@ -376,7 +386,7 @@ class OnlineEPLBController:
             return self._decision("hold", "benefit/cost ratio below threshold", cv)
 
         self.active_rebalance = True
-        self.pre_rebalance_p99_ms = current_p99_ms
+        self.pre_rebalance_p99_ms = float(self.p99_ema_ms or current_p99_ms)
         self.regression_windows = 0
         self.consecutive_trigger_windows = 0
         self.residency_windows = 0
@@ -392,4 +402,6 @@ class OnlineEPLBController:
             consecutive_trigger_windows=self.consecutive_trigger_windows,
             residency_windows=self.residency_windows,
             cooldown_remaining=self.cooldown_remaining,
+            p99_ema_ms=float(self.p99_ema_ms or 0.0),
+            rollback_reference_p99_ms=self.pre_rebalance_p99_ms,
         )

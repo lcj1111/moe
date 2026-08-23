@@ -114,6 +114,29 @@ class OnlineControllerTests(unittest.TestCase):
             self.assertEqual(decision.action, "hold")
         self.assertEqual(decision.cooldown_remaining, 0)
 
+    def test_rollback_reference_uses_frozen_pre_migration_p99_ema(self):
+        controller = OnlineEPLBController()
+        for p99 in (1535.0, 1334.0, 1414.0):
+            decision = controller.observe_cv(
+                cv=0.5,
+                requests=32,
+                elapsed_ms=500,
+                current_p99_ms=p99,
+                candidate_benefit_fraction=0.10,
+                candidate_benefit_us=400,
+                migration_cost_us=100,
+            )
+        self.assertEqual(decision.action, "rebalance")
+        reference = decision.rollback_reference_p99_ms
+        self.assertIsNotNone(reference)
+        self.assertGreater(reference, 1450.0)
+        for _ in range(10):
+            decision = controller.observe_cv(
+                cv=0.5, requests=32, elapsed_ms=500, current_p99_ms=1522.0
+            )
+            self.assertEqual(decision.action, "hold")
+            self.assertEqual(decision.rollback_reference_p99_ms, reference)
+
 
 if __name__ == "__main__":
     unittest.main()

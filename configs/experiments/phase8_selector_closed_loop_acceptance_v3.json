@@ -1,0 +1,98 @@
+{
+  "schema_version": "qtopomoe.phase8_selector_closed_loop_acceptance.v3",
+  "status": "frozen_before_closed_loop",
+  "frozen_date": "2026-08-23",
+  "说明": "五轮one-shot canary通过后的最终闭环验收。v3沿用逐层expert-load CV，并将rollback参照改为迁移前p99 EMA冻结值，避免用单个触发窗口p99造成抖动误回滚。",
+  "准入依据": {
+    "repeated_gate": "/data/models/test/qtopomoe_phase8_selector_one_shot_repeated_v1_20260823/repeated_gate.json",
+    "repeated_gate_sha256": "c2f118b04377d30b44d7a5a566e7017274f7a7ab96da65ea9f82c496792923fd",
+    "required_status": "accepted"
+  },
+  "canary目标": {
+    "candidate_id": "nvfp4_redhat_ep8_static_sys_one_shot_closed_loop_v3",
+    "parent_candidate_id": "nvfp4_redhat_ep8_static_sys_one_shot_v1",
+    "change_scope": "不修改冻结selector或placement map；只修正expert-load CV口径，并用迁移前p99 EMA冻结值作为rollback参照"
+  },
+  "运行环境": {
+    "output_root": "/data/models/test/qtopomoe_phase8_selector_closed_loop_acceptance_v3_20260823",
+    "python_bin": "/data/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python3",
+    "model": "/data/models/test/redhatai_qwen36_nvfp4",
+    "runtime_plan": "/data/models/test/qtopomoe_traces/v1/nvfp4_redhat_full/runtime_eplb/physical_to_logical_map.json",
+    "runtime_plan_file_sha256": "384ae812c218cdc1934962d9e677e7094b2920930e3c31f2fac18cba8123a4ce",
+    "runtime_map_sha256": "d7d7240007c8d69cce9350ff6e4deca250713282c651d32c954b077b383763fd",
+    "runtime_patch": "runtime_patches/qtopomoe_eplb/sitecustomize.py",
+    "runtime_patch_sha256": "bf0ab56f881d2f4a50938b55708918fdafa95c22935cd65bfe7ca3df98338380",
+    "load_cv_definition": "每个EPLB窗口先按MoE层计算逻辑专家负载CV，再取所有层CV的中位数；跨层汇总rank CV仅记录、不参与触发",
+    "rollback_reference_definition": "触发前各控制窗口p99按alpha=0.2计算EMA，触发rebalance时冻结；迁移后不更新该参照",
+    "control_file_mode": true,
+    "host": "127.0.0.1",
+    "port": 31682,
+    "served_model_name": "qtopomoe-phase8-selector-closed-loop-v3",
+    "gpu_ids": [0, 1, 2, 3, 4, 5, 6, 7],
+    "tensor_parallel_size": 8,
+    "expert_parallel_size": 8,
+    "max_model_len": 65536,
+    "max_num_seqs": 16,
+    "gpu_memory_utilization": 0.9,
+    "eplb_window_size": 16,
+    "eplb_step_interval": 16,
+    "defer_calls": 0
+  },
+  "既有服务": {
+    "port": 30002,
+    "health_url": "http://127.0.0.1:30002/health",
+    "expected_module": "sglang.launch_server",
+    "expected_gpu_ids": [4, 5, 6, 7],
+    "force_pause_authorized": true,
+    "force_pause_authorization": "用户于2026-08-23明确授权完整实验窗口内暂停GPU4-7服务，并要求最终结论落盘后再恢复。",
+    "idle_samples_required": 3,
+    "idle_sample_interval_seconds": 10,
+    "idle_wait_timeout_seconds": 3600,
+    "restore_timeout_seconds": 1800
+  },
+  "负载": {
+    "input_tokens": 512,
+    "output_tokens": 128,
+    "ignore_eos": true,
+    "concurrency": 8,
+    "requests_per_phase": 32,
+    "prefix_cache_pct": 0,
+    "arrival_mode": "closed_loop",
+    "seed": 450823,
+    "request_timeout_seconds": 300,
+    "phases": []
+  },
+  "控制器": {
+    "window_ms": 500,
+    "min_requests": 1000,
+    "ema_alpha": 0.2,
+    "trigger_load_cv": 0.25,
+    "trigger_windows": 3,
+    "min_benefit_fraction": 0.05,
+    "min_benefit_cost_ratio": 2.0,
+    "min_residency_windows": 10,
+    "cooldown_windows": 10,
+    "rollback_regression_fraction": 0.05,
+    "rollback_windows": 3,
+    "candidate_benefit_fraction": 0.3758,
+    "candidate_benefit_us_over_10_windows": 21000000,
+    "migration_cost_us": 860000
+  },
+  "故障注入": {
+    "scope": "只放大送入控制器的p99观测值，不延迟、不丢弃真实请求；用于验证自动rollback信号链路",
+    "rollback_p99_multiplier": 1.06,
+    "windows": 3
+  },
+  "gates": {
+    "trigger_after_exactly_3_eligible_high_cv_windows": true,
+    "apply_committed_once_on_all_8_ranks": true,
+    "cooldown_holds_for_10_windows": true,
+    "rollback_after_exactly_3_regression_windows": true,
+    "rollback_committed_once_on_all_8_ranks": true,
+    "decision_overhead_pct_p95_max": 1.0,
+    "all_requests_succeeded_with_fixed_output": true,
+    "post_rollback_p99_ratio_to_baseline_max": 1.05,
+    "original_service_restored": true
+  },
+  "后续边界": "全部Gate通过后仅允许将该闭环候选标记为已验收；扩大流量或长期运行需另行变更。"
+}
