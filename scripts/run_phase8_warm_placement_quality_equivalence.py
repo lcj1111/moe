@@ -149,6 +149,14 @@ def main() -> int:
             and load(previous_gate).get("status")
             == inputs["quality_gate_v1_expected_status"]
         )
+    if "nvfp4_aux_regression_gate_readonly" in inputs:
+        regression_gate = Path(inputs["nvfp4_aux_regression_gate_readonly"])
+        checks["nvfp4_aux_regression_gate_accepted"] = (
+            regression_gate.exists()
+            and sha256(regression_gate)
+            == inputs["nvfp4_aux_regression_gate_sha256"]
+            and load(regression_gate).get("status") == "accepted"
+        )
     if not all(checks.values()):
         update("preflight_failed", checks=checks)
         return 2
