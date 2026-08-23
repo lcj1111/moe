@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 import sys
+import time
 from pathlib import Path
 
 
@@ -46,6 +47,9 @@ def _activate() -> None:
     activation_path = Path(activation_name).resolve() if activation_name else None
     control_name = os.environ.get("QTOPOMOE_EPLB_CONTROL_FILE")
     control_path = Path(control_name).resolve() if control_name else None
+    load_export_name = os.environ.get("QTOPOMOE_EPLB_LOAD_EXPORT_PATH")
+    load_export_path = Path(load_export_name).resolve() if load_export_name else None
+    load_export_every = max(1, int(os.environ.get("QTOPOMOE_EPLB_LOAD_EXPORT_EVERY", "16")))
     invocation_count = 0
     last_control_generation = 0
     original_rearrange = EplbState.rearrange
@@ -60,7 +64,7 @@ def _activate() -> None:
             raise RuntimeError(f"invalid placement control generation: {value}")
         return value
 
-    def _load_metrics(self: object) -> tuple[float, float]:
+    def _load_metrics(self: object) -> tuple[float, float, list[torch.Tensor]]:
         logical_windows = []
         states = list(self.model_states.values())
         for state in states:
@@ -105,7 +109,26 @@ def _activate() -> None:
         rank_cv = 0.0
         if rank_loads is not None and float(rank_loads.mean()) > 0:
             rank_cv = float(rank_loads.std(unbiased=False) / rank_loads.mean())
-        return expert_cv, rank_cv
+        return expert_cv, rank_cv, global_windows
+
+    def _export_load_window(
+        logical_windows: list[torch.Tensor], call: int, expert_cv: float, rank_cv: float
+    ) -> None:
+        if load_export_path is None or call % load_export_every:
+            return
+        if torch.distributed.is_initialized() and torch.distributed.get_rank() != 0:
+            return
+        record = {
+            "schema_version": "qtopomoe.eplb_warm_load_window.v1",
+            "call": call,
+            "captured_unix": time.time(),
+            "expert_load_cv_layer_median": expert_cv,
+            "rank_load_cv": rank_cv,
+            "models": [window.detach().cpu().tolist() for window in logical_windows],
+        }
+        load_export_path.parent.mkdir(parents=True, exist_ok=True)
+        with load_export_path.open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n")
 
     def _supports_eplb(_self: object) -> bool:
         return True
@@ -119,7 +142,10 @@ def _activate() -> None:
         if is_profile or rank_mapping is not None:
             return original_rearrange(self, is_profile=is_profile, rank_mapping=rank_mapping)
         if control_path is not None:
-            expert_cv, rank_cv = _load_metrics(self)
+            expert_cv, rank_cv, logical_windows = _load_metrics(self)
+            _export_load_window(
+                logical_windows, invocation_count + 1, expert_cv, rank_cv
+            )
             command = _control_command()
             generation = int(command["generation"]) if command else 0
             action = str(command["action"]) if command else "hold"
@@ -271,7 +297,7 @@ def _activate() -> None:
     print(
         "[QTOPOMOE_EPLB_PATCH_ACTIVE] native_migration=true "
         f"plan_sha256={actual_sha} activation_file={activation_path} "
-        f"control_file={control_path}",
+        f"control_file={control_path} load_export_path={load_export_path}",
         file=sys.stderr,
         flush=True,
     )

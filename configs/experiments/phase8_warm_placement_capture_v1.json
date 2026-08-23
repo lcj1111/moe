@@ -1,0 +1,71 @@
+{
+  "schema_version": "qtopomoe.phase8_warm_placement_capture.v1",
+  "status": "frozen_before_capture",
+  "frozen_date": "2026-08-23",
+  "说明": "冻结旧 Gate 与旧 placement 后，在 identity map 和最终代表负载下采集真实暖态逐层逻辑专家计数。采集结果只用于生成新候选，不回写旧 selector 或旧 Gate。",
+  "运行环境": {
+    "output_root": "/data/models/test/qtopomoe_phase8_warm_placement_capture_v1_20260823",
+    "python_bin": "/data/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python3",
+    "model": "/data/models/test/redhatai_qwen36_nvfp4",
+    "runtime_patch": "runtime_patches/qtopomoe_eplb/sitecustomize.py",
+    "runtime_patch_sha256": "dabe95a3f91590c54678f26ed72756f7018ad8f8c3978ce868ce3c8b6ab376ec",
+    "identity_map_sha256": "46a5de9abf04b3a6d4ae62897b2fe17dc159adf01069a7a99b8b117ec5795671",
+    "num_moe_layers": 40,
+    "num_logical_experts": 256,
+    "control_file_mode": true,
+    "host": "127.0.0.1",
+    "port": 31682,
+    "served_model_name": "qtopomoe-phase8-warm-placement-capture-v1",
+    "gpu_ids": [0, 1, 2, 3, 4, 5, 6, 7],
+    "tensor_parallel_size": 8,
+    "expert_parallel_size": 8,
+    "max_model_len": 65536,
+    "max_num_seqs": 32,
+    "gpu_memory_utilization": 0.9,
+    "eplb_window_size": 16,
+    "eplb_step_interval": 16,
+    "defer_calls": 0,
+    "load_export_every": 16
+  },
+  "既有服务": {
+    "port": 30002,
+    "health_url": "http://127.0.0.1:30002/health",
+    "expected_module": "sglang.launch_server",
+    "expected_gpu_ids": [4, 5, 6, 7],
+    "force_pause_authorized": true,
+    "force_pause_authorization": "用户已明确授权实验窗口内暂停 GPU4-7 服务；本采集器无论成功或失败均恢复原服务。",
+    "idle_samples_required": 3,
+    "idle_sample_interval_seconds": 10,
+    "idle_wait_timeout_seconds": 3600,
+    "restore_timeout_seconds": 1800
+  },
+  "负载": {
+    "input_tokens": 1536,
+    "output_tokens": 384,
+    "ignore_eos": true,
+    "concurrency": 16,
+    "requests_per_phase": 128,
+    "prefix_cache_pct": 0,
+    "arrival_mode": "closed_loop",
+    "seed": 470823,
+    "request_timeout_seconds": 300
+  },
+  "采集阶段": [
+    "warmup",
+    "capture_01",
+    "capture_02",
+    "capture_03"
+  ],
+  "候选生成约束": {
+    "move_budgets_per_layer": [8, 16, 32],
+    "min_layer_rank_cv_median_improvement": 0.20,
+    "min_layer_rank_cv_p95_improvement": 0.15,
+    "selection": "满足离线改善门槛后，选择相对 identity 迁移物理槽位最少的候选"
+  },
+  "gates": {
+    "min_exported_windows": 8,
+    "all_requests_succeeded": true,
+    "identity_hash_consistent": true,
+    "original_service_restored": true
+  }
+}

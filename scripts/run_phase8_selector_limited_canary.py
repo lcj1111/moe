@@ -273,6 +273,11 @@ def start_canary(plan: dict[str, Any], repo: Path, root: Path) -> subprocess.Pop
     if runtime.get("control_file_mode") is True:
         environment.pop("QTOPOMOE_EPLB_ACTIVATION_FILE", None)
         environment["QTOPOMOE_EPLB_CONTROL_FILE"] = str(control_file)
+    if runtime.get("load_export_path"):
+        environment["QTOPOMOE_EPLB_LOAD_EXPORT_PATH"] = str(runtime["load_export_path"])
+        environment["QTOPOMOE_EPLB_LOAD_EXPORT_EVERY"] = str(
+            runtime.get("load_export_every", 16)
+        )
     if shutil.which("ninja", path=environment["PATH"]) is None:
         raise RuntimeError(f"canary虚拟环境缺少ninja: {venv_bin}")
     log = (root / "server.log").open("ab", buffering=0)
