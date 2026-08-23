@@ -10,7 +10,7 @@
 | BF16/FP8/NVFP4 full-set | 三格式均已完成基础轮、有限续跑、严格合并与共同分母比较 | [质量收尾](results/phase3_fullset_quality_closeout_20260812.md) |
 | Phase 7 在线迁移 | placement-plan、阻塞、恢复和 p99 Gate 已接受 | [阶段 7–8 正式收尾](results/phase7_phase8_formal_closeout_20260812.md) |
 | Phase 8 正式矩阵 | 四候选、108 cells、五重复聚合已接受 | [阶段 8 历史与结果](results/phase8_benchmark_history.md) |
-| Phase 8 selector | 旧闭环 Gate 保持拒绝；已从48个真实暖态窗口重生成最小迁移量候选，rank CV 与 p99 通过，但逻辑路由稳定性失败 | [暖态 placement 候选重生成报告](results/phase8_warm_placement_regeneration_20260823.md) |
+| Phase 8 selector | 新候选完整质量 A/B/A 已接受；NVFP4 辅助尺度迁移已修复，但逻辑路由稳定性 Gate 仍拒绝，禁止上线 | [暖态 placement 候选与质量验证报告](results/phase8_warm_placement_regeneration_20260823.md) |
 
 正在运行的结果在完成 Gate 前仅表示进度，不表示最终准确率。
 
@@ -43,7 +43,7 @@ Phase 8 selector 的数据隔离协议和命令见
 有限 canary 历史见[有限 canary 拒绝报告](results/phase8_selector_limited_canary_rejected_20260823.md)，
 旧候选最终在线结论见[自动闭环最终拒绝报告](results/phase8_selector_closed_loop_final_20260823.md)；
 停止调整旧 Gate 后的新候选结果见
-[暖态 placement 候选重生成报告](results/phase8_warm_placement_regeneration_20260823.md)。
+[暖态 placement 候选与质量验证报告](results/phase8_warm_placement_regeneration_20260823.md)。
 
 在线迁移的独立实验说明见[在线 placement-plan 与服务迁移实验](Q-TopoMoE_在线placement-plan与服务迁移实验_20260812.md)。
 

@@ -206,5 +206,8 @@
 | `configs/experiments/phase8_warm_placement_capture_v1.json` | 冻结旧 Gate 后的 identity 暖态逐层专家计数采集计划；正式有效结果来自独立 v3 输出目录。 | `D5F55D1A5200FD877E4F2666272FC87ED6C0F93C841C3E4ED86E6DD65FC4DB27` |
 | `configs/experiments/phase8_warm_placement_abab_v1.json` | 新候选同进程 A/B/A/B 冻结计划；迁移提交段先预热且不计入测量。 | `6B59A067002D6280E37607A4E451BE0171212464B6CC92AFE6CEE2128A85C18E` |
 | `configs/strategies/phase8_warm_swap_008_slots_per_layer_v1.json` | 从48个暖态窗口生成的最小迁移量候选；每层交换8个槽位、总计移动320/10240，在线 Gate rejected，禁止直接加载。 | `3386D1457A62F4C2A9CB5CDC56B71225C8F07FAE73063A0E51C142F4C0B1F29E` |
-| `docs/Q-TopoMoE_Phase8_warm_placement_regeneration_summary_20260823.json` | 暖态采集、候选生成、A/B/A/B 指标、哈希、服务恢复状态和最终部署边界的合并机器摘要。 | `5C624CFEC072F90BC075E9C7EADC4DD9F18B4BF55F0A08FC3C054B2FBFA9BBB0` |
-| `docs/results/phase8_warm_placement_regeneration_20260823.md` | 停止调整旧 Gate 后的新候选中文报告；记录 rank CV/p99 改善、路由稳定性拒绝和后续质量等价要求。 | `16BEF6162DA6B6D3834296AB80372E67B7FE516C78BCBF75D1FD5814C8DB8EAF` |
+| `configs/experiments/phase8_warm_placement_quality_equivalence_v1.json` | 首次 116 题质量 A/B/A 冻结计划；候选轮出现 8 条截断后按 Gate 停止，用于保留缺陷证据。 | `8A0BDEA1D2DE348E1EC9FFF8AA2E4257EB3B6302B7A9A82422594109D58AA237` |
+| `configs/experiments/phase8_warm_placement_nvfp4_aux_regression_v2.json` | NVFP4 Marlin 两个辅助尺度迁移修复后的 8 条定向 A/B/A 回归计划，结果 accepted。 | `CC6B752C4FBD804AA9A77CACEB7820278AA66673B4B88A03BFEA9E261D6FF637` |
+| `configs/experiments/phase8_warm_placement_quality_equivalence_v3.json` | 修复后完整 116 题质量 A/B/A 冻结计划；三轮零失败零截断，最终质量 Gate accepted。 | `4B3B56628E474195150A271D70BAB0901B56C42BFA8489624C36C28EDAE52C57` |
+| `docs/Q-TopoMoE_Phase8_warm_placement_regeneration_summary_20260823.json` | 暖态采集、候选生成、A/B/A/B、迁移缺陷修复、定向回归、完整质量 Gate 与部署边界的合并机器摘要。 | `00E025538356BFFE5919CA0ADF2714A0761E7330E1490B9E58056EA909453F7B` |
+| `docs/results/phase8_warm_placement_regeneration_20260823.md` | 合并中文报告；记录在线路由 Gate 拒绝、NVFP4 辅助尺度迁移修复及完整质量 A/B/A 接受结论。 | `8B605FE631F253DC3080934F251FA9DFE9C4A9F72BF5754881EBBEF3AF207060` |
