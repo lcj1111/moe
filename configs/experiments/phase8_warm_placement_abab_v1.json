@@ -1,0 +1,86 @@
+{
+  "schema_version": "qtopomoe.phase8_warm_placement_abab.v1",
+  "status": "frozen_before_abab",
+  "frozen_date": "2026-08-23",
+  "说明": "对重新生成的最小迁移量候选执行同一服务进程内的暖态 A/B/A/B。旧 Gate、旧 selector 和旧 placement 保持历史只读。提交迁移的预热段不计入时延对比。",
+  "准入依据": {
+    "capture_gate": "/data/models/test/qtopomoe_phase8_warm_placement_capture_v3_20260823/capture_gate.json",
+    "capture_gate_sha256": "b217da92b50248f237431c23c6f586ba9d7df0cfd885ed2509a46d1600ac1777",
+    "candidate_generation_gate": "/data/models/test/qtopomoe_phase8_warm_placement_candidates_v1_20260823/candidate_generation_gate.json",
+    "candidate_generation_gate_sha256": "7382e628eef141968bec1b69221b477b5a7999e789a2cbfa925c1d2568eefe63"
+  },
+  "候选": {
+    "candidate_id": "warm_swap_008_slots_per_layer_v1",
+    "moved_slots_vs_identity": 320,
+    "moved_slot_fraction": 0.03125,
+    "selection_reason": "满足离线逐层 rank CV 改善门槛的候选中迁移量最小"
+  },
+  "运行环境": {
+    "output_root": "/data/models/test/qtopomoe_phase8_warm_placement_abab_v1_20260823",
+    "python_bin": "/data/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python3",
+    "model": "/data/models/test/redhatai_qwen36_nvfp4",
+    "runtime_plan": "/data/models/test/qtopomoe_phase8_warm_placement_candidates_v1_20260823/warm_swap_008_slots_per_layer_v1.json",
+    "runtime_plan_file_sha256": "3386d1457a62f4c2a9cb5cdc56b71225c8f07fae73063a0e51c142f4c0b1f29e",
+    "runtime_map_sha256": "24f09c93ff8e6c410917a3fcb087307130f8914f45c028adf23088c39fc80ac6",
+    "runtime_patch": "runtime_patches/qtopomoe_eplb/sitecustomize.py",
+    "runtime_patch_sha256": "7fbd8a540e9e8f8427ec829299cb1404cfe3b0e37c34aa480bdf762f04d143e4",
+    "client_sha256": "2931fbccecee4f6811743ba2112d5a2ca109f7892930391c36809c7311e94ff5",
+    "control_file_mode": true,
+    "host": "127.0.0.1",
+    "port": 31682,
+    "served_model_name": "qtopomoe-phase8-warm-placement-abab-v1",
+    "gpu_ids": [0, 1, 2, 3, 4, 5, 6, 7],
+    "tensor_parallel_size": 8,
+    "expert_parallel_size": 8,
+    "max_model_len": 65536,
+    "max_num_seqs": 32,
+    "gpu_memory_utilization": 0.9,
+    "eplb_window_size": 16,
+    "eplb_step_interval": 16,
+    "defer_calls": 0
+  },
+  "既有服务": {
+    "port": 30002,
+    "health_url": "http://127.0.0.1:30002/health",
+    "expected_module": "sglang.launch_server",
+    "expected_gpu_ids": [4, 5, 6, 7],
+    "force_pause_authorized": true,
+    "force_pause_authorization": "用户已明确授权实验完成前暂停 GPU4-7 服务；无论 A/B/A/B 成功或失败，脚本最终恢复原服务。",
+    "idle_samples_required": 3,
+    "idle_sample_interval_seconds": 10,
+    "idle_wait_timeout_seconds": 3600,
+    "restore_timeout_seconds": 1800
+  },
+  "负载": {
+    "input_tokens": 1536,
+    "output_tokens": 384,
+    "ignore_eos": true,
+    "concurrency": 16,
+    "requests_per_phase": 128,
+    "prefix_cache_pct": 0,
+    "arrival_mode": "closed_loop",
+    "seed": 480823,
+    "request_timeout_seconds": 300
+  },
+  "顺序": [
+    "identity_warmup",
+    "identity_a1",
+    "candidate_commit_warmup_1",
+    "candidate_b1",
+    "identity_commit_warmup_2",
+    "identity_a2",
+    "candidate_commit_warmup_2",
+    "candidate_b2"
+  ],
+  "gates": {
+    "candidate_p99_median_ratio_max": 1.05,
+    "candidate_rank_cv_ratio_max": 0.85,
+    "logical_expert_cv_ratio_min": 0.90,
+    "logical_expert_cv_ratio_max": 1.10,
+    "exact_response_hash_match": true,
+    "all_requests_succeeded_with_fixed_output": true,
+    "apply_rollback_apply_committed_on_all_8_ranks": true,
+    "original_service_restored": true
+  },
+  "后续边界": "A/B/A/B 全部通过后才允许为新候选设计独立闭环 Gate；本计划不修改或重开旧 Gate。"
+}

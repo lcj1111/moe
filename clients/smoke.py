@@ -308,6 +308,10 @@ def one_request(base_url: str, model: str, input_tokens: int, output_tokens: int
                               if cache_salt is not None else None),
         "output_tokens_requested": output_tokens,
         "output_tokens": generated,
+        "response_sha256": (
+            hashlib.sha256("".join(text_parts).encode("utf-8")).hexdigest()
+            if status == "ok" else None
+        ),
         "ttft_ms": ttft_ms,
         "e2e_ms": e2e_ms,
         "tpot_ms": tpot_ms,
