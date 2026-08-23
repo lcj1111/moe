@@ -91,11 +91,21 @@ def gpu_pids(indices: list[int]) -> dict[int, list[int]]:
 
 
 def process_group_exists(pgid: int) -> bool:
-    try:
-        os.killpg(pgid, 0)
-        return True
-    except ProcessLookupError:
-        return False
+    # A terminated child can remain as a zombie until Popen.wait() reaps it.
+    # Zombies hold a PGID but no resources and must not block service restore.
+    for entry in Path("/proc").iterdir():
+        if not entry.name.isdigit():
+            continue
+        try:
+            if os.getpgid(int(entry.name)) != pgid:
+                continue
+            stat = (entry / "stat").read_text(encoding="utf-8", errors="replace")
+            state = stat[stat.rfind(")") + 2 :].split(maxsplit=1)[0]
+            if state != "Z":
+                return True
+        except (FileNotFoundError, ProcessLookupError, PermissionError, ValueError):
+            continue
+    return False
 
 
 def stop_group(pgid: int, timeout: int = 180) -> None:
@@ -247,6 +257,7 @@ def start_canary(plan: dict[str, Any], repo: Path, root: Path) -> subprocess.Pop
     # python_bin may itself be a symlink to /usr/bin/python. Resolving it would
     # discard the virtualenv bin directory, so keep the configured parent path.
     venv_bin = str(Path(python_bin).parent)
+    activation_file = root / "placement_plan.activate"
     environment.update({
         "CUDA_VISIBLE_DEVICES": ",".join(str(value) for value in runtime["gpu_ids"]),
         "NCCL_IB_DISABLE": "1",
@@ -254,6 +265,7 @@ def start_canary(plan: dict[str, Any], repo: Path, root: Path) -> subprocess.Pop
         "VLLM_WORKER_MULTIPROC_METHOD": "spawn",
         "QTOPOMOE_EPLB_PLAN": runtime["runtime_plan"],
         "QTOPOMOE_EPLB_DEFER_CALLS": str(runtime["defer_calls"]),
+        "QTOPOMOE_EPLB_ACTIVATION_FILE": str(activation_file),
         "PYTHONPATH": str(repo / "runtime_patches" / "qtopomoe_eplb"),
         "PATH": venv_bin + os.pathsep + environment.get("PATH", ""),
     })
@@ -419,10 +431,24 @@ def main() -> int:
         wait_canary_health(CURRENT_CANARY, plan)
         update("running_stable")
         run_phase(plan, repo, root, "stable", 0)
-        if "QTOPOMOE_EPLB_PLAN_APPLIED" in (root / "server.log").read_text(
-            encoding="utf-8", errors="replace"
-        ):
+        server_log = root / "server.log"
+        stable_log = server_log.read_bytes()
+        if b"QTOPOMOE_EPLB_PLAN_APPLIED" in stable_log:
             raise RuntimeError("stable阶段结束前计划已提前应用")
+        activation_file = root / "placement_plan.activate"
+        activation_temporary = activation_file.with_suffix(".tmp")
+        activation_temporary.write_text(
+            plan["运行环境"]["runtime_map_sha256"] + "\n", encoding="utf-8"
+        )
+        os.replace(activation_temporary, activation_file)
+        atomic_json(root / "activation_status.json", {
+            "schema_version": "qtopomoe.canary_activation_status.v1",
+            "activation_unix": time.time(),
+            "activation_file": str(activation_file),
+            "runtime_map_sha256": plan["运行环境"]["runtime_map_sha256"],
+            "server_log_offset_before_activation": len(stable_log),
+            "stable_summary_sha256": sha256(root / "stable" / "summary.json"),
+        })
         update("running_migration")
         run_phase(plan, repo, root, "migration", 1)
         if "QTOPOMOE_EPLB_PLAN_APPLIED" not in (root / "server.log").read_text(
@@ -443,6 +469,10 @@ def main() -> int:
                 except ProcessLookupError:
                     canary_pgid = int(load(root / "canary_service_process.json")["pgid"])
                 stop_group(canary_pgid)
+                try:
+                    CURRENT_CANARY.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    pass
                 CURRENT_CANARY = None
             if manifest is not None:
                 update("restoring_existing_service", pipeline_error=pipeline_error)

@@ -40,6 +40,8 @@ def _activate() -> None:
 
     frozen_map = torch.tensor(mapping, dtype=torch.int64, device="cpu")
     defer_calls = int(os.environ.get("QTOPOMOE_EPLB_DEFER_CALLS", "0"))
+    activation_name = os.environ.get("QTOPOMOE_EPLB_ACTIVATION_FILE")
+    activation_path = Path(activation_name).resolve() if activation_name else None
     invocation_count = 0
 
     def _supports_eplb(_self: object) -> bool:
@@ -65,7 +67,9 @@ def _activate() -> None:
         if num_replicas % num_ranks:
             raise RuntimeError(f"{num_replicas=} is not divisible by {num_ranks=}")
         logical_experts = int(weight.shape[1])
-        if invocation_count <= defer_calls:
+        activation_pending = activation_path is not None and not activation_path.exists()
+        call_pending = activation_path is None and invocation_count <= defer_calls
+        if activation_pending or call_pending:
             if old_global_expert_indices is not None:
                 deferred_map = old_global_expert_indices.detach().cpu().to(torch.int64)
             else:
@@ -74,11 +78,18 @@ def _activate() -> None:
                 )
             print(
                 "[QTOPOMOE_EPLB_PLAN_DEFERRED] "
-                f"call={invocation_count} defer_calls={defer_calls} shape={tuple(deferred_map.shape)}",
+                f"call={invocation_count} defer_calls={defer_calls} "
+                f"activation_file={activation_path} shape={tuple(deferred_map.shape)}",
                 file=sys.stderr,
                 flush=True,
             )
             return deferred_map
+        if activation_path is not None:
+            activation_hash = activation_path.read_text(encoding="utf-8").strip()
+            if activation_hash != actual_sha:
+                raise RuntimeError(
+                    f"placement activation checksum mismatch: {activation_hash} != {actual_sha}"
+                )
         for layer, row in enumerate(frozen_map):
             counts = torch.bincount(row, minlength=logical_experts)
             if row.min().item() < 0 or row.max().item() >= logical_experts:
@@ -98,7 +109,7 @@ def _activate() -> None:
     DefaultEplbPolicy.rebalance_experts = classmethod(_fixed_rebalance)
     print(
         "[QTOPOMOE_EPLB_PATCH_ACTIVE] native_migration=true "
-        f"plan_sha256={actual_sha}",
+        f"plan_sha256={actual_sha} activation_file={activation_path}",
         file=sys.stderr,
         flush=True,
     )

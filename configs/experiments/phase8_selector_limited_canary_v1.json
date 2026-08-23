@@ -2,7 +2,7 @@
   "schema_version": "qtopomoe.phase8_selector_limited_canary.v1",
   "status": "frozen_before_canary",
   "frozen_date": "2026-08-23",
-  "说明": "在12%后续准入政策下执行一次有限在线canary。维护窗口开始前必须等待既有SGLang请求连续空闲；无论canary成功或失败都恢复原服务。",
+  "说明": "在12%后续准入政策下执行一次有限在线canary。placement-plan必须在稳定段完成后通过审计文件显式激活；无论canary成功或失败都恢复原服务。",
   "准入依据": {
     "policy": "configs/strategies/phase8_selector_gate_policy_v2_20260823.json",
     "policy_sha256": "89f03f1b23747ad515c9a9b0b9fdf71fefaf63967b0181d059ebdff7b2c19d36",
@@ -34,8 +34,8 @@
     "gpu_memory_utilization": 0.9,
     "eplb_window_size": 16,
     "eplb_step_interval": 16,
-    "defer_calls": 9,
-    "expected_first_applied_call": 10
+    "defer_calls": 0,
+    "activation_mode": "explicit_file_after_stable"
   },
   "既有服务": {
     "port": 30002,
@@ -63,6 +63,7 @@
   "gates": {
     "all_requests_succeeded": true,
     "plan_hash_consistent_on_all_8_ranks": true,
+    "plan_not_applied_before_explicit_activation": true,
     "recovery_p99_ratio_to_stable_max": 1.05,
     "rollback_original_service_available": true
   },

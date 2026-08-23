@@ -33,11 +33,16 @@ def main() -> int:
     runtime = canary["运行环境"]
     placement = load(args.runtime_plan)
     rollback = load(args.rollback_status)
+    activation = load(args.root / "activation_status.json")
     summaries = {
         phase: load(args.root / phase / "summary.json")
         for phase in canary["负载"]["phases"]
     }
-    log = args.server_log.read_text(encoding="utf-8", errors="replace")
+    log_bytes = args.server_log.read_bytes()
+    log = log_bytes.decode("utf-8", errors="replace")
+    activation_offset = int(activation["server_log_offset_before_activation"])
+    before_activation = log_bytes[:activation_offset]
+    after_activation = log_bytes[activation_offset:]
 
     expected_map_hash = runtime["runtime_map_sha256"]
     applied = [
@@ -73,9 +78,13 @@ def main() -> int:
             placement.get("physical_to_logical_map_sha256") == expected_map_hash
         ),
         "plan_hash_consistent_on_all_8_ranks": (
-            first_call == int(runtime["expected_first_applied_call"])
-            and first_ranks == list(range(8))
+            first_ranks == list(range(8))
             and first_hashes == [expected_map_hash]
+        ),
+        "plan_not_applied_before_explicit_activation": (
+            b"QTOPOMOE_EPLB_PLAN_APPLIED" not in before_activation
+            and b"QTOPOMOE_EPLB_PLAN_APPLIED" in after_activation
+            and activation.get("runtime_map_sha256") == expected_map_hash
         ),
         "native_migration_observed": native_migration,
         "all_requests_succeeded": (
@@ -107,6 +116,7 @@ def main() -> int:
             "first_applied_call": first_call,
             "first_applied_ranks": first_ranks,
             "first_applied_hashes": first_hashes,
+            "activation": activation,
         },
         "requests": {
             "failures": failures,
