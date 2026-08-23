@@ -95,6 +95,15 @@ def main() -> int:
         phase: int(value.get("completed", -1)) == int(value.get("requests", -2))
         for phase, value in summaries.items()
     }
+    fixed_output_tokens = all(
+        all(
+            row.get("status") == "ok"
+            and row.get("finish_reason") == "length"
+            and int(row.get("output_tokens", -1)) == int(row.get("output_tokens_requested", -2))
+            for row in rows
+        )
+        for rows in requests.values()
+    )
     stable_p99 = float(summaries["stable"]["e2e_ms"]["p99"])
     migration_p99 = float(summaries["migration"]["e2e_ms"]["p99"])
     recovery_p99 = float(summaries["recovery"]["e2e_ms"]["p99"])
@@ -127,6 +136,9 @@ def main() -> int:
             all(value == 0 for value in failures.values()) and all(complete.values())
         ),
         "matched_request_stream_across_phases": matched_request_stream,
+        "fixed_output_tokens_across_phases": (
+            canary["负载"].get("ignore_eos") is not True or fixed_output_tokens
+        ),
         "recovery_p99_within_105pct_of_stable": recovery_ratio <= 1.05,
         "rollback_original_service_available": (
             rollback.get("health_http") == 200
@@ -167,6 +179,8 @@ def main() -> int:
             },
             "matched_identity_fields": list(identity_fields),
             "matched_request_stream_across_phases": matched_request_stream,
+            "ignore_eos": canary["负载"].get("ignore_eos", False),
+            "fixed_output_tokens_across_phases": fixed_output_tokens,
         },
         "latency_ms": {
             "stable_p99": stable_p99,

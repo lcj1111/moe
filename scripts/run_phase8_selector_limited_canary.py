@@ -323,6 +323,8 @@ def run_phase(plan: dict[str, Any], repo: Path, root: Path, phase: str) -> None:
         "--output", str(phase_dir / "requests.jsonl"),
         "--summary", str(phase_dir / "summary.json"),
     ]
+    if workload.get("ignore_eos") is True:
+        command.append("--ignore-eos")
     with (phase_dir / "client.log").open("wb") as log:
         completed = subprocess.run(command, cwd=repo, stdout=log, stderr=subprocess.STDOUT)
     if completed.returncode != 0:
