@@ -38,14 +38,19 @@ def percentile(values: list[float], p: float) -> float:
     return ordered[min(len(ordered) - 1, max(0, round((len(ordered) - 1) * p)))]
 
 
-def load_cv_since(log_path: Path, offset: int) -> float:
+def load_metrics_since(log_path: Path, offset: int) -> dict[str, float | int]:
     text = log_path.read_bytes()[offset:].decode("utf-8", errors="replace")
-    values = [float(value) for value in re.findall(
-        r"Worker_TP0_EP0.*QTOPOMOE_EPLB_LOAD_WINDOW\].*cv=([0-9.]+)", text
+    rows = [(float(expert), float(rank)) for expert, rank in re.findall(
+        r"Worker_TP0_EP0.*QTOPOMOE_EPLB_LOAD_WINDOW\].*"
+        r"expert_cv=([0-9.]+) rank_cv=([0-9.]+)", text
     )]
-    if not values:
-        raise RuntimeError("控制窗口未采集到rank0专家负载CV")
-    return statistics.median(values)
+    if not rows:
+        raise RuntimeError("控制窗口未采集到rank0逐层专家负载CV")
+    return {
+        "expert_load_cv_layer_median": statistics.median(row[0] for row in rows),
+        "rank_load_cv": statistics.median(row[1] for row in rows),
+        "samples": len(rows),
+    }
 
 
 def committed_ranks(log: str, generation: int, action: str) -> list[int]:
@@ -115,8 +120,10 @@ def main() -> int:
         offset = log_path.stat().st_size
         run_phase(plan, repo, root, name)
         summary = load(root / name / "summary.json")
-        cv = load_cv_since(log_path, offset)
-        windows.append({"name": name, "load_cv": cv, "summary": summary})
+        metrics = load_metrics_since(log_path, offset)
+        cv = metrics["expert_load_cv_layer_median"]
+        windows.append({"name": name, "load_cv": cv, "load_metrics": metrics,
+                        "summary": summary})
         return summary, cv
 
     def observe(name: str, summary: dict[str, Any], cv: float, p99: float) -> str:
@@ -200,6 +207,26 @@ def main() -> int:
             update("restore_failed", pipeline_error=pipeline_error, restore_error=repr(error))
             return 2
     if pipeline_error:
+        restored = rollback is not None and rollback.get("health_http") == 200 \
+            and rollback.get("gpu_ids") == [4, 5, 6, 7]
+        failure = {
+            "schema_version": "qtopomoe.phase8_selector_closed_loop_gate.v1",
+            "status": "rejected",
+            "pipeline_error": pipeline_error,
+            "input_gates": checks,
+            "decisions": decisions,
+            "windows": [{
+                "name": row["name"],
+                "load_cv": row["load_cv"],
+                "load_metrics": row["load_metrics"],
+                "p99_ms": row["summary"]["e2e_ms"]["p99"],
+            } for row in windows],
+            "original_service_restored": restored,
+            "rollback": rollback,
+        }
+        atomic_json(root / "closed_loop_gate.json", failure)
+        update("completed", gate_status="rejected", pipeline_error=pipeline_error,
+               original_service_restored=restored)
         return 1
     log = (root / "server.log").read_text(encoding="utf-8", errors="replace")
     recovery_p99 = float(recovery["e2e_ms"]["p99"])
@@ -242,7 +269,9 @@ def main() -> int:
         "gates": gates,
         "controller_config": asdict(controller.config),
         "decisions": decisions,
+        "load_cv_definition": "各MoE层逻辑专家负载CV的窗口中位数；rank CV仅作旁证",
         "windows": [{"name": row["name"], "load_cv": row["load_cv"],
+                     "load_metrics": row["load_metrics"],
                      "p99_ms": row["summary"]["e2e_ms"]["p99"]} for row in windows],
         "fault_injection": plan["故障注入"],
         "runtime": {"apply_ranks": committed_ranks(log, 1, "apply"),

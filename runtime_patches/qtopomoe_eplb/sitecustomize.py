@@ -60,7 +60,7 @@ def _activate() -> None:
             raise RuntimeError(f"invalid placement control generation: {value}")
         return value
 
-    def _load_cv(self: object) -> float:
+    def _load_metrics(self: object) -> tuple[float, float]:
         logical_windows = []
         states = list(self.model_states.values())
         for state in states:
@@ -82,17 +82,30 @@ def _activate() -> None:
             logical_windows.append(logical.sum(dim=0))
         global_windows = self._allreduce_list(logical_windows)
         rank_loads = None
+        layer_expert_cvs = []
         ep_size = get_ep_group().device_group.size()
         for state, logical in zip(states, global_windows):
+            logical_float = logical.float()
+            layer_means = logical_float.mean(dim=1)
+            valid_layers = layer_means > 0
+            if bool(valid_layers.any()):
+                layer_expert_cvs.append(
+                    logical_float.std(dim=1, unbiased=False)[valid_layers]
+                    / layer_means[valid_layers]
+                )
             mapping = state.physical_to_logical_map[:, : self.num_valid_physical_experts].long()
             counts = torch.zeros_like(logical)
             counts.scatter_add_(1, mapping, torch.ones_like(mapping, dtype=logical.dtype))
             per_physical = torch.gather(logical / counts.clamp_min(1), 1, mapping)
             values = per_physical.reshape(logical.shape[0], ep_size, -1).sum(dim=(0, 2)).float()
             rank_loads = values if rank_loads is None else rank_loads + values
-        if rank_loads is None or float(rank_loads.mean()) <= 0:
-            return 0.0
-        return float(rank_loads.std(unbiased=False) / rank_loads.mean())
+        expert_cv = (
+            float(torch.cat(layer_expert_cvs).median()) if layer_expert_cvs else 0.0
+        )
+        rank_cv = 0.0
+        if rank_loads is not None and float(rank_loads.mean()) > 0:
+            rank_cv = float(rank_loads.std(unbiased=False) / rank_loads.mean())
+        return expert_cv, rank_cv
 
     def _supports_eplb(_self: object) -> bool:
         return True
@@ -106,13 +119,15 @@ def _activate() -> None:
         if is_profile or rank_mapping is not None:
             return original_rearrange(self, is_profile=is_profile, rank_mapping=rank_mapping)
         if control_path is not None:
-            cv = _load_cv(self)
+            expert_cv, rank_cv = _load_metrics(self)
             command = _control_command()
             generation = int(command["generation"]) if command else 0
             action = str(command["action"]) if command else "hold"
             print(
                 "[QTOPOMOE_EPLB_LOAD_WINDOW] "
-                f"call={invocation_count + 1} cv={cv:.8f} generation={generation} action={action}",
+                f"call={invocation_count + 1} cv={expert_cv:.8f} "
+                f"expert_cv={expert_cv:.8f} rank_cv={rank_cv:.8f} "
+                f"generation={generation} action={action}",
                 file=sys.stderr,
                 flush=True,
             )
