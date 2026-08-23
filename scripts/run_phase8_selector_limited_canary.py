@@ -251,6 +251,7 @@ def start_canary(plan: dict[str, Any], repo: Path, root: Path) -> subprocess.Pop
         "QTOPOMOE_EPLB_PLAN": runtime["runtime_plan"],
         "QTOPOMOE_EPLB_DEFER_CALLS": str(runtime["defer_calls"]),
         "PYTHONPATH": str(repo / "runtime_patches" / "qtopomoe_eplb"),
+        "PATH": str(Path(python_bin).resolve().parent) + os.pathsep + environment.get("PATH", ""),
     })
     log = (root / "server.log").open("ab", buffering=0)
     process = subprocess.Popen(
@@ -431,7 +432,11 @@ def main() -> int:
     finally:
         try:
             if CURRENT_CANARY is not None:
-                stop_group(os.getpgid(CURRENT_CANARY.pid))
+                try:
+                    canary_pgid = os.getpgid(CURRENT_CANARY.pid)
+                except ProcessLookupError:
+                    canary_pgid = int(load(root / "canary_service_process.json")["pgid"])
+                stop_group(canary_pgid)
                 CURRENT_CANARY = None
             if manifest is not None:
                 update("restoring_existing_service", pipeline_error=pipeline_error)
