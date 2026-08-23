@@ -37,6 +37,7 @@ def _activate() -> None:
     from vllm.distributed.eplb.eplb_state import EplbState
     from vllm.distributed.parallel_state import get_ep_group
     from vllm.distributed.eplb.policy.default import DefaultEplbPolicy
+    from vllm.model_executor.layers.fused_moe import RoutedExperts
     from vllm.model_executor.layers.quantization.compressed_tensors.compressed_tensors_moe.compressed_tensors_moe_w4a4_nvfp4 import (
         CompressedTensorsW4A4Nvfp4MoEMethod,
     )
@@ -54,6 +55,7 @@ def _activate() -> None:
     load_window_count = 0
     last_control_generation = 0
     original_rearrange = EplbState.rearrange
+    original_get_expert_weights = RoutedExperts.get_expert_weights
 
     def _control_command() -> dict[str, object] | None:
         if control_path is None or not control_path.exists():
@@ -133,6 +135,41 @@ def _activate() -> None:
 
     def _supports_eplb(_self: object) -> bool:
         return True
+
+    def _get_expert_weights_with_nvfp4_aux(
+        self: object,
+    ) -> list[torch.Tensor]:
+        """把 Marlin NVFP4 的未注册全局尺度纳入 EPLB 原子迁移。"""
+        weights = list(original_get_expert_weights(self))
+        method = getattr(self.quant_method, "old_quant_method", self.quant_method)
+        if not isinstance(method, CompressedTensorsW4A4Nvfp4MoEMethod):
+            return weights
+        auxiliary = []
+        for name in ("w13_weight_scale_2", "w2_weight_scale_2"):
+            tensor = getattr(self, name, None)
+            if not isinstance(tensor, torch.Tensor):
+                raise RuntimeError(f"NVFP4 EPLB missing auxiliary tensor: {name}")
+            if tensor.ndim < 1 or int(tensor.shape[0]) != int(self.local_num_experts):
+                raise RuntimeError(
+                    f"NVFP4 EPLB auxiliary tensor shape mismatch: "
+                    f"{name}={tuple(tensor.shape)} local_experts={self.local_num_experts}"
+                )
+            if not tensor.is_contiguous():
+                raise RuntimeError(
+                    f"NVFP4 EPLB auxiliary tensor is not contiguous: {name}"
+                )
+            auxiliary.append(tensor.view(self.local_num_experts, -1))
+        weights.extend(auxiliary)
+        if not getattr(self, "_qtopomoe_nvfp4_aux_logged", False):
+            print(
+                "[QTOPOMOE_EPLB_NVFP4_AUX_WEIGHTS] "
+                f"count={len(auxiliary)} "
+                f"shapes={[tuple(value.shape) for value in auxiliary]}",
+                file=sys.stderr,
+                flush=True,
+            )
+            setattr(self, "_qtopomoe_nvfp4_aux_logged", True)
+        return weights
 
     def _one_shot_rearrange(
         self: object,
@@ -294,6 +331,7 @@ def _activate() -> None:
         return frozen_map.clone()
 
     CompressedTensorsW4A4Nvfp4MoEMethod.supports_eplb = property(_supports_eplb)
+    RoutedExperts.get_expert_weights = _get_expert_weights_with_nvfp4_aux
     DefaultEplbPolicy.rebalance_experts = classmethod(_fixed_rebalance)
     EplbState.rearrange = _one_shot_rearrange
     print(

@@ -141,14 +141,45 @@ def main() -> int:
         "quality_manifest": manifest_path.exists()
         and sha256(manifest_path) == quality["manifest_sha256"],
     }
+    if "quality_gate_v1_readonly" in inputs:
+        previous_gate = Path(inputs["quality_gate_v1_readonly"])
+        checks["quality_gate_v1_preserved_readonly"] = (
+            previous_gate.exists()
+            and sha256(previous_gate) == inputs["quality_gate_v1_sha256"]
+            and load(previous_gate).get("status")
+            == inputs["quality_gate_v1_expected_status"]
+        )
     if not all(checks.values()):
         update("preflight_failed", checks=checks)
         return 2
 
-    manifest_rows = jsonl(manifest_path)
+    source_lines = manifest_path.read_text(encoding="utf-8").splitlines()
+    source_rows = [json.loads(line) for line in source_lines]
+    selected_ids = quality.get("仅评测ID")
+    if selected_ids is not None:
+        selected_set = set(selected_ids)
+        if len(selected_set) != len(selected_ids):
+            update("preflight_failed", checks=checks, error="仅评测ID存在重复")
+            return 2
+        manifest_lines = [
+            line for line, row in zip(source_lines, source_rows)
+            if row["id"] in selected_set
+        ]
+        manifest_rows = [json.loads(line) for line in manifest_lines]
+        if {row["id"] for row in manifest_rows} != selected_set:
+            update("preflight_failed", checks=checks, error="仅评测ID不完整")
+            return 2
+    else:
+        manifest_lines = source_lines
+        manifest_rows = source_rows
     if len(manifest_rows) != int(quality["records"]):
         update("preflight_failed", checks=checks, manifest_records=len(manifest_rows))
         return 2
+    effective_manifest_path = root / "quality_manifest.effective.jsonl"
+    effective_manifest_path.write_text(
+        "\n".join(manifest_lines) + "\n", encoding="utf-8"
+    )
+    effective_manifest_sha256 = sha256(effective_manifest_path)
     manifest = {row["id"]: row for row in manifest_rows}
     mapping = candidate["physical_to_logical_map"]
     identity = [list(range(len(mapping[0]))) for _ in mapping]
@@ -180,7 +211,7 @@ def main() -> int:
             runtime["python_bin"], str(repo / "clients" / "quality_eval.py"),
             "--base-url", f"http://{runtime['host']}:{runtime['port']}/v1",
             "--model", runtime["served_model_name"],
-            "--manifest", str(manifest_path),
+            "--manifest", str(effective_manifest_path),
             "--output", str(phase_dir / "quality.results.jsonl"),
             "--summary", str(phase_dir / "quality.summary.json"),
             "--concurrency", str(quality["concurrency"]),
@@ -341,7 +372,8 @@ def main() -> int:
         "status": "accepted" if all(gates.values()) else "rejected",
         "candidate_id": plan["候选"]["candidate_id"],
         "candidate_map_sha256": runtime["runtime_map_sha256"],
-        "quality_manifest_sha256": quality["manifest_sha256"],
+        "source_quality_manifest_sha256": quality["manifest_sha256"],
+        "effective_quality_manifest_sha256": effective_manifest_sha256,
         "gates": gates,
         "phase_stats": stats,
         "paired_audit": {
