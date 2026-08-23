@@ -1,0 +1,99 @@
+{
+  "schema_version": "qtopomoe.phase8_warm_placement_quality_equivalence.v1",
+  "status": "frozen_before_quality_equivalence",
+  "frozen_date": "2026-08-23",
+  "说明": "对重新生成的 warm placement 候选执行同一 TP8/EP8 服务进程内的 identity → candidate → identity 独立质量夹测。旧 Gate、旧 selector、旧 placement 与已拒绝的在线 A/B/A/B 结论均保持只读。",
+  "结论边界": "本实验只回答新候选是否保持答案质量；即使质量等价通过，也不能覆盖在线 A/B/A/B 已拒绝的结论，不能直接进入 canary。",
+  "输入依据": {
+    "capture_gate": "/data/models/test/qtopomoe_phase8_warm_placement_capture_v3_20260823/capture_gate.json",
+    "capture_gate_sha256": "b217da92b50248f237431c23c6f586ba9d7df0cfd885ed2509a46d1600ac1777",
+    "candidate_generation_gate": "/data/models/test/qtopomoe_phase8_warm_placement_candidates_v1_20260823/candidate_generation_gate.json",
+    "candidate_generation_gate_sha256": "7382e628eef141968bec1b69221b477b5a7999e789a2cbfa925c1d2568eefe63",
+    "online_abab_gate_readonly": "/data/models/test/qtopomoe_phase8_warm_placement_abab_v1_20260823/abab_gate.json",
+    "online_abab_gate_sha256": "f2ad49bc724a8b2edae357d24835231a06501667191ef7994450ed20fe2be670",
+    "online_abab_expected_status": "rejected"
+  },
+  "候选": {
+    "candidate_id": "warm_swap_008_slots_per_layer_v1",
+    "moved_slots_vs_identity": 320,
+    "moved_slot_fraction": 0.03125
+  },
+  "运行环境": {
+    "output_root": "/data/models/test/qtopomoe_phase8_warm_placement_quality_equivalence_v1_20260823",
+    "python_bin": "/data/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python3",
+    "model": "/data/models/test/redhatai_qwen36_nvfp4",
+    "runtime_plan": "/data/models/test/qtopomoe_phase8_warm_placement_candidates_v1_20260823/warm_swap_008_slots_per_layer_v1.json",
+    "runtime_plan_file_sha256": "3386d1457a62f4c2a9cb5cdc56b71225c8f07fae73063a0e51c142f4c0b1f29e",
+    "runtime_map_sha256": "24f09c93ff8e6c410917a3fcb087307130f8914f45c028adf23088c39fc80ac6",
+    "runtime_patch": "runtime_patches/qtopomoe_eplb/sitecustomize.py",
+    "runtime_patch_sha256": "7fbd8a540e9e8f8427ec829299cb1404cfe3b0e37c34aa480bdf762f04d143e4",
+    "quality_client_sha256": "a56afa36ee4827a94e1b5363c8dfb09bed6cb9db6a42e18b18e2be1ae1f890ea",
+    "smoke_client_sha256": "2931fbccecee4f6811743ba2112d5a2ca109f7892930391c36809c7311e94ff5",
+    "control_file_mode": true,
+    "host": "127.0.0.1",
+    "port": 31683,
+    "served_model_name": "qtopomoe-phase8-warm-placement-quality-v1",
+    "gpu_ids": [0, 1, 2, 3, 4, 5, 6, 7],
+    "tensor_parallel_size": 8,
+    "expert_parallel_size": 8,
+    "max_model_len": 65536,
+    "max_num_seqs": 32,
+    "gpu_memory_utilization": 0.9,
+    "eplb_window_size": 16,
+    "eplb_step_interval": 16,
+    "defer_calls": 0
+  },
+  "既有服务": {
+    "port": 30002,
+    "health_url": "http://127.0.0.1:30002/health",
+    "expected_module": "sglang.launch_server",
+    "expected_gpu_ids": [4, 5, 6, 7],
+    "force_pause_authorized": true,
+    "force_pause_authorization": "用户已明确授权实验完成前暂停 GPU4-7 服务；脚本在完整质量夹测结束或异常退出后恢复原服务。",
+    "idle_samples_required": 3,
+    "idle_sample_interval_seconds": 10,
+    "idle_wait_timeout_seconds": 3600,
+    "restore_timeout_seconds": 1800
+  },
+  "负载": {
+    "input_tokens": 1536,
+    "output_tokens": 384,
+    "ignore_eos": true,
+    "concurrency": 16,
+    "requests_per_phase": 32,
+    "prefix_cache_pct": 0,
+    "arrival_mode": "closed_loop",
+    "seed": 490823,
+    "request_timeout_seconds": 300
+  },
+  "质量评测": {
+    "manifest": "/data/moe/configs/evaluation/official_like_smoke_v2.jsonl",
+    "manifest_sha256": "549c1e3b3e131e8ff586dbf17ae666fb8468b75b57362e206cfbce2a4fcb6d0f",
+    "records": 116,
+    "seed": 42,
+    "concurrency": 4,
+    "request_timeout_seconds": 900,
+    "checkpoint_every": 16
+  },
+  "顺序": [
+    "identity_warmup",
+    "identity_a1",
+    "candidate_commit_warmup",
+    "candidate_b",
+    "identity_commit_warmup",
+    "identity_a2"
+  ],
+  "gates": {
+    "每轮完成数": 116,
+    "每轮失败数": 0,
+    "每轮截断数": 0,
+    "每轮答案抽取失败数": 0,
+    "允许的finish_reason": ["stop"],
+    "候选总正确数不低于两轮identity较低值": true,
+    "候选逐基准正确数不低于两轮identity较低值": true,
+    "候选逐学科正确数不低于两轮identity较低值": true,
+    "两轮identity均正确但候选错误的新增退化数": 0,
+    "apply与rollback均由8个rank提交": true,
+    "原SGLang服务恢复": true
+  }
+}
