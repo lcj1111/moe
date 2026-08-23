@@ -1,0 +1,61 @@
+{
+  "schema_version": "qtopomoe.phase8_selector_closed_loop_execution_summary.v1",
+  "status": "rejected",
+  "date": "2026-08-23",
+  "说明": "Phase 8 one-shot与自动闭环的合并执行摘要；数据类文件，详细逐窗口结果见最终Gate，完整日志保留在服务器原始目录。",
+  "final_result": {
+    "candidate_id": "nvfp4_redhat_ep8_static_sys_one_shot_closed_loop_v4",
+    "workload_id": "t2_c16_p0_closed_loop",
+    "trigger_actions": ["hold", "hold", "rebalance"],
+    "trigger_expert_load_cv": [2.14558053, 2.16385102, 2.13105178],
+    "rollback_reference_p99_ms": 3488.3588717505336,
+    "post_apply_p99_ms": [3766.334895975888, 3691.3683088496327, 3718.5067674145103],
+    "post_apply_ratio_to_reference": [1.079687, 1.058196, 1.065976],
+    "controller_rollback_after_three_windows": true,
+    "native_generation_2_rollback_committed": false,
+    "apply_rank_count": 8,
+    "failed_requests": 0,
+    "original_sglang_restored": true
+  },
+  "diagnostics": [
+    {
+      "version": "v1",
+      "output_root": "/data/models/test/qtopomoe_phase8_selector_closed_loop_acceptance_v1_20260823",
+      "result": "rejected",
+      "reason": "错误使用跨层汇总rank CV，连续三窗均低于0.25，控制器保持hold",
+      "artifact_sha256": "2b4325c2761a3319c797ec2a5657b6b7a2ed04dae01c60ff39c6200c3445aeda"
+    },
+    {
+      "version": "v2",
+      "output_root": "/data/models/test/qtopomoe_phase8_selector_closed_loop_acceptance_v2_20260823",
+      "result": "rejected",
+      "reason": "逐层expert CV触发成功，但单窗口p99回滚参照导致过敏",
+      "artifact_sha256": "f1a4a29670249167911ff11aa9bafc5fda205a6fb1adf0bb15e2f3c85c392be7"
+    },
+    {
+      "version": "v3",
+      "output_root": "/data/models/test/qtopomoe_phase8_selector_closed_loop_acceptance_v3_20260823",
+      "result": "rejected",
+      "reason": "p99 EMA参照生效，但短负载在cooldown第9窗满足真实回滚条件",
+      "artifact_sha256": "a33c9dbc651032eac6cee10468c46d9d6a0aede0e8592b298f54a2fe19eb7291"
+    },
+    {
+      "version": "v4",
+      "output_root": "/data/models/test/qtopomoe_phase8_selector_closed_loop_acceptance_v4_20260823",
+      "result": "rejected",
+      "reason": "对齐五轮代表负载后，迁移后连续三窗p99仍退化超过5%",
+      "artifact_sha256": "09a29ec83fb63630091c3bd6585eeb7184f4e185251c3e28159a39b873ab1d15"
+    }
+  ],
+  "provenance": {
+    "one_shot_runtime_commit": "0dc4a75",
+    "five_round_preregistration_commit": "03488d4",
+    "closed_loop_initial_commit": "afc9873",
+    "expert_cv_fix_commit": "6c0704e",
+    "p99_ema_fix_commit": "7a005d9",
+    "final_workload_alignment_commit": "b9051ab",
+    "repeated_gate_sha256": "c2f118b04377d30b44d7a5a566e7017274f7a7ab96da65ea9f82c496792923fd",
+    "final_gate_sha256": "09a29ec83fb63630091c3bd6585eeb7184f4e185251c3e28159a39b873ab1d15"
+  },
+  "deployment_boundary": "自动闭环继续禁用；只有新的placement候选通过暖态交叉顺序多轮Gate后才能重新申请。"
+}

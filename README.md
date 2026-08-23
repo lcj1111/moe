@@ -19,10 +19,13 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 | Phase 3 | route trace、漂移分析和冻结官方协议 | route、三格式 full-set 合并与共同分母对比均已完成 |
 | Phase 4–6 | M-bucket、kernel/backend selector、通信矩阵 | 正式实测已归档 |
 | Phase 7 | placement-plan、在线迁移、恢复与 p99 | Gate 已接受 |
-| Phase 8 | selector 训练、900 次独立测试与有限 canary | 12%后续政策下允许有限 canary；有效 canary 因恢复 p99 为稳定段的136.36%而拒绝 |
+| Phase 8 | selector 训练、900 次独立测试、五轮 one-shot 与自动闭环 | 最终闭环 Gate 拒绝；暖态 placement 使 p99 连续退化超过5%，已自动停止上线 |
 
-动态触发、cooldown 和 rollback 自动闭环当前禁止启动。有限 canary 的请求、plan
-一致性与回滚均通过，但恢复 p99 未达到 105% Gate。
+动态 trigger 与 8-rank placement apply 已验证，控制器也能在连续三个 p99 退化窗口后
+发出 rollback；但 10 窗口 cooldown 未完成，原生 generation=2 rollback 提交路径尚未验收。
+最终代表负载下迁移前 p99 EMA 为 3488 ms，迁移后连续三窗为 3766、3691、3719 ms，
+因此自动闭环上线仍被禁止。此前五轮 one-shot 的固定阶段顺序存在冷启动/预热偏差，
+不能再作为性能收益成立的证据。
 
 ## 从哪里开始
 
@@ -35,7 +38,7 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 | 按阶段执行 | [逐步执行 Runbook](docs/Q-TopoMoE_逐步执行Runbook.md) |
 | 查某个 JSON/配置的含义与哈希 | [数据与结果清单](docs/DATA_CATALOG.md) |
 | 查看三格式全量质量结论 | [BF16/FP8/NVFP4 full-set 收尾](docs/results/phase3_fullset_quality_closeout_20260812.md) |
-| 查看 Phase 8 selector 最新结论 | [有限 canary 拒绝报告](docs/results/phase8_selector_limited_canary_rejected_20260823.md) |
+| 查看 Phase 8 selector 最新结论 | [自动闭环最终拒绝报告](docs/results/phase8_selector_closed_loop_final_20260823.md) |
 
 ## 快速检查
 

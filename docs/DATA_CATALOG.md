@@ -194,3 +194,12 @@
 | `docs/Q-TopoMoE_Phase8_selector_limited_canary_rejected_20260823.json` | 有效有限 canary 的机器 Gate；384 请求零失败，但恢复 p99 为稳定段的136.36%，超过105%门槛，状态为 rejected。 | `8F03B73D99E6FA9969D0CE9743C6B5E0A73C9E22E9E298F2E4794F5608027FEC` |
 | `docs/Q-TopoMoE_Phase8_selector_limited_canary_manifest_20260823.json` | 有限 canary 原始目录、代码提交、服务回滚状态、逐文件字节数与 SHA-256，以及无效尝试的隔离路径。 | `17D8662C4EFF642831F20260ED38626158E2A02261FC938943718114591F7D8F` |
 | `docs/results/phase8_selector_limited_canary_rejected_20260823.md` | 有限 canary 中文拒绝报告；记录全部 Gate、延迟、编排修复、证据可靠性边界和后续禁止项。 | `2657A4BB4035B5840ED1B5E2FFA0ACEFB5CFDE29EBCBB35A49D2B9F59CB957E1` |
+| `configs/experiments/phase8_selector_one_shot_canary_base_v1.json` | one-shot placement 五轮配对 canary 的基础计划；定义代表负载、显式激活、固定输出和 8-rank 哈希 Gate。 | `2CEFC83513A4ED7F63B32CFF32F900B65972A29DD0EB4B90DA2CFD4F6AA03AA8` |
+| `configs/experiments/phase8_selector_one_shot_repeated_v1.json` | one-shot placement 五轮调度与聚合 Gate；结果曾 accepted，但固定阶段顺序的预热偏差已在最终报告中注明。 | `AE0521F0479EA0229BD612B9998DAB5EBD96625B02DCBDF7014E8D38A6825A80` |
+| `configs/experiments/phase8_selector_closed_loop_acceptance_v1.json` | 自动闭环首次预注册计划；历史诊断发现误用了跨层汇总 rank CV，不作为最终验收口径。 | `DDD44081588ABC5163CF340D446B682B30C81D593420C6B3552571BC38B431C9` |
+| `configs/experiments/phase8_selector_closed_loop_acceptance_v2.json` | 自动闭环第二次计划；修正逐层 expert-load CV，诊断出单窗口 p99 回滚参照过敏。 | `42FE638999EEDAE82A511371193C866F602B8AB1B5D11FC542BBDD45FACC9824` |
+| `configs/experiments/phase8_selector_closed_loop_acceptance_v3.json` | 自动闭环第三次计划；冻结迁移前 p99 EMA，短负载在 cooldown 第9窗真实回滚。 | `8288C36A62CB3785CA84B986C88EA4563076E0AB068EC5AE9134B124D252CEB4` |
+| `configs/experiments/phase8_selector_closed_loop_acceptance_v4.json` | 最终自动闭环计划；负载严格对齐五轮代表负载，原 Gate 不变，最终状态 rejected。 | `7C131A3F9554056932BF129598E93E3D521EC64AC363F69B17D1EB3BD5C0BE2E` |
+| `docs/Q-TopoMoE_Phase8_selector_closed_loop_execution_summary_20260823.json` | 数据说明：合并记录 v1–v4 的目的、结果、服务器目录、产物哈希、代码提交和最终部署边界。 | `F3D8D196A4DA30EC6738D3639AA55FF7F34D8849FAE39182AB88BF8012B75970` |
+| `docs/Q-TopoMoE_Phase8_selector_closed_loop_final_gate_rejected_20260823.json` | 最终机器 Gate；逐窗口记录 expert/rank CV、p99、控制器动作和 SGLang 恢复状态，状态 rejected。 | `09A29EC83FB63630091C3BD6585EEB7184F4E185251C3E28159A39B873AB1D15` |
+| `docs/results/phase8_selector_closed_loop_final_20260823.md` | 自动闭环中文最终报告；说明五轮顺序偏差、四次诊断、最终拒绝理由与下一候选要求。 | `39B13289D9C767DE9F41CAA8C3FBE6D44FE7F75338DB82B243E7B4BCAA36E85C` |

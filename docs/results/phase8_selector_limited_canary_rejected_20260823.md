@@ -1,5 +1,9 @@
 # Phase 8 selector 有限 canary 拒绝报告
 
+> 历史状态说明：本报告记录首次有限 canary。后续 one-shot 迁移修复、五轮复测和自动
+> 闭环均已执行；最新权威结论为[自动闭环最终拒绝报告](phase8_selector_closed_loop_final_20260823.md)。
+> 本文中的“不得继续”是当时 Gate 边界，不应覆盖后续经重新预注册获得的诊断结果。
+
 ## 结论
 
 2026-08-23 在 gpu-111 执行的有效有限 canary 判定为 **rejected**。384 个请求全部完成且零失败，placement-plan 在显式激活前未应用、激活后 8 个 rank 的哈希完全一致，原 SGLang 服务也已成功恢复；唯一失败项是恢复段 p99 未回到稳定段的 105% 以内。
