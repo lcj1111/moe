@@ -53,13 +53,41 @@ def jsonl_rows(path: Path) -> int:
     return len(path.read_text(encoding="utf-8").splitlines())
 
 
+def merge_dict(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
+    """递归合并预注册基础计划与只包含差异的确认计划。"""
+    result = json.loads(json.dumps(base, ensure_ascii=False))
+    for key, value in override.items():
+        if isinstance(value, dict) and isinstance(result.get(key), dict):
+            result[key] = merge_dict(result[key], value)
+        else:
+            result[key] = value
+    return result
+
+
+def load_registered_plan(path: Path, repo: Path) -> dict[str, Any]:
+    plan = load(path)
+    base_item = plan.get("基础计划")
+    if not base_item:
+        return plan
+    base_path = repo / str(base_item["path"])
+    if not base_path.exists() or sha256(base_path) != base_item["sha256"]:
+        raise RuntimeError("确认轮基础计划缺失或哈希不一致")
+    base = load(base_path)
+    override = plan.get("覆盖")
+    if not isinstance(override, dict):
+        raise RuntimeError("确认轮覆盖内容无效")
+    merged = merge_dict(base, override)
+    merged["基础计划"] = base_item
+    return merged
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--plan", required=True, type=Path)
     parser.add_argument("--output-root", required=True, type=Path)
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[1]
-    plan = load(args.plan)
+    plan = load_registered_plan(args.plan, repo)
     if plan.get("status") != "frozen_before_route_stability_diagnostic":
         raise RuntimeError("逻辑专家分布稳定性诊断计划未冻结")
     root = args.output_root
@@ -95,6 +123,14 @@ def main() -> int:
             path.exists()
             and sha256(path) == item["sha256"]
             and load(path).get("status") == expected_status
+        )
+    previous = plan["输入依据"].get("previous_diagnostic_readonly")
+    if previous is not None:
+        path = Path(previous["path"])
+        input_checks["previous_diagnostic_readonly"] = (
+            path.exists()
+            and sha256(path) == previous["sha256"]
+            and load(path).get("status") == previous["expected_status"]
         )
     file_checks = {
         "python": Path(runtime["python_bin"]).exists(),

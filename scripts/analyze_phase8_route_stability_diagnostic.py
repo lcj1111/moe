@@ -111,6 +111,15 @@ def request_audit(root: Path, phases: list[str]) -> dict[str, Any]:
         "records_per_phase": {phase: len(rows) for phase, rows in phase_rows.items()},
         "common_request_ids": len(common),
         "prompts_match": prompts_match,
+        "cached_tokens_by_phase": {
+            phase: sorted(
+                {
+                    int(row.get("cached_tokens", 0))
+                    for row in phase_rows[phase].values()
+                }
+            )
+            for phase in phases
+        },
         "response_hash_matches": pair_matches,
     }
 
@@ -229,6 +238,20 @@ def analyze(plan: dict[str, Any], root: Path) -> dict[str, Any]:
         not actual_route_change
         and long_excess > float(thresholds["长输出placement_excess_tv_p95_max"])
     )
+    confirmation = plan.get("确认归因", {})
+    cache_states = [
+        tuple(values)
+        for arm in arm_results.values()
+        for values in arm["request_audit"]["cached_tokens_by_phase"].values()
+    ]
+    measured_cache_state_matches = len(set(cache_states)) == 1
+    sampling_scope = bool(confirmation.get("enabled")) and (
+        not statistical_scope
+        and not counter_reset
+        and not actual_route_change
+        and not continuation_divergence
+        and measured_cache_state_matches
+    )
     if statistical_scope:
         primary_cause = "统计还原口径错误：稳态窗口的旧口径与记录时逻辑计数不一致"
     elif counter_reset:
@@ -237,6 +260,8 @@ def analyze(plan: dict[str, Any], root: Path) -> dict[str, Any]:
         primary_cause = "实际路由变化：短输出同输入对照仍存在超出重复基线的 placement 差异"
     elif continuation_divergence:
         primary_cause = "长生成轨迹分叉造成的实际路由采样差异，不是统计口径或计数器重置"
+    elif sampling_scope:
+        primary_cause = str(confirmation["稳定时归因"])
     else:
         primary_cause = "未复现 14.28% 差异；新诊断下统计口径、计数器和实际路由均稳定"
 
@@ -252,6 +277,7 @@ def analyze(plan: dict[str, Any], root: Path) -> dict[str, Any]:
             math.isfinite(float(value["placement_excess_tv_p95"]))
             for value in arm_results.values()
         ),
+        "measured_cache_state_matches": measured_cache_state_matches,
     }
     return {
         "schema_version": "qtopomoe.phase8_route_stability_diagnostic.v1",
@@ -259,7 +285,9 @@ def analyze(plan: dict[str, Any], root: Path) -> dict[str, Any]:
         "integrity_gates": integrity,
         "classification": {
             "primary_cause": primary_cause,
-            "statistical_scope_or_reconstruction_error": statistical_scope,
+            "statistical_scope_or_reconstruction_error": statistical_scope
+            or sampling_scope,
+            "sampling_or_phase_order_scope": sampling_scope,
             "counter_reset_or_mixed_window": counter_reset,
             "actual_route_change_under_short_matched_input": actual_route_change,
             "long_generation_continuation_divergence": continuation_divergence,

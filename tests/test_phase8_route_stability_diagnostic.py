@@ -28,6 +28,7 @@ class RouteStabilityDiagnosticTest(unittest.TestCase):
         short_candidate: list[float],
         long_candidate: list[float],
         legacy_tv: float = 0.0,
+        confirm_sampling_scope: bool = False,
     ) -> dict:
         identity = [10.0, 0.0, 0.0, 0.0]
         phases = {
@@ -44,6 +45,11 @@ class RouteStabilityDiagnosticTest(unittest.TestCase):
                 "长输出placement_excess_tv_p95_max": 0.005,
             },
         }
+        if confirm_sampling_scope:
+            plan["确认归因"] = {
+                "enabled": True,
+                "稳定时归因": "统计采样与阶段顺序口径",
+            }
         distributions = {
             "sa1": identity,
             "sa2": identity,
@@ -86,6 +92,7 @@ class RouteStabilityDiagnosticTest(unittest.TestCase):
                                 "request_id": 0,
                                 "prompt_sha256": "prompt",
                                 "response_sha256": name,
+                                "cached_tokens": 128,
                             }
                         )
                         + "\n",
@@ -127,6 +134,18 @@ class RouteStabilityDiagnosticTest(unittest.TestCase):
             long_candidate=[10.0, 0.0, 0.0, 0.0],
             legacy_tv=0.01,
         )
+        self.assertTrue(
+            result["classification"]["statistical_scope_or_reconstruction_error"]
+        )
+
+    def test_confirmation_attributes_stable_result_to_sampling_scope(self) -> None:
+        identity = [10.0, 0.0, 0.0, 0.0]
+        result = self._case(
+            short_candidate=identity,
+            long_candidate=identity,
+            confirm_sampling_scope=True,
+        )
+        self.assertTrue(result["classification"]["sampling_or_phase_order_scope"])
         self.assertTrue(
             result["classification"]["statistical_scope_or_reconstruction_error"]
         )
