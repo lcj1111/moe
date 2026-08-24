@@ -209,5 +209,7 @@
 | `configs/experiments/phase8_warm_placement_quality_equivalence_v1.json` | 首次 116 题质量 A/B/A 冻结计划；候选轮出现 8 条截断后按 Gate 停止，用于保留缺陷证据。 | `8A0BDEA1D2DE348E1EC9FFF8AA2E4257EB3B6302B7A9A82422594109D58AA237` |
 | `configs/experiments/phase8_warm_placement_nvfp4_aux_regression_v2.json` | NVFP4 Marlin 两个辅助尺度迁移修复后的 8 条定向 A/B/A 回归计划，结果 accepted。 | `CC6B752C4FBD804AA9A77CACEB7820278AA66673B4B88A03BFEA9E261D6FF637` |
 | `configs/experiments/phase8_warm_placement_quality_equivalence_v3.json` | 修复后完整 116 题质量 A/B/A 冻结计划；三轮零失败零截断，最终质量 Gate accepted。 | `4B3B56628E474195150A271D70BAB0901B56C42BFA8489624C36C28EDAE52C57` |
-| `docs/Q-TopoMoE_Phase8_warm_placement_regeneration_summary_20260823.json` | 暖态采集、候选生成、A/B/A/B、迁移缺陷修复、定向回归、完整质量 Gate 与部署边界的合并机器摘要。 | `00E025538356BFFE5919CA0ADF2714A0761E7330E1490B9E58056EA909453F7B` |
-| `docs/results/phase8_warm_placement_regeneration_20260823.md` | 合并中文报告；记录在线路由 Gate 拒绝、NVFP4 辅助尺度迁移修复及完整质量 A/B/A 接受结论。 | `8B605FE631F253DC3080934F251FA9DFE9C4A9F72BF5754881EBBEF3AF207060` |
+| `configs/experiments/phase8_route_stability_diagnostic_v1.json` | 14.28% 逻辑专家分布变化的一级预注册诊断；并行记录旧口径、记录时逻辑计数和 map 槽位代际，分离短输出与长生成轨迹。 | `5BCBD62A14378E4F2DD8269A8369B0174631EF981D655AA1347693418758042C` |
+| `configs/experiments/phase8_route_stability_diagnostic_v2.json` | v1 后冻结的热态确认差异计划；继承 v1 全部阈值，在 identity A1 前增加热缓存 settle，并固定成因分类边界。 | `51F8E3B3E21A49EE12049A298A2789B3FECC267BD9DBACC721663730678305B4` |
+| `docs/Q-TopoMoE_Phase8_warm_placement_regeneration_summary_20260823.json` | 暖态候选、迁移修复、质量 Gate、两级路由稳定性诊断与部署边界的合并机器摘要。 | `3C993E25FCBB1AE80DC7A703938793005A67324388B11500BF32F00C22DFBD46` |
+| `docs/results/phase8_warm_placement_regeneration_20260823.md` | 合并中文报告；记录质量接受、历史在线 Gate 拒绝，以及 14.28% 被分类为长生成轨迹分叉后的实际路由采样差异。 | `E5BF60112AED6979FCDF2BC1559A950A5511A7737050124AECF1CACAB6B69221` |

@@ -1,8 +1,8 @@
 {
-  "schema_version": "qtopomoe.phase8_warm_placement_regeneration_summary.v2",
-  "status": "deployment_rejected_quality_accepted",
-  "date": "2026-08-23",
-  "说明": "旧 Gate、旧 selector 与旧 placement 保持历史只读；本轮从真实暖态计数重新生成候选，并完成在线 A/B/A/B、NVFP4 迁移修复回归和完整质量 A/B/A。",
+  "schema_version": "qtopomoe.phase8_warm_placement_regeneration_summary.v3",
+  "status": "deployment_rejected_quality_accepted_route_cause_classified",
+  "date": "2026-08-24",
+  "说明": "旧 Gate、旧 selector 与旧 placement 保持历史只读；本轮从真实暖态计数重新生成候选，完成在线 A/B/A/B、NVFP4 迁移修复、完整质量 A/B/A，并用两级预注册诊断分类历史 14.28% 逻辑专家分布变化。",
   "capture": {
     "status": "accepted",
     "server_root": "/data/models/test/qtopomoe_phase8_warm_placement_capture_v3_20260823",
@@ -161,12 +161,50 @@
       "original_service_restored": true
     }
   },
+  "route_stability_diagnostic": {
+    "status": "classified_not_deployment_accepted",
+    "diagnostic_v1": {
+      "server_root": "/data/models/test/qtopomoe_phase8_route_stability_diagnostic_v1_20260824",
+      "gate_sha256": "7d0b6652e82a490535bcd0b2d341ffab88d8d555bc0d988bfd6a32b79dc81fe8",
+      "结论": "旧口径与记录时逻辑计数一致且无混合代际；未复现历史 14.28%，但首个短 identity 测量混入冷缓存阶段滑动窗口历史，因此另行预注册 v2 确认。"
+    },
+    "diagnostic_v2": {
+      "server_root": "/data/models/test/qtopomoe_phase8_route_stability_diagnostic_v2_20260824",
+      "gate_sha256": "da129bd58dcd2fb45ab12cab852a0e8166ea28cf1ba9aac1602e8698c26678d0",
+      "analysis_sha256": "3b025c0494dfec3f672b3a7bc148f7100ea7bd701140e4d1d9864bc135706d75",
+      "plan_snapshot_sha256": "57e692cf9acbf90d7c0df80961da60541649e70efa6f64396b2efce19a3c6e22",
+      "phases": 24,
+      "requests_per_phase": 128,
+      "all_requests_completed_clean": true,
+      "all_seven_control_generations_committed_on_all_8_ranks": true,
+      "all_measured_cached_tokens": 1360,
+      "legacy_vs_record_time_steady_tv_p95": 0.0,
+      "legacy_vs_record_time_transition_tv_p95": 0.0,
+      "steady_mixed_generation_slots": 0,
+      "transition_mixed_generation_slots": 0,
+      "short_identity_repeat_tv_p95": 0.011868563565340908,
+      "short_candidate_repeat_tv_p95": 0.012773133489901651,
+      "short_cross_tv_p95": 0.013223506732238344,
+      "short_placement_excess_tv_p95": 0.0004503732423366928,
+      "long_identity_repeat_tv_p95": 0.017269545496536143,
+      "long_candidate_repeat_tv_p95": 0.017209257843837155,
+      "long_cross_tv_p95": 0.024445022991652517,
+      "long_placement_excess_tv_p95": 0.0071754774951163745,
+      "short_threshold": 0.005,
+      "long_threshold": 0.005,
+      "primary_cause": "长生成轨迹分叉造成的实际逻辑路由采样差异，不是统计还原口径或计数器重置。",
+      "historic_14_28pct_magnitude_reproduced": false,
+      "historic_cv_ratio": 0.8571991062009752,
+      "v2_long_cross_cv_ratio_range": [0.9967960308215975, 1.0033201728123753]
+    },
+    "结论边界": "成因已分类：长生成轨迹分叉后存在可测实际路由差异；14.28% 具体幅度不稳定。classified 不覆盖旧 rejected 部署 Gate。"
+  },
   "service_restore": {
     "health_http": 200,
     "expected_gpu_ids": [4, 5, 6, 7],
     "gpu_0_to_3_idle": true,
     "process_alive": true,
-    "rollback_status_sha256": "01a8e868fcec5aebc44d0c524751f156e4dc71504ca4b95c648c933ae09cc912"
+    "rollback_status_sha256": "46ab816db3183b8bb0b4dbdf387ce3f291d9c5967951e3c976e20e7c3ff25509"
   },
-  "最终边界": "质量等价和 NVFP4 辅助尺度迁移已通过；在线逻辑专家分布稳定性仍失败。候选不得直接进入 canary、自动闭环或上线，后续必须通过新的预注册路由稳定性实验。"
+  "最终边界": "质量等价、NVFP4 辅助尺度迁移和 14.28% 成因分类已完成；部署仍拒绝。确认轮检测到长生成轨迹分叉后的实际逻辑路由差异超过 0.5% 冻结阈值，候选不得直接进入 canary、自动闭环或上线。"
 }
