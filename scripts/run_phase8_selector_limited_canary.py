@@ -278,6 +278,13 @@ def start_canary(plan: dict[str, Any], repo: Path, root: Path) -> subprocess.Pop
         environment["QTOPOMOE_EPLB_LOAD_EXPORT_EVERY"] = str(
             runtime.get("load_export_every", 16)
         )
+    if runtime.get("diagnostic_export_path"):
+        environment["QTOPOMOE_EPLB_DIAGNOSTIC_EXPORT_PATH"] = str(
+            runtime["diagnostic_export_path"]
+        )
+        environment["QTOPOMOE_EPLB_DIAGNOSTIC_EXPORT_EVERY"] = str(
+            runtime.get("diagnostic_export_every", 1)
+        )
     if shutil.which("ninja", path=environment["PATH"]) is None:
         raise RuntimeError(f"canary虚拟环境缺少ninja: {venv_bin}")
     log = (root / "server.log").open("ab", buffering=0)

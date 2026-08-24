@@ -1,0 +1,162 @@
+{
+  "schema_version": "qtopomoe.phase8_route_stability_diagnostic_plan.v1",
+  "status": "frozen_before_route_stability_diagnostic",
+  "frozen_date": "2026-08-24",
+  "说明": "不修改旧 A/B/A/B Gate。通过记录时逻辑计数、旧口径重建计数、map 槽位代际和短/长输出交叉对照，定位历史逻辑专家 CV 变化 14.28% 的来源。",
+  "结论边界": "本实验只做成因分类。classified 不等于候选获得部署准入；旧 A/B/A/B rejected 状态保持只读，只有另行预注册的新部署 Gate 才能改变后续执行路径。",
+  "输入依据": {
+    "capture_gate": {
+      "path": "/data/models/test/qtopomoe_phase8_warm_placement_capture_v3_20260823/capture_gate.json",
+      "sha256": "b217da92b50248f237431c23c6f586ba9d7df0cfd885ed2509a46d1600ac1777",
+      "expected_status": "accepted"
+    },
+    "candidate_generation_gate": {
+      "path": "/data/models/test/qtopomoe_phase8_warm_placement_candidates_v1_20260823/candidate_generation_gate.json",
+      "sha256": "7382e628eef141968bec1b69221b477b5a7999e789a2cbfa925c1d2568eefe63",
+      "expected_status": "accepted"
+    },
+    "online_abab_gate_readonly": {
+      "path": "/data/models/test/qtopomoe_phase8_warm_placement_abab_v1_20260823/abab_gate.json",
+      "sha256": "f2ad49bc724a8b2edae357d24835231a06501667191ef7994450ed20fe2be670",
+      "expected_status": "rejected",
+      "historic_candidate_to_identity_logical_expert_cv_ratio": 0.8571991062009752
+    },
+    "quality_gate_readonly": {
+      "path": "/data/models/test/qtopomoe_phase8_warm_placement_quality_equivalence_v3_20260823/quality_equivalence_gate.json",
+      "sha256": "1f37556a11b469c3c16e96ca705da6d751d1c57d5756c74097791415aba7dcc0",
+      "expected_status": "accepted"
+    }
+  },
+  "候选": {
+    "candidate_id": "warm_swap_008_slots_per_layer_v1",
+    "candidate_map_sha256": "24f09c93ff8e6c410917a3fcb087307130f8914f45c028adf23088c39fc80ac6",
+    "identity_map_sha256": "46a5de9abf04b3a6d4ae62897b2fe17dc159adf01069a7a99b8b117ec5795671",
+    "moved_slots": 320,
+    "total_slots": 10240
+  },
+  "运行环境": {
+    "output_root": "/data/models/test/qtopomoe_phase8_route_stability_diagnostic_v1_20260824",
+    "python_bin": "/data/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python3",
+    "model": "/data/models/test/redhatai_qwen36_nvfp4",
+    "runtime_plan": "/data/models/test/qtopomoe_phase8_warm_placement_candidates_v1_20260823/warm_swap_008_slots_per_layer_v1.json",
+    "runtime_plan_file_sha256": "3386d1457a62f4c2a9cb5cdc56b71225c8f07fae73063a0e51c142f4c0b1f29e",
+    "runtime_map_sha256": "24f09c93ff8e6c410917a3fcb087307130f8914f45c028adf23088c39fc80ac6",
+    "runtime_patch": "runtime_patches/qtopomoe_eplb/sitecustomize.py",
+    "runtime_patch_sha256": "f92fca6c54a3b80ed966262761e3773b2e061dfb6bc2087f48af40aadf071c88",
+    "client_sha256": "2931fbccecee4f6811743ba2112d5a2ca109f7892930391c36809c7311e94ff5",
+    "control_file_mode": true,
+    "diagnostic_export_every": 1,
+    "host": "127.0.0.1",
+    "port": 31686,
+    "served_model_name": "qtopomoe-phase8-route-stability-diagnostic-v1",
+    "gpu_ids": [0, 1, 2, 3, 4, 5, 6, 7],
+    "tensor_parallel_size": 8,
+    "expert_parallel_size": 8,
+    "max_model_len": 65536,
+    "max_num_seqs": 32,
+    "gpu_memory_utilization": 0.9,
+    "eplb_window_size": 16,
+    "eplb_step_interval": 16,
+    "defer_calls": 0
+  },
+  "既有服务": {
+    "port": 30002,
+    "health_url": "http://127.0.0.1:30002/health",
+    "expected_module": "sglang.launch_server",
+    "expected_gpu_ids": [4, 5, 6, 7],
+    "force_pause_authorized": true,
+    "force_pause_authorization": "用户已授权为本项目实验暂停 GPU4-7 的 SGLang；无论诊断成功或失败，runner 最终恢复原服务。",
+    "idle_samples_required": 3,
+    "idle_sample_interval_seconds": 10,
+    "idle_wait_timeout_seconds": 3600,
+    "restore_timeout_seconds": 1800
+  },
+  "诊断负载": {
+    "短输出同输入对照": {
+      "目的": "以 1536-token 相同输入和单 token 输出压低生成轨迹分叉影响，检查 placement 是否直接改变逻辑路由。",
+      "负载": {
+        "input_tokens": 1536,
+        "output_tokens": 1,
+        "ignore_eos": true,
+        "concurrency": 4,
+        "requests_per_phase": 128,
+        "prefix_cache_pct": 0,
+        "arrival_mode": "closed_loop",
+        "seed": 520824,
+        "request_timeout_seconds": 300
+      },
+      "测量阶段": [
+        "short_identity_a1",
+        "short_candidate_b1",
+        "short_identity_a2",
+        "short_candidate_b2"
+      ]
+    },
+    "长输出复现对照": {
+      "目的": "复现历史 1536+384 固定负载，判断差异是否只在长生成轨迹分叉后出现。",
+      "负载": {
+        "input_tokens": 1536,
+        "output_tokens": 384,
+        "ignore_eos": true,
+        "concurrency": 16,
+        "requests_per_phase": 128,
+        "prefix_cache_pct": 0,
+        "arrival_mode": "closed_loop",
+        "seed": 480823,
+        "request_timeout_seconds": 300
+      },
+      "测量阶段": [
+        "long_identity_a1",
+        "long_candidate_b1",
+        "long_identity_a2",
+        "long_candidate_b2"
+      ]
+    }
+  },
+  "执行顺序": [
+    {"phase": "short_identity_warmup", "arm": "短输出同输入对照", "role": "settle"},
+    {"phase": "short_identity_a1", "arm": "短输出同输入对照", "role": "measured"},
+    {"phase": "short_candidate_transition_1", "arm": "短输出同输入对照", "role": "transition", "generation": 1, "action": "apply"},
+    {"phase": "short_candidate_settle_1", "arm": "短输出同输入对照", "role": "settle"},
+    {"phase": "short_candidate_b1", "arm": "短输出同输入对照", "role": "measured"},
+    {"phase": "short_identity_transition_2", "arm": "短输出同输入对照", "role": "transition", "generation": 2, "action": "rollback"},
+    {"phase": "short_identity_settle_2", "arm": "短输出同输入对照", "role": "settle"},
+    {"phase": "short_identity_a2", "arm": "短输出同输入对照", "role": "measured"},
+    {"phase": "short_candidate_transition_3", "arm": "短输出同输入对照", "role": "transition", "generation": 3, "action": "apply"},
+    {"phase": "short_candidate_settle_3", "arm": "短输出同输入对照", "role": "settle"},
+    {"phase": "short_candidate_b2", "arm": "短输出同输入对照", "role": "measured"},
+    {"phase": "long_identity_transition_4", "arm": "长输出复现对照", "role": "transition", "generation": 4, "action": "rollback"},
+    {"phase": "long_identity_settle_4", "arm": "长输出复现对照", "role": "settle"},
+    {"phase": "long_identity_a1", "arm": "长输出复现对照", "role": "measured"},
+    {"phase": "long_candidate_transition_5", "arm": "长输出复现对照", "role": "transition", "generation": 5, "action": "apply"},
+    {"phase": "long_candidate_settle_5", "arm": "长输出复现对照", "role": "settle"},
+    {"phase": "long_candidate_b1", "arm": "长输出复现对照", "role": "measured"},
+    {"phase": "long_identity_transition_6", "arm": "长输出复现对照", "role": "transition", "generation": 6, "action": "rollback"},
+    {"phase": "long_identity_settle_6", "arm": "长输出复现对照", "role": "settle"},
+    {"phase": "long_identity_a2", "arm": "长输出复现对照", "role": "measured"},
+    {"phase": "long_candidate_transition_7", "arm": "长输出复现对照", "role": "transition", "generation": 7, "action": "apply"},
+    {"phase": "long_candidate_settle_7", "arm": "长输出复现对照", "role": "settle"},
+    {"phase": "long_candidate_b2", "arm": "长输出复现对照", "role": "measured"}
+  ],
+  "分类阈值": {
+    "legacy_vs_record_time_tv_p95_max": 0.000001,
+    "短输出placement_excess_tv_p95_max": 0.005,
+    "长输出placement_excess_tv_p95_max": 0.005,
+    "说明": "总变差距离按每层归一化逻辑专家分布计算；placement excess 为 identity/candidate 交叉 p95 减去 identity 与 candidate 各自重复基线的较大值。"
+  },
+  "分类规则": {
+    "统计口径": "稳态旧口径与记录时逻辑计数的 TV p95 超过 1e-6。",
+    "计数器重置": "差异或 map 槽位混合只出现在 transition，settle/measured 消失。",
+    "实际路由变化": "短输出同输入的 placement excess TV p95 超过 0.5%。",
+    "长生成轨迹分叉": "短输出稳定但长输出 placement excess TV p95 超过 0.5%。"
+  },
+  "完整性Gate": {
+    "所有输入哈希与状态符合预注册": true,
+    "所有阶段请求零失败": true,
+    "每阶段至少一条诊断窗口": true,
+    "同一arm四个测量阶段prompt哈希一致": true,
+    "七次控制代际均由8个rank提交": true,
+    "稳态窗口无跨map槽位": true,
+    "原SGLang恢复且只占用GPU4至7": true
+  }
+}

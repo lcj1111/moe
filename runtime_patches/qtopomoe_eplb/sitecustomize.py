@@ -51,11 +51,70 @@ def _activate() -> None:
     load_export_name = os.environ.get("QTOPOMOE_EPLB_LOAD_EXPORT_PATH")
     load_export_path = Path(load_export_name).resolve() if load_export_name else None
     load_export_every = max(1, int(os.environ.get("QTOPOMOE_EPLB_LOAD_EXPORT_EVERY", "16")))
+    diagnostic_export_name = os.environ.get("QTOPOMOE_EPLB_DIAGNOSTIC_EXPORT_PATH")
+    diagnostic_export_path = (
+        Path(diagnostic_export_name).resolve() if diagnostic_export_name else None
+    )
+    diagnostic_export_every = max(
+        1, int(os.environ.get("QTOPOMOE_EPLB_DIAGNOSTIC_EXPORT_EVERY", "1"))
+    )
     invocation_count = 0
     load_window_count = 0
     last_control_generation = 0
     original_rearrange = EplbState.rearrange
+    original_step = EplbState.step
     original_get_expert_weights = RoutedExperts.get_expert_weights
+    record_time_logical_windows: dict[int, torch.Tensor] = {}
+    record_time_generations: dict[int, list[int | None]] = {}
+
+    def _mapping_sha256(mapping_tensor: torch.Tensor) -> str:
+        return _canonical_sha256(mapping_tensor.detach().cpu().tolist())
+
+    def _capture_record_time_logical(
+        self: object,
+        is_dummy: bool = False,
+        is_profile: bool = False,
+        log_stats: bool = False,
+    ) -> None:
+        """在物理计数被清零前按记录当时的 map 固化逻辑专家计数。"""
+        if (
+            diagnostic_export_path is not None
+            and not is_dummy
+            and not is_profile
+            and self._should_record_current_step(log_stats=log_stats)
+        ):
+            slot = int(self.expert_load_window_step)
+            for state in self.model_states.values():
+                key = id(state)
+                physical = state.expert_load_pass[
+                    :, : self.num_valid_physical_experts
+                ]
+                logical = torch.zeros(
+                    state.model.num_moe_layers,
+                    state.model.num_logical_experts,
+                    dtype=physical.dtype,
+                    device=physical.device,
+                )
+                mapping_tensor = state.physical_to_logical_map[
+                    :, : self.num_valid_physical_experts
+                ].long()
+                logical.scatter_add_(dim=-1, index=mapping_tensor, src=physical)
+                ring = record_time_logical_windows.get(key)
+                if ring is None:
+                    ring = torch.zeros(
+                        self.expert_load_window_size,
+                        state.model.num_moe_layers,
+                        state.model.num_logical_experts,
+                        dtype=physical.dtype,
+                        device=physical.device,
+                    )
+                    record_time_logical_windows[key] = ring
+                    record_time_generations[key] = [None] * self.expert_load_window_size
+                ring[slot].copy_(logical)
+                record_time_generations[key][slot] = last_control_generation
+        return original_step(
+            self, is_dummy=is_dummy, is_profile=is_profile, log_stats=log_stats
+        )
 
     def _control_command() -> dict[str, object] | None:
         if control_path is None or not control_path.exists():
@@ -67,7 +126,9 @@ def _activate() -> None:
             raise RuntimeError(f"invalid placement control generation: {value}")
         return value
 
-    def _load_metrics(self: object) -> tuple[float, float, list[torch.Tensor]]:
+    def _load_metrics(
+        self: object,
+    ) -> tuple[float, float, list[torch.Tensor], dict[str, object] | None]:
         logical_windows = []
         states = list(self.model_states.values())
         for state in states:
@@ -112,7 +173,106 @@ def _activate() -> None:
         rank_cv = 0.0
         if rank_loads is not None and float(rank_loads.mean()) > 0:
             rank_cv = float(rank_loads.std(unbiased=False) / rank_loads.mean())
-        return expert_cv, rank_cv, global_windows
+        diagnostic: dict[str, object] | None = None
+        if diagnostic_export_path is not None:
+            record_time_local = []
+            current_map_hashes = []
+            mixed_slots = []
+            for state in states:
+                key = id(state)
+                ring = record_time_logical_windows.get(key)
+                if ring is None:
+                    ring = torch.zeros(
+                        self.expert_load_window_size,
+                        state.model.num_moe_layers,
+                        state.model.num_logical_experts,
+                        dtype=state.expert_load_window.dtype,
+                        device=state.expert_load_window.device,
+                    )
+                record_time_local.append(ring.sum(dim=0))
+                mapping_tensor = state.physical_to_logical_map[
+                    :, : self.num_valid_physical_experts
+                ]
+                current_hash = _mapping_sha256(mapping_tensor)
+                current_map_hashes.append(current_hash)
+                populated_generations = [
+                    value
+                    for value in record_time_generations.get(key, [])
+                    if value is not None
+                ]
+                mixed_slots.append(
+                    sum(value != last_control_generation for value in populated_generations)
+                )
+            record_time_global = self._allreduce_list(record_time_local)
+            tv_by_model = []
+            direct_expert_cvs = []
+            for legacy, direct in zip(global_windows, record_time_global):
+                legacy_float = legacy.float()
+                direct_float = direct.float()
+                totals = direct_float.sum(dim=1)
+                valid = totals > 0
+                tv = torch.zeros_like(totals)
+                tv[valid] = (
+                    0.5
+                    * (legacy_float - direct_float).abs().sum(dim=1)[valid]
+                    / totals[valid]
+                )
+                tv_by_model.append(tv)
+                means = direct_float.mean(dim=1)
+                valid_means = means > 0
+                direct_expert_cvs.append(
+                    direct_float.std(dim=1, unbiased=False)[valid_means]
+                    / means[valid_means]
+                )
+            diagnostic = {
+                "current_map_sha256": current_map_hashes,
+                "record_time_mismatched_slots": mixed_slots,
+                "legacy_vs_record_time_tv_by_model": [
+                    value.detach().cpu().tolist() for value in tv_by_model
+                ],
+                "record_time_expert_cv_layer_median": (
+                    float(torch.cat(direct_expert_cvs).median())
+                    if direct_expert_cvs
+                    else 0.0
+                ),
+                "legacy_reconstructed_models": [
+                    value.detach().cpu().tolist() for value in global_windows
+                ],
+                "record_time_logical_models": [
+                    value.detach().cpu().tolist() for value in record_time_global
+                ],
+            }
+        return expert_cv, rank_cv, global_windows, diagnostic
+
+    def _export_diagnostic(
+        diagnostic: dict[str, object] | None,
+        call: int,
+        generation: int,
+        action: str,
+        expert_cv: float,
+        rank_cv: float,
+    ) -> None:
+        if (
+            diagnostic_export_path is None
+            or diagnostic is None
+            or call % diagnostic_export_every
+        ):
+            return
+        if torch.distributed.is_initialized() and torch.distributed.get_rank() != 0:
+            return
+        record = {
+            "schema_version": "qtopomoe.eplb_route_stability_diagnostic.v1",
+            "call": call,
+            "captured_unix": time.time(),
+            "generation": generation,
+            "action": action,
+            "legacy_expert_cv_layer_median": expert_cv,
+            "rank_load_cv": rank_cv,
+            **diagnostic,
+        }
+        diagnostic_export_path.parent.mkdir(parents=True, exist_ok=True)
+        with diagnostic_export_path.open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n")
 
     def _export_load_window(
         logical_windows: list[torch.Tensor], call: int, expert_cv: float, rank_cv: float
@@ -181,13 +341,21 @@ def _activate() -> None:
             return original_rearrange(self, is_profile=is_profile, rank_mapping=rank_mapping)
         if control_path is not None:
             load_window_count += 1
-            expert_cv, rank_cv, logical_windows = _load_metrics(self)
+            expert_cv, rank_cv, logical_windows, diagnostic = _load_metrics(self)
             _export_load_window(
                 logical_windows, load_window_count, expert_cv, rank_cv
             )
             command = _control_command()
             generation = int(command["generation"]) if command else 0
             action = str(command["action"]) if command else "hold"
+            _export_diagnostic(
+                diagnostic,
+                load_window_count,
+                generation,
+                action,
+                expert_cv,
+                rank_cv,
+            )
             print(
                 "[QTOPOMOE_EPLB_LOAD_WINDOW] "
                 f"call={load_window_count} cv={expert_cv:.8f} "
@@ -333,11 +501,14 @@ def _activate() -> None:
     CompressedTensorsW4A4Nvfp4MoEMethod.supports_eplb = property(_supports_eplb)
     RoutedExperts.get_expert_weights = _get_expert_weights_with_nvfp4_aux
     DefaultEplbPolicy.rebalance_experts = classmethod(_fixed_rebalance)
+    if diagnostic_export_path is not None:
+        EplbState.step = _capture_record_time_logical
     EplbState.rearrange = _one_shot_rearrange
     print(
         "[QTOPOMOE_EPLB_PATCH_ACTIVE] native_migration=true "
         f"plan_sha256={actual_sha} activation_file={activation_path} "
-        f"control_file={control_path} load_export_path={load_export_path}",
+        f"control_file={control_path} load_export_path={load_export_path} "
+        f"diagnostic_export_path={diagnostic_export_path}",
         file=sys.stderr,
         flush=True,
     )
