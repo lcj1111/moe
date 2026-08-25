@@ -12,13 +12,14 @@
   `identity A1 → candidate B → identity A2` 三轮均为 `failed=0`、`truncated=0`、
   `extraction_failed=0`、`finish_reason=stop`。候选正确 110/116，高于两轮 identity 的
   较低值 106/116，且没有“两轮 identity 都正确、候选错误”的新增回归。
-- **部署 Gate 仍拒绝**：较早冻结的同进程暖态 A/B/A/B 中，候选虽然满足 p99 上限并改善
-  rank CV，但逻辑专家负载分布相对 identity 系统性变化 14.28%，超过冻结稳定范围。
-  质量通过不能覆盖这个独立失败项，因此候选仍不得进入 canary、自动闭环或上线。
+- **当前路由稳定性 Gate 已接受**：较早冻结的同进程暖态 A/B/A/B 中，候选虽然满足 p99
+  上限并改善 rank CV，但逻辑专家负载分布相对 identity 变化 14.28%，超过当时的 0.5%
+  范围。后续两级诊断得到的可复现长臂超额差异为 0.718%；当前有效上限调整为 1% 后，
+  短臂 0.045% 与长臂 0.718% 均通过，候选获准进入有限 canary。
 - **14.28% 的成因已分类**：两轮重新预注册诊断排除了统计还原错误和计数器重置污染。
   热态确认轮的单 token 对照稳定，但长生成出现超过冻结阈值的逻辑路由分布差异，归因于
   生成轨迹分叉后的真实路由采样变化。14.28% 这一具体幅度未复现，不能解释为稳定的
-  placement 效应；诊断 `classified` 也不改变原部署 Gate 的 `rejected` 状态。
+  placement 效应；历史 0.5% 判定继续保留用于审计，当前运行决策以 1% 政策为准。
 
 ## 执行关系
 
@@ -29,11 +30,11 @@
           └─ 选择满足离线改善门槛且迁移量最小的 8 槽位候选
               ├─ 同进程暖态 A/B/A/B
               │   ├─ rank CV、p99、请求与 8-rank 提交通过
-              │   └─ 逻辑专家分布稳定性失败 → 部署 Gate rejected
+              │   └─ 历史 0.5% 路由稳定性 Gate rejected
               ├─ 逻辑专家分布稳定性诊断
               │   ├─ 记录时计数 = 旧口径重建，且无跨 map 代际槽位
               │   ├─ 热态单 token 对照稳定
-              │   └─ 长生成轨迹分叉后路由采样差异超过 0.5% → 成因 classified
+              │   └─ 长生成差异 0.718% → 成因 classified，当前 1% Gate accepted
               └─ 冻结 official-like 质量 A/B/A
                   ├─ v1 发现候选 8 条截断 → 停止，不作为结论
                   ├─ 修复 NVFP4 Marlin 辅助尺度迁移
@@ -90,9 +91,9 @@ map 哈希为 `24f09c93ff8e6c410917a3fcb087307130f8914f45c028adf23088c39fc80ac6`
 | 原服务恢复 | 30002=200，GPU4–7 | 正常 | 通过 |
 
 精确输出哈希失败不能单独证明迁移造成语义错误：identity A1 与 identity A2 也是
-0/128 条完全一致，说明这套长生成在当前分布式运行时不是逐 token 位级确定性的。冻结 Gate
-没有事后修改，结果保持 rejected。逻辑专家 CV 在两组内部稳定、组间变化 14.28%，仍足以
-阻止部署准入。
+0/128 条完全一致，说明这套长生成在当前分布式运行时不是逐 token 位级确定性的。历史
+0.5% Gate 与原始 `rejected` 结果均未改写；当前有效运行政策单独调整为 1%，并依据后续
+可复现的 0.718% 长臂结果作准入判断。
 
 ## 逻辑专家分布稳定性诊断
 
@@ -116,8 +117,8 @@ v2 最终结果如下：
 | 稳态旧口径与记录时口径 TV p95 | 0 | 排除统计还原错误 |
 | 切换期旧口径与记录时口径 TV p95 | 0 | 排除切换期还原偏差 |
 | 稳态/切换期混合 generation 槽位 | 0 / 0 | 排除计数器重置或跨 map 窗口污染 |
-| 短臂 placement excess TV p95 | 0.000450（0.045%） | 低于 0.5%，相同输入和单 token 输出下无可复现 placement 路由变化 |
-| 长臂 placement excess TV p95 | 0.007175（0.718%） | 超过 0.5%，长生成轨迹分叉后存在真实路由采样差异 |
+| 短臂 placement excess TV p95 | 0.000450（0.045%） | 低于历史 0.5% 与当前 1% 上限 |
+| 长臂 placement excess TV p95 | 0.007175（0.718%） | 超过历史 0.5%，但低于当前 1% 上限 |
 | 短臂响应哈希 | 任意两轮均 128/128 一致 | 短轨迹确定 |
 | 长臂响应哈希 | 同状态重复也仅 0–1/128 一致 | 分布式长生成轨迹本身会分叉 |
 | 请求与控制提交 | 24 阶段均 128/128、failed=0；7 次 generation 均 8/8 rank | 完整性通过 |
@@ -126,6 +127,17 @@ v2 最终结果如下：
 分叉后的实际逻辑路由采样变化。** 同时，14.28% 这一幅度并不稳定：v2 的长臂交叉 CV
 中位数比约为 0.9968–1.0033，远未复现历史 0.8572。正确边界是“存在小而可测的长轨迹
 路由差异”，而不是“候选稳定降低逻辑专家 CV 14.28%”。
+
+### 当前 1% Gate 与后续边界
+
+2026-08-25 将当前有效的短、长臂 placement excess TV p95 上限统一调整为 1%，不再增加
+本阶段诊断实验。现有 v2 结果据此重判为 `accepted`；这只表示路由稳定性阶段完成，并不
+表示整个项目结束或已经上线。下一步仍按 Runbook 执行有限 canary；只有 canary 满足零失败、
+计划哈希一致、恢复 p99 不超过基线 105% 且 rollback 可用，才继续验收 trigger、10 窗口
+cooldown 与 3 窗口 rollback 自动闭环。当前有效政策见
+[phase8_route_stability_gate_policy_v2_20260825.json](../../configs/strategies/phase8_route_stability_gate_policy_v2_20260825.json)。
+有限 canary 的冻结计划见
+[phase8_warm_placement_limited_canary_v1.json](../../configs/experiments/phase8_warm_placement_limited_canary_v1.json)。
 
 v1 Gate 位于
 `/data/models/test/qtopomoe_phase8_route_stability_diagnostic_v1_20260824/diagnostic_gate.json`，
@@ -192,10 +204,9 @@ SHA-256 为 `1f37556a11b469c3c16e96ca705da6d751d1c57d5756c74097791415aba7dcc0`�
 `01a8e868fcec5aebc44d0c524751f156e4dc71504ca4b95c648c933ae09cc912`。
 
 因此本轮成功关闭的是“候选是否保持冻结答案质量”“NVFP4 辅助尺度是否正确迁移”和
-“14.28% 来自哪类机制”三个问题。尚未通过的是部署准入：确认轮仍检测到长生成轨迹分叉后
-0.718% 的超额路由分布差异，且原 A/B/A/B Gate 保持 rejected。后续不得降低或重写旧 Gate，
-也不得直接启动 canary、自动闭环或上线；若继续，应先解决长生成数值/轨迹稳定性，或重新
-生成不会触发该差异的 placement 候选，再另行预注册新的部署 Gate。
+“14.28% 来自哪类机制”三个问题。历史 0.5% Gate 与原 A/B/A/B `rejected` 证据保持不变；
+当前 1% Gate 已接受，候选只获准进入有限 canary。项目尚未完成，canary 和后续自动闭环
+仍须各自生成机器 Gate 与中文报告，任何一级失败都停止继续上线。
 
 机器可读摘要见
 [Q-TopoMoE_Phase8_warm_placement_regeneration_summary_20260823.json](../Q-TopoMoE_Phase8_warm_placement_regeneration_summary_20260823.json)。

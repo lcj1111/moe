@@ -1,8 +1,8 @@
 {
-  "schema_version": "qtopomoe.phase8_warm_placement_regeneration_summary.v3",
-  "status": "deployment_rejected_quality_accepted_route_cause_classified",
-  "date": "2026-08-24",
-  "说明": "旧 Gate、旧 selector 与旧 placement 保持历史只读；本轮从真实暖态计数重新生成候选，完成在线 A/B/A/B、NVFP4 迁移修复、完整质量 A/B/A，并用两级预注册诊断分类历史 14.28% 逻辑专家分布变化。",
+  "schema_version": "qtopomoe.phase8_warm_placement_regeneration_summary.v4",
+  "status": "route_gate_accepted_under_current_1pct_policy_canary_pending",
+  "date": "2026-08-25",
+  "说明": "旧 Gate、旧 selector、旧 placement 与原始结果保持历史只读；本轮从真实暖态计数重新生成候选，完成在线 A/B/A/B、NVFP4 迁移修复、完整质量 A/B/A，并用两级预注册诊断分类历史 14.28% 逻辑专家分布变化。当前有效路由稳定性上限调整为 1%，现有结果通过，项目继续进入有限 canary。",
   "capture": {
     "status": "accepted",
     "server_root": "/data/models/test/qtopomoe_phase8_warm_placement_capture_v3_20260823",
@@ -162,7 +162,7 @@
     }
   },
   "route_stability_diagnostic": {
-    "status": "classified_not_deployment_accepted",
+    "status": "accepted_under_current_1pct_policy",
     "diagnostic_v1": {
       "server_root": "/data/models/test/qtopomoe_phase8_route_stability_diagnostic_v1_20260824",
       "gate_sha256": "7d0b6652e82a490535bcd0b2d341ffab88d8d555bc0d988bfd6a32b79dc81fe8",
@@ -197,7 +197,19 @@
       "historic_cv_ratio": 0.8571991062009752,
       "v2_long_cross_cv_ratio_range": [0.9967960308215975, 1.0033201728123753]
     },
-    "结论边界": "成因已分类：长生成轨迹分叉后存在可测实际路由差异；14.28% 具体幅度不稳定。classified 不覆盖旧 rejected 部署 Gate。"
+    "current_1pct_policy": {
+      "path": "configs/strategies/phase8_route_stability_gate_policy_v2_20260825.json",
+      "sha256": "de15ea79da27b5df968478b4ef7116c976dbe5905bfe10d4eccb22b16859dbe7",
+      "historical_threshold": 0.005,
+      "current_threshold": 0.01,
+      "short_placement_excess_tv_p95": 0.0004503732423366928,
+      "long_placement_excess_tv_p95": 0.0071754774951163745,
+      "short_within_current_threshold": true,
+      "long_within_current_threshold": true,
+      "status": "accepted",
+      "additional_route_diagnostics_required": false
+    },
+    "结论边界": "成因已分类：长生成轨迹分叉后存在可测实际路由差异；14.28% 具体幅度不稳定。历史 0.5% rejected 证据保留，当前运行决策按 1% 政策接受。"
   },
   "service_restore": {
     "health_http": 200,
@@ -206,5 +218,12 @@
     "process_alive": true,
     "rollback_status_sha256": "46ab816db3183b8bb0b4dbdf387ce3f291d9c5967951e3c976e20e7c3ff25509"
   },
-  "最终边界": "质量等价、NVFP4 辅助尺度迁移和 14.28% 成因分类已完成；部署仍拒绝。确认轮检测到长生成轨迹分叉后的实际逻辑路由差异超过 0.5% 冻结阈值，候选不得直接进入 canary、自动闭环或上线。"
+  "后续阶段": {
+    "project_status": "in_progress",
+    "limited_canary_allowed": true,
+    "automatic_closed_loop_allowed": false,
+    "limited_canary_plan": "configs/experiments/phase8_warm_placement_limited_canary_v1.json",
+    "next_step": "执行有限 canary；通过后再验收 trigger、cooldown 与 rollback 自动闭环。"
+  },
+  "最终边界": "质量等价、NVFP4 辅助尺度迁移和 14.28% 成因分类已完成；当前 1% 路由稳定性 Gate 已接受。本结论只允许进入有限 canary，不表示项目完成、自动闭环已通过或候选已经上线。"
 }

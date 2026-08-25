@@ -19,7 +19,7 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 | Phase 3 | route trace、漂移分析和冻结官方协议 | route、三格式 full-set 合并与共同分母对比均已完成 |
 | Phase 4–6 | M-bucket、kernel/backend selector、通信矩阵 | 正式实测已归档 |
 | Phase 7 | placement-plan、在线迁移、恢复与 p99 | Gate 已接受 |
-| Phase 8 | selector 训练、900 次独立测试、one-shot、自动闭环与新 placement 重生成 | 新候选质量 A/B/A 已接受；路由稳定性 Gate 仍拒绝，仍禁止上线 |
+| Phase 8 | selector 训练、900 次独立测试、one-shot、自动闭环与新 placement 重生成 | 新候选质量 A/B/A 与当前 1% 路由稳定性 Gate 均已接受；下一步执行有限 canary |
 
 动态 trigger 与 8-rank placement apply 已验证，控制器也能在连续三个 p99 退化窗口后
 发出 rollback；但 10 窗口 cooldown 未完成，原生 generation=2 rollback 提交路径尚未验收。
@@ -29,11 +29,13 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 
 随后已冻结旧 Gate 并基于 48 个真实暖态窗口重新生成最小迁移量候选。新候选只移动
 320/10240 个槽位，A/B/A/B 中 rank CV 改善 36.55%，p99 中位数比为 101.83%；但逻辑专家
-负载分布相对 identity 变化 14.28%，超过冻结稳定范围。两级预注册诊断随后排除了统计还原
+负载分布相对 identity 变化 14.28%，超过当时的 0.5% 稳定范围。两级预注册诊断随后排除了统计还原
 和计数器重置，确认单 token 路由稳定、长生成轨迹分叉后存在 0.718% 超额路由分布差异；
-14.28% 具体幅度没有复现。修复 NVFP4 Marlin 辅助尺度迁移后，
+14.28% 具体幅度没有复现。当前有效上限已调整为 1%，因此短臂 0.045% 与长臂 0.718%
+均通过路由稳定性 Gate，不再增加本阶段诊断。修复 NVFP4 Marlin 辅助尺度迁移后，
 完整 116 题质量 A/B/A 已接受：三轮均零失败、零截断，候选 110/116，高于 identity 的
-较低值 106/116，且唯一新增退化为 0。质量通过和成因分类都不能覆盖路由稳定性失败，候选仍未获准上线。
+较低值 106/116，且唯一新增退化为 0。候选现已获准进入有限 canary；项目仍在进行中，
+canary 通过后还需验收 trigger、cooldown 与 rollback 自动闭环。
 
 ## 从哪里开始
 

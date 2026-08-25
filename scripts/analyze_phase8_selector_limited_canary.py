@@ -151,7 +151,9 @@ def main() -> int:
     result = {
         "schema_version": "qtopomoe.phase8_selector_limited_canary_gate.v1",
         "status": "accepted" if accepted else "rejected",
-        "scope": "12%后续准入政策下的单次有限canary；不等同于自动闭环验收",
+        "scope": canary.get(
+            "scope", "单次有限canary；不等同于自动闭环验收"
+        ),
         "canary_plan": {
             "path": str(args.canary_plan),
             "sha256": sha256(args.canary_plan),

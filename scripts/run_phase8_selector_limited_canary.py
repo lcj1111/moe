@@ -415,15 +415,23 @@ def main() -> int:
         })
 
     policy = repo / plan["准入依据"]["policy"]
-    evidence = repo / plan["准入依据"]["independent_gate"]
+    evidence_name = plan["准入依据"].get(
+        "evidence", plan["准入依据"].get("independent_gate")
+    )
+    evidence_sha256 = plan["准入依据"].get(
+        "evidence_sha256", plan["准入依据"].get("independent_gate_sha256")
+    )
+    if not evidence_name or not evidence_sha256:
+        raise RuntimeError("冻结计划缺少准入证据路径或SHA-256")
+    evidence = repo / evidence_name
     runtime_plan = Path(plan["运行环境"]["runtime_plan"])
     runtime_patch_name = plan["运行环境"].get("runtime_patch")
     runtime_patch = repo / runtime_patch_name if runtime_patch_name else None
     checks = {
         "policy": policy.exists() and sha256(policy) == plan["准入依据"]["policy_sha256"],
-        "independent_gate": (
+        "evidence": (
             evidence.exists()
-            and sha256(evidence) == plan["准入依据"]["independent_gate_sha256"]
+            and sha256(evidence) == evidence_sha256
         ),
         "runtime_plan": (
             runtime_plan.exists()
