@@ -114,6 +114,7 @@ def main() -> int:
     manifest = None
     pipeline_error = None
     rollback = None
+    manage_existing_service = plan["既有服务"].get("manage_service", True)
 
     def workload(name: str) -> tuple[dict[str, Any], float]:
         log_path = root / "server.log"
@@ -141,11 +142,14 @@ def main() -> int:
         return decision.action
 
     try:
-        update("waiting_existing_service_idle", checks=checks)
-        wait_service_idle(plan, update)
-        manifest = capture_service(plan, root)
-        update("stopping_existing_service", original_pid=manifest["original_pid"])
-        stop_group(int(manifest["original_pgid"]))
+        if manage_existing_service:
+            update("waiting_existing_service_idle", checks=checks)
+            wait_service_idle(plan, update)
+            manifest = capture_service(plan, root)
+            update("stopping_existing_service", original_pid=manifest["original_pid"])
+            stop_group(int(manifest["original_pgid"]))
+        else:
+            update("existing_service_not_managed_waiting_gpus_idle", checks=checks)
         wait_gpus_idle(list(range(8)), 600)
         update("launching_canary_service")
         process = start_canary(plan, repo, root)
@@ -200,15 +204,37 @@ def main() -> int:
                 except ProcessLookupError:
                     pgid = int(load(root / "canary_service_process.json")["pgid"])
                 stop_group(pgid)
-            if manifest is not None:
+            if manage_existing_service and manifest is not None:
                 update("restoring_existing_service", pipeline_error=pipeline_error)
                 rollback = restore_service(manifest, plan, root)
+            elif not manage_existing_service:
+                rollback = {
+                    "schema_version": "qtopomoe.closed_loop_external_service_status.v1",
+                    "service_management": "not_in_scope",
+                    "authorized": True,
+                    "说明": "按用户要求，本轮不管理或判定既有SGLang服务。",
+                }
+                atomic_json(root / "rollback_status.json", rollback)
+                update("existing_service_not_managed", pipeline_error=pipeline_error)
         except BaseException as error:
             update("restore_failed", pipeline_error=pipeline_error, restore_error=repr(error))
             return 2
     if pipeline_error:
-        restored = rollback is not None and rollback.get("health_http") == 200 \
-            and rollback.get("gpu_ids") == [4, 5, 6, 7]
+        restored = (
+            rollback is not None
+            and (
+                (
+                    manage_existing_service
+                    and rollback.get("health_http") == 200
+                    and rollback.get("gpu_ids") == [4, 5, 6, 7]
+                )
+                or (
+                    not manage_existing_service
+                    and rollback.get("service_management") == "not_in_scope"
+                    and rollback.get("authorized") is True
+                )
+            )
+        )
         failure = {
             "schema_version": "qtopomoe.phase8_selector_closed_loop_gate.v1",
             "status": "rejected",
@@ -221,12 +247,12 @@ def main() -> int:
                 "load_metrics": row["load_metrics"],
                 "p99_ms": row["summary"]["e2e_ms"]["p99"],
             } for row in windows],
-            "original_service_restored": restored,
+            "existing_service_handling_satisfied": restored,
             "rollback": rollback,
         }
         atomic_json(root / "closed_loop_gate.json", failure)
         update("completed", gate_status="rejected", pipeline_error=pipeline_error,
-               original_service_restored=restored)
+               existing_service_handling_satisfied=restored)
         return 1
     log = (root / "server.log").read_text(encoding="utf-8", errors="replace")
     recovery_p99 = float(recovery["e2e_ms"]["p99"])
@@ -259,10 +285,19 @@ def main() -> int:
         "decision_overhead_pct_p95_lt_1": percentile(overhead_pct, 0.95) < 1.0,
         "all_requests_succeeded_with_fixed_output": fixed_requests,
         "post_rollback_p99_within_105pct_of_baseline": recovery_p99 / baseline_p99 <= 1.05,
-        "original_service_restored": rollback is not None
-        and rollback.get("health_http") == 200
-        and rollback.get("gpu_ids") == [4, 5, 6, 7],
     }
+    if manage_existing_service:
+        gates["original_service_restored"] = (
+            rollback is not None
+            and rollback.get("health_http") == 200
+            and rollback.get("gpu_ids") == [4, 5, 6, 7]
+        )
+    else:
+        gates["existing_service_not_managed_as_authorized"] = (
+            rollback is not None
+            and rollback.get("service_management") == "not_in_scope"
+            and rollback.get("authorized") is True
+        )
     result = {
         "schema_version": "qtopomoe.phase8_selector_closed_loop_gate.v1",
         "status": "accepted" if all(gates.values()) else "rejected",
