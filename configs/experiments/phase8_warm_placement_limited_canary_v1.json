@@ -3,7 +3,7 @@
   "status": "frozen_before_canary",
   "frozen_date": "2026-08-25",
   "scope": "当前1%路由稳定性政策下的新暖态placement候选有限canary；不等同于自动闭环验收",
-  "说明": "复用已验证的有限canary编排，不再增加路由诊断。placement-plan仅在稳定段完成后显式激活；无论canary成功或失败都恢复原服务。",
+  "说明": "复用已验证的有限canary编排，不再增加路由诊断。placement-plan仅在稳定段完成后显式激活；按用户要求，既有SGLang服务不属于本轮管理或Gate范围。",
   "准入依据": {
     "policy": "configs/strategies/phase8_route_stability_gate_policy_v2_20260825.json",
     "policy_sha256": "de15ea79da27b5df968478b4ef7116c976dbe5905bfe10d4eccb22b16859dbe7",
@@ -41,6 +41,9 @@
     "activation_mode": "explicit_file_after_stable"
   },
   "既有服务": {
+    "manage_service": false,
+    "scope": "external_not_managed",
+    "说明": "用户明确要求本轮不用管SGLang；不启动、不暂停、不恢复，也不以30002状态判定canary。",
     "port": 30002,
     "health_url": "http://127.0.0.1:30002/health",
     "expected_module": "sglang.launch_server",
@@ -71,7 +74,7 @@
     "plan_hash_consistent_on_all_8_ranks": true,
     "plan_not_applied_before_explicit_activation": true,
     "recovery_p99_ratio_to_stable_max": 1.05,
-    "rollback_original_service_available": true
+    "existing_service_not_managed_as_authorized": true
   },
-  "后续边界": "只有本canary accepted后，才允许单独验收trigger、cooldown和rollback自动闭环。"
+  "后续边界": "只有本canary accepted后，才允许单独验收trigger、cooldown和placement rollback自动闭环；SGLang服务状态不属于本轮结论。"
 }

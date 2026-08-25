@@ -212,6 +212,6 @@
 | `configs/experiments/phase8_route_stability_diagnostic_v1.json` | 14.28% 逻辑专家分布变化的一级预注册诊断；并行记录旧口径、记录时逻辑计数和 map 槽位代际，分离短输出与长生成轨迹。 | `5BCBD62A14378E4F2DD8269A8369B0174631EF981D655AA1347693418758042C` |
 | `configs/experiments/phase8_route_stability_diagnostic_v2.json` | v1 后冻结的热态确认差异计划；继承 v1 全部阈值，在 identity A1 前增加热缓存 settle，并固定成因分类边界。 | `51F8E3B3E21A49EE12049A298A2789B3FECC267BD9DBACC721663730678305B4` |
 | `configs/strategies/phase8_route_stability_gate_policy_v2_20260825.json` | 当前有效路由稳定性政策；上限由历史 0.5% 调整为 1%，现有短臂 0.045% 和长臂 0.718% 均通过，仅结束本诊断阶段。 | `DE15EA79DA27B5DF968478B4EF7116C976DBE5905BFE10D4ECCB22B16859DBE7` |
-| `configs/experiments/phase8_warm_placement_limited_canary_v1.json` | 新暖态 placement 候选的有限 canary 冻结计划；复用已验证编排，要求零失败、计划哈希一致、恢复 p99≤基线 105% 且原服务可恢复。 | `848FD6243FCA27628D66E01E9F502E7622BC5D52618C6A571DEDEFD8FD639433` |
+| `configs/experiments/phase8_warm_placement_limited_canary_v1.json` | 新暖态 placement 候选的有限 canary 冻结计划；要求零失败、计划哈希一致和恢复 p99≤基线 105%，既有 SGLang 按用户要求不纳入本轮管理或 Gate。 | `CC7F743605B7B19F1C97634A445C9202BDACF3E10A6A220D71D7AA60384C3423` |
 | `docs/Q-TopoMoE_Phase8_warm_placement_regeneration_summary_20260823.json` | 暖态候选、迁移修复、质量 Gate、两级路由诊断与当前 1% 准入边界的合并机器摘要；项目仍在进行。 | `877A0CFBE66C73F32E698EE5C912F1CABD9BF0664E9098F44564D2634F6EB241` |
-| `docs/results/phase8_warm_placement_regeneration_20260823.md` | 合并中文报告；保留历史 0.5% 拒绝证据，记录当前 1% Gate 接受及后续有限 canary 边界。 | `2273F8E0B4171515BE96ED79DD55841D7E0B568811DD296DD5155D5740D255DF` |
+| `docs/results/phase8_warm_placement_regeneration_20260823.md` | 合并中文报告；保留历史 0.5% 拒绝证据，记录当前 1% Gate 接受及后续有限 canary 边界。 | `5F8A490D1E08D163DF8101C673865D63A23CEFE621BAF764B1FCBBAA6429975D` |

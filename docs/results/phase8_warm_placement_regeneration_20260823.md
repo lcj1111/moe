@@ -133,8 +133,9 @@ v2 最终结果如下：
 2026-08-25 将当前有效的短、长臂 placement excess TV p95 上限统一调整为 1%，不再增加
 本阶段诊断实验。现有 v2 结果据此重判为 `accepted`；这只表示路由稳定性阶段完成，并不
 表示整个项目结束或已经上线。下一步仍按 Runbook 执行有限 canary；只有 canary 满足零失败、
-计划哈希一致、恢复 p99 不超过基线 105% 且 rollback 可用，才继续验收 trigger、10 窗口
-cooldown 与 3 窗口 rollback 自动闭环。当前有效政策见
+计划哈希一致且恢复 p99 不超过基线 105%，才继续验收 trigger、10 窗口 cooldown 与 3 窗口
+placement rollback 自动闭环。按用户要求，既有 SGLang 服务不属于本轮 canary 的管理或
+Gate 范围。当前有效政策见
 [phase8_route_stability_gate_policy_v2_20260825.json](../../configs/strategies/phase8_route_stability_gate_policy_v2_20260825.json)。
 有限 canary 的冻结计划见
 [phase8_warm_placement_limited_canary_v1.json](../../configs/experiments/phase8_warm_placement_limited_canary_v1.json)。

@@ -109,6 +109,7 @@ def main() -> int:
     recovery_p99 = float(summaries["recovery"]["e2e_ms"]["p99"])
     recovery_ratio = recovery_p99 / stable_p99
 
+    manage_existing_service = canary["既有服务"].get("manage_service", True)
     gates = {
         "frozen_canary_plan": canary.get("status") == "frozen_before_canary",
         "runtime_plan_file_hash_matches": (
@@ -140,13 +141,19 @@ def main() -> int:
             canary["负载"].get("ignore_eos") is not True or fixed_output_tokens
         ),
         "recovery_p99_within_105pct_of_stable": recovery_ratio <= 1.05,
-        "rollback_original_service_available": (
+    }
+    if manage_existing_service:
+        gates["rollback_original_service_available"] = (
             rollback.get("health_http") == 200
             and rollback.get("process_alive") is True
             and rollback.get("command_matches") is True
             and rollback.get("gpu_ids") == [4, 5, 6, 7]
-        ),
-    }
+        )
+    else:
+        gates["existing_service_not_managed_as_authorized"] = (
+            rollback.get("service_management") == "not_in_scope"
+            and rollback.get("authorized") is True
+        )
     accepted = all(gates.values())
     result = {
         "schema_version": "qtopomoe.phase8_selector_limited_canary_gate.v1",

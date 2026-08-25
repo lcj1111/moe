@@ -456,11 +456,15 @@ def main() -> int:
     manifest: dict[str, Any] | None = None
     pipeline_error: str | None = None
     restore_error: str | None = None
+    manage_existing_service = plan["既有服务"].get("manage_service", True)
     try:
-        wait_service_idle(plan, update)
-        manifest = capture_service(plan, root)
-        update("stopping_existing_service", original_pid=manifest["original_pid"])
-        stop_group(int(manifest["original_pgid"]))
+        if manage_existing_service:
+            wait_service_idle(plan, update)
+            manifest = capture_service(plan, root)
+            update("stopping_existing_service", original_pid=manifest["original_pid"])
+            stop_group(int(manifest["original_pgid"]))
+        else:
+            update("existing_service_not_managed_waiting_gpus_idle")
         wait_gpus_idle(list(range(8)), 600)
         update("launching_canary_service")
         CURRENT_CANARY = start_canary(plan, repo, root)
@@ -510,10 +514,23 @@ def main() -> int:
                 except subprocess.TimeoutExpired:
                     pass
                 CURRENT_CANARY = None
-            if manifest is not None:
+            if manage_existing_service and manifest is not None:
                 update("restoring_existing_service", pipeline_error=pipeline_error)
                 rollback = restore_service(manifest, plan, root)
                 update("existing_service_restored", rollback=rollback, pipeline_error=pipeline_error)
+            elif not manage_existing_service:
+                rollback = {
+                    "schema_version": "qtopomoe.canary_external_service_status.v1",
+                    "service_management": "not_in_scope",
+                    "authorized": True,
+                    "说明": "按用户要求，本轮不管理或判定既有SGLang服务。",
+                }
+                atomic_json(root / "rollback_status.json", rollback)
+                update(
+                    "existing_service_not_managed",
+                    rollback=rollback,
+                    pipeline_error=pipeline_error,
+                )
         except BaseException as error:
             restore_error = repr(error)
             update("restore_failed", pipeline_error=pipeline_error, restore_error=restore_error)
