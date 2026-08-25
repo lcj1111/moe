@@ -37,8 +37,8 @@
 
 ## 4. 证据
 
-- [12%后续准入政策 JSON](../../configs/strategies/phase8_selector_gate_policy_v2_20260823.json)
-- [原始独立 Gate JSON](../Q-TopoMoE_Phase8_selector_independent_gate_failed_20260823.json)
+- [12%后续准入政策 JSON](../../../configs/strategies/phase8_selector_gate_policy_v2_20260823.json)
+- [原始独立 Gate JSON](../../Q-TopoMoE_Phase8_selector_independent_gate_failed_20260823.json)
 - [原始独立 Gate 报告](phase8_selector_independent_gate_failed_20260823.md)
-- [冻结 selector](../Q-TopoMoE_Phase8_selector_v3_frozen_20260816.json)
-- [独立实验计划](../../configs/experiments/phase8_selector_independent_v1.json)
+- [冻结 selector](../../Q-TopoMoE_Phase8_selector_v3_frozen_20260816.json)
+- [独立实验计划](../../../configs/experiments/phase8_selector_independent_v1.json)

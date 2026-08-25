@@ -345,7 +345,7 @@ load-aware 策略把不均衡从 2-3% 压到 0.02%，预测 p99 略降（0.234 �
 [migration cost](../Q-TopoMoE_Phase7_migration_cost_p2p_20260807.json)。
 # 2026-08-12 阶段 7 正式补充
 
-在线 placement-plan、服务迁移阻塞与恢复实验已经完成并通过 Gate：384 请求全部完成，稳定/迁移/恢复窗口端到端 p99 分别为 1082.04/2166.96/988.83 ms。详情与机器可读入口见[阶段 7–8 正式收尾](phase7_phase8_formal_closeout_20260812.md)。原生 vLLM NVFP4 EPLB 限制仍然存在，本次通过的是显式 opt-in 的运行时 bridge。
+在线 placement-plan、服务迁移阻塞与恢复实验已经完成并通过 Gate：384 请求全部完成，稳定/迁移/恢复窗口端到端 p99 分别为 1082.04/2166.96/988.83 ms。历史详情见[阶段 7–8 正式收尾](../archive/decision-history/phase7_phase8_formal_closeout_20260812.md)。原生 vLLM NVFP4 EPLB 限制仍然存在，本次通过的是显式 opt-in 的运行时 bridge。
 
 ---
 

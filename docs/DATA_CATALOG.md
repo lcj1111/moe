@@ -145,18 +145,22 @@
 | `docs/archive/Q-TopoMoE_Phase8_replay_20260806_v4.json` | 归档证据 | 仅用于历史对照；没有新运行结果时不得提升为 accepted Gate。 | `3B54FCB112DA7B0302C5B49C24CDB929F8E5DC0BA85AB3B6ED1D2EA38BD1B9F1` |
 | `docs/archive/Q-TopoMoE_Phase8_replay_20260806_v5.json` | 归档证据 | 仅用于历史对照；没有新运行结果时不得提升为 accepted Gate。 | `2B7D5E9AB42AE3E8A926E9CD12908C6ECD4B08C8685F9EB9658010D48A2DF8D0` |
 
-## 合并映射
+## 人类可读聚合层
 
-| 新的人类可读文件 | 合并的源报告 |
+| 当前入口 | 作用 |
 |---|---|
 | `docs/results/phase1_service_baseline.md` | Phase 1 BF16/FP8 服务报告与统计叙述 |
 | `docs/results/phase2_quantization_quality.md` | Phase 2 量化、W4A16/NVFP4、校准、backend 与质量 Gate 叙述 |
 | `docs/results/phase3_route_and_official_eval.md` | Phase 3 route trace、漂移、full-set 协议与 NVFP4/EPLB 叙述 |
+| `docs/results/phase3_fullset_quality_closeout_20260812.md` | BF16/FP8/NVFP4 full-set 严格合并和共同分母结论 |
 | `docs/results/phase4_to_phase7_engineering.md` | Phase 4–7 kernel、融合、通信与 EPLB 进展叙述 |
-| `docs/results/phase8_benchmark_history.md` | Phase 8 校准、回放、容量与故障叙述 |
+| `docs/results/phase8_benchmark_history.md` | Phase 8 正式矩阵、校准和输入证据 |
+| `docs/results/phase8_warm_placement_regeneration_20260823.md` | 当前暖态候选形成、迁移修复和质量验证 |
+| `docs/results/phase8_warm_placement_final_acceptance_20260825.md` | 当前 Phase 8 最终技术验收 |
+| `docs/DECISIONS.md` | 失败分支、替代关系和证据语义的统一索引 |
 
-旧拆分稿已从当前目录删除，当前入口只保留上表五份合并报告。需要追溯合并前文本时使用
-Git 历史；日常阅读和复现不要再引用旧文件名。
+`docs/results/` 只保留当前聚合报告；旧 selector 和旧 placement 的完整叙述移入
+`docs/archive/decision-history/`。机器 JSON、manifest 和冻结配置保持稳定路径。
 # 2026-08-12 新增机器可读产物
 
 | 路径 | 数据说明 | SHA-256 |
@@ -190,11 +194,11 @@ Git 历史；日常阅读和复现不要再引用旧文件名。
 | `docs/Q-TopoMoE_Phase8_selector_independent_gate_failed_20260823.json` | 冻结 selector 在45-cell、四候选、五重复独立集上的完整 Gate 与逐 workload 决策；p95 regret 11.50%，Gate 失败。 | `6F1D79571CB3366FDC581C6B518A7D25ED1AEAAD89D4FBFD05E08EF2FFDA95E4` |
 | `docs/Q-TopoMoE_Phase8_selector_independent_manifest_20260823.json` | 900次正式测量的完整性、输入/输出哈希、Gate 摘要和 SGLang 恢复状态。 | `37F2BAE8810E68E0160CC4DD24D633A1401C75489BE3624C7B839767D4243DCA` |
 | `configs/strategies/phase8_selector_gate_policy_v2_20260823.json` | 独立结果揭晓后批准的12%后续准入政策；保留原始10% Gate，并记录本次指标在新政策下的机器可读判定与有限 canary 边界。 | `89F03F1B23747AD515C9A9B0B9FDF71FEFAF63967B0181D059EBDFF7B2C19D36` |
-| `docs/results/phase8_selector_posthoc_12pct_policy_20260823.md` | 12%后续准入政策的中文说明；区分原始 Gate 与当前运行决策，列明有限 canary 的后续门槛。 | `3A6565552DEF76526AD0EB01DDA3065CA54FD2FF2EBACE8E0B7D72E090D37722` |
+| `docs/archive/decision-history/phase8_selector_posthoc_12pct_policy_20260823.md` | 12%后续准入政策的历史说明；区分原始 Gate 与后续运行决策。 | `8D930CF97D2D943F12B77754B2D7243BDDE361EBDB221F4826F84A3C53AE4362` |
 | `configs/experiments/phase8_selector_limited_canary_v1.json` | 有限 canary 的冻结计划；三阶段使用匹配请求流，并在稳定段结束后通过带哈希文件显式激活 placement-plan。 | `DFE31BE5B7AEBA587F6E686F83EFE025F5FA6272C659B066CCE25BA83EA2486C` |
 | `docs/Q-TopoMoE_Phase8_selector_limited_canary_rejected_20260823.json` | 有效有限 canary 的机器 Gate；384 请求零失败，但恢复 p99 为稳定段的136.36%，超过105%门槛，状态为 rejected。 | `8F03B73D99E6FA9969D0CE9743C6B5E0A73C9E22E9E298F2E4794F5608027FEC` |
 | `docs/Q-TopoMoE_Phase8_selector_limited_canary_manifest_20260823.json` | 有限 canary 原始目录、代码提交、服务回滚状态、逐文件字节数与 SHA-256，以及无效尝试的隔离路径。 | `17D8662C4EFF642831F20260ED38626158E2A02261FC938943718114591F7D8F` |
-| `docs/results/phase8_selector_limited_canary_rejected_20260823.md` | 有限 canary 中文拒绝报告；记录全部 Gate、延迟、编排修复、证据可靠性边界和后续禁止项。 | `2657A4BB4035B5840ED1B5E2FFA0ACEFB5CFDE29EBCBB35A49D2B9F59CB957E1` |
+| `docs/archive/decision-history/phase8_selector_limited_canary_rejected_20260823.md` | 旧 selector 有限 canary 拒绝报告；仅作历史审计。 | `864845206562CC1BA3A068969D338F98D0DD5EDADE9166F3746DA70136CFDBDE` |
 | `configs/experiments/phase8_selector_one_shot_canary_base_v1.json` | one-shot placement 五轮配对 canary 的基础计划；定义代表负载、显式激活、固定输出和 8-rank 哈希 Gate。 | `2CEFC83513A4ED7F63B32CFF32F900B65972A29DD0EB4B90DA2CFD4F6AA03AA8` |
 | `configs/experiments/phase8_selector_one_shot_repeated_v1.json` | one-shot placement 五轮调度与聚合 Gate；结果曾 accepted，但固定阶段顺序的预热偏差已在最终报告中注明。 | `AE0521F0479EA0229BD612B9998DAB5EBD96625B02DCBDF7014E8D38A6825A80` |
 | `configs/experiments/phase8_selector_closed_loop_acceptance_v1.json` | 自动闭环首次预注册计划；历史诊断发现误用了跨层汇总 rank CV，不作为最终验收口径。 | `DDD44081588ABC5163CF340D446B682B30C81D593420C6B3552571BC38B431C9` |
@@ -203,7 +207,7 @@ Git 历史；日常阅读和复现不要再引用旧文件名。
 | `configs/experiments/phase8_selector_closed_loop_acceptance_v4.json` | 最终自动闭环计划；负载严格对齐五轮代表负载，原 Gate 不变，最终状态 rejected。 | `7C131A3F9554056932BF129598E93E3D521EC64AC363F69B17D1EB3BD5C0BE2E` |
 | `docs/Q-TopoMoE_Phase8_selector_closed_loop_execution_summary_20260823.json` | 数据说明：合并记录 v1–v4 的目的、结果、服务器目录、产物哈希、代码提交和最终部署边界。 | `F3D8D196A4DA30EC6738D3639AA55FF7F34D8849FAE39182AB88BF8012B75970` |
 | `docs/Q-TopoMoE_Phase8_selector_closed_loop_final_gate_rejected_20260823.json` | 最终机器 Gate；逐窗口记录 expert/rank CV、p99、控制器动作和 SGLang 恢复状态，状态 rejected。 | `09A29EC83FB63630091C3BD6585EEB7184F4E185251C3E28159A39B873AB1D15` |
-| `docs/results/phase8_selector_closed_loop_final_20260823.md` | 自动闭环中文最终报告；说明五轮顺序偏差、四次诊断、最终拒绝理由与下一候选要求。 | `39B13289D9C767DE9F41CAA8C3FBE6D44FE7F75338DB82B243E7B4BCAA36E85C` |
+| `docs/archive/decision-history/phase8_selector_closed_loop_final_20260823.md` | 旧 placement 自动闭环拒绝报告；说明五轮顺序偏差、四次诊断和关闭理由。 | `39B13289D9C767DE9F41CAA8C3FBE6D44FE7F75338DB82B243E7B4BCAA36E85C` |
 | `configs/experiments/phase8_warm_placement_capture_v1.json` | 冻结旧 Gate 后的 identity 暖态逐层专家计数采集计划；正式有效结果来自独立 v3 输出目录。 | `D5F55D1A5200FD877E4F2666272FC87ED6C0F93C841C3E4ED86E6DD65FC4DB27` |
 | `configs/experiments/phase8_warm_placement_abab_v1.json` | 新候选同进程 A/B/A/B 冻结计划；迁移提交段先预热且不计入测量。 | `6B59A067002D6280E37607A4E451BE0171212464B6CC92AFE6CEE2128A85C18E` |
 | `configs/strategies/phase8_warm_swap_008_slots_per_layer_v1.json` | 从48个暖态窗口生成的最小迁移量候选；文件内状态是生成时快照，当前准入必须同时核对最终 accepted 摘要、map 哈希与运行时补丁，不能孤立加载。 | `3386D1457A62F4C2A9CB5CDC56B71225C8F07FAE73063A0E51C142F4C0B1F29E` |

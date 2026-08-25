@@ -122,7 +122,7 @@ Ridge 与浅层成本树只用于训练侧诊断，没有被选为正式模型�
 
 ## 7. 证据文件
 
-- [决策前状态审计](../Q-TopoMoE_Phase8_selector_v2_predecision_audit_20260816.json)
-- [训练 Gate 失败配置](../Q-TopoMoE_Phase8_selector_v2_training_gate_failed_20260816.json)
-- [完整拟合报告](../Q-TopoMoE_Phase8_selector_v2_fit_report_20260816.json)
+- [决策前状态审计](../../Q-TopoMoE_Phase8_selector_v2_predecision_audit_20260816.json)
+- [训练 Gate 失败配置](../../Q-TopoMoE_Phase8_selector_v2_training_gate_failed_20260816.json)
+- [完整拟合报告](../../Q-TopoMoE_Phase8_selector_v2_fit_report_20260816.json)
 - [selector v2 执行说明](phase8_selector_v2_execution.md)

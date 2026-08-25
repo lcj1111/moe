@@ -73,12 +73,12 @@ incumbent 决策前状态窗口。训练聚合 SHA-256 为：
 
 ## 6. 证据文件
 
-- [v3 训练模板](../../configs/strategies/phase8_selector_state_v3.template.json)
-- [v3 冻结 selector](../Q-TopoMoE_Phase8_selector_v3_frozen_20260816.json)
-- [v3 完整拟合报告](../Q-TopoMoE_Phase8_selector_v3_fit_report_20260816.json)
+- [v3 训练模板](../../../configs/strategies/phase8_selector_state_v3.template.json)
+- [v3 冻结 selector](../../Q-TopoMoE_Phase8_selector_v3_frozen_20260816.json)
+- [v3 完整拟合报告](../../Q-TopoMoE_Phase8_selector_v3_fit_report_20260816.json)
 - [v2 训练 Gate 失败报告](phase8_selector_training_gate_failed_20260816.md)
 - [selector 执行说明](phase8_selector_v2_execution.md)
 
 独立 Gate 的固定执行顺序由
-[`run_phase8_independent_selector_gate.sh`](../../scripts/run_phase8_independent_selector_gate.sh)
+[`run_phase8_independent_selector_gate.sh`](../../../scripts/run_phase8_independent_selector_gate.sh)
 编排；脚本只清理自身进程组，并把原始测量、聚合、绑定状态和最终 Gate 分目录保存。

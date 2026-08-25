@@ -88,12 +88,12 @@ Poisson/burst 与高缓存组合上过度偏向 NVFP4 EP8。该现象可以用�
 
 ## 6. 证据与哈希
 
-- [独立 Gate 完整 JSON](../Q-TopoMoE_Phase8_selector_independent_gate_failed_20260823.json)
-- [本轮发布清单](../Q-TopoMoE_Phase8_selector_independent_manifest_20260823.json)
-- [冻结 selector](../Q-TopoMoE_Phase8_selector_v3_frozen_20260816.json)
+- [独立 Gate 完整 JSON](../../Q-TopoMoE_Phase8_selector_independent_gate_failed_20260823.json)
+- [本轮发布清单](../../Q-TopoMoE_Phase8_selector_independent_manifest_20260823.json)
+- [冻结 selector](../../Q-TopoMoE_Phase8_selector_v3_frozen_20260816.json)
 - [v3 训练 Gate 通过报告](phase8_selector_v3_training_gate_accepted_20260816.md)
-- [独立实验计划](../../configs/experiments/phase8_selector_independent_v1.json)
-- [独立 workload](../../configs/workloads/phase8_selector_independent_v1.json)
+- [独立实验计划](../../../configs/experiments/phase8_selector_independent_v1.json)
+- [独立 workload](../../../configs/workloads/phase8_selector_independent_v1.json)
 
 独立 Gate JSON SHA-256：
 

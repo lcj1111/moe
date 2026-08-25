@@ -69,4 +69,4 @@
 正式下一步按顺序为：先执行候选无关的 closed-loop capacity，再按最慢候选 × 安全利用率冻结 open-loop 速率，扩展前缀与到达模式正式矩阵；只用重复正式结果重新拟合透明 selector。
 # 2026-08-12 正式结论
 
-四候选 108-cell × 五重复聚合 Gate 已接受，资源感知 Pareto 为 FP8 TP2、NVFP4 EP4、NVFP4 EP8。简化近邻 selector 的 median regret 为 0%，但 p95 regret 为 43.17%，因此 selector Gate 为 `gate_failed`，不得在线启用。完整结论见[阶段 7–8 正式收尾](phase7_phase8_formal_closeout_20260812.md)。
+四候选 108-cell × 五重复聚合 Gate 已接受，资源感知 Pareto 为 FP8 TP2、NVFP4 EP4、NVFP4 EP8。简化近邻 selector 的 median regret 为 0%，但 p95 regret 为 43.17%，因此 selector Gate 为 `gate_failed`，不得在线启用。旧选择器完整结论见[阶段 7–8 历史正式收尾](../archive/decision-history/phase7_phase8_formal_closeout_20260812.md)。

@@ -7,35 +7,29 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 ## 当前结论
 
 > 更新时间：2026-08-25（Asia/Shanghai）
-> 当前状态：BF16、FP8、NVFP4 full-set 均已完成基础轮、有限续跑、严格合并与
-> 三格式共同分母比较。共同完成的 24,330 条上三者分别为 86.9955%、86.9749%、
-> 86.3009%；BF16 与 FP8 总体近似持平，NVFP4 相对 BF16 下降 0.6946 个百分点。
+> 当前状态：实验与技术验收已完成；生产部署未执行。
+
+三格式共同完成的 24,330 条 full-set 样本上，BF16、FP8、NVFP4 准确率分别为
+86.9955%、86.9749%、86.3009%。BF16 与 FP8 总体近似持平，NVFP4 相对 BF16
+下降 0.6946 个百分点。
 
 | 阶段 | 已完成结论 | 当前状态 |
 |---|---|---|
 | Phase 0 | 8 卡拓扑、NUMA、NCCL/P2P 实测 | 已完成；P2P 已生效 |
 | Phase 1 | BF16/FP8 服务基线、矩阵与统计 | 已完成 |
-| Phase 2 | W4A16/NVFP4 审计、真实加载和 official-like Gate | 已完成；RedHatAI NVFP4 准入，自生成 NVFP4 v1 拒绝 |
+| Phase 2 | W4A16/NVFP4 审计、真实加载和 official-like Gate | 已完成；正式路线采用 RedHatAI NVFP4 |
 | Phase 3 | route trace、漂移分析和冻结官方协议 | route、三格式 full-set 合并与共同分母对比均已完成 |
 | Phase 4–6 | M-bucket、kernel/backend selector、通信矩阵 | 正式实测已归档 |
 | Phase 7 | placement-plan、在线迁移、恢复与 p99 | Gate 已接受 |
-| Phase 8 | selector 训练、900 次独立测试、one-shot、自动闭环与新 placement 重生成 | 新候选质量、当前 1% 路由 Gate、有限 canary 与自动闭环均已接受 |
+| Phase 8 | 暖态 placement、质量、路由稳定性、有限 canary 与自动闭环 | 技术 Gate 已接受 |
 
-较早 selector 候选的闭环曾因 10 窗口 cooldown 和原生 generation=2 rollback 未通过而拒绝，
-此前五轮 one-shot 的固定阶段顺序也存在冷启动/预热偏差，不能再作为性能收益成立的证据。
-这些历史结果保留，但不作为新暖态 placement 候选的最终结论。
+Phase 8 最终采用 `warm_swap_008_slots_per_layer_v1`：移动 320/10240 个槽位；
+116 题质量 A/B/A、当前 1% 路由稳定性 Gate、384 请求有限 canary，以及 20 窗口、
+2560 请求的 trigger/cooldown/apply/rollback 自动闭环均已接受。该结论只表示技术验证完成，
+扩大流量、长期运行和生产切换仍是独立变更。
 
-随后已冻结旧 Gate 并基于 48 个真实暖态窗口重新生成最小迁移量候选。新候选只移动
-320/10240 个槽位，A/B/A/B 中 rank CV 改善 36.55%，p99 中位数比为 101.83%；但逻辑专家
-负载分布相对 identity 变化 14.28%，超过当时的 0.5% 稳定范围。两级预注册诊断随后排除了统计还原
-和计数器重置，确认单 token 路由稳定、长生成轨迹分叉后存在 0.718% 超额路由分布差异；
-14.28% 具体幅度没有复现。当前有效上限已调整为 1%，因此短臂 0.045% 与长臂 0.718%
-均通过路由稳定性 Gate，不再增加本阶段诊断。修复 NVFP4 Marlin 辅助尺度迁移后，
-完整 116 题质量 A/B/A 已接受：三轮均零失败、零截断，候选 110/116，高于 identity 的
-较低值 106/116，且唯一新增退化为 0。随后有限 canary 完成 384/384 零失败，恢复
-p99/基线为 61.65%；自动闭环完成 20 窗口、
-2560 请求，trigger、10 窗口 cooldown、8-rank apply 与 rollback 全部接受。Phase 8 技术验证链
-已完成；生产部署或扩大流量仍属于后续独立变更。
+旧 selector、旧 placement、被替代的准入政策和无效编排尝试不属于当前结论；它们的处理理由
+统一记录在[实验决策记录](docs/DECISIONS.md)，完整报告保存在 `docs/archive/`。
 
 正式技术验收版本冻结为 `qtopomoe-phase8-accepted-20260825`；部署前置条件、扩量顺序和
 回滚标准见[项目发布与生产部署清单](docs/Q-TopoMoE_项目发布与生产部署清单_20260825.md)。
@@ -44,15 +38,16 @@ p99/基线为 61.65%；自动闭环完成 20 窗口、
 
 | 目的 | 推荐入口 |
 |---|---|
-| 快速了解当前状态 | [文档索引](docs/README.md)与[阶段 7–8 正式收尾](docs/results/phase7_phase8_formal_closeout_20260812.md) |
+| 快速了解当前状态 | [文档索引](docs/README.md)与[Phase 8 最终验收](docs/results/phase8_warm_placement_final_acceptance_20260825.md) |
 | 独立接管和操作项目 | [项目接管与操作手册](docs/Q-TopoMoE_项目接管与操作手册_20260813.md) |
+| 了解路线取舍和失败分支 | [实验决策记录](docs/DECISIONS.md) |
 | 回顾完整执行顺序与故障处置 | [项目执行全史与问题处置](docs/Q-TopoMoE_项目执行全史与问题处置_20260813.md) |
 | 从头复现 | [复现阅读指南](docs/Q-TopoMoE_复现阅读指南.md) |
 | 看懂代码调用关系 | [代码导读](docs/Q-TopoMoE_代码导读.md) |
 | 按阶段执行 | [逐步执行 Runbook](docs/Q-TopoMoE_逐步执行Runbook.md) |
 | 查某个 JSON/配置的含义与哈希 | [数据与结果清单](docs/DATA_CATALOG.md) |
 | 查看三格式全量质量结论 | [BF16/FP8/NVFP4 full-set 收尾](docs/results/phase3_fullset_quality_closeout_20260812.md) |
-| 查看 Phase 8 selector 最新结论 | [暖态 placement 最终验收报告](docs/results/phase8_warm_placement_final_acceptance_20260825.md) |
+| 查看 Phase 8 最终结论 | [暖态 placement 最终验收报告](docs/results/phase8_warm_placement_final_acceptance_20260825.md) |
 | 查看最终发布与生产部署边界 | [项目发布与生产部署清单](docs/Q-TopoMoE_项目发布与生产部署清单_20260825.md) |
 
 ## 快速检查
@@ -81,7 +76,7 @@ qtopomoe_use_sglang
 
 | 目录 | 职责 | 主要入口或产物 |
 |---|---|---|
-| `configs/` | 冻结的模型、拓扑、workload、策略与评测配置 | `configs/evaluation/README.md` |
+| `configs/` | 冻结的模型、拓扑、workload、策略与评测配置 | `configs/experiments/README.md`、`configs/evaluation/README.md` |
 | `env/` | 项目变量、环境检查与依赖锁 | `env/activate.sh`、`env/check_env.sh` |
 | `topology/` | GPU/NUMA/P2P/NCCL 采集与成本模型 | `topology/collect_hardware.sh`、`topology/gpu_peer_bf16.py` |
 | `quantization/` | W4A16/NVFP4 量化及 checkpoint 审计 | `quantization/audit_nvfp4.py` |
@@ -93,7 +88,7 @@ qtopomoe_use_sglang
 | `scripts/` | 跨阶段执行、聚合、审计与正式 runner | 见下方常用命令 |
 | `evaluation/` | 评测资产抓取、冻结、切片和质量比较 | `evaluation/freeze_full_set_official.py` |
 | `tests/` | 不依赖大模型权重的单元/结构测试 | `python -m unittest discover -s tests` |
-| `docs/` | 当前结论、历史报告与机器可读结果 | `docs/README.md` |
+| `docs/` | 当前结论、决策记录、历史审计与机器结果 | `docs/README.md`、`docs/DECISIONS.md` |
 
 ## 常用执行入口
 
@@ -116,12 +111,13 @@ python scripts/merge_fullset_quality_results.py --help
 # 在同一可评分 ID 上比较两个或多个格式
 python scripts/compare_fullset_quality_results.py --help
 
-# Phase 8 正式重复测量与聚合
-python scripts/run_phase8_repeated.py --help
-python scripts/aggregate_phase8_repeated.py --help
-python scripts/run_phase8_predecision_windows.py --help
-python scripts/fit_phase8_selector_state.py --help
-python scripts/evaluate_phase8_independent_selector.py --help
+# Phase 8 当前暖态 placement 验收链
+python scripts/build_warm_placement_candidates.py --help
+python scripts/run_phase8_warm_placement_abab.py --help
+python scripts/run_phase8_warm_placement_quality_equivalence.py --help
+python scripts/run_phase8_route_stability_diagnostic.py --help
+python scripts/run_phase8_selector_limited_canary.py --help
+python scripts/run_phase8_selector_closed_loop_acceptance.py --help
 
 # 在线 placement-plan 与迁移结果分析
 python scripts/build_runtime_placement_plan.py --help
@@ -135,7 +131,7 @@ python scripts/analyze_online_eplb_gate.py --help
 
 1. 当前阶段报告说明“结论”，机器可读 JSON/manifest 提供“证据”。二者冲突时，
    以较新的正式 Gate 和其输入哈希为准。
-2. `docs/archive/` 只保存被拒绝或被替代的历史结果，不得作为当前 Gate。
+2. `docs/archive/` 只保存被拒绝、被替代或诊断性的历史结果，不得作为当前 Gate。
 3. 大体积 JSONL、日志、模型和 trace 不进入 Git；由 manifest 记录路径、版本、
    样本参数和 SHA-256。
 4. 机器可读文件保持稳定路径。整理仓库时优先改索引和说明，不随意移动这些文件。

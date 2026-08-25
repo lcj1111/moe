@@ -15,7 +15,7 @@ NVFP4 EP8 服务通过显式启用的运行时 bridge 应用冻结 placement-pla
 | 首次原生 rearrangement | 0.83 s |
 | 运行时 plan SHA-256 | `d7d7240007c8d69cce9350ff6e4deca250713282c651d32c954b077b383763fd` |
 
-详细过程见[在线 placement-plan 与服务迁移实验](../Q-TopoMoE_在线placement-plan与服务迁移实验_20260812.md)，专家迁移微基准见[阶段 7 迁移微基准数据](../Q-TopoMoE_Phase7_migration_microbench_20260812.json)。
+详细过程见[在线 placement-plan 与服务迁移实验](../../Q-TopoMoE_在线placement-plan与服务迁移实验_20260812.md)，专家迁移微基准见[阶段 7 迁移微基准数据](../../Q-TopoMoE_Phase7_migration_microbench_20260812.json)。
 
 原生 vLLM 对 `CompressedTensorsW4A4Nvfp4MoEMethod` 的 EPLB 限制仍保留为历史事实。本次接受的是显式 opt-in bridge Gate，不能改写为“原生 vLLM EPLB 已支持 NVFP4”。
 
@@ -36,7 +36,7 @@ NVFP4 EP8 服务通过显式启用的运行时 bridge 应用冻结 placement-pla
 | NVFP4 EP8 | 8 | 1403.87 ms | 140.78 token/s | 45 |
 | W4A16 EP4 | 4 | 1729.80 ms | 124.99 token/s | 5 |
 
-资源感知 Pareto 保留 FP8 TP2、NVFP4 EP4 和 NVFP4 EP8；W4A16 EP4 被支配。完整聚合见[四候选正式聚合数据](../Q-TopoMoE_Phase8_formal_controlled_combined_20260812.json)，来源与 schedule 哈希见[合并清单](../Q-TopoMoE_Phase8_formal_controlled_merge_manifest_20260812.json)。
+资源感知 Pareto 保留 FP8 TP2、NVFP4 EP4 和 NVFP4 EP8；W4A16 EP4 被支配。完整聚合见[四候选正式聚合数据](../../Q-TopoMoE_Phase8_formal_controlled_combined_20260812.json)，来源与 schedule 哈希见[合并清单](../../Q-TopoMoE_Phase8_formal_controlled_merge_manifest_20260812.json)。
 
 ## 3. 选择器 Gate
 
@@ -56,7 +56,7 @@ NVFP4 EP8 服务通过显式启用的运行时 bridge 应用冻结 placement-pla
 
 108 个 cell 中只有 50 个的 oracle 与其他候选 bootstrap 95% 区间完全分离，表明候选排序既有真实 workload 切换，也存在重复测量波动。无论原因如何，正式 Gate 必须按全体 cell 计算，因此当前结论仍是 `gate_failed`。
 
-机器可读结果见[简化选择器正式 Gate](../Q-TopoMoE_Phase8_formal_selector_nearest_gate_20260812.json)。当前不得执行依赖该 selector 的动态 trigger/cooldown/rollback 在线闭环，也不得把该结果描述为生产可用。
+机器可读结果见[简化选择器正式 Gate](../../Q-TopoMoE_Phase8_formal_selector_nearest_gate_20260812.json)。当前不得执行依赖该 selector 的动态 trigger/cooldown/rollback 在线闭环，也不得把该结果描述为生产可用。
 
 ## 4. 后续顺序
 
