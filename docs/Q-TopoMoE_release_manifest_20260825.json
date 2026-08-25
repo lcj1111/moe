@@ -1,0 +1,95 @@
+{
+  "schema_version": "qtopomoe.release_manifest.v1",
+  "release_name": "Q-TopoMoE Phase 8 暖态 placement 技术验收版",
+  "release_tag": "qtopomoe-phase8-accepted-20260825",
+  "release_branch": "agent/sync-q-topomoe-project",
+  "release_preparation_base_commit": "dc3ea5c028579143b3926ec402eadc18538e8529",
+  "status": "technical_validation_completed_release_frozen",
+  "date": "2026-08-25",
+  "说明": "Phase 0至Phase 8的实验与技术验收已经完成。本清单冻结当前推荐候选、运行政策、运行时补丁及最终Gate；它不是生产部署记录。",
+  "recommended_bundle": {
+    "model_path": "/data/models/test/redhatai_qwen36_nvfp4",
+    "model_audit": "docs/Q-TopoMoE_Phase2_NVFP4_audit_20260807.json",
+    "model_audit_sha256": "e5c9fe5f4fd2974b742d3f1261448f13da758486b0d87cd6fb1dd3214b5a9212",
+    "model_content_manifest_required_before_production": true,
+    "candidate_id": "warm_swap_008_slots_per_layer_v1",
+    "candidate_file": "configs/strategies/phase8_warm_swap_008_slots_per_layer_v1.json",
+    "candidate_file_sha256": "3386d1457a62f4c2a9cb5cdc56b71225c8f07fae73063a0e51c142f4c0b1f29e",
+    "candidate_map_sha256": "24f09c93ff8e6c410917a3fcb087307130f8914f45c028adf23088c39fc80ac6",
+    "runtime_patch": "runtime_patches/qtopomoe_eplb/sitecustomize.py",
+    "runtime_patch_sha256": "f92fca6c54a3b80ed966262761e3773b2e061dfb6bc2087f48af40aadf071c88"
+  },
+  "effective_policies": {
+    "selector_policy": {
+      "path": "configs/strategies/phase8_selector_gate_policy_v2_20260823.json",
+      "sha256": "89f03f1b23747ad515c9a9b0b9fdf71fefaf63967b0181d059ebdff7b2c19d36",
+      "p95_regret_max_pct": 12.0,
+      "status": "accepted_under_posthoc_12pct_policy"
+    },
+    "route_stability_policy": {
+      "path": "configs/strategies/phase8_route_stability_gate_policy_v2_20260825.json",
+      "sha256": "de15ea79da27b5df968478b4ef7116c976dbe5905bfe10d4eccb22b16859dbe7",
+      "placement_excess_tv_p95_max": 0.01,
+      "status": "accepted"
+    }
+  },
+  "authoritative_validation": {
+    "quality_plan": {
+      "path": "configs/experiments/phase8_warm_placement_quality_equivalence_v3.json",
+      "sha256": "4b3b56628e474195150a271d70bab0901b56c42bfa8489624c36c28edae52c57",
+      "gate_sha256": "1f37556a11b469c3c16e96ca705da6d751d1c57d5756c74097791415aba7dcc0",
+      "status": "accepted"
+    },
+    "limited_canary_plan": {
+      "path": "configs/experiments/phase8_warm_placement_limited_canary_v1.json",
+      "sha256": "0a2b085e5738096055132b81798799114f42870ce63e4a81284c90b6d67a9ee3",
+      "gate_sha256": "5e3eb834c3f7cf74f90cd0e1f7ae156795a648a8f26be5c770afc058495631a5",
+      "status": "accepted"
+    },
+    "closed_loop_plan": {
+      "path": "configs/experiments/phase8_warm_placement_closed_loop_acceptance_v1.json",
+      "sha256": "403f55ba6059ff8e92b264f4c350b5c57360f9a89a49c3e61fb61d472d0b6392",
+      "gate_sha256": "97933e65892d27076e3be2e0d59b8829fb8591ace29cb8cb179b4ec44692255d",
+      "status": "accepted"
+    },
+    "final_summary": {
+      "path": "docs/Q-TopoMoE_Phase8_warm_placement_final_acceptance_20260825.json",
+      "sha256": "f04331c7365b44ec1dab8ce1756ac9fe051a167fcc4cd5cded19316ea8868bc6",
+      "status": "accepted"
+    },
+    "final_report": {
+      "path": "docs/results/phase8_warm_placement_final_acceptance_20260825.md",
+      "sha256": "3ed65d754aca553c8d977a39c05d878a6daadd895419221cd563f66b58c116bd"
+    }
+  },
+  "accepted_metrics": {
+    "quality_candidate_correct": 110,
+    "quality_records": 116,
+    "quality_failed": 0,
+    "quality_truncated": 0,
+    "route_short_placement_excess_tv_p95": 0.0004503732423366928,
+    "route_long_placement_excess_tv_p95": 0.0071754774951163745,
+    "canary_requests": 384,
+    "canary_failed": 0,
+    "canary_recovery_p99_ratio_to_stable": 0.6165024865950768,
+    "closed_loop_windows": 20,
+    "closed_loop_requests": 2560,
+    "closed_loop_failed": 0,
+    "closed_loop_decision_overhead_pct_p95": 0.0001023068738419098,
+    "closed_loop_post_rollback_p99_ratio_to_baseline": 0.6160682721257995
+  },
+  "evidence_semantics": {
+    "candidate_internal_status_is_generation_time_snapshot": true,
+    "candidate_current_acceptance_is_defined_by_final_summary": true,
+    "historical_rejections_preserved": true,
+    "invalid_attempts_excluded": true,
+    "说明": "不得只读取候选JSON内部的生成时状态，也不得只读取后续Gate；部署时必须同时核对候选文件哈希、map哈希、运行时补丁哈希和最终accepted摘要。"
+  },
+  "release_boundary": {
+    "additional_phase8_validation_required": false,
+    "production_deployment_performed": false,
+    "production_change_approval_required": true,
+    "sglang_in_scope": false,
+    "说明": "本标签用于冻结技术验收版。生产流量切换、长期运行和容量承诺属于后续独立变更。"
+  }
+}

@@ -205,7 +205,7 @@
 | `docs/results/phase8_selector_closed_loop_final_20260823.md` | 自动闭环中文最终报告；说明五轮顺序偏差、四次诊断、最终拒绝理由与下一候选要求。 | `39B13289D9C767DE9F41CAA8C3FBE6D44FE7F75338DB82B243E7B4BCAA36E85C` |
 | `configs/experiments/phase8_warm_placement_capture_v1.json` | 冻结旧 Gate 后的 identity 暖态逐层专家计数采集计划；正式有效结果来自独立 v3 输出目录。 | `D5F55D1A5200FD877E4F2666272FC87ED6C0F93C841C3E4ED86E6DD65FC4DB27` |
 | `configs/experiments/phase8_warm_placement_abab_v1.json` | 新候选同进程 A/B/A/B 冻结计划；迁移提交段先预热且不计入测量。 | `6B59A067002D6280E37607A4E451BE0171212464B6CC92AFE6CEE2128A85C18E` |
-| `configs/strategies/phase8_warm_swap_008_slots_per_layer_v1.json` | 从48个暖态窗口生成的最小迁移量候选；每层交换8个槽位、总计移动320/10240，在线 Gate rejected，禁止直接加载。 | `3386D1457A62F4C2A9CB5CDC56B71225C8F07FAE73063A0E51C142F4C0B1F29E` |
+| `configs/strategies/phase8_warm_swap_008_slots_per_layer_v1.json` | 从48个暖态窗口生成的最小迁移量候选；文件内状态是生成时快照，当前准入必须同时核对最终 accepted 摘要、map 哈希与运行时补丁，不能孤立加载。 | `3386D1457A62F4C2A9CB5CDC56B71225C8F07FAE73063A0E51C142F4C0B1F29E` |
 | `configs/experiments/phase8_warm_placement_quality_equivalence_v1.json` | 首次 116 题质量 A/B/A 冻结计划；候选轮出现 8 条截断后按 Gate 停止，用于保留缺陷证据。 | `8A0BDEA1D2DE348E1EC9FFF8AA2E4257EB3B6302B7A9A82422594109D58AA237` |
 | `configs/experiments/phase8_warm_placement_nvfp4_aux_regression_v2.json` | NVFP4 Marlin 两个辅助尺度迁移修复后的 8 条定向 A/B/A 回归计划，结果 accepted。 | `CC6B752C4FBD804AA9A77CACEB7820278AA66673B4B88A03BFEA9E261D6FF637` |
 | `configs/experiments/phase8_warm_placement_quality_equivalence_v3.json` | 修复后完整 116 题质量 A/B/A 冻结计划；三轮零失败零截断，最终质量 Gate accepted。 | `4B3B56628E474195150A271D70BAB0901B56C42BFA8489624C36C28EDAE52C57` |
@@ -218,3 +218,5 @@
 | `docs/results/phase8_warm_placement_regeneration_20260823.md` | 合并中文报告；保留历史 0.5% 拒绝证据，记录当前 1% Gate 接受，并链接到最终验收。 | `B924EC635B959D08F3967C7D6EBE2B2C47B68E773EF170EC11BB45B8C4DEE6BC` |
 | `docs/Q-TopoMoE_Phase8_warm_placement_final_acceptance_20260825.json` | 当前 1% 路由 Gate、有限 canary、自动闭环及无效尝试隔离的最终机器摘要；Phase 8 技术验证状态为 accepted。 | `F04331C7365B44EC1DAB8CE1756AC9FE051A167FCC4CD5CDED19316EA8868BC6` |
 | `docs/results/phase8_warm_placement_final_acceptance_20260825.md` | Phase 8 暖态 placement 最终中文验收报告；记录 384 请求 canary 和 20 窗口自动闭环结果，并明确生产部署未执行。 | `3ED65D754ACA553C8D977A39C05D878A6DAADD895419221CD563F66B58C116BD` |
+| `docs/Q-TopoMoE_release_manifest_20260825.json` | 技术验收版 release manifest；绑定推荐模型路径、候选文件与 map、运行时补丁、当前政策及最终 Gate，并声明生产部署尚未执行。 | `B9949115BB1830949DE289F79ADDBA92F83FE7903D77BEB97C638723394CEE23` |
+| `docs/Q-TopoMoE_项目发布与生产部署清单_20260825.md` | 最终中文交付清单；说明唯一推荐组合、证据语义、发布检查，以及生产小流量、扩量、闭环启用和回滚步骤。 | `D5CFD65D50AD5C24E28081E588F0ABE843BEACD0FDBFCD4D3A3D68F4C90AC5F2` |

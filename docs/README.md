@@ -22,6 +22,7 @@
 4. [逐步执行 Runbook](Q-TopoMoE_逐步执行Runbook.md)：Phase 0–8 的操作步骤。
 5. [量化与 SM120 协同方案](Q-TopoMoE_量化与SM120算子协同优化执行方案.md)：总体技术路线和约束。
 6. [数据与结果清单](DATA_CATALOG.md)：每个跟踪产物的用途、复现约束和 SHA-256。
+7. [项目发布与生产部署清单](Q-TopoMoE_项目发布与生产部署清单_20260825.md)：最终发布组合、验收证据、生产扩量和回滚边界。
 
 ## 阶段报告
 
@@ -43,7 +44,8 @@ Phase 8 selector 的数据隔离协议和命令见
 有限 canary 历史见[有限 canary 拒绝报告](results/phase8_selector_limited_canary_rejected_20260823.md)，
 旧候选最终在线结论见[自动闭环最终拒绝报告](results/phase8_selector_closed_loop_final_20260823.md)；
 停止调整旧 Gate 后的新候选结果见
-[暖态 placement 候选与质量验证报告](results/phase8_warm_placement_regeneration_20260823.md)。
+[暖态 placement 候选与质量验证报告](results/phase8_warm_placement_regeneration_20260823.md)，
+最终技术结论见[暖态 placement 最终验收](results/phase8_warm_placement_final_acceptance_20260825.md)。
 
 在线迁移的独立实验说明见[在线 placement-plan 与服务迁移实验](Q-TopoMoE_在线placement-plan与服务迁移实验_20260812.md)。
 

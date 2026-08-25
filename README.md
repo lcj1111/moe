@@ -37,6 +37,9 @@ p99/基线为 61.65%；自动闭环完成 20 窗口、
 2560 请求，trigger、10 窗口 cooldown、8-rank apply 与 rollback 全部接受。Phase 8 技术验证链
 已完成；生产部署或扩大流量仍属于后续独立变更。
 
+正式技术验收版本冻结为 `qtopomoe-phase8-accepted-20260825`；部署前置条件、扩量顺序和
+回滚标准见[项目发布与生产部署清单](docs/Q-TopoMoE_项目发布与生产部署清单_20260825.md)。
+
 ## 从哪里开始
 
 | 目的 | 推荐入口 |
@@ -48,7 +51,8 @@ p99/基线为 61.65%；自动闭环完成 20 窗口、
 | 按阶段执行 | [逐步执行 Runbook](docs/Q-TopoMoE_逐步执行Runbook.md) |
 | 查某个 JSON/配置的含义与哈希 | [数据与结果清单](docs/DATA_CATALOG.md) |
 | 查看三格式全量质量结论 | [BF16/FP8/NVFP4 full-set 收尾](docs/results/phase3_fullset_quality_closeout_20260812.md) |
-| 查看 Phase 8 selector 最新结论 | [暖态 placement 候选重生成报告](docs/results/phase8_warm_placement_regeneration_20260823.md) |
+| 查看 Phase 8 selector 最新结论 | [暖态 placement 最终验收报告](docs/results/phase8_warm_placement_final_acceptance_20260825.md) |
+| 查看最终发布与生产部署边界 | [项目发布与生产部署清单](docs/Q-TopoMoE_项目发布与生产部署清单_20260825.md) |
 
 ## 快速检查
 
