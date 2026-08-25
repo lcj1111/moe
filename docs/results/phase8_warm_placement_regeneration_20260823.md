@@ -206,8 +206,11 @@ SHA-256 为 `1f37556a11b469c3c16e96ca705da6d751d1c57d5756c74097791415aba7dcc0`�
 
 因此本轮成功关闭的是“候选是否保持冻结答案质量”“NVFP4 辅助尺度是否正确迁移”和
 “14.28% 来自哪类机制”三个问题。历史 0.5% Gate 与原 A/B/A/B `rejected` 证据保持不变；
-当前 1% Gate 已接受，候选只获准进入有限 canary。项目尚未完成，canary 和后续自动闭环
-仍须各自生成机器 Gate 与中文报告，任何一级失败都停止继续上线。
+当前 1% Gate 已接受。截至本报告冻结时，候选只获准进入有限 canary，canary 和后续自动
+闭环仍须各自生成机器 Gate 与中文报告；两级后来均已完成，结果见文末最终验收链接。
 
 机器可读摘要见
 [Q-TopoMoE_Phase8_warm_placement_regeneration_summary_20260823.json](../Q-TopoMoE_Phase8_warm_placement_regeneration_summary_20260823.json)。
+
+后续有限 canary 与自动闭环均已接受，最终结论见
+[Phase 8 暖态 placement 最终验收](phase8_warm_placement_final_acceptance_20260825.md)。

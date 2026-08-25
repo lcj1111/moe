@@ -215,4 +215,6 @@
 | `configs/experiments/phase8_warm_placement_limited_canary_v1.json` | 新暖态 placement 候选的有限 canary 冻结计划；使用显式激活文件，要求零失败、计划哈希一致和恢复 p99≤基线 105%，既有 SGLang 按用户要求不纳入本轮管理或 Gate。 | `0A2B085E5738096055132B81798799114F42870CE63E4A81284C90B6D67A9EE3` |
 | `configs/experiments/phase8_warm_placement_closed_loop_acceptance_v1.json` | 有限 canary 接受后的自动闭环冻结计划；验收三窗口 trigger、十窗口 cooldown、三窗口 placement rollback、8-rank 提交、决策开销和回滚后 p99。 | `403F55BA6059FF8E92B264F4C350B5C57360F9A89A49C3E61FB61D472D0B6392` |
 | `docs/Q-TopoMoE_Phase8_warm_placement_regeneration_summary_20260823.json` | 暖态候选、迁移修复、质量 Gate、两级路由诊断与当前 1% 准入边界的合并机器摘要；项目仍在进行。 | `877A0CFBE66C73F32E698EE5C912F1CABD9BF0664E9098F44564D2634F6EB241` |
-| `docs/results/phase8_warm_placement_regeneration_20260823.md` | 合并中文报告；保留历史 0.5% 拒绝证据，记录当前 1% Gate 接受及后续有限 canary 边界。 | `5F8A490D1E08D163DF8101C673865D63A23CEFE621BAF764B1FCBBAA6429975D` |
+| `docs/results/phase8_warm_placement_regeneration_20260823.md` | 合并中文报告；保留历史 0.5% 拒绝证据，记录当前 1% Gate 接受，并链接到最终验收。 | `B924EC635B959D08F3967C7D6EBE2B2C47B68E773EF170EC11BB45B8C4DEE6BC` |
+| `docs/Q-TopoMoE_Phase8_warm_placement_final_acceptance_20260825.json` | 当前 1% 路由 Gate、有限 canary、自动闭环及无效尝试隔离的最终机器摘要；Phase 8 技术验证状态为 accepted。 | `F04331C7365B44EC1DAB8CE1756AC9FE051A167FCC4CD5CDED19316EA8868BC6` |
+| `docs/results/phase8_warm_placement_final_acceptance_20260825.md` | Phase 8 暖态 placement 最终中文验收报告；记录 384 请求 canary 和 20 窗口自动闭环结果，并明确生产部署未执行。 | `3ED65D754ACA553C8D977A39C05D878A6DAADD895419221CD563F66B58C116BD` |

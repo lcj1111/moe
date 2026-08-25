@@ -1,0 +1,80 @@
+{
+  "schema_version": "qtopomoe.phase8_warm_placement_final_acceptance.v1",
+  "status": "accepted",
+  "date": "2026-08-25",
+  "说明": "当前1%路由稳定性Gate通过后，新暖态placement候选依次完成有限canary和trigger/cooldown/placement rollback自动闭环验收。既有SGLang按用户要求不纳入管理或Gate。",
+  "route_stability_input": {
+    "policy": "configs/strategies/phase8_route_stability_gate_policy_v2_20260825.json",
+    "policy_sha256": "de15ea79da27b5df968478b4ef7116c976dbe5905bfe10d4eccb22b16859dbe7",
+    "threshold": 0.01,
+    "short_placement_excess_tv_p95": 0.0004503732423366928,
+    "long_placement_excess_tv_p95": 0.0071754774951163745,
+    "status": "accepted"
+  },
+  "limited_canary": {
+    "status": "accepted",
+    "server_root": "/data/models/test/qtopomoe_phase8_warm_placement_limited_canary_v1_20260825",
+    "plan": "configs/experiments/phase8_warm_placement_limited_canary_v1.json",
+    "plan_sha256": "0a2b085e5738096055132b81798799114f42870ce63e4a81284c90b6d67a9ee3",
+    "gate_sha256": "5e3eb834c3f7cf74f90cd0e1f7ae156795a648a8f26be5c770afc058495631a5",
+    "candidate_id": "warm_swap_008_slots_per_layer_v1",
+    "runtime_plan_file_sha256": "3386d1457a62f4c2a9cb5cdc56b71225c8f07fae73063a0e51c142f4c0b1f29e",
+    "runtime_map_sha256": "24f09c93ff8e6c410917a3fcb087307130f8914f45c028adf23088c39fc80ac6",
+    "requests_total": 384,
+    "failed": 0,
+    "fixed_output_tokens": true,
+    "matched_request_stream": true,
+    "apply_ranks": [0, 1, 2, 3, 4, 5, 6, 7],
+    "stable_p99_ms": 5795.274248346686,
+    "migration_p99_ms": 4150.086817331612,
+    "recovery_p99_ms": 3572.800984606147,
+    "recovery_p99_ratio_to_stable": 0.6165024865950768,
+    "all_gates": true
+  },
+  "closed_loop": {
+    "status": "accepted",
+    "server_root": "/data/models/test/qtopomoe_phase8_warm_placement_closed_loop_acceptance_v1_20260825",
+    "plan": "configs/experiments/phase8_warm_placement_closed_loop_acceptance_v1.json",
+    "plan_sha256": "403f55ba6059ff8e92b264f4c350b5c57360f9a89a49c3e61fb61d472d0b6392",
+    "gate_sha256": "97933e65892d27076e3be2e0d59b8829fb8591ace29cb8cb179b4ec44692255d",
+    "windows": 20,
+    "requests_total": 2560,
+    "failed": 0,
+    "fixed_output_tokens": true,
+    "trigger_actions": ["hold", "hold", "rebalance"],
+    "apply_ranks": [0, 1, 2, 3, 4, 5, 6, 7],
+    "cooldown_windows": 10,
+    "cooldown_all_hold": true,
+    "cooldown_remaining_after_window_10": 0,
+    "rollback_fault_actions": ["hold", "hold", "rollback"],
+    "rollback_ranks": [0, 1, 2, 3, 4, 5, 6, 7],
+    "rollback_hash": "46a5de9abf04b3a6d4ae62897b2fe17dc159adf01069a7a99b8b117ec5795671",
+    "decision_overhead_pct_p95": 0.0001023068738419098,
+    "baseline_p99_ms": 5820.903237909079,
+    "post_rollback_p99_ms": 3586.0737999901175,
+    "post_rollback_p99_ratio_to_baseline": 0.6160682721257995,
+    "all_gates": true
+  },
+  "excluded_attempts": [
+    {
+      "server_root": "/data/models/test/qtopomoe_phase8_warm_placement_limited_canary_v1_20260825_preflight_no_sglang",
+      "reason": "执行器在接管服务前发现30002离线；未启动模型、未改动GPU，不属于实验结果。"
+    },
+    {
+      "server_root": "/data/models/test/qtopomoe_phase8_warm_placement_limited_canary_v1_20260825_invalid_control_mode",
+      "reason": "计划使用控制文件模式而执行器发送激活文件，migration未应用placement且recovery未运行；隔离后用修正版完整重跑。"
+    }
+  ],
+  "service_scope": {
+    "sglang_managed": false,
+    "sglang_gate_required": false,
+    "说明": "按用户明确要求，本轮不用管SGLang。"
+  },
+  "final_boundary": {
+    "phase8_validation_status": "completed_accepted",
+    "candidate_status": "accepted_under_current_1pct_policy",
+    "additional_runbook_validation_experiments_required": false,
+    "production_deployment_performed": false,
+    "说明": "当前Runbook内的候选质量、路由稳定性、有限canary和自动闭环均已完成验收；扩大流量或生产部署属于后续独立变更。"
+  }
+}

@@ -19,13 +19,11 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 | Phase 3 | route trace、漂移分析和冻结官方协议 | route、三格式 full-set 合并与共同分母对比均已完成 |
 | Phase 4–6 | M-bucket、kernel/backend selector、通信矩阵 | 正式实测已归档 |
 | Phase 7 | placement-plan、在线迁移、恢复与 p99 | Gate 已接受 |
-| Phase 8 | selector 训练、900 次独立测试、one-shot、自动闭环与新 placement 重生成 | 新候选质量 A/B/A 与当前 1% 路由稳定性 Gate 均已接受；下一步执行有限 canary |
+| Phase 8 | selector 训练、900 次独立测试、one-shot、自动闭环与新 placement 重生成 | 新候选质量、当前 1% 路由 Gate、有限 canary 与自动闭环均已接受 |
 
-动态 trigger 与 8-rank placement apply 已验证，控制器也能在连续三个 p99 退化窗口后
-发出 rollback；但 10 窗口 cooldown 未完成，原生 generation=2 rollback 提交路径尚未验收。
-最终代表负载下迁移前 p99 EMA 为 3488 ms，迁移后连续三窗为 3766、3691、3719 ms，
-因此自动闭环上线仍被禁止。此前五轮 one-shot 的固定阶段顺序存在冷启动/预热偏差，
-不能再作为性能收益成立的证据。
+较早 selector 候选的闭环曾因 10 窗口 cooldown 和原生 generation=2 rollback 未通过而拒绝，
+此前五轮 one-shot 的固定阶段顺序也存在冷启动/预热偏差，不能再作为性能收益成立的证据。
+这些历史结果保留，但不作为新暖态 placement 候选的最终结论。
 
 随后已冻结旧 Gate 并基于 48 个真实暖态窗口重新生成最小迁移量候选。新候选只移动
 320/10240 个槽位，A/B/A/B 中 rank CV 改善 36.55%，p99 中位数比为 101.83%；但逻辑专家
@@ -34,8 +32,10 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 14.28% 具体幅度没有复现。当前有效上限已调整为 1%，因此短臂 0.045% 与长臂 0.718%
 均通过路由稳定性 Gate，不再增加本阶段诊断。修复 NVFP4 Marlin 辅助尺度迁移后，
 完整 116 题质量 A/B/A 已接受：三轮均零失败、零截断，候选 110/116，高于 identity 的
-较低值 106/116，且唯一新增退化为 0。候选现已获准进入有限 canary；项目仍在进行中，
-canary 通过后还需验收 trigger、cooldown 与 rollback 自动闭环。
+较低值 106/116，且唯一新增退化为 0。随后有限 canary 完成 384/384 零失败，恢复
+p99/基线为 61.65%；自动闭环完成 20 窗口、
+2560 请求，trigger、10 窗口 cooldown、8-rank apply 与 rollback 全部接受。Phase 8 技术验证链
+已完成；生产部署或扩大流量仍属于后续独立变更。
 
 ## 从哪里开始
 
