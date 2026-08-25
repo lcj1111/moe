@@ -6,7 +6,7 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 
 ## 当前结论
 
-> 更新时间：2026-08-24（Asia/Shanghai）
+> 更新时间：2026-08-25（Asia/Shanghai）
 > 当前状态：BF16、FP8、NVFP4 full-set 均已完成基础轮、有限续跑、严格合并与
 > 三格式共同分母比较。共同完成的 24,330 条上三者分别为 86.9955%、86.9749%、
 > 86.3009%；BF16 与 FP8 总体近似持平，NVFP4 相对 BF16 下降 0.6946 个百分点。
@@ -48,6 +48,7 @@ p99/基线为 61.65%；自动闭环完成 20 窗口、
 | 独立接管和操作项目 | [项目接管与操作手册](docs/Q-TopoMoE_项目接管与操作手册_20260813.md) |
 | 回顾完整执行顺序与故障处置 | [项目执行全史与问题处置](docs/Q-TopoMoE_项目执行全史与问题处置_20260813.md) |
 | 从头复现 | [复现阅读指南](docs/Q-TopoMoE_复现阅读指南.md) |
+| 看懂代码调用关系 | [代码导读](docs/Q-TopoMoE_代码导读.md) |
 | 按阶段执行 | [逐步执行 Runbook](docs/Q-TopoMoE_逐步执行Runbook.md) |
 | 查某个 JSON/配置的含义与哈希 | [数据与结果清单](docs/DATA_CATALOG.md) |
 | 查看三格式全量质量结论 | [BF16/FP8/NVFP4 full-set 收尾](docs/results/phase3_fullset_quality_closeout_20260812.md) |
@@ -99,6 +100,7 @@ qtopomoe_use_sglang
 ```bash
 # 配置和结构检查
 python scripts/validate_configs.py
+python scripts/check_document_references.py
 
 # checkpoint 静态/真实加载 Gate（示例；输出目录必须是新目录）
 BACKEND=vllm MODEL_PATH=<checkpoint> OUT_DIR=<新输出目录> \

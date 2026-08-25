@@ -1,21 +1,10 @@
 # 阶段 4–7：kernel、融合、通信与 EPLB 工程
 
-> 以下为按日期合并的历史报告。源内容已保留，仅规范化了行尾空格；SHA-256 按 UTF-8 Git blob（LF 换行）计算，机器可读产物保持原始路径以确保复现。
+本文合并 Phase 4–7 的 kernel、融合、通信、EPLB 和早期 selector 工程记录。旧拆分稿
+已经删除；可复核数据集中在 `docs/` 下对应阶段 JSON，执行入口集中在 `scripts/`、
+`phase4/`、`phase7/` 和 `selector/`。
 
-## 源文件完整性
-
-| 原始文件 | UTF-8 字节数 | Git blob 的 SHA-256 |
-|---|---:|---|
-| `docs/Q-TopoMoE_Phase4_Phase8_progress_20260806.md` | 3843 | `AEC891E2CA92D82659F931DB30880B287E1CDAA58C82D23E7076AB4B1C3FA12E` |
-| `docs/Q-TopoMoE_Phase5_progress_20260806.md` | 3834 | `476E1C6518EDEE2ABED56A681AF47EB361B43AA342D68B6968C5D442ADE349A9` |
-| `docs/Q-TopoMoE_Phase6_progress_20260807.md` | 5881 | `8095626C7ACB7038F8B0B88D13CA3D8CA75DA25C6B87DB8D98466074E2018A8A` |
-| `docs/Q-TopoMoE_Phase7_progress_20260807.md` | 2314 | `FD6E7474860D52120981F30669BD731AF6300C6226C2E512838B58F0DAECF63F` |
-| `docs/Q-TopoMoE_Phase4_Phase8_framework.md` | 3614 | `72486B691954A41AB3330CDD9670B1187F2FEF37D22E32CB5A1CFDA40224C975` |
-| `docs/Q-TopoMoE_Phase4_Phase8_offline_tasks.md` | 1738 | `3081F3C4F93488B3660F744A2453B234C37E51ED87D5B948E873CDE382E00215` |
-
----
-
-## 源文件： `docs/Q-TopoMoE_Phase4_Phase8_progress_20260806.md`
+## Phase 4：kernel 与策略回放
 
 # Q-TopoMoE Phase 4/8 进展：Triton MoE kernel 实测与策略回放
 
@@ -97,7 +86,7 @@ p95=28.27%（由预测值极小的 smoke observation 拉高——预测 0.56ms �
 
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase5_progress_20260806.md`
+## Phase 5：permute 与量化融合
 
 # Q-TopoMoE Phase 5：Level 2 融合 kernel（permute + quant/scale + pack）
 
@@ -195,7 +184,7 @@ A/B 数据：[Q-TopoMoE_Phase5_prepare_ab_20260807.json](../Q-TopoMoE_Phase5_pre
 
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase6_progress_20260807.md`
+## Phase 6：TP/DP/EP 通信矩阵
 
 # Q-TopoMoE Phase 6：TP/DP/EP 系统矩阵（P2P 后全量）
 
@@ -300,7 +289,7 @@ A/B 数据：[Q-TopoMoE_Phase5_prepare_ab_20260807.json](../Q-TopoMoE_Phase5_pre
 
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase7_progress_20260807.md`
+## Phase 7：专家迁移与 placement
 
 # Q-TopoMoE Phase 7：量化感知 EPLB（离线 placement 与迁移成本）
 
@@ -367,7 +356,7 @@ load-aware 策略把不均衡从 2-3% 压到 0.02%，预测 p99 略降（0.234 �
 默认选择；缺失或无效数据会抛出 `SelectionError`，`allow_unmeasured=True`
 只能用于显式开发 dry-run。
 
-### M-bucket workload
+### M-bucket 工作负载
 
 ```bash
 python3 phase4/workload/generate_m_buckets.py \

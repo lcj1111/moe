@@ -1,19 +1,12 @@
 # 阶段 3：route trace 与 official-like 评测
 
-> 以下为按日期合并的历史报告。源内容已保留，仅规范化了行尾空格；SHA-256 按 UTF-8 Git blob（LF 换行）计算，机器可读产物保持原始路径以确保复现。
+本文合并 route trace、漂移分析、官方协议 full-set 和 NVFP4/EPLB 结果。旧拆分稿已经
+删除；当前机器证据从
+[BF16/W4A16 漂移 JSON](../Q-TopoMoE_Phase3_route_drift_bf16_vs_w4_20260806.json)、
+[BF16/NVFP4 漂移 JSON](../Q-TopoMoE_Phase3_route_drift_BF16_vs_NVFP4_20260809.json)和
+[三格式质量总结](../Q-TopoMoE_Phase3_BF16_FP8_NVFP4_质量总结_20260816.json)进入。
 
-## 源文件完整性
-
-| 原始文件 | UTF-8 字节数 | Git blob 的 SHA-256 |
-|---|---:|---|
-| `docs/Q-TopoMoE_Phase3_route_trace_full_drift_20260806.md` | 3687 | `A8A5394F3CB33B8316776F5F06AC55D6354AEEEF1BF5EFF011E6EEB8ADC2D268` |
-| `docs/Q-TopoMoE_Phase3c_full_set_official_protocol_20260806.md` | 5126 | `BCDDFFB2A6640878E88BC5930A3BE05701D8AECFD7F6910AF3DE81EC9A3F1EFC` |
-| `docs/Q-TopoMoE_Phase3c_full_official_W4_results_20260806.md` | 3043 | `E6206F2E4B03FC0F0A116A7FFA066F6A50C5F6CFFC0591C08E01106C2D6A673F` |
-| `docs/Q-TopoMoE_Phase3_NVFP4_route_and_Phase7_EPLB_20260809.md` | 5414 | `0E3BBA6B2AE986CEF97FAA1B43FF21BC10FFF8A173587F1EC239403ADB1D2E65` |
-
----
-
-## 源文件： `docs/Q-TopoMoE_Phase3_route_trace_full_drift_20260806.md`
+## 全量 route trace 与漂移
 
 # Q-TopoMoE Phase 3：全量 route trace 采集与漂移分析报告
 
@@ -43,7 +36,7 @@ seed=42、gen_tokens=16、TP4、GPU0-3，仅模型与 MoE backend 不同：
 `expert_service_time_us` 为 null**（vLLM 该机制不导出），因此本报告不含
 router-probability KL，也不伪造 kernel 延迟数据。
 
-采集脚本：`traces/capture_routes.py`；采集后自动生成
+采集脚本：`traces/capture_routes.py`；采集后在服务器输出目录自动生成
 `capture_manifest.json`（含每个 npy 的 SHA-256）与
 `expert_token_histogram.json`（M-bucket 分布）。
 
@@ -96,7 +89,7 @@ router-probability KL，也不伪造 kernel 延迟数据。
 
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase3c_full_set_official_protocol_20260806.md`
+## full-set 官方协议
 
 # Q-TopoMoE Phase 3c：full-set 官方协议冻结与计时 pilot
 
@@ -109,7 +102,7 @@ router-probability KL，也不伪造 kernel 延迟数据。
 
 ### MMLU-Pro（TIGER-AI-Lab/MMLU-Pro，NeurIPS 2024）
 
-- 官方脚本 `evaluate_from_api.py`：5-shot，每 category 取 validation 集的
+- MMLU-Pro 上游评测脚本（本仓库未收录）`evaluate_from_api.py`：5-shot，每 category 取 validation 集的
   CoT 示例（`cot_content`）。
 - Prompt 模板："The following are multiple choice questions (with answers)
   about {category}. Think step by step and then output the answer in the
@@ -129,10 +122,10 @@ router-probability KL，也不伪造 kernel 延迟数据。
 
 ### 与旧协议的区别
 
-上一版冻结（`full_set_official_v1.jsonl`）采用 Qwen3 chat 默认采样
+上一版冻结输入（服务器生成的大文件，不入 Git）`full_set_official_v1.jsonl` 采用 Qwen3 chat 默认采样
 （`enable_thinking=true, temperature=1.0, top_p=0.95, top_k=20,
 presence_penalty=1.5`），不是 benchmark 官方协议。新冻结
-（`full_set_official_protocol_v1.jsonl`）逐项对齐官方 harness。
+（同样不入 Git 的 `full_set_official_protocol_v1.jsonl`）逐项对齐官方 harness。
 
 ## 2. 官方协议冻结结果
 
@@ -212,7 +205,7 @@ port 8080，PID 见 gate 记录），释放全部 8 卡：
 
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase3c_full_official_W4_results_20260806.md`
+## W4A16 full-set 结果
 
 # Q-TopoMoE Phase 3c：W4A16 full-set 官方协议评测结果
 
@@ -279,7 +272,7 @@ advanced_mathematics 2 等）。响应尾部显示模型进入"最终猜测/自�
 
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase3_NVFP4_route_and_Phase7_EPLB_20260809.md`
+## NVFP4 route 与 EPLB
 
 # 阶段 3 NVFP4 路由 trace 与阶段 7 EPLB 检查点
 

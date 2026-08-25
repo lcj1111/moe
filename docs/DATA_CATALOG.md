@@ -155,7 +155,8 @@
 | `docs/results/phase4_to_phase7_engineering.md` | Phase 4–7 kernel、融合、通信与 EPLB 进展叙述 |
 | `docs/results/phase8_benchmark_history.md` | Phase 8 校准、回放、容量与故障叙述 |
 
-合并文件记录源文件字节数和 SHA-256。Git 历史仍保留原始文件名，因此合并可逆。
+旧拆分稿已从当前目录删除，当前入口只保留上表五份合并报告。需要追溯合并前文本时使用
+Git 历史；日常阅读和复现不要再引用旧文件名。
 # 2026-08-12 新增机器可读产物
 
 | 路径 | 数据说明 | SHA-256 |

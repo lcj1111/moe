@@ -1,17 +1,8 @@
 # 阶段 1：BF16/FP8 服务基线
 
-> 以下为按日期合并的历史报告。源内容已保留，仅规范化了行尾空格；SHA-256 按 UTF-8 Git blob（LF 换行）计算，机器可读产物保持原始路径以确保复现。
-
-## 源文件完整性
-
-| 原始文件 | UTF-8 字节数 | Git blob 的 SHA-256 |
-|---|---:|---|
-| `docs/Q-TopoMoE_Phase1_BF16_FP8_实测报告.md` | 3670 | `106AD62B9E3D22CF98B524888EF6B095090E27A5869F2F3B0CE524D9FB047E7A` |
-| `docs/Q-TopoMoE_Phase1_BF16_实测报告.md` | 2096 | `05F39ACF3FB85508F57C68AA56FAC4584D8738455E535ACAF0CAED9D3F9A03D8` |
-| `docs/Q-TopoMoE_Phase1_statistics_20260804.md` | 6144 | `A872EB632E2087D072D8E8F86F4CDAFD820AD8FEB90160DD3A952644FC38506B` |
-| `docs/Q-TopoMoE_BF16_checkpoint_manifest.md` | 813 | `67260DA607117134019861CD174C213BBC567959508AC1961D083014AF4B3912` |
-
----
+本文合并 BF16/FP8 服务、检查点身份和统计结论。旧拆分稿已经删除，仓库内唯一的阶段 1
+叙述入口就是本文件；机器数据以
+[阶段 1 统计 JSON](../Q-TopoMoE_Phase1_statistics_20260804.json)及 P2P 重测矩阵为准。
 
 ## BF16 检查点身份
 
@@ -33,7 +24,7 @@ QTOPOMOE_BF16_MODEL=/home/k8s-ops/.cache/modelscope/models/Qwen--Qwen3.6-35B-A3B
 
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase1_BF16_FP8_实测报告.md`
+## BF16 与 FP8 首轮服务实测
 
 # Q-TopoMoE Phase 1：BF16/FP8 服务基线实测报告
 
@@ -56,7 +47,7 @@ QTOPOMOE_BF16_MODEL=/home/k8s-ops/.cache/modelscope/models/Qwen--Qwen3.6-35B-A3B
 - `serving/start_server.sh`：只负责启动 SGLang/vLLM 服务，服务端参数来自环境变量；自动把锁定 venv 的 `bin/` 放入 `PATH`，确保 FlashInfer 能找到 `ninja`。
 - `serving/acceptance.sh`：依次验收 health、模型发现、真实 completion、metrics，并保存 JSON/Prometheus 证据。
 - `clients/smoke.py`：独立客户端，固定 seed，支持并发 1/8/32，记录 TTFT、TPOT、E2E、成功/失败数。
-- `scripts/phase1_matrix.sh`：按拓扑逐组启动、验收、筛选、释放服务并写出 `matrix.tsv` 与 `phase1_summary.json`。
+- `scripts/phase1_matrix.sh`：按拓扑逐组启动、验收、筛选和释放服务；运行后在输出目录写入 `matrix.tsv` 与 `phase1_summary.json`。
 
 ## 5.3–5.5 启动与验收
 
@@ -65,7 +56,8 @@ FP8 推荐组 `TP2-NODE (GPU 0,2)` 的独立预检通过：
 - health、模型发现、真实 chat completion、metrics 全部通过；completion 返回 `42`。
 - 32 请求 smoke：32/32 成功、失败 0；短 workload 下 TTFT p50 约 1.43 s、p95 约 2.27 s，TPOT p50 约 6.38 ms。
 
-FP8 矩阵中 10 个 TP2/TP4 配置均重复通过四级验收和 6 个 workload/concurrency 单元。BF16 结果见 `Q-TopoMoE_Phase1_BF16_实测报告.md`。
+FP8 矩阵中 10 个 TP2/TP4 配置均重复通过四级验收和 6 个 workload/concurrency 单元。
+BF16 结果已合并到下文“BF16 单格式补充实测”。
 
 ## 5.6 筛选矩阵摘要
 
@@ -104,7 +96,7 @@ FORMAT=fp8 RUN_ID=<RUN_ID> scripts/phase1_matrix.sh
 
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase1_BF16_实测报告.md`
+## BF16 单格式补充实测
 
 # Q-TopoMoE Phase 1：BF16 服务基线实测报告
 
@@ -157,7 +149,7 @@ RUN_ID=<RUN_ID> FORMAT=bf16 \
 
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase1_statistics_20260804.md`
+## 阶段 1 统计结论
 
 # 阶段 1 BF16/FP8 统计分析
 
@@ -166,7 +158,7 @@ RUN_ID=<RUN_ID> FORMAT=bf16 \
 - 矩阵行数：78（completed：78，failed/incomplete：0）
 - `acceptance=true` 的行数：0
 
-## Grouped medians
+## 分组中位数
 
 | Format | Topology | Workload | C | Runs | TTFT p95 ms | TPOT p95 ms | E2E p95 ms |
 |---|---|---:|---:|---:|---:|---:|---:|
@@ -249,7 +241,7 @@ RUN_ID=<RUN_ID> FORMAT=bf16 \
 | fp8 | tp4_numa1 | short | 32 | 1 | 1077.22 | 9.90 | 2290.71 |
 | fp8 | tp4_numa1 | short | 8 | 1 | 334.60 | 5.64 | 1044.74 |
 
-## Overlapping BF16/FP8 configurations
+## BF16/FP8 重叠配置
 
 | Topology | Workload | C | FP8 E2E p95 delta | FP8 TTFT p95 delta |
 |---|---|---:|---:|---:|

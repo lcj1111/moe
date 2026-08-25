@@ -5,16 +5,11 @@
 > “P2P 不可用、PIX 最慢、TP2 优先 NODE”已被后续实测推翻，不可再作为
 > 当前部署建议。
 
-## 合并来源完整性
+## 文档范围
 
-| 原始文件 | UTF-8 字节数 | SHA-256 |
-|---|---:|---|
-| `docs/Q-TopoMoE_8x5090实机拓扑评估与首轮实验矩阵.md` | 426 | `747f430ecc392bda5c3aba0e5cc58b5bd64bce840eea522bb5ec38f99c97a981` |
-| `docs/Q-TopoMoE_gpu111_phase0实测分析.md` | 12,273 | `72c6398639a0115d8fba9750a289d2c2f5317bd38728c45b05278cc9885eca10` |
-| `docs/Q-TopoMoE_Phase0_P2P_update_20260807.md` | 2,924 | `5171e64e10d08b6a79ddf5ff1bb06222cd337741e340a399eb0899261080a1b4` |
-| `docs/Q-TopoMoE_P2P_retest_summary_20260807.md` | 3,588 | `2c49bc505aec480d861603f8eec2c3a540ac8ec854d3f3bfa21c3fc310f8b0f8` |
-
-旧文件可从 Git 历史按上表哈希核验；执行入口、原始 JSON 与日志路径没有改动。
+本文已经吸收首轮拓扑评估、2026-08-03 实测、P2P 启用记录和 2026-08-07 重测。
+这些拆分稿不再作为仓库入口；需要追溯编辑过程时查看 Git 历史，当前结论和复现路径以本文
+及 [Phase 0 验证脚本](q_topomoe_phase0_verify.sh) 为准。
 
 > 执行日期：2026-08-03
 > 原始结果目录：`/home/k8s-ops/artifacts/q_topomoe_phase0`
@@ -237,8 +232,9 @@ P2P 配置生效后，8×8 peer access 全部可用，NCCL 日志显示
 
 PIX 在 256 MiB 上由最慢变为最快，约提升 2.9 倍。当前 TP2 首选恢复为
 PIX 对 `(0,1)`、`(2,3)`、`(4,5)`、`(6,7)`；TP4 优先单 NUMA，跨 NUMA
-继续作为压力项。通信代价应使用 `configs/communication/nccl_cost_db_p2p.json`
-及原始矩阵 `artifacts/raw/20260807T120000Z_nccl_formal_p2p/`；若驱动、BIOS
+继续作为压力项。通信代价应使用
+[当前 NCCL 成本库](../configs/communication/nccl_cost_db.json)。服务器原始矩阵目录为
+`artifacts/raw/20260807T120000Z_nccl_formal_p2p/`，它不随 Git 仓库分发；若驱动、BIOS
 或 P2P 状态变化，必须重测，不能沿用本结论。
 
 新旧 `effective_us_per_gb`：TP2 PIX 65,200.6→23,458.4（-64%），TP2 NODE

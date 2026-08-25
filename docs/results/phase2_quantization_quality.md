@@ -1,24 +1,11 @@
 # 阶段 2：量化、规范化检查点与质量 Gate
 
-> 本文件将阶段 2 的历史报告合并为中文说明。路径、命令、框架版本、模型键名、哈希和协议中的固定英文文本保持原样，以保证结果可复现；机器可读产物不做翻译或改名。
-
-## 源文件完整性
-
-| 原始文件 | UTF-8 字节数 | Git blob SHA-256 |
-|---|---:|---|
-| `docs/Q-TopoMoE_Phase2_NVFP4_gate_20260807.md` | 6407 | `6E3B46BCBE41BC9431886AA992B6D542F30677950BA703B743457A0F00C88617` |
-| `docs/Q-TopoMoE_Phase2_official_like_v2_BF16_W4_results_20260805.md` | 4988 | `76CA73A02897F78F1C204355A46CB5CEB9B5DA5199A7F037234E25D2A485BCFA` |
-| `docs/Q-TopoMoE_Phase2_quality_smoke_and_backend_gate_20260805.md` | 2865 | `C8819C316AD364079BED2F8923785B4F7BB4D3B6A5D046C84A4B7233EB19D581` |
-| `docs/Q-TopoMoE_Phase2_W4A16_failure_log.md` | 870 | `4F1C67E987A5F64F6268BBF072D3C6D61C162BF92C19BA6BBDA3EEB30B727358` |
-| `docs/Q-TopoMoE_Phase2_W4A16_load_gate_20260805.md` | 947 | `2F283AF7C423A549A06C64AD9A73C645F3C8046E87ECFADB7BEA5300052CACE6` |
-| `docs/Q-TopoMoE_Phase2_W4A16_run_status.md` | 1212 | `6305D7D4F17D35E1654B73B5EDCEF43BF3FBAE9B81AC4F5A9779A1EE4864CF11` |
-| `docs/Q-TopoMoE_Phase2_WikiText_calibration_report.md` | 3599 | `C2E3F2E716D46E314504026F6A9BDAE75AC2165CC9386DB9A4F51524C55368E7` |
-| `docs/Q-TopoMoE_Phase2_量化预检报告.md` | 3585 | `C453A1B644C100CB55B7119AC0E6CB349E594C038E54FAE42B7ADC7ABEA17C72` |
-| `docs/Q-TopoMoE_Qwen35_compat_baseline_20260805.md` | 3110 | `4F9372853431572CF9DA68A61FC573953A8C6E3186F458A5818D648978D07F22` |
-| `docs/Q-TopoMoE_Qwen35_original_upstream_gate_20260805.md` | 1647 | `CCB85819FE05F91800E8E2A98DD5F0F579B59D0E44A04A491B7B92EE218B4487` |
-| `docs/Q-TopoMoE_Qwen35_canonical_tp1_gate_20260805.md` | 1200 | `252FF532C1B7C21A4512459471174F022B036BBCCA8905C7E7EF4C1894538A80` |
-| `docs/Q-TopoMoE_Qwen35_canonical_tp2_smoke_20260805.md` | 1152 | `D1F81915C2D9CA4C3BBB3F302F9B1E5B50F37308B992E0667A18608F5781DEC4` |
-| `docs/Q-TopoMoE_W4A16_block64_transform_20260807.md` | 2271 | `F49DB09EC253F76694C39E2FC861BB23B8DF4BD581AE42E9BA0AB5D638CF0542` |
+本文是阶段 2 的唯一叙述入口，覆盖量化预检、W4A16/NVFP4、校准、后端隔离和质量
+Gate。旧拆分稿不再保留；机器结果直接查看
+[NVFP4 审计](../Q-TopoMoE_Phase2_NVFP4_audit_20260807.json)、
+[W4A16 审计](../Q-TopoMoE_Phase2_W4A16_audit_20260805.json)、
+[WikiText 校准清单](../Q-TopoMoE_Phase2_WikiText_calibration_manifest.json)和
+[BF16/W4A16 对比](../Q-TopoMoE_Phase2_official_like_v2_BF16_vs_W4_compare_20260805.json)。
 
 ## 1. 官方 NVFP4 检查点
 
@@ -118,7 +105,7 @@ SGLang 为 251/7341 ms、63.7/66.4 ms、4.27/11.33 s。后者长尾包含首次�
 复制同一 scale，packed int4 权重不变，配置 `weights.group_size` 从 128 改为 64。
 脚本为 `quantization/reblock_w4a16_128_to_64.py`，独立产物为
 `/data/models/test/qtopomoe_w4a16_canonical_text_v1_g64`，关系记录在
-`reblock_128_to_64.manifest.json`，不会覆盖 block128 canonical。
+运行后生成的 `reblock_128_to_64.manifest.json`，不会覆盖 block128 canonical。
 
 六类代表张量的 packed 权重完全一致，scale 维度按两倍扩展，反量化逐位一致
 （max diff = 0.0）。TP8×W4A16 从 group128 格式拒绝变为 32/32 smoke 通过；

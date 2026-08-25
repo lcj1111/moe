@@ -1,18 +1,8 @@
 # 阶段 8：基准测试与校准历史
 
-> 本文件将 Phase 8 的 7 份历史叙述报告合并为中文说明。机器可读 JSON、配置路径、哈希、命令和服务端目录保持原样；原始文件名及 SHA-256 见下表。
-
-## 源文件完整性
-
-| 原始文件 | UTF-8 字节数 | SHA-256 |
-|---|---:|---|
-| `docs/Q-TopoMoE_Phase8_all_formats_repeated_bootstrap_20260810.md` | 4882 | `BEFC17B978267D5F0AC7C9BBED648FD6B380C17FBA9E31AFB2FE16C0EE00D686` |
-| `docs/Q-TopoMoE_Phase8_all_formats_single_pass_screen_20260809.md` | 4183 | `64EF6FE5C55120C8AEEB1ED9FD990C2BD1AA3CF360C4112DF8C8438810CA54A9` |
-| `docs/Q-TopoMoE_Phase8_cache_arrival_pilot_v3_20260810.md` | 2526 | `1F13A9F2A2695BD4922988BC451B657E50F9250F2899F3633ACDE3EC88399780` |
-| `docs/Q-TopoMoE_Phase8_calibration_readiness_20260810.md` | 4570 | `2B54CDC8591ED12F13459A703F30CB66BB6F5A47323D3349E73F824B4E15A65E` |
-| `docs/Q-TopoMoE_Phase8_capacity_rate_freeze_20260810.md` | 2462 | `30DA2FB452E868B293B1F21D75674677037C1F2C1FD0E32CB2EB0D27D799A790` |
-| `docs/Q-TopoMoE_Phase8_repeated_run_incidents_20260809.md` | 1604 | `8D168CD632A928EDA2B2848EFE25BBC43AB24A984380D5ADD4DE59532E82135B` |
-| `docs/Q-TopoMoE_Phase8_service_calibration_cv_20260810.md` | 3187 | `3D198C82056B37B0479B267386429B2EEDEAB280EBC91723BCD6312A3488B504` |
+本文收拢 Phase 8 的单次筛选、五次重复、缓存/到达率校准、容量冻结和运行故障记录。
+旧拆分稿已经删除；机器结果仍保留在 `docs/`，当前最终结论则以
+[暖态 placement 最终验收](phase8_warm_placement_final_acceptance_20260825.md)为准。
 
 ## 1. 五次重复 bootstrap Gate
 
