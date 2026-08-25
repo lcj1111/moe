@@ -25,7 +25,7 @@
     "runtime_map_sha256": "24f09c93ff8e6c410917a3fcb087307130f8914f45c028adf23088c39fc80ac6",
     "runtime_patch": "runtime_patches/qtopomoe_eplb/sitecustomize.py",
     "runtime_patch_sha256": "f92fca6c54a3b80ed966262761e3773b2e061dfb6bc2087f48af40aadf071c88",
-    "control_file_mode": true,
+    "control_file_mode": false,
     "host": "127.0.0.1",
     "port": 31690,
     "served_model_name": "qtopomoe-phase8-warm-placement-limited-canary-v1",
