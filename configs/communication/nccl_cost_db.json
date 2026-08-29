@@ -44,7 +44,7 @@
     }
   ],
   "metric_definition": "mean NCCL time_us; effective_us_per_gb is a descriptive rate, not a linear model",
-  "note": "P2P enabled (2026-08-07); supersedes nccl_cost_db_nop2p_20260803.json",
+  "note": "P2P enabled authoritative profile measured on 2026-08-07",
   "points": [
     {
       "ci95_half_width_us": 0.40773114954178796,

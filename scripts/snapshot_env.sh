@@ -28,7 +28,7 @@ for model in "$QTOPOMOE_FP8_MODEL" "$QTOPOMOE_NVFP4_MODEL"; do
   fi
 done > "$snapshot/model-identities.txt"
 
-sha256sum "$QTOPOMOE_PHASE0/nccl/formal5/formal5-statistics.csv" \
-  > "$snapshot/phase0-formal5.sha256"
+sha256sum "$QTOPOMOE_ARTIFACTS/raw/20260807T120000Z_nccl_formal_p2p/nccl/statistics.json" \
+  > "$snapshot/phase0-p2p-formal.sha256"
 
 echo "Snapshot written to $snapshot"

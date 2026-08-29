@@ -1,15 +1,13 @@
 # Q-TopoMoE：面向 PCIe 多 GPU 的量化感知 MoE 并行、动态负载均衡与 SM120 算子协同优化
 
 > 适用平台：单机 8×NVIDIA GeForce RTX 5090（SM120、32 GB/卡、PCIe 互连）
-> 方案核验日期：2026-08-03
+> 方案核验日期：2026-08-07
 > 推荐主模型：Qwen3.6-35B-A3B（35B 总参数、3B 激活参数、256 个专家）
 
-> **2026-08-07 实机修订**：gpu-111 的 GPU P2P 已启用，8×8 peer access
-> 全部可用；PIX 双卡 256 MiB AllReduce 从约 15.5 提升到 45.0 GB/s，当前
-> TP2 首选恢复为 PIX 对 `(0,1)`、`(2,3)`、`(4,5)`、`(6,7)`。2026-08-03
-> 的“P2P 不可用、NODE 优于 PIX”只保留为配置变更前的历史基线。EP4 仍优先
-> 单 NUMA，EP8 仍作为跨 NUMA 压力项；默认 ERDMA/RoCE 路径的历史崩溃证据
-> 继续保留。完整新旧对比见 [Phase 0 实测分析](Q-TopoMoE_gpu111_phase0实测分析.md)。
+> **实机基线**：gpu-111 的 GPU P2P 已启用，8×8 peer access 全部可用。
+> TP2 优先使用 PIX 对 `(0,1)`、`(2,3)`、`(4,5)`、`(6,7)`；EP4
+> 优先单 NUMA，EP8 作为跨 NUMA 压力项。完整测量和约束见
+> [Phase 0 实测分析](Q-TopoMoE_gpu111_phase0实测分析.md)。
 
 ## 1. 结论
 

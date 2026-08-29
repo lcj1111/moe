@@ -20,7 +20,7 @@ NVFP4，并以可复现的服务 Gate、冻结评测集和机器可读结果为�
 | Phase 2 | W4A16/NVFP4 审计、真实加载和 official-like Gate | 已完成；正式路线采用 RedHatAI NVFP4 |
 | Phase 3 | route trace、漂移分析和冻结官方协议 | route、三格式 full-set 合并与共同分母对比均已完成 |
 | Phase 4–6 | M-bucket、kernel/backend selector、通信矩阵 | 正式实测已归档 |
-| Phase 7 | placement-plan、在线迁移、恢复与 p99 | Gate 已接受 |
+| Phase 7 | P2P 迁移微基准与 placement 实现 | 已完成；部署计划由 Phase 8 暖态链生成 |
 | Phase 8 | 暖态 placement、质量、路由稳定性、有限 canary 与自动闭环 | 技术 Gate 已接受 |
 
 Phase 8 最终采用 `warm_swap_008_slots_per_layer_v1`：移动 320/10240 个槽位；
@@ -28,8 +28,8 @@ Phase 8 最终采用 `warm_swap_008_slots_per_layer_v1`：移动 320/10240 个�
 2560 请求的 trigger/cooldown/apply/rollback 自动闭环均已接受。该结论只表示技术验证完成，
 扩大流量、长期运行和生产切换仍是独立变更。
 
-旧 selector、旧 placement、被替代的准入政策和无效编排尝试不属于当前结论；它们的处理理由
-统一记录在[实验决策记录](docs/DECISIONS.md)，完整报告保存在 `docs/archive/`。
+被拒绝但合同有效的候选和被替代政策不属于当前结论；处理理由统一记录在
+[实验决策记录](docs/DECISIONS.md)。
 
 正式技术验收版本冻结为 `qtopomoe-phase8-accepted-20260825`；部署前置条件、扩量顺序和
 回滚标准见[项目发布与生产部署清单](docs/Q-TopoMoE_项目发布与生产部署清单_20260825.md)。

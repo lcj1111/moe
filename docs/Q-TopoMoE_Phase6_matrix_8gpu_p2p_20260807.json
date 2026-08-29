@@ -1,7 +1,7 @@
 {
   "schema_version": "qtopomoe.phase6.p2p_retest.v1",
   "date": "2026-08-07",
-  "note": "P2P enabled; smoke 32 req concurrency 8, 256/64; supersedes old P2P-disabled numbers",
+  "note": "P2P enabled; smoke 32 req concurrency 8, 256/64",
   "rows": [
     {
       "run_tag": "tp8_dp1_p2p",

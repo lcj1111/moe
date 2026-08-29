@@ -10,7 +10,7 @@
 本文件主体是 2026-08-09 历史快照。继续任务前先采用以下新状态：
 
 - 服务器仓库已迁移到 `/data/moe`，模型与实验结果仍在 `/data/models/test`；
-- NVFP4 EP8 的在线 placement-plan/迁移/恢复 Gate 已接受，历史详情见[阶段 7–8 正式收尾](archive/decision-history/phase7_phase8_formal_closeout_20260812.md)；
+- NVFP4 EP8 的当前暖态 placement、迁移、恢复和自动闭环已经验收，详见[暖态 placement 最终验收](results/phase8_warm_placement_final_acceptance_20260825.md)；
 - Phase 8 四候选正式矩阵已完成并接受：108 个 cell、每候选五次重复、共 20 个运行；
 - 简化 selector 的 median regret 为 0%，但 p95 regret 为 43.17%，正式 Gate 未通过，禁止在线启用；
 - NVFP4 EP4 full-set A/B 双分片已经启动，状态和后续顺序见[质量收尾](results/phase3_fullset_quality_closeout_20260812.md)；

@@ -44,7 +44,7 @@ Phase 4/8 控制平面、M-bucket、selector 与 cost model 的说明已合并�
 
 | 文件 | 作用 |
 |---|---|
-| `docs/Q-TopoMoE_gpu111_phase0实测分析.md` | gpu-111 静态拓扑、P2P 禁用历史基线、P2P 启用后反转及全阶段重测摘要。当前结论以文内 2026-08-07 更新为准。 |
+| `docs/Q-TopoMoE_gpu111_phase0实测分析.md` | gpu-111 静态拓扑、P2P/NCCL 正式基线和部署约束。 |
 | `docs/q_topomoe_phase0_verify.sh` | Phase 0 验证脚本（GPU/NCCL/环境）。 |
 
 ### 阶段 1：BF16 / FP8 服务实测
@@ -52,7 +52,7 @@ Phase 4/8 控制平面、M-bucket、selector 与 cost model 的说明已合并�
 | 文件 | 作用 |
 |---|---|
 | `docs/results/phase1_service_baseline.md` | 合并后的 BF16/FP8 服务实测叙述报告。 |
-| `docs/Q-TopoMoE_Phase1_statistics_20260804.json` | 统计结论原始数据；按 SHA-256 固定。 |
+| `docs/Q-TopoMoE_Phase1_BF16_matrix_p2p_20260807.json` / `docs/Q-TopoMoE_Phase1_FP8_matrix_p2p_20260807.json` | P2P 正式服务矩阵；按 SHA-256 固定。 |
 
 ### 阶段 2：量化、规范化检查点与质量 Gate
 
@@ -88,7 +88,7 @@ Phase 4/8 控制平面、M-bucket、selector 与 cost model 的说明已合并�
 | 文件 | 作用 |
 |---|---|
 | `docs/results/phase4_to_phase7_engineering.md` | Phase 4/8 离线任务、M-bucket、kernel DB、通信成本、策略回放和阶段 4–7 实测结论。 |
-| [早期策略回放](archive/Q-TopoMoE_Phase8_replay_20260804.json) | 早期 `blocked_missing_kernel_measurements` 记录，只作历史审计；当前结论不要从此文件读取。 |
+| [P2P 策略回放](Q-TopoMoE_Phase8_replay_20260807_p2p.json) | 使用当前通信成本库的首轮策略回放；最终准入仍以正式重复矩阵和暖态验收为准。 |
 
 ## 第 4 步：环境与配置
 

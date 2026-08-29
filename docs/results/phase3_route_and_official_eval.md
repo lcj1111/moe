@@ -335,6 +335,8 @@ trace 得到的实际 workload 混合比例为 M=1：0.007198，M=2048：0.89749
 - 预测跨 NUMA 字节数、dispatch cost、HBM 使用、迁移字节数和稳定的 plan SHA-256；
 - Runbook 在线状态机（500 ms/1000 requests、EMA 0.2、连续三个窗口 CV >0.25、benefit >=5%、benefit/cost >=2、residency 10、cooldown 20，连续三个 p99 回退超过 5% 窗口后回滚）。
 
-按实测输入生成的全域 plan 覆盖 10,240 个 expert；精确 expert bytes、已接受 route load、实测 kernel proxy、实测 EP8 HBM headroom 与实测 topology 均已绑定。八张 GPU 的 load span 小于 0.81 us，稳定 plan SHA-256 为 `d53bb6653abed0fe67163888dd838a8f2aef60d2d86968cc89f0c3d0430865d6`。在完成在线服务迁移的 block/recovery/p99 影响及 placement-plan application 验证前，整体 `formal_ready` 仍为 false。
+全量 route trace 覆盖 40 层、每层 256 个逻辑专家，可作为后续暖态 placement
+的负载输入。部署计划必须重新绑定当前通信成本、真实暖态窗口、专家大小和 HBM
+余量，并单独通过在线质量、p99、计划哈希和 rollback Gate。
 
 原生 vLLM EPLB admission cell 也在真实 TP8/EP8 world 上执行，但在模型构造阶段、尚未服务前失败：`NotImplementedError: EPLB is not supported CompressedTensorsW4A4Nvfp4MoEMethod.` 冻结的 vLLM 构建与当前 upstream main 对该 compressed-tensors NVFP4 method 都保持 EPLB disabled。历史 upstream 实现支持的是另一条 `ModelOptNvFp4FusedMoE` 路径，不能证明修改当前路径的 capability property 是安全的。因此项目不对 serving venv 做 hot-patch；静态 EP4/EP8 继续允许，原生 EPLB 与自定义运行时 plan 应用标记为 unavailable/pending，而不是报告为成功。

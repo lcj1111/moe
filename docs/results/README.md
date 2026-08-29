@@ -1,7 +1,7 @@
 # 当前阶段报告
 
-本目录只保留当前主线使用的聚合报告。Phase 8 的旧 selector、旧 placement、失败 canary
-和被替代政策已移入 [`../archive/decision-history/`](../archive/decision-history/README.md)。
+本目录只保留当前主线使用的聚合报告。合同有效但未通过 Gate 的分支和被替代政策
+移入 [`../archive/decision-history/`](../archive/decision-history/README.md)。
 
 | 阶段 | 当前报告 |
 |---|---|

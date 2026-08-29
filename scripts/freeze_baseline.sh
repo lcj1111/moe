@@ -134,8 +134,8 @@ else
   printf '{"status":"missing","path":"%s"}\n' "$seed_source" >"$out/data/sharegpt_seed_inventory.json"
 fi
 
-if [[ -f "$QTOPOMOE_PHASE0/nccl/formal5/formal5-statistics.csv" ]]; then
-  sha256sum "$QTOPOMOE_PHASE0/nccl/formal5/formal5-statistics.csv" \
+if [[ -f "$QTOPOMOE_ARTIFACTS/raw/20260807T120000Z_nccl_formal_p2p/nccl/statistics.json" ]]; then
+  sha256sum "$QTOPOMOE_ARTIFACTS/raw/20260807T120000Z_nccl_formal_p2p/nccl/statistics.json" \
     >"$out/hardware/phase0-reference.sha256"
 fi
 if [[ -f "$QTOPOMOE_ARTIFACTS/manifests/phase0_current.json" ]]; then
