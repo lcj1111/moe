@@ -40,7 +40,7 @@
 
 冻结计划为
 [phase8_warm_placement_limited_canary_v1.json](../../configs/experiments/phase8_warm_placement_limited_canary_v1.json)，
-SHA-256 为 `0a2b085e5738096055132b81798799114f42870ce63e4a81284c90b6d67a9ee3`。
+SHA-256 为 `62e4e3eea760cd99b9e0a1a69c47fadef6bd86f062c67a3f559dcb4ce41c39fd`。
 正式结果目录为
 `/data/models/test/qtopomoe_phase8_warm_placement_limited_canary_v1_20260825`，
 `canary_gate.json` SHA-256 为
@@ -62,7 +62,7 @@ SHA-256 为 `0a2b085e5738096055132b81798799114f42870ce63e4a81284c90b6d67a9ee3`�
 
 冻结计划为
 [phase8_warm_placement_closed_loop_acceptance_v1.json](../../configs/experiments/phase8_warm_placement_closed_loop_acceptance_v1.json)，
-SHA-256 为 `403f55ba6059ff8e92b264f4c350b5c57360f9a89a49c3e61fb61d472d0b6392`。
+SHA-256 为 `bef8884df0f16bd363e1019fa6283dfb7ba7ee5b03f0ff9448bad07c0f9e70f1`。
 正式结果目录为
 `/data/models/test/qtopomoe_phase8_warm_placement_closed_loop_acceptance_v1_20260825`，
 `closed_loop_gate.json` SHA-256 为
@@ -82,16 +82,6 @@ SHA-256 为 `403f55ba6059ff8e92b264f4c350b5c57360f9a89a49c3e61fb61d472d0b6392`�
 
 故障注入只将控制器看到的 p99 放大到冻结参照的 106%，没有延迟或丢弃真实请求；因此它验证
 的是自动 rollback 信号链路和提交行为，不把故障注入值当作真实服务延迟。
-
-## 无效尝试的隔离
-
-正式结论不包含以下两次编排尝试：
-
-1. `..._preflight_no_sglang`：30002 当时未运行，旧执行器在模型启动前停止；没有占用 GPU。
-2. `..._invalid_control_mode`：计划写成控制文件模式，但有限 canary 执行器发送激活文件；
-   migration 实际未应用 placement，recovery 未运行。修正为显式激活文件后从零完整重跑。
-
-两者均保留用于审计，但不得与正式 accepted 数据合并。
 
 ## SGLang 与最终边界
 

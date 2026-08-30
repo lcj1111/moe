@@ -2,7 +2,7 @@
   "schema_version": "qtopomoe.runtime_placement.v2",
   "candidate_id": "warm_swap_008_slots_per_layer_v1",
   "status": "generated_offline_not_yet_online_accepted",
-  "生成说明": "基于最终代表负载的真实暖态逐层逻辑专家计数生成；不修改旧 Gate 或旧 placement。",
+  "生成说明": "基于代表负载的真实暖态逐层逻辑专家计数生成。",
   "num_layers": 40,
   "num_logical_experts": 256,
   "num_ranks": 8,

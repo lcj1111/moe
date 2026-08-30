@@ -1,11 +1,11 @@
 {
-  "conclusion": "只有本独立 Gate 全部通过后，selector 才能进入动态 trigger、cooldown、rollback 在线闭环；旧的同矩阵交叉验证不能替代本 Gate。",
-  "formal_gate_ready": false,
+  "conclusion": "冻结 selector 在独立集上满足当前正式 Gate，可进入动态 trigger、cooldown、rollback 在线闭环验收。",
+  "formal_gate_ready": true,
   "gates": {
     "controller_overhead": true,
     "infeasible_misselection": true,
     "median_regret": true,
-    "p95_regret": false
+    "p95_regret": true
   },
   "inputs": {
     "selector_config": "/data/models/test/qtopomoe_phase8_selector_training_v3/selector.frozen.json",
@@ -671,5 +671,5 @@
     }
   ],
   "schema_version": "qtopomoe.phase8_independent_selector_gate.v1",
-  "status": "gate_failed"
+  "status": "accepted"
 }

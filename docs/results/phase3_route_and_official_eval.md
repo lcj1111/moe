@@ -339,4 +339,7 @@ trace 得到的实际 workload 混合比例为 M=1：0.007198，M=2048：0.89749
 的负载输入。部署计划必须重新绑定当前通信成本、真实暖态窗口、专家大小和 HBM
 余量，并单独通过在线质量、p99、计划哈希和 rollback Gate。
 
-原生 vLLM EPLB admission cell 也在真实 TP8/EP8 world 上执行，但在模型构造阶段、尚未服务前失败：`NotImplementedError: EPLB is not supported CompressedTensorsW4A4Nvfp4MoEMethod.` 冻结的 vLLM 构建与当前 upstream main 对该 compressed-tensors NVFP4 method 都保持 EPLB disabled。历史 upstream 实现支持的是另一条 `ModelOptNvFp4FusedMoE` 路径，不能证明修改当前路径的 capability property 是安全的。因此项目不对 serving venv 做 hot-patch；静态 EP4/EP8 继续允许，原生 EPLB 与自定义运行时 plan 应用标记为 unavailable/pending，而不是报告为成功。
+冻结的 vLLM 对 compressed-tensors NVFP4 不提供原生 EPLB；其已实现路径面向另一种
+`ModelOptNvFp4FusedMoE` 方法，不能直接等价迁移。因此阶段 3 只确认静态 EP4/EP8 能力。
+当前动态 placement 使用项目自己的运行时补丁，并已在 Phase 8 完成 8-rank apply 与 rollback
+验收，最终边界见[Phase 8 最终验收](phase8_warm_placement_final_acceptance_20260825.md)。

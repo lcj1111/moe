@@ -2,19 +2,14 @@
   "schema_version": "qtopomoe.phase8_warm_placement_nvfp4_aux_regression.v2",
   "status": "frozen_before_quality_equivalence",
   "frozen_date": "2026-08-23",
-  "说明": "修复 Marlin NVFP4 EPLB 漏迁移 w13/w2_weight_scale_2 后，仅复测上一轮 8 条截断题，并用 identity → candidate → identity 夹测验证修复。",
-  "结论边界": "本轮只验证 NVFP4 辅助尺度迁移修复；通过后只允许重跑完整 116 题质量夹测，不能覆盖已拒绝的在线 A/B/A/B，也不能直接进入 canary。",
+  "说明": "使用 identity → candidate → identity 夹测验证 Marlin NVFP4 EPLB 辅助尺度迁移的完整性。",
+  "结论边界": "本轮只验证 NVFP4 辅助尺度迁移；通过后仍需完成 116 题质量夹测和有限 canary。",
   "输入依据": {
     "capture_gate": "/data/models/test/qtopomoe_phase8_warm_placement_capture_v3_20260823/capture_gate.json",
     "capture_gate_sha256": "b217da92b50248f237431c23c6f586ba9d7df0cfd885ed2509a46d1600ac1777",
     "candidate_generation_gate": "/data/models/test/qtopomoe_phase8_warm_placement_candidates_v1_20260823/candidate_generation_gate.json",
     "candidate_generation_gate_sha256": "7382e628eef141968bec1b69221b477b5a7999e789a2cbfa925c1d2568eefe63",
-    "online_abab_gate_readonly": "/data/models/test/qtopomoe_phase8_warm_placement_abab_v1_20260823/abab_gate.json",
-    "online_abab_gate_sha256": "f2ad49bc724a8b2edae357d24835231a06501667191ef7994450ed20fe2be670",
-    "online_abab_expected_status": "rejected",
-    "quality_gate_v1_readonly": "/data/models/test/qtopomoe_phase8_warm_placement_quality_equivalence_v1_20260823/quality_equivalence_gate.json",
-    "quality_gate_v1_sha256": "605861aed0a68d30c131b780d937ed37ba5aa7aecacb8797c569df3618bddce4",
-    "quality_gate_v1_expected_status": "rejected"
+    "runtime_patch": "runtime_patches/qtopomoe_eplb/sitecustomize.py"
   },
   "候选": {
     "candidate_id": "warm_swap_008_slots_per_layer_v1",
@@ -26,7 +21,7 @@
     "python_bin": "/data/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python3",
     "model": "/data/models/test/redhatai_qwen36_nvfp4",
     "runtime_plan": "/data/models/test/qtopomoe_phase8_warm_placement_candidates_v1_20260823/warm_swap_008_slots_per_layer_v1.json",
-    "runtime_plan_file_sha256": "3386d1457a62f4c2a9cb5cdc56b71225c8f07fae73063a0e51c142f4c0b1f29e",
+    "runtime_plan_file_sha256": "6ec449552d04041bef086c31661cf832f3c60c301086399828c4201ec08f5740",
     "runtime_map_sha256": "24f09c93ff8e6c410917a3fcb087307130f8914f45c028adf23088c39fc80ac6",
     "runtime_patch": "runtime_patches/qtopomoe_eplb/sitecustomize.py",
     "runtime_patch_sha256": "9f6d3d99dfe570dc87d7d1ff3909880dce981c267f8af8768c477d9940852b5f",

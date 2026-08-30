@@ -3,6 +3,8 @@
 > 适用平台：单机 8×NVIDIA GeForce RTX 5090（SM120、32 GB/卡、PCIe 互连）
 > 方案核验日期：2026-08-07
 > 推荐主模型：Qwen3.6-35B-A3B（35B 总参数、3B 激活参数、256 个专家）
+> 文档定位：本页保存技术设计与研究假设；已经完成的实现、指标和当前发布组合以
+> [项目 README](../README.md)和[Release manifest](Q-TopoMoE_release_manifest_20260825.json) 为准。
 
 > **实机基线**：gpu-111 的 GPU P2P 已启用，8×8 peer access 全部可用。
 > TP2 优先使用 PIX 对 `(0,1)`、`(2,3)`、`(4,5)`、`(6,7)`；EP4
@@ -267,12 +269,12 @@ Q2 的 narrow `linear_attn` 等不满足 Marlin tile 的特殊层应显式保留
 | 12–13 | topology+quant-aware EPLB 与联合选择器 | 控制器、代价模型、oracle regret | 控制开销 <1%；无持续迁移抖动；可在未见 workload 上预测 |
 | 14 | 完整 workload 筛选，选择 Pareto 前沿 6 组 | 初版总表 | 质量、显存、SLO 三类约束全部满足 |
 | 15 | 每组 5 次独立重复，bootstrap 95% CI，随机化运行顺序 | 最终 raw JSON/CSV、统计图 | 结果可由 manifest 重跑；无只跑一次的正式结论 |
-| 16 | 复现包、论文/报告、失败案例与局限 | release tag、复现实验 README、最终报告 | 新环境一条入口命令可完成 smoke；核心表可批量重建 |
+| 16 | 复现包、论文/报告、适用边界 | release tag、复现实验 README、最终报告 | 新环境一条入口命令可完成 smoke；核心表可批量重建 |
 
 ### 三道 go/no-go 门
 
 - **G0（第 2 周）**：如果 `nvidia-smi topo -m` 和实测 collective 都几乎无层次差异，保留 PCIe 通信测量，但把“拓扑感知”改成“通信与拥塞感知”；不要人为制造一个没有证据的拓扑故事。
-- **G1（第 5 周）**：FP8/W4A16 必须通过多卡服务门槛。NVFP4 通过 expert coverage、真实加载、batch=1/32 正确性和 1/2/4/8 卡检查后，才准入 EP/EPLB；否则仅保留 TP/DP、kernel 和失败分析。
+- **G1（第 5 周）**：FP8/W4A16 必须通过多卡服务门槛。NVFP4 通过 expert coverage、真实加载、batch=1/32 正确性和 1/2/4/8 卡检查后，才准入 EP/EPLB；未覆盖组合只记录为兼容性边界。
 - **G2（第 9 周）**：FlashInfer/CUTLASS/SGLang 所有多 group 路径先通过正确性；自研 kernel 未取得正确、稳定、对关键 M 桶有 ≥10% micro latency 收益时停止投入。论文仍由量化感知策略、路由漂移和 EPLB 完成闭环。
 
 ## 7. 实验设计与公平性
@@ -431,7 +433,7 @@ q-topomoe/
 5. 原生 EPLB、负载感知 EPLB、拓扑+量化感知 EPLB 的严格消融。
 6. 真实 route trace 上的 kernel correctness、M 桶性能和端到端收益。
 7. selector 相对 oracle 的 regret、决策开销和跨 workload 泛化。
-8. 包含失败配置和不支持矩阵的完整复现包，而不是只公布最优数字。
+8. 包含适用条件、不支持矩阵和完整统计口径的复现包，而不是只公布最优数字。
 
 ## 11. 优先阅读资料
 
@@ -457,7 +459,7 @@ q-topomoe/
 
 如果目标是最大化完成概率，最终至少完成以下闭环：
 
-1. BF16、FP8、W4A16 三个可真实服务的 checkpoint；NVFP4 至少完成 TP 路径，若上游阻塞则交付可复现失败证据；
+1. BF16、FP8、W4A16 三个可真实服务的 checkpoint；NVFP4 至少完成 TP 路径，并明确兼容性边界；
 2. 8 卡实测拓扑/collective 成本矩阵；
 3. 每种通过 gate 的精度所对应的可行 TP/DP/EP 空间与最优策略；
 4. 路由漂移、专家不均衡和尾延迟之间的定量关系；

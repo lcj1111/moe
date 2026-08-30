@@ -11,7 +11,7 @@
   → 客户端发送请求
   → runner 保存逐请求结果和运行元数据
   → 聚合器检查完整性并计算指标
-  → Gate 给出 accepted / rejected
+  → Gate 给出准入结论
   → 报告引用 Gate 和输入哈希
 ```
 
@@ -86,7 +86,7 @@ Phase 8 的线上状态机在 [eplb_policy.py](../selector/eplb_policy.py)：
 - `configs/` 是运行前冻结输入；文件里的状态只代表冻结时点。
 - `docs/*.json` 是机器结果或 Gate，先读 `status`，再核对输入哈希。
 - `docs/results/*.md` 是给人看的结论，不替代机器 Gate。
-- `docs/archive/` 是失败或被替代的历史证据，不进入当前选择。
+- [Release manifest](Q-TopoMoE_release_manifest_20260825.json) 冻结当前推荐组合；不能从单个配置的文件名推断发布状态。
 - `/data/...`、`artifacts/...` 和仅写 basename 的 `status.json`、`gate_status.json` 通常是运行时
   输出，不是仓库文件；文档必须同时说明它由哪个命令生成、位于哪个输出目录。
 

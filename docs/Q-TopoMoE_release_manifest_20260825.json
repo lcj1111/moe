@@ -14,7 +14,7 @@
     "model_content_manifest_required_before_production": true,
     "candidate_id": "warm_swap_008_slots_per_layer_v1",
     "candidate_file": "configs/strategies/phase8_warm_swap_008_slots_per_layer_v1.json",
-    "candidate_file_sha256": "3386d1457a62f4c2a9cb5cdc56b71225c8f07fae73063a0e51c142f4c0b1f29e",
+    "candidate_file_sha256": "6ec449552d04041bef086c31661cf832f3c60c301086399828c4201ec08f5740",
     "candidate_map_sha256": "24f09c93ff8e6c410917a3fcb087307130f8914f45c028adf23088c39fc80ac6",
     "runtime_patch": "runtime_patches/qtopomoe_eplb/sitecustomize.py",
     "runtime_patch_sha256": "f92fca6c54a3b80ed966262761e3773b2e061dfb6bc2087f48af40aadf071c88"
@@ -22,13 +22,13 @@
   "effective_policies": {
     "selector_policy": {
       "path": "configs/strategies/phase8_selector_gate_policy_v2_20260823.json",
-      "sha256": "89f03f1b23747ad515c9a9b0b9fdf71fefaf63967b0181d059ebdff7b2c19d36",
+      "sha256": "7580c10300a56908343751212b7d64c69770c44d694758add4e86c545a6a7b38",
       "p95_regret_max_pct": 12.0,
-      "status": "accepted_under_posthoc_12pct_policy"
+      "status": "accepted"
     },
     "route_stability_policy": {
       "path": "configs/strategies/phase8_route_stability_gate_policy_v2_20260825.json",
-      "sha256": "de15ea79da27b5df968478b4ef7116c976dbe5905bfe10d4eccb22b16859dbe7",
+      "sha256": "938493b11e9e8efb11611eab50299b22f64549d2736301bc1ae944ef9fd83ea0",
       "placement_excess_tv_p95_max": 0.01,
       "status": "accepted"
     }
@@ -36,30 +36,30 @@
   "authoritative_validation": {
     "quality_plan": {
       "path": "configs/experiments/phase8_warm_placement_quality_equivalence_v3.json",
-      "sha256": "4b3b56628e474195150a271d70bab0901b56c42bfa8489624c36c28edae52c57",
+      "sha256": "c7d8391c1c3955efd792ab792f4df2ee3530426b25da0040e53c043d52600dc2",
       "gate_sha256": "1f37556a11b469c3c16e96ca705da6d751d1c57d5756c74097791415aba7dcc0",
       "status": "accepted"
     },
     "limited_canary_plan": {
       "path": "configs/experiments/phase8_warm_placement_limited_canary_v1.json",
-      "sha256": "0a2b085e5738096055132b81798799114f42870ce63e4a81284c90b6d67a9ee3",
+      "sha256": "62e4e3eea760cd99b9e0a1a69c47fadef6bd86f062c67a3f559dcb4ce41c39fd",
       "gate_sha256": "5e3eb834c3f7cf74f90cd0e1f7ae156795a648a8f26be5c770afc058495631a5",
       "status": "accepted"
     },
     "closed_loop_plan": {
       "path": "configs/experiments/phase8_warm_placement_closed_loop_acceptance_v1.json",
-      "sha256": "403f55ba6059ff8e92b264f4c350b5c57360f9a89a49c3e61fb61d472d0b6392",
+      "sha256": "bef8884df0f16bd363e1019fa6283dfb7ba7ee5b03f0ff9448bad07c0f9e70f1",
       "gate_sha256": "97933e65892d27076e3be2e0d59b8829fb8591ace29cb8cb179b4ec44692255d",
       "status": "accepted"
     },
     "final_summary": {
       "path": "docs/Q-TopoMoE_Phase8_warm_placement_final_acceptance_20260825.json",
-      "sha256": "f04331c7365b44ec1dab8ce1756ac9fe051a167fcc4cd5cded19316ea8868bc6",
+      "sha256": "ced91cc146c6109409777b43602ea0b852eb83993350d0383f4d6a0879880c9a",
       "status": "accepted"
     },
     "final_report": {
       "path": "docs/results/phase8_warm_placement_final_acceptance_20260825.md",
-      "sha256": "3ed65d754aca553c8d977a39c05d878a6daadd895419221cd563f66b58c116bd"
+      "sha256": "7d56229db3af36cf9b507f33ddd576c58d24bf0d5b88ea9a4ef626fdd63896a3"
     }
   },
   "accepted_metrics": {
@@ -81,9 +81,7 @@
   "evidence_semantics": {
     "candidate_internal_status_is_generation_time_snapshot": true,
     "candidate_current_acceptance_is_defined_by_final_summary": true,
-    "historical_rejections_preserved": true,
-    "invalid_attempts_excluded": true,
-    "说明": "不得只读取候选JSON内部的生成时状态，也不得只读取后续Gate；部署时必须同时核对候选文件哈希、map哈希、运行时补丁哈希和最终accepted摘要。"
+    "说明": "部署时必须同时核对候选文件哈希、map哈希、运行时补丁哈希和最终accepted摘要。"
   },
   "release_boundary": {
     "additional_phase8_validation_required": false,

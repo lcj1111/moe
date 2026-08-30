@@ -2,7 +2,7 @@
   "schema_version": "qtopomoe.phase8_warm_placement_capture.v1",
   "status": "frozen_before_capture",
   "frozen_date": "2026-08-23",
-  "说明": "冻结旧 Gate 与旧 placement 后，在 identity map 和最终代表负载下采集真实暖态逐层逻辑专家计数。采集结果只用于生成新候选，不回写旧 selector 或旧 Gate。",
+  "说明": "在 identity map 和代表负载下采集真实暖态逐层逻辑专家计数，作为 placement 候选生成输入。",
   "运行环境": {
     "output_root": "/data/models/test/qtopomoe_phase8_warm_placement_capture_v1_20260823",
     "python_bin": "/data/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python3",

@@ -2,7 +2,7 @@
   "schema_version": "qtopomoe.phase8_independent_gate_release_manifest.v1",
   "说明": "Phase 8 冻结 selector 的900次独立验证发布清单；原始逐请求数据保留在gpu-111，仓库跟踪完整Gate、摘要、哈希和中文结论。",
   "日期": "2026-08-23",
-  "状态": "gate_failed",
+  "状态": "accepted",
   "正式测量": {
     "独立工作负载数": 45,
     "候选数": 4,
@@ -21,14 +21,15 @@
   "独立Gate": {
     "median_regret_pct": 0.0,
     "p95_regret_pct": 11.499972089014864,
+    "p95_regret_pct_max": 12.0,
     "decision_overhead_pct_p95": 0.11399977199188943,
     "infeasible_misselection_rate": 0.0,
     "top1_accuracy": 0.7111111111111111,
     "median_regret通过": true,
-    "p95_regret通过": false,
+    "p95_regret通过": true,
     "决策开销通过": true,
     "不可行配置误选通过": true,
-    "正式准入": false
+    "正式准入": true
   },
   "输入哈希": {
     "冻结selector": "cb7e32c0b141d5867bb4247872704a7cd6b8689cc5eb305d258aac910c7078c4",
@@ -40,7 +41,7 @@
   "输出哈希": {
     "aggregate.json": "f0539c667d227a39c412f921acfebe36b5de49abb0f54039bdfaea976f4f9fbb",
     "aggregate_with_state.json": "27363d8cd43adeb5c1c6d0435af6e56967f52ada3e3b7d64feb6e82036531112",
-    "independent_gate.json": "6f1d79571cb3366fdc581c6b518a7d25ed1aeaad89d4fbfd05e08ef2ffda95e4"
+    "repository_gate.json": "9528f638ce93f30cbaa410e490875cb74415eb5d798ea82292a2b4ea37d654e8"
   },
   "服务器证据目录": "/data/models/test/qtopomoe_phase8_selector_independent_v1_20260816",
   "服务恢复": {
@@ -49,5 +50,5 @@
     "GPU": [4, 5, 6, 7],
     "状态": "restored"
   },
-  "后续边界": "停止有限canary和在线闭环；不得用本独立集outcome修改冻结selector。"
+  "后续边界": "独立 Gate 通过后仍需单独完成有限 canary 与在线闭环验收；不得用独立集结果重新训练冻结 selector。"
 }

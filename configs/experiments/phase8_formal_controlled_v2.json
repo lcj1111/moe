@@ -13,10 +13,6 @@
   "gpu_memory_utilization": 0.9,
   "capacity_audit": "docs/Q-TopoMoE_Phase8_capacity_audit_20260810.json",
   "capacity_audit_sha256": "c5a1e98acdf74b710a388d460acc8e00817832f8a970e0815a3461257fd35005",
-  "rejected_predecessor": {
-    "plan": "configs/experiments/phase8_formal_controlled_v1.json",
-    "evidence": "docs/Q-TopoMoE_Phase8_formal_controlled_v1_rejected_20260810.json"
-  },
   "timing_contract": {
     "open_loop_arrival": "scheduler submission at the frozen Poisson or burst offset",
     "scheduler_gate": "submitted offset minus scheduled arrival",

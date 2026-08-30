@@ -19,7 +19,7 @@
     "python_bin": "/data/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python3",
     "model": "/data/models/test/redhatai_qwen36_nvfp4",
     "runtime_plan": "/data/models/test/qtopomoe_phase8_warm_placement_candidates_v1_20260823/warm_swap_008_slots_per_layer_v1.json",
-    "runtime_plan_file_sha256": "3386d1457a62f4c2a9cb5cdc56b71225c8f07fae73063a0e51c142f4c0b1f29e",
+    "runtime_plan_file_sha256": "6ec449552d04041bef086c31661cf832f3c60c301086399828c4201ec08f5740",
     "runtime_map_sha256": "24f09c93ff8e6c410917a3fcb087307130f8914f45c028adf23088c39fc80ac6",
     "runtime_patch": "runtime_patches/qtopomoe_eplb/sitecustomize.py",
     "runtime_patch_sha256": "f92fca6c54a3b80ed966262761e3773b2e061dfb6bc2087f48af40aadf071c88",

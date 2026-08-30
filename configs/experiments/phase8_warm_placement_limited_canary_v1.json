@@ -6,10 +6,10 @@
   "说明": "复用已验证的有限canary编排，不再增加路由诊断。placement-plan仅在稳定段完成后显式激活；按用户要求，既有SGLang服务不属于本轮管理或Gate范围。",
   "准入依据": {
     "policy": "configs/strategies/phase8_route_stability_gate_policy_v2_20260825.json",
-    "policy_sha256": "de15ea79da27b5df968478b4ef7116c976dbe5905bfe10d4eccb22b16859dbe7",
-    "evidence": "docs/Q-TopoMoE_Phase8_warm_placement_regeneration_summary_20260823.json",
-    "evidence_sha256": "877a0cfbe66c73f32e698ee5c912f1cabd9bf0664e9098f44564d2634f6eb241",
-    "decision": "accepted_under_current_1pct_route_stability_policy"
+    "policy_sha256": "938493b11e9e8efb11611eab50299b22f64549d2736301bc1ae944ef9fd83ea0",
+    "quality_plan": "configs/experiments/phase8_warm_placement_quality_equivalence_v3.json",
+    "quality_gate_sha256": "1f37556a11b469c3c16e96ca705da6d751d1c57d5756c74097791415aba7dcc0",
+    "decision": "accepted"
   },
   "canary目标": {
     "candidate_id": "warm_swap_008_slots_per_layer_v1",
@@ -21,7 +21,7 @@
     "python_bin": "/data/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python3",
     "model": "/data/models/test/redhatai_qwen36_nvfp4",
     "runtime_plan": "/data/models/test/qtopomoe_phase8_warm_placement_candidates_v1_20260823/warm_swap_008_slots_per_layer_v1.json",
-    "runtime_plan_file_sha256": "3386d1457a62f4c2a9cb5cdc56b71225c8f07fae73063a0e51c142f4c0b1f29e",
+    "runtime_plan_file_sha256": "6ec449552d04041bef086c31661cf832f3c60c301086399828c4201ec08f5740",
     "runtime_map_sha256": "24f09c93ff8e6c410917a3fcb087307130f8914f45c028adf23088c39fc80ac6",
     "runtime_patch": "runtime_patches/qtopomoe_eplb/sitecustomize.py",
     "runtime_patch_sha256": "f92fca6c54a3b80ed966262761e3773b2e061dfb6bc2087f48af40aadf071c88",

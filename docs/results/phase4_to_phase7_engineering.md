@@ -196,7 +196,7 @@ A/B 数据：[Q-TopoMoE_Phase5_prepare_ab_20260807.json](../Q-TopoMoE_Phase5_pre
 > world size 决定，不由 `CUDA_VISIBLE_DEVICES` 数量决定。历史
 > `ep8_tp1_p2p` 实际 `world_size=1`，不得作为 EP8 结果；历史
 > `ep4_tp2_eplb_*` 实际 `world_size=2`，是 EP2+EPLB，不是 EP4。
-> 下表保留其时序用于失败审计，但已修正准入含义。
+> 下表保留运行时序用于核对基准口径，并已按当前准入语义统一名称。
 
 ## 1. 环境与前置
 

@@ -62,7 +62,7 @@ Phase 4/8 控制平面、M-bucket、selector 与 cost model 的说明已合并�
 | [阶段 2 量化报告](results/phase2_quantization_quality.md)、[cleanroom 版本钉住](Q-TopoMoE_Qwen35_cleanroom_pins_20260805.json)及 `Q-TopoMoE_Qwen35_canonical_*` JSON | 兼容基线、canonical checkpoint 的 TP1/TP2 Gate 与 smoke 记录。 |
 | `docs/results/phase2_quantization_quality.md` + `docs/Q-TopoMoE_quality_smoke_*_20260805.json` | 质量 smoke 与 vLLM/SGLang、Marlin/Triton backend 隔离记录。 |
 | `docs/results/phase2_quantization_quality.md` + `docs/Q-TopoMoE_Phase2_official_like_v2_*_20260805.json` | 116 条 official-like v2 冻结样本的 BF16 vs W4（Triton）质量对比。 |
-| `docs/Q-TopoMoE_Phase2_W4A16_*` 系列 | W4A16 审计、freeze、reblock 与 gate 数据。叙述 failure/load/status 已并入 Phase 2 结果。 |
+| `docs/Q-TopoMoE_Phase2_W4A16_*` 系列 | W4A16 审计、freeze、reblock 与 Gate 数据；解释口径已并入 Phase 2 结果。 |
 | `docs/Q-TopoMoE_Phase2_WikiText_calibration_manifest.json` | WikiText 校准集机器可读 manifest；叙述已并入 Phase 2 结果。 |
 
 ### 阶段 3：route trace 采集与漂移分析
