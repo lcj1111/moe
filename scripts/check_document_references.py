@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：检查 Markdown 本地链接和仓库路径是否真实存在。
 """检查仓库文档中的本地链接和仓库内路径引用。"""
 
 from __future__ import annotations

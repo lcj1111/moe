@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：在同一进程内执行 placement A/B/A/B 性能验证。
 """对新 placement 候选执行同进程暖态 A/B/A/B 验证。"""
 
 from __future__ import annotations

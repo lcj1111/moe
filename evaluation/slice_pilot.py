@@ -1,3 +1,4 @@
+# 作用：从冻结全量集分层抽取计时 pilot，用于估算正式运行耗时。
 """Slice a stratified timing pilot from a frozen full-set manifest.
 
 The full set (MMLU-Pro test + C-Eval test) is ~24,374 requests; even in

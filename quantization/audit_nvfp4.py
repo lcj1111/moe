@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：审计 NVFP4 checkpoint 的权重、尺度和专家覆盖完整性。
 """Static NVFP4 (compressed-tensors, nvfp4-pack-quantized) coverage audit.
 
 NVFP4 checkpoints produced by llmcompressor's

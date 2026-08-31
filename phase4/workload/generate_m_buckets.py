@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：生成 Phase 4/8 可复现 workload 与 MoE M-bucket 元数据。
 """Generate reproducible Phase 4/8 workloads and MoE M-bucket metadata.
 
 The generator is intentionally framework-neutral.  ``prefill_m`` is the

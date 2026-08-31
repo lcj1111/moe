@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：在启动耗时量化前检查环境、模型、磁盘和校准数据契约。
 """Reproducible preflight for Q-TopoMoE Phase 2 quantization.
 
 This intentionally does not load the 35B checkpoint. It validates the pinned

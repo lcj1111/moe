@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：检查有限 canary 的请求、计划和恢复指标。
 """生成 Phase 8 selector 有限 canary 的机器可读 Gate。"""
 
 from __future__ import annotations

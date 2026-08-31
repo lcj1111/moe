@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：执行 identity/candidate/identity 质量等价夹测。
 """对新 placement 候选执行 identity/candidate/identity 质量夹测。"""
 
 from __future__ import annotations

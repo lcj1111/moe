@@ -1,3 +1,4 @@
+# 作用：联合计算、通信、负载和迁移成本选择 TP、DP、EP 策略。
 """Phase 8 joint strategy selector and transparent cost model.
 
 Evaluates TP/DP/EP candidates against workload observations (real-M

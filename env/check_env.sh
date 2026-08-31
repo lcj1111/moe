@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：检查项目路径、CUDA、Python 环境和必要资产是否满足运行条件。
 set -uo pipefail
 
 env_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

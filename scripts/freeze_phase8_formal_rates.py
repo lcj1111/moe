@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：从容量预跑中冻结候选共享的公平到达率。
 """Audit a controlled capacity prepass and freeze fair Phase 8 arrival rates.
 
 The formal open-loop matrix must not offer a different load to each strategy.

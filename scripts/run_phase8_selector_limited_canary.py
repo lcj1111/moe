@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：在既有服务空闲窗口执行并回收有限 canary。
 """等待既有服务空闲，执行有限 canary，并在任何退出路径恢复原服务。"""
 
 from __future__ import annotations

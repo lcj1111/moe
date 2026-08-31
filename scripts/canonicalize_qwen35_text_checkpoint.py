@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：将 Qwen3.5 VLM 命名空间规范化为文本服务 checkpoint。
 """Create a value-identical, text-only Qwen3.5 serving checkpoint.
 
 The frozen source checkpoint has a text-only config but retains the VLM wrapper

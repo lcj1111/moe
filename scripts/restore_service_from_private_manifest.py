@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：根据权限受限的进程快照执行失败后服务恢复。
 """从权限受限的进程快照恢复服务，仅用于失败后的紧急回滚。"""
 
 from __future__ import annotations

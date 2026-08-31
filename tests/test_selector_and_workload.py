@@ -1,3 +1,4 @@
+# 作用：验证 M-bucket、kernel 数据库与策略选择协作。
 import json
 import tempfile
 import unittest

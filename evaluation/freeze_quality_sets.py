@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：生成可复现的质量 smoke 与正式评测清单。
 """Freeze deterministic quality-smoke and formal evaluation manifests."""
 
 from __future__ import annotations

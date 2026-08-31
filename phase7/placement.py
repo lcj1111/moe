@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：根据路由负载、通信成本和显存约束生成离线专家放置方案。
 """Phase 7 offline expert placement (11.2).
 
 Inputs:

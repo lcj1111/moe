@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：从真实 route trace 构造 Phase 8 workload 观测。
 """Build Phase 8 workload observations from the real Phase 3 route trace.
 
 Phase 4/8 ``m_bucket`` semantics: a bucket is a *batch token count* (the MoE

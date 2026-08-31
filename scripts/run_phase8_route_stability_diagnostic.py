@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：执行预注册的逻辑专家路由稳定性诊断。
 """执行预注册的逻辑专家分布稳定性诊断。"""
 
 from __future__ import annotations

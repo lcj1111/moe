@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：在冻结独立集上执行 Phase 8 selector 正式 Gate。
 """在互不重叠的训练集与测试集上执行 Phase 8 selector 正式 Gate。"""
 from __future__ import annotations
 

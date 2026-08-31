@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：根据暖态专家负载生成限制迁移量的 placement 候选。
 """从真实暖态 EPLB 负载窗口生成限制迁移量的 placement 候选。"""
 
 from __future__ import annotations

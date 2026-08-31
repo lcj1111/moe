@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：比较参考模型与候选模型的逐层专家路由差异并输出漂移指标。
 """Compare two route-trace captures (reference vs candidate).
 
 Metrics are computed from expert IDs only (the vLLM-native capture does

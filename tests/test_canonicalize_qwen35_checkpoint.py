@@ -1,3 +1,4 @@
+# 作用：验证 checkpoint 命名空间转换不改变张量内容。
 from __future__ import annotations
 
 import importlib.util

@@ -1,3 +1,4 @@
+# 作用：验证文档链接与仓库路径检查规则。
 from pathlib import Path
 import importlib.util
 import tempfile

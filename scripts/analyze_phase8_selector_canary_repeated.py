@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：聚合多轮配对 canary 并生成 selector Gate。
 """聚合 one-shot placement 五轮配对 canary，并生成机器可读 Gate。"""
 
 from __future__ import annotations

@@ -1,3 +1,4 @@
+# 作用：验证截断样本续跑清单的筛选与确定性。
 import importlib.util
 import pathlib
 import unittest

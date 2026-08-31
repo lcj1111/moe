@@ -1,3 +1,4 @@
+# 作用：定义 Phase 1 服务矩阵的格式、拓扑、并发和准入参数。
 schema_version: 1
 phase: phase1_bf16_fp8_service_baseline
 backend_default: sglang

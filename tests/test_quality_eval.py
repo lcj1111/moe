@@ -1,3 +1,4 @@
+# 作用：验证选择题和数值题答案抽取与评分。
 from clients.quality_eval import normalize_number, parse_choice, parse_number, score
 
 

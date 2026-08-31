@@ -1,3 +1,4 @@
+# 作用：汇总环境检查、快照和目录查看等常用维护命令。
 .PHONY: help check snapshot tree
 
 help:

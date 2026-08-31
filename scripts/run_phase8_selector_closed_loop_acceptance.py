@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：验收 trigger、cooldown、apply 和 rollback 在线闭环。
 """执行 Phase 8 trigger/cooldown/rollback 有限在线闭环验收。"""
 
 from __future__ import annotations

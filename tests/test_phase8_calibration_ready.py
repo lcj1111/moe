@@ -1,3 +1,4 @@
+# 作用：验证 Phase 8 校准输入的完整性 Gate。
 import unittest
 
 from scripts.audit_phase8_calibration_ready import audit

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：按 benchmark 官方协议冻结 MMLU-Pro 与 C-Eval 全量评测集。
 """Freeze the full official-protocol evaluation set (benchmark-official setup).
 
 Protocol (aligned with the benchmark authors' own harnesses):

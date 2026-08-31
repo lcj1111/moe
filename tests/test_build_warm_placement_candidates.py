@@ -1,3 +1,4 @@
+# 作用：验证暖态 placement 候选的迁移约束与映射一致性。
 import importlib.util
 import pathlib
 import unittest

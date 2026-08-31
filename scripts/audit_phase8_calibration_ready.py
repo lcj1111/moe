@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：判断重复观测是否满足 selector 校准的输入条件。
 """Audit whether repeated Phase 8 observations can enter selector calibration."""
 from __future__ import annotations
 

@@ -1,3 +1,4 @@
+# 作用：验证 trigger、cooldown、提交和 rollback 闭环。
 import importlib.util
 import sys
 import tempfile

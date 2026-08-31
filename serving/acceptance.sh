@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：对已启动推理服务执行健康、模型、smoke 和结果准入。
 set -euo pipefail
 
 : "${ROOT_URL:?ROOT_URL is required, e.g. http://127.0.0.1:31001}"

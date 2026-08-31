@@ -1,3 +1,4 @@
+# 作用：定义服务健康检查使用的轻量请求 workload。
 schema_version: 1
 name: smoke
 seed: 42

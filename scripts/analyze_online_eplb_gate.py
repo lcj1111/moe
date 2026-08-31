@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：生成在线 placement、迁移和恢复实验的可审计 Gate。
 """Build the auditable online placement/migration/recovery Gate report."""
 
 from __future__ import annotations

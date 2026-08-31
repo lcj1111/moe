@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：采集固定 incumbent 服务的决策前状态窗口。
 """针对固定 incumbent 服务采集 Phase 8 决策前状态窗口。"""
 from __future__ import annotations
 

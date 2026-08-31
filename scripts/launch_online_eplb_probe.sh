@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：启动带 placement 补丁的在线 EPLB 探测服务。
 set -euo pipefail
 
 RUN_DIR=${RUN_DIR:-/data/models/test/qtopomoe_online_eplb_probe_v1}

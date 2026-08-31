@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：把决策前运行状态绑定到 Phase 8 outcome 聚合。
 """将固定 incumbent 的决策前状态绑定到已有 Phase 8 outcome 聚合。"""
 from __future__ import annotations
 

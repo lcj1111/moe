@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：执行受校准清单保护的 Qwen3.6 MoE NVFP4 后训练量化。
 """Run the guarded Qwen3.6 MoE NVFP4 PTQ recipe (Runbook 6.3).
 
 Uses llmcompressor QuantizationModifier(scheme="NVFP4") with the official

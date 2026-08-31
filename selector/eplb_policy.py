@@ -1,3 +1,4 @@
+# 作用：生成量化感知 placement 并实现在线控制迟滞策略。
 """Topology- and quantization-aware expert placement policy.
 
 This module intentionally stays above the serving runtime.  It produces an

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：冻结 official-like 全量评测集及其输入指纹。
 """Freeze the full official-like evaluation set (protocol-aligned, full test
 splits): MMLU-Pro test (12,032) + C-Eval test (13,948), 5-shot CoT prompts.
 

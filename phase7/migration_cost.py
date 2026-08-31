@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：测量同卡、同 NUMA 和跨 NUMA 的专家迁移成本。
 """Phase 7 migration cost measurement (11.1).
 
 Measures D2D copy bandwidth for a single expert (bf16 weights, hidden*2*

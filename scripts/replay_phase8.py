@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：离线回放 Phase 8 成本模型并显式报告缺失输入。
 """Offline Phase 8 replay; reports a clear blocked state until kernel data exists."""
 from __future__ import annotations
 

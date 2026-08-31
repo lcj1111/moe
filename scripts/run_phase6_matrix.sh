@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：启动服务并运行 Phase 6 TP、DP、EP 组合矩阵。
 # Phase 6 TP/DP/EP matrix runner: start vLLM, smoke 32 requests, benchmark.
 #
 # Usage:

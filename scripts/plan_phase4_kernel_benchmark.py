@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：生成不触发 GPU 执行的 Phase 4 kernel 测试计划。
 """Create a reproducible Phase 4 kernel benchmark plan.
 
 This command is plan-only by default.  It never allocates a CUDA tensor or

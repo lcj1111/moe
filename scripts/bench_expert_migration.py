@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：在空闲 GPU 上测量指定专家大小的复制与重映射开销。
 """Measure exact-size expert remap/copy primitives on an idle GPU host."""
 from __future__ import annotations
 

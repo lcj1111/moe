@@ -1,3 +1,4 @@
+# 作用：验证路由稳定性诊断指标和 Gate。
 import importlib.util
 import json
 import tempfile

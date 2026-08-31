@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：采集 GPU、NUMA、PCIe、CUDA 和 NCCL 硬件概况。
 set -uo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

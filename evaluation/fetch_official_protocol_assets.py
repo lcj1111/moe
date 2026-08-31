@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：下载并校验官方评测协议所需的固定 few-shot 资产。
 """Fetch pinned few-shot assets for official-like quality protocols."""
 
 from __future__ import annotations

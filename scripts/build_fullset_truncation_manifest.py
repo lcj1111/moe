@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：从基础轮结果中生成截断样本续跑清单。
 """从基础轮结果生成只包含截断样本的确定性续跑 manifest。"""
 
 from __future__ import annotations

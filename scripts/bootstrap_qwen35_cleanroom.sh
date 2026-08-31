@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：创建隔离环境并准备 Qwen3.5 checkpoint 验证资产。
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

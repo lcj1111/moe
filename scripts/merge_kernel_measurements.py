@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：确定性地把实测 kernel 行合并进版本化数据库。
 """Merge measured kernel rows into the Phase 4 database deterministically."""
 
 from __future__ import annotations

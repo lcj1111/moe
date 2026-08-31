@@ -1,3 +1,4 @@
+# 作用：验证离线放置、在线迟滞和回滚策略。
 import unittest
 
 from selector.eplb_policy import (

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：实现并验证融合 permute、激活量化和打包的 Triton kernel。
 """Phase 5 Level 2: fused permute + activation quant/scale + pack (Triton).
 
 Target stage from profiling: permute (8.7%) + activation quant (4.6%) =

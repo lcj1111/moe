@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：在共同可评分样本上比较两个 full-set 合并结果。
 """在共同可评分 ID 上比较两个 full-set 合并结果。"""
 
 from __future__ import annotations

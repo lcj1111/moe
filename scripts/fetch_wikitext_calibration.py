@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：从固定 WikiText revision 构建 256 条校准清单。
 """Build a frozen 256-record calibration manifest from WikiText.
 
 The source parquet is downloaded separately from a pinned Hugging Face

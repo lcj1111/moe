@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：按固定种子顺序执行多轮配对 placement canary。
 """按预注册种子顺序执行 one-shot placement 五轮配对 canary。"""
 
 from __future__ import annotations

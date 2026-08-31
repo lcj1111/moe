@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：采集 identity placement 下的暖态逐层专家负载。
 """在 identity placement 下采集最终代表负载的真实暖态逐层专家计数。"""
 
 from __future__ import annotations

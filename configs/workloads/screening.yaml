@@ -1,3 +1,4 @@
+# 作用：定义候选筛选阶段使用的 workload 组合。
 schema_version: 1
 name: screening
 seed: 42

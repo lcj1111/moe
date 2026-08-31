@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：把离线专家放置转换为 vLLM EPLB 槽位顺序。
 """Convert Q-TopoMoE's offline expert placement into vLLM EPLB slot order."""
 
 from __future__ import annotations

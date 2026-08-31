@@ -1,3 +1,4 @@
+# 作用：验证共同样本质量比较和身份审计。
 import importlib.util
 import pathlib
 import unittest

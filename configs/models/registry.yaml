@@ -1,3 +1,4 @@
+# 作用：登记各精度 checkpoint 的路径、格式和服务元数据。
 schema_version: 1
 models:
   qwen36_fp8:

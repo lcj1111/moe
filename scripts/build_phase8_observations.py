@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：绑定 workload、路由分布与候选实测延迟。
 """Bind Runbook workload shapes, route trace, and measured oracle latency."""
 from __future__ import annotations
 

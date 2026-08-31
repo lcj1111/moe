@@ -1,3 +1,4 @@
+# 作用：维护带版本和有效性标记的 MoE kernel 实测数据库。
 """Versioned MoE kernel measurement database.
 
 Stores per-backend/per-M-bucket p50/p95 latencies measured on real GPUs

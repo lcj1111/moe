@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：冻结基线模型、输入数据和服务 smoke 所需资产。
 set -euo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

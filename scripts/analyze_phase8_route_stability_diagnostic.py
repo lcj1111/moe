@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：聚合逻辑专家分布稳定性诊断并按冻结规则归因。
 """聚合逻辑专家分布稳定性诊断并按预注册规则归因。"""
 
 from __future__ import annotations

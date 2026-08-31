@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：探测 GPU peer 可达性并逐卡验证 BF16 GEMM。
 """Probe CUDA peer accessibility and BF16 matmul correctness per GPU.
 
 Writes ``torch-gpu.json`` with device properties, peer-access matrix and a

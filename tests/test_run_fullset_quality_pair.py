@@ -1,3 +1,4 @@
+# 作用：验证 full-set 双分片脚本的参数与安全约束。
 import pathlib
 import unittest
 

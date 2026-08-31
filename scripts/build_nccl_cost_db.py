@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：把正式 NCCL 测量归一化为映射感知通信成本库。
 """Normalize formal NCCL statistics into mapping-aware communication costs."""
 from __future__ import annotations
 

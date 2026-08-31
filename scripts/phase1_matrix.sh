@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：按格式、拓扑和并发运行 Phase 1 服务矩阵。
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

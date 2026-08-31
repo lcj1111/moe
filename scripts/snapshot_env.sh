@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：采集软件版本、硬件状态和项目提交的环境快照。
 set -euo pipefail
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
