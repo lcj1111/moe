@@ -78,7 +78,6 @@ flowchart LR
 | Phase 8 placement 与闭环 | [最终验收报告](docs/results/phase8_warm_placement_final_acceptance_20260825.md) |
 | 从头理解和复现 | [复现阅读指南](docs/Q-TopoMoE_复现阅读指南.md) |
 | 按阶段执行 | [逐步执行 Runbook](docs/Q-TopoMoE_逐步执行Runbook.md) |
-| 查询配置、结果和哈希 | [数据与产物清单](docs/DATA_CATALOG.md) |
 | 生产部署前检查 | [发布与生产部署清单](docs/Q-TopoMoE_项目发布与生产部署清单_20260825.md) |
 
 ## 快速验证
@@ -125,7 +124,8 @@ python scripts/run_phase8_selector_closed_loop_acceptance.py --help
 
 1. 当前发布组合以 [Release manifest](docs/Q-TopoMoE_release_manifest_20260825.json) 为唯一入口；
    不从单个配置文件推断最终状态。
-2. 大体积运行产物不入库，必须先按 [数据与产物清单](docs/DATA_CATALOG.md)核对来源和哈希。
+2. 大体积运行产物不入库，来源、冻结参数和关键文件哈希统一由
+   [Release manifest](docs/Q-TopoMoE_release_manifest_20260825.json)记录。
 3. full-set 只在三种格式都可评分的共同样本上比较；达到输出上限的样本保持未完成状态，
    不静默计对或计错。
 4. 生产小流量、扩量、长期稳定性和容量承诺属于独立部署工作，不包含在当前技术验收中。

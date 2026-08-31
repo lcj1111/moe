@@ -30,7 +30,6 @@
 | [复现阅读指南](Q-TopoMoE_复现阅读指南.md) | 确认环境、冻结输入、评测口径和证据优先级 |
 | [逐步执行 Runbook](Q-TopoMoE_逐步执行Runbook.md) | 按 Phase 0–8 执行并核对每一级准入条件 |
 | [总体技术方案](Q-TopoMoE_量化与SM120算子协同优化执行方案.md) | 理解量化、拓扑、kernel、路由与 placement 的依赖关系 |
-| [数据与产物清单](DATA_CATALOG.md) | 查询机器结果、配置、manifest 和 SHA-256 |
 
 ## 阶段报告
 
@@ -49,5 +48,6 @@
 1. 当前发布组合以 [Release manifest](Q-TopoMoE_release_manifest_20260825.json) 为入口。
 2. JSON 和 manifest 记录状态、输入身份与哈希；Markdown 负责解释，不替代机器结果。
 3. `/data/...`、`/home/...` 和 `artifacts/...` 是服务器或运行输出路径，不是 Git 文件。
-4. 大体积 JSONL、日志、模型和 trace 不入库；复现时必须按 [数据与产物清单](DATA_CATALOG.md)核对来源和 SHA-256。
+4. 大体积 JSONL、日志、模型和 trace 不入库；来源、冻结参数和关键哈希统一记录在
+   [Release manifest](Q-TopoMoE_release_manifest_20260825.json)及各阶段机器摘要中。
 5. 生产流量切换、扩量和长期容量验证属于独立部署工作，不得由技术验收结果直接推断。
