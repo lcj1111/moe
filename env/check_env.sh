@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：检查项目路径、CUDA、Python 环境和必要资产是否满足运行条件。
 set -uo pipefail
 
 env_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -39,7 +40,7 @@ check_file "$QTOPOMOE_SGLANG_VENV/bin/python" "SGLang Python"
 check_file "$QTOPOMOE_VLLM_VENV/bin/python" "vLLM Python"
 check_file "$QTOPOMOE_FP8_MODEL/config.json" "FP8 checkpoint"
 check_file "$QTOPOMOE_NVFP4_MODEL/config.json" "NVFP4 checkpoint"
-check_file "$QTOPOMOE_PHASE0/nccl/formal5/formal5-statistics.csv" "Phase 0 formal statistics"
+check_file "$QTOPOMOE_ARTIFACTS/raw/20260807T120000Z_nccl_formal_p2p/nccl/statistics.json" "Phase 0 P2P formal statistics"
 check_dir "$QTOPOMOE_NCCL_TESTS" "nccl-tests build"
 
 for cmd in nvidia-smi numactl git cmake; do

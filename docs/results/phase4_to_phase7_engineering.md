@@ -1,21 +1,10 @@
 # 阶段 4–7：kernel、融合、通信与 EPLB 工程
 
-> 以下为按日期合并的历史报告。源内容已保留，仅规范化了行尾空格；SHA-256 按 UTF-8 Git blob（LF 换行）计算，机器可读产物保持原始路径以确保复现。
+本文合并 Phase 4–7 的 kernel、融合、通信、EPLB 和早期 selector 工程记录。旧拆分稿
+已经删除；可复核数据集中在 `docs/` 下对应阶段 JSON，执行入口集中在 `scripts/`、
+`phase4/`、`phase7/` 和 `selector/`。
 
-## 源文件完整性
-
-| 原始文件 | UTF-8 字节数 | Git blob 的 SHA-256 |
-|---|---:|---|
-| `docs/Q-TopoMoE_Phase4_Phase8_progress_20260806.md` | 3843 | `AEC891E2CA92D82659F931DB30880B287E1CDAA58C82D23E7076AB4B1C3FA12E` |
-| `docs/Q-TopoMoE_Phase5_progress_20260806.md` | 3834 | `476E1C6518EDEE2ABED56A681AF47EB361B43AA342D68B6968C5D442ADE349A9` |
-| `docs/Q-TopoMoE_Phase6_progress_20260807.md` | 5881 | `8095626C7ACB7038F8B0B88D13CA3D8CA75DA25C6B87DB8D98466074E2018A8A` |
-| `docs/Q-TopoMoE_Phase7_progress_20260807.md` | 2314 | `FD6E7474860D52120981F30669BD731AF6300C6226C2E512838B58F0DAECF63F` |
-| `docs/Q-TopoMoE_Phase4_Phase8_framework.md` | 3614 | `72486B691954A41AB3330CDD9670B1187F2FEF37D22E32CB5A1CFDA40224C975` |
-| `docs/Q-TopoMoE_Phase4_Phase8_offline_tasks.md` | 1738 | `3081F3C4F93488B3660F744A2453B234C37E51ED87D5B948E873CDE382E00215` |
-
----
-
-## 源文件： `docs/Q-TopoMoE_Phase4_Phase8_progress_20260806.md`
+## Phase 4：kernel 与策略回放
 
 # Q-TopoMoE Phase 4/8 进展：Triton MoE kernel 实测与策略回放
 
@@ -97,7 +86,7 @@ p95=28.27%（由预测值极小的 smoke observation 拉高——预测 0.56ms �
 
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase5_progress_20260806.md`
+## Phase 5：permute 与量化融合
 
 # Q-TopoMoE Phase 5：Level 2 融合 kernel（permute + quant/scale + pack）
 
@@ -195,20 +184,19 @@ A/B 数据：[Q-TopoMoE_Phase5_prepare_ab_20260807.json](../Q-TopoMoE_Phase5_pre
 
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase6_progress_20260807.md`
+## Phase 6：TP/DP/EP 通信矩阵
 
 # Q-TopoMoE Phase 6：TP/DP/EP 系统矩阵（P2P 后全量）
 
 > 生成日期：2026-08-07（Asia/Shanghai）
 > 范围：4×RTX 5090（NUMA0: GPU0-3）与 8×RTX 5090（双 NUMA）。
-> P2P 启用后所有多卡性能数字已重测；旧 P2P 禁用版数据归档至
-> `docs/archive/`（仅作历史对照）。
+> 所有数字均来自 P2P 正式环境。
 
 > **2026-08-09 并行拓扑审计更正：** vLLM 的 EP rank 数由实际并行
 > world size 决定，不由 `CUDA_VISIBLE_DEVICES` 数量决定。历史
 > `ep8_tp1_p2p` 实际 `world_size=1`，不得作为 EP8 结果；历史
 > `ep4_tp2_eplb_*` 实际 `world_size=2`，是 EP2+EPLB，不是 EP4。
-> 下表保留其时序用于失败审计，但已修正准入含义。
+> 下表保留运行时序用于核对基准口径，并已按当前准入语义统一名称。
 
 ## 1. 环境与前置
 
@@ -221,49 +209,28 @@ A/B 数据：[Q-TopoMoE_Phase5_prepare_ab_20260807.json](../Q-TopoMoE_Phase5_pre
 
 ## 2. 四卡矩阵（P2P 后）
 
-| 配置 | 模型 | TTFT p50 | TPOT p50 | e2e p50 | 旧 e2e | 通过 |
-|---|---|---:|---:|---:|---:|---:|
-| TP4×DP1 | BF16 | 190.0 ms | 5.80 ms | 620.5 ms | 820.2 ms | 32/32 |
-| TP2×DP2 | BF16 | 214.0 ms | 6.40 ms | 693.1 ms | 1,586.2 ms | 32/32 |
-| TP1×DP4 | W4A16 | 238.3 ms | 11.32 ms | 1,010.2 ms | 1,072.3 ms | 32/32 |
-| EP4 static | W4A16 | 194.0 ms | 8.17 ms | 711.6 ms | 735.4 ms | 32/32 |
+| 配置 | 模型 | TTFT p50 | TPOT p50 | e2e p50 | 通过 |
+|---|---|---:|---:|---:|---:|
+| TP4×DP1 | BF16 | 190.0 ms | 5.80 ms | 620.5 ms | 32/32 |
+| TP2×DP2 | BF16 | 214.0 ms | 6.40 ms | 693.1 ms | 32/32 |
+| TP1×DP4 | W4A16 | 238.3 ms | 11.32 ms | 1,010.2 ms | 32/32 |
+| EP4 static | W4A16 | 194.0 ms | 8.17 ms | 711.6 ms | 32/32 |
 
 原始数据：[Q-TopoMoE_Phase6_matrix_4gpu_p2p_20260807.json](../Q-TopoMoE_Phase6_matrix_4gpu_p2p_20260807.json)。
 
-### 2.1 新旧对比（P2P 启用前后，4 卡）
-
-| 配置 | 模型 | TTFT 旧→新 | TPOT 旧→新 | e2e 旧→新 |
-|---|---|---:|---:|---:|
-| TP4×DP1 | BF16 | 173.7→190.0 ms（+9.4%） | 6.47→5.80 ms（-10.3%） | 820.2→620.5 ms（-24.3%） |
-| TP2×DP2 | BF16 | 612.7→214.0 ms（-65.1%） | 8.21→6.40 ms（-22.1%） | 1,586.2→693.1 ms（-56.3%） |
-| TP1×DP4 | W4A16 | 292.3→238.3 ms（-18.5%） | 12.04→11.32 ms（-6.0%） | 1,072.3→1,010.2 ms（-5.8%） |
-| EP4 static | W4A16 | 187.9→194.0 ms（+3.2%） | 8.67→8.17 ms（-5.8%） | 735.4→711.6 ms（-3.2%） |
-
-解读：
-
-1. **TP2×DP2 收益最大（e2e -56%）**：该格通信最密集（TP2 all-reduce +
-   DP 协调），P2P 禁用时全部走共享主机内存，受损最重；启用后恢复
-   P2P/direct pointer，TTFT -65%、TPOT -22%。
-2. **TP4×DP1（e2e -24%）**：TPOT -10% 说明 4 卡 all-reduce 在 decode 阶段
-   直接受益于 P2P；TTFT +9.4% 属 32 请求小样本噪声，不影响结论。
-3. **TP1×DP4 变化最小（-5.8%）**：DP4 各副本单卡独立推理，跨卡仅少量
-   协调流量，P2P 影响有限——符合"P2P 主要影响 TP/EP 通信"的预期。
-4. **EP4 static（-3.2%）**：4 卡 all-to-all 且 W4 专家体积小，收益有限；
-   TPOT -5.8% 与 TP1×DP4 接近。
-
-结论：P2P 主要修复的是"通信密集"配置（TP2×DP2 之类），4 卡矩阵的
-相对排序不变（TP4×DP1 仍最优、TP1×DP4 仍最慢），但各格差距大幅缩小。
+四卡 smoke 中，TP4×DP1 的 e2e p50 最低；TP2×DP2 次之。TP1×DP4
+证明 W4A16 canonical 可单卡承载，EP4 static 则提供单 NUMA 专家并行基线。
 
 ## 3. 八卡矩阵（P2P 后）
 
-| 配置 | 模型 | TTFT p50 | TPOT p50 | e2e p50 | 旧 e2e | 通过 |
-|---|---|---:|---:|---:|---:|---:|
-| TP8×DP1 | BF16 | 173.3 ms | 6.25 ms | 627.6 ms | 864.9 ms | 32/32 |
-| TP4×DP2 | BF16 | 316.6 ms | 7.86 ms | 785.4 ms | 1,528.7 ms | 32/32 |
-| TP2×DP4 | BF16 | 276.3 ms | 8.27 ms | 1,041.6 ms | 1,314.8 ms | 32/32 |
-| TP1+EP（实际 world=1，非 EP8） | W4A16 | 227.4 ms | 12.54 ms | 1,024.6 ms | 2,055.4 ms | 无效拓扑 |
-| TP2+EP2+原生 EPLB | W4A16 | 182.2 ms | 16.28 ms | 1,221.5 ms | 1,234.6 ms | 32/32 |
-| TP2+EP2+原生 EPLB（重复） | W4A16 | 199.1 ms | 15.87 ms | 1,200.7 ms | — | 32/32 |
+| 配置 | 模型 | TTFT p50 | TPOT p50 | e2e p50 | 通过 |
+|---|---|---:|---:|---:|---:|
+| TP8×DP1 | BF16 | 173.3 ms | 6.25 ms | 627.6 ms | 32/32 |
+| TP4×DP2 | BF16 | 316.6 ms | 7.86 ms | 785.4 ms | 32/32 |
+| TP2×DP4 | BF16 | 276.3 ms | 8.27 ms | 1,041.6 ms | 32/32 |
+| TP1+EP（实际 world=1，非 EP8） | W4A16 | 227.4 ms | 12.54 ms | 1,024.6 ms | 无效拓扑 |
+| TP2+EP2+原生 EPLB | W4A16 | 182.2 ms | 16.28 ms | 1,221.5 ms | 32/32 |
+| TP2+EP2+原生 EPLB（重复） | W4A16 | 199.1 ms | 15.87 ms | 1,200.7 ms | 32/32 |
 
 原始数据：[Q-TopoMoE_Phase6_matrix_8gpu_p2p_20260807.json](../Q-TopoMoE_Phase6_matrix_8gpu_p2p_20260807.json)。
 
@@ -272,16 +239,14 @@ A/B 数据：[Q-TopoMoE_Phase5_prepare_ab_20260807.json](../Q-TopoMoE_Phase5_pre
 
 ## 4. 观察
 
-1. **P2P 全面提升多卡性能**：e2e 普遍改善 20-50%，其中 TP2×DP2（-56%）、
-   TP4×DP2（-49%）、EP8 TP1（-50%）最显著；TP8×DP1 改善 27%。
-2. **TPOT（稳态 decode）**：TP4×DP1 最低（5.80 ms），TP8×DP1 次之
+1. **TPOT（稳态 decode）**：TP4×DP1 最低（5.80 ms），TP8×DP1 次之
    （6.25 ms）；TP1×DP4 较高（11 ms）。原标注 EP8 的 12.54 ms
    实际是 world=1，不参与 EP 比较。
-3. **TTFT（prefill）**：TP8×DP1 最优（173 ms）；TP4×DP2 明显偏高
+2. **TTFT（prefill）**：TP8×DP1 最优（173 ms）；TP4×DP2 明显偏高
    （317 ms），DP 协调 + 更细 TP 分片对 prefill 不利。
-4. **e2e p50**：TP4×DP1 最低（620 ms）；8 卡矩阵中 TP8×DP1（628 ms）
+3. **e2e p50**：TP4×DP1 最低（620 ms）；8 卡矩阵中 TP8×DP1（628 ms）
    与 TP4×DP1 相当，TP2×DP4 与已验证 EP2/EP4 配置略高。
-5. TP1×DP4 证明 W4A16 canonical 单卡容量通过（Runbook 前置条件），
+4. TP1×DP4 证明 W4A16 canonical 单卡容量通过（Runbook 前置条件），
    为 TP1×DP8 提供依据。
 
 ## 5. 边界与下一步
@@ -296,11 +261,9 @@ A/B 数据：[Q-TopoMoE_Phase5_prepare_ab_20260807.json](../Q-TopoMoE_Phase5_pre
   256+1=257 为质数，EP2/4/8 均不可用，`--eplb-config
   '{"num_redundant_experts": 1}'` 报 `even distribution of experts across
   ranks`，保留为格式不兼容证据）、自研 topology-aware EPLB（待做）。
-- 旧 P2P 禁用版四卡矩阵数据：`docs/archive/Q-TopoMoE_Phase6_matrix_4gpu_20260807.json`。
-
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase7_progress_20260807.md`
+## Phase 7：专家迁移与 placement
 
 # Q-TopoMoE Phase 7：量化感知 EPLB（离线 placement 与迁移成本）
 
@@ -315,48 +278,27 @@ A/B 数据：[Q-TopoMoE_Phase5_prepare_ab_20260807.json](../Q-TopoMoE_Phase5_pre
 
 | 路径 | 耗时/专家 |
 |---|---:|
-| 同 GPU（intra-device） | 10.2 μs |
-| 同 NUMA（peer，GPU0→1） | 78.8 μs |
-| 跨 NUMA（peer，GPU0→4） | 75.3 μs |
+| 同 GPU（intra-device） | 10.14 μs |
+| 同 NUMA（peer，GPU0→1） | 47.71 μs |
+| 跨 NUMA（peer，GPU0→4） | 73.45 μs |
 
-同 NUMA 与跨 NUMA 差异不大（PCIe/互联均为 peer 拷贝主导），说明 4 卡
-场景下迁移成本主要取决于专家数量与拷贝次数，而非 NUMA 距离。
+跨 NUMA 迁移明显慢于同 NUMA peer 拷贝。计划生成必须同时约束迁移数量和
+NUMA 边界，不能把两类路径视为同一成本。
 测量脚本：`phase7/migration_cost.py`。
 
 ## 2. 离线 placement（11.2）
 
-求解器：`phase7/placement.py`。输入：BF16 全量 trace 的
-`expert_token_histogram.json`（每层每专家 token 数）、实测通信代价矩阵、
-专家大小与 NUMA 拓扑。输出 `expert_to_gpu`、副本、预测跨 NUMA bytes、
-预测 p99、trace hash。
-
-四卡（NUMA0=GPU0-1，NUMA1=GPU2-3）策略对比：
-
-| 策略 | 负载不均衡 | 预测 p99 | 迁移字节 |
-|---|---:|---:|---:|
-| static_linear | 3.05% | 0.234 ms | 0 |
-| static_round_robin | 2.26% | 0.232 ms | 0.40 GB |
-| load_only | 0.02% | 0.227 ms | 0.40 GB |
-| load_topology | 0.02% | 0.227 ms | 0.42 GB |
-
-load-aware 策略把不均衡从 2-3% 压到 0.02%，预测 p99 略降（0.234 →
-0.227 ms），代价是相对 static 的 ~0.4 GB 迁移（256 专家 × 4MB × ~40% 移动）。
+求解器 `phase7/placement.py` 保留为通用实现。输入包括逐层专家 token
+直方图、当前 NCCL 成本库、专家大小、NUMA 拓扑和显存预算；输出
+`expert_to_gpu`、预测迁移字节与 trace hash。仓库不再提供可直接部署的早期
+Phase 7 map，当前唯一正式候选由 Phase 8 真实暖态计数重新生成。
 
 ## 3. 结论与边界
 
-1. **负载感知 placement 显著改善均衡**（不均衡 2-3% → 0.02%），且迁移
-   成本可量化（单专家 10-79μs，整体 ~0.4GB 字节级迁移）。
-2. 跨 NUMA bytes 估计为均匀近似（无 per-token NUMA 归属数据），对四种
-   策略数值相同；接入真实 routed ids 后可精确化，属于后续增强点。
-3. 11.3 在线控制器（窗口/EMA/触发/收益门限/回滚）已按 Runbook 参数
-   定义，待接入真实服务（需要 vLLM EP + 动态路由）后验证。
-
-原始数据：
-[placement](../Q-TopoMoE_Phase7_placement_20260807.json) /
-[migration cost](../Q-TopoMoE_Phase7_migration_cost_p2p_20260807.json)。
-# 2026-08-12 阶段 7 正式补充
-
-在线 placement-plan、服务迁移阻塞与恢复实验已经完成并通过 Gate：384 请求全部完成，稳定/迁移/恢复窗口端到端 p99 分别为 1082.04/2166.96/988.83 ms。详情与机器可读入口见[阶段 7–8 正式收尾](phase7_phase8_formal_closeout_20260812.md)。原生 vLLM NVFP4 EPLB 限制仍然存在，本次通过的是显式 opt-in 的运行时 bridge。
+1. 迁移成本使用 [P2P 正式微基准](../Q-TopoMoE_Phase7_migration_cost_p2p_20260807.json)。
+2. 离线预测不能替代在线稳定性、质量和恢复测试。
+3. 当前部署候选与完整 apply/rollback 结论见
+   [暖态 placement 最终验收](phase8_warm_placement_final_acceptance_20260825.md)。
 
 ---
 
@@ -367,7 +309,7 @@ load-aware 策略把不均衡从 2-3% 压到 0.02%，预测 p99 略降（0.234 �
 默认选择；缺失或无效数据会抛出 `SelectionError`，`allow_unmeasured=True`
 只能用于显式开发 dry-run。
 
-### M-bucket workload
+### M-bucket 工作负载
 
 ```bash
 python3 phase4/workload/generate_m_buckets.py \
@@ -407,20 +349,19 @@ M=4/8/16/32/128/256/16384 的 p50/p95 分别为 235.61/253.71、
 
 ```bash
 python3 scripts/build_nccl_cost_db.py \
-  --input artifacts/raw/20260804T040000Z_nccl_formal/nccl/statistics.json \
+  --input artifacts/raw/20260807T120000Z_nccl_formal_p2p/nccl/statistics.json \
   --output configs/communication/nccl_cost_db.json
 
 python3 scripts/replay_phase8.py \
   --candidates configs/strategies/phase8_candidates.json \
   --kernel-db configs/kernels/phase4_kernel_db.json \
   --observations configs/strategies/phase8_observations.json \
-  --output docs/Q-TopoMoE_Phase8_replay_20260804.json
+  --output docs/Q-TopoMoE_Phase8_replay_20260807_p2p.json
 ```
 
-NCCL DB 原始构建归一化 132 个 `time_us` 实测点，覆盖 6 个 mapping 且
+NCCL DB 从 P2P 正式矩阵归一化 `time_us` 实测点，覆盖 6 个 mapping 且
 `wrong_total=0`；不同 collective/size 应按点查询或拟合，不能直接压成一个线性
-带宽常数。早期空 kernel DB 的回放状态
-`blocked_missing_kernel_measurements` 是预期防误选行为，不是执行故障。
+带宽常数。
 
 `StrategyCandidate` 包含量化格式/checkpoint、TP/DP/EP、GPU 映射、EPLB、
 冗余 expert、kernel backend/config。`CostModel` 综合真实 M 分布计算、实测通信、

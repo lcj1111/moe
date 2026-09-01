@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：从官方协议数据中冻结分层抽样的轻量 smoke 集。
 """Freeze a sampled, official-like MMLU-Pro and C-Eval protocol."""
 
 from __future__ import annotations

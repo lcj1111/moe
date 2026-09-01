@@ -1,3 +1,4 @@
+# 作用：验证 workload 观测聚合与置信区间计算。
 import unittest
 
 from scripts.build_phase8_observations import (

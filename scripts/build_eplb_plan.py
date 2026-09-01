@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：根据路由与专家大小生成可审计 EPLB 放置计划。
 """Build an auditable EPLB placement plan from trace and size manifests."""
 from __future__ import annotations
 

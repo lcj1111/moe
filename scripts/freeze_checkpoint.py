@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：生成内容寻址的 checkpoint 冻结清单。
 """Create a reproducible, content-addressed checkpoint freeze manifest."""
 from __future__ import annotations
 

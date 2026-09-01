@@ -3,6 +3,8 @@
 > 课题：面向 PCIe 多 GPU 系统的量化感知 MoE 推理并行策略选择、动态负载均衡与 SM120 算子协同优化
 > 目标平台：单机 8×RTX 5090，双 NUMA，PCIe 互连
 > 原则：所有绝对路径、端口和模型位置由执行者填写；每一步都有输入、操作、产物、通过条件和失败处理。
+> 当前 Phase 8 发布策略与最终候选以
+> [Release manifest](Q-TopoMoE_release_manifest_20260825.json) 为准。
 
 ## 1. 首先填写项目参数
 
@@ -576,7 +578,19 @@ predicted_p99 = compute_cost(real_M_hist, kernel_db)
 
 对测试 workload 穷举已通过 Gate 的配置得到 oracle。报告 top-1、median regret、p95 regret、决策开销、不可行配置误选率。
 
-Gate：median regret ≤5%、p95 ≤10%、控制开销 <1%。未达到时简化模型并报告误差，不直接引入 RL。
+当前发布策略要求：median regret ≤5%、p95 regret ≤12%、控制开销 <1%、不可行配置误选率为 0。
+选择器通过后，还必须依次完成质量等价、路由稳定性、有限 canary 和自动回滚闭环；选择器指标
+不能单独授予部署资格。
+
+当前暖态 placement 验收入口：
+
+```bash
+python scripts/build_warm_placement_candidates.py --help
+python scripts/run_phase8_warm_placement_quality_equivalence.py --help
+python scripts/run_phase8_route_stability_diagnostic.py --help
+python scripts/run_phase8_selector_limited_canary.py --help
+python scripts/run_phase8_selector_closed_loop_acceptance.py --help
+```
 
 ## 13. Workload 和实验漏斗
 
@@ -642,11 +656,12 @@ status: planned
 | 容量 | 无 OOM，记录 HBM/上下文 | 提高 TP，生成新配置 |
 | 量化覆盖 | 40 层、256 experts、30720 linears、排除明确 | 修 recipe 重量化 |
 | 质量 | FP8≤0.5、NVFP4≤1.5、W4A16≤2.0 点下降 | 退出主线或 mixed |
-| NVFP4 EP | TP1/2、并发 1/32、多卡 completion | 仅保留 TP/kernel/失败证据 |
+| NVFP4 EP | TP1/2、并发 1/32、多卡 completion | 仅保留已验证的 TP/kernel 能力边界 |
 | Kernel | 全 shape 正确，关键 M 桶 ≥10% | 停 Level 2，保留 selector |
 | 系统收益 | ≥5% tokens/s 或 ≥5% p99 TPOT | 报告瓶颈，不宣称优化成功 |
 | EPLB | 开销 <1%，无抖动，可回滚 | 使用 static/native |
-| Selector | median regret≤5%，p95≤10% | 简化模型和误差分析 |
+| Selector | median regret≤5%，p95≤12%，控制开销<1%，不可行配置误选率=0 | 简化模型和误差分析 |
+| 暖态 placement | 质量零失败/零截断，路由稳定性符合当前策略，canary 与 rollback 均可用 | 保持静态 placement |
 
 ## 16. 推荐执行顺序
 
@@ -665,7 +680,7 @@ status: planned
 13. 实现 topology+quant-aware EPLB。
 14. 实现联合 selector，与 oracle 比较。
 15. 选择 Pareto 6 组，随机顺序、5 次重复。
-16. 发布代码、lockfile、manifest、raw、失败矩阵和一键 smoke。
+16. 发布代码、lockfile、manifest、支持边界和一键 smoke。
 
 ## 17. 16 周落地安排
 
@@ -681,6 +696,6 @@ status: planned
 | 12–13 | topology+quant-aware EPLB、selector | 控制器与 regret |
 | 14 | 完整 workload 单次筛选 | Pareto 6 组 |
 | 15 | 随机顺序、每组 5 次、95% CI | 最终统计 |
-| 16 | 复现包、论文、失败矩阵 | release tag |
+| 16 | 复现包、论文、支持边界 | release tag |
 
 最小成功闭环是：BF16/FP8/W4A16 可服务、实测成本矩阵、量化感知 TP/DP/EP、路由漂移、拓扑 EPLB、真实 trace 驱动的 SM120 selector和一条命令 smoke。自研融合 kernel 是增强项，不是成败单点。

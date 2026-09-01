@@ -1,3 +1,4 @@
+# 作用：验证正式实验共享到达率的冻结规则。
 import importlib.util
 import json
 import tempfile

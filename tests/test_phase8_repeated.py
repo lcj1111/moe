@@ -1,3 +1,4 @@
+# 作用：验证 Phase 8 重复实验的调度、续跑和记录。
 import importlib.util
 import json
 import tempfile

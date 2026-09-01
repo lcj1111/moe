@@ -1,3 +1,4 @@
+# 作用：记录 gpu-111 的 GPU、NUMA 与并行映射约束。
 schema_version: 1
 host: gpu-111
 numa:

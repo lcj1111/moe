@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：拟合并留族验证透明的 Phase 8 服务修正模型。
 """Fit and group-cross-validate a transparent Phase 8 service correction.
 
 The base model remains the measured kernel + communication + imbalance +

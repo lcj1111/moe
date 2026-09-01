@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：按最小结构约束校验项目 YAML 与 JSON 配置。
 """Validate project YAML/JSON config files against a minimal schema.
 
 Used by ``make check`` (env/project.env + validate_configs.py).  Fails fast

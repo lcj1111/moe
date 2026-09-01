@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：对比 vLLM prepare 基线与融合 permute-quant kernel。
 """Phase 5 prepare-stage A/B: vLLM permute+quant vs our fused kernel.
 
 Side A (baseline): vLLM serving path prepare = ``moe_permute`` (permute +

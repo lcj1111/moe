@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：在两组 GPU 上并行执行官方协议 full-set 分片。
 set -euo pipefail
 
 # 在两组 GPU 上同时运行官方协议 A/B 分片。请用 nohup + setsid 启动本脚本，

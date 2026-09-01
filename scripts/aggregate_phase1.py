@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：汇总 Phase 1 各拓扑服务结果并生成统一矩阵。
 """Aggregate Phase 1 service-matrix smoke summaries into one table.
 
 Reads per-topology ``*_c*.summary.json`` files under a run root and writes a

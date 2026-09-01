@@ -1,3 +1,4 @@
+# 作用：汇总环境检查、快照和目录查看等常用维护命令。
 .PHONY: help check snapshot tree
 
 help:
@@ -8,6 +9,7 @@ help:
 
 check:
 	@bash -c 'source env/project.env; "$$QTOPOMOE_SGLANG_VENV/bin/python" scripts/validate_configs.py'
+	@bash -c 'source env/project.env; "$$QTOPOMOE_SGLANG_VENV/bin/python" scripts/check_document_references.py'
 	@bash env/check_env.sh
 
 snapshot:

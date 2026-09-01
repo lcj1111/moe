@@ -1,0 +1,80 @@
+{
+  "schema_version": "qtopomoe.phase8_warm_placement_limited_canary.v1",
+  "status": "frozen_before_canary",
+  "frozen_date": "2026-08-25",
+  "scope": "当前1%路由稳定性政策下的新暖态placement候选有限canary；不等同于自动闭环验收",
+  "说明": "复用已验证的有限canary编排，不再增加路由诊断。placement-plan仅在稳定段完成后显式激活；按用户要求，既有SGLang服务不属于本轮管理或Gate范围。",
+  "准入依据": {
+    "policy": "configs/strategies/phase8_route_stability_gate_policy_v2_20260825.json",
+    "policy_sha256": "938493b11e9e8efb11611eab50299b22f64549d2736301bc1ae944ef9fd83ea0",
+    "quality_plan": "configs/experiments/phase8_warm_placement_quality_equivalence_v3.json",
+    "quality_gate_sha256": "1f37556a11b469c3c16e96ca705da6d751d1c57d5756c74097791415aba7dcc0",
+    "decision": "accepted"
+  },
+  "canary目标": {
+    "candidate_id": "warm_swap_008_slots_per_layer_v1",
+    "representative_workload_id": "t2_c16_p0_closed_loop",
+    "route_stability_long_placement_excess_tv_p95": 0.0071754774951163745
+  },
+  "运行环境": {
+    "output_root": "/data/models/test/qtopomoe_phase8_warm_placement_limited_canary_v1_20260825",
+    "python_bin": "/data/moe/.runtime/cleanroom/venvs/vllm-33c50587d2679ba9bacc2a51ae19901f7eb3a129/bin/python3",
+    "model": "/data/models/test/redhatai_qwen36_nvfp4",
+    "runtime_plan": "/data/models/test/qtopomoe_phase8_warm_placement_candidates_v1_20260823/warm_swap_008_slots_per_layer_v1.json",
+    "runtime_plan_file_sha256": "6ec449552d04041bef086c31661cf832f3c60c301086399828c4201ec08f5740",
+    "runtime_map_sha256": "24f09c93ff8e6c410917a3fcb087307130f8914f45c028adf23088c39fc80ac6",
+    "runtime_patch": "runtime_patches/qtopomoe_eplb/sitecustomize.py",
+    "runtime_patch_sha256": "f92fca6c54a3b80ed966262761e3773b2e061dfb6bc2087f48af40aadf071c88",
+    "control_file_mode": false,
+    "host": "127.0.0.1",
+    "port": 31690,
+    "served_model_name": "qtopomoe-phase8-warm-placement-limited-canary-v1",
+    "gpu_ids": [0, 1, 2, 3, 4, 5, 6, 7],
+    "tensor_parallel_size": 8,
+    "expert_parallel_size": 8,
+    "max_model_len": 65536,
+    "max_num_seqs": 32,
+    "gpu_memory_utilization": 0.9,
+    "eplb_window_size": 16,
+    "eplb_step_interval": 16,
+    "defer_calls": 0,
+    "activation_mode": "explicit_file_after_stable"
+  },
+  "既有服务": {
+    "manage_service": false,
+    "scope": "external_not_managed",
+    "说明": "用户明确要求本轮不用管SGLang；不启动、不暂停、不恢复，也不以30002状态判定canary。",
+    "port": 30002,
+    "health_url": "http://127.0.0.1:30002/health",
+    "expected_module": "sglang.launch_server",
+    "expected_gpu_ids": [4, 5, 6, 7],
+    "force_pause_authorized": true,
+    "force_pause_authorization": "用户已明确授权可暂停GPU4-7服务，并要求在当前实验完成后恢复。",
+    "idle_samples_required": 3,
+    "idle_sample_interval_seconds": 10,
+    "idle_wait_timeout_seconds": 3600,
+    "restore_timeout_seconds": 1800
+  },
+  "负载": {
+    "input_tokens": 1536,
+    "output_tokens": 384,
+    "ignore_eos": true,
+    "concurrency": 16,
+    "requests_per_phase": 128,
+    "prefix_cache_pct": 0,
+    "arrival_mode": "closed_loop",
+    "seed": 520825,
+    "request_timeout_seconds": 300,
+    "matched_request_stream_across_phases": true,
+    "phases": ["stable", "migration", "recovery"]
+  },
+  "gates": {
+    "all_requests_succeeded": true,
+    "matched_request_stream_across_phases": true,
+    "plan_hash_consistent_on_all_8_ranks": true,
+    "plan_not_applied_before_explicit_activation": true,
+    "recovery_p99_ratio_to_stable_max": 1.05,
+    "existing_service_not_managed_as_authorized": true
+  },
+  "后续边界": "只有本canary accepted后，才允许单独验收trigger、cooldown和placement rollback自动闭环；SGLang服务状态不属于本轮结论。"
+}

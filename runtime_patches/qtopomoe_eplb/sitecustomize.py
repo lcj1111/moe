@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 import sys
+import time
 from pathlib import Path
 
 
@@ -33,17 +34,378 @@ def _activate() -> None:
         raise RuntimeError(f"placement plan checksum mismatch: {actual_sha} != {expected_sha}")
 
     import torch
+    from vllm.distributed.eplb.eplb_state import EplbState
+    from vllm.distributed.parallel_state import get_ep_group
     from vllm.distributed.eplb.policy.default import DefaultEplbPolicy
+    from vllm.model_executor.layers.fused_moe import RoutedExperts
     from vllm.model_executor.layers.quantization.compressed_tensors.compressed_tensors_moe.compressed_tensors_moe_w4a4_nvfp4 import (
         CompressedTensorsW4A4Nvfp4MoEMethod,
     )
 
     frozen_map = torch.tensor(mapping, dtype=torch.int64, device="cpu")
     defer_calls = int(os.environ.get("QTOPOMOE_EPLB_DEFER_CALLS", "0"))
+    activation_name = os.environ.get("QTOPOMOE_EPLB_ACTIVATION_FILE")
+    activation_path = Path(activation_name).resolve() if activation_name else None
+    control_name = os.environ.get("QTOPOMOE_EPLB_CONTROL_FILE")
+    control_path = Path(control_name).resolve() if control_name else None
+    load_export_name = os.environ.get("QTOPOMOE_EPLB_LOAD_EXPORT_PATH")
+    load_export_path = Path(load_export_name).resolve() if load_export_name else None
+    load_export_every = max(1, int(os.environ.get("QTOPOMOE_EPLB_LOAD_EXPORT_EVERY", "16")))
+    diagnostic_export_name = os.environ.get("QTOPOMOE_EPLB_DIAGNOSTIC_EXPORT_PATH")
+    diagnostic_export_path = (
+        Path(diagnostic_export_name).resolve() if diagnostic_export_name else None
+    )
+    diagnostic_export_every = max(
+        1, int(os.environ.get("QTOPOMOE_EPLB_DIAGNOSTIC_EXPORT_EVERY", "1"))
+    )
     invocation_count = 0
+    load_window_count = 0
+    last_control_generation = 0
+    original_rearrange = EplbState.rearrange
+    original_step = EplbState.step
+    original_get_expert_weights = RoutedExperts.get_expert_weights
+    record_time_logical_windows: dict[int, torch.Tensor] = {}
+    record_time_generations: dict[int, list[int | None]] = {}
+
+    def _mapping_sha256(mapping_tensor: torch.Tensor) -> str:
+        return _canonical_sha256(mapping_tensor.detach().cpu().tolist())
+
+    def _capture_record_time_logical(
+        self: object,
+        is_dummy: bool = False,
+        is_profile: bool = False,
+        log_stats: bool = False,
+    ) -> None:
+        """在物理计数被清零前按记录当时的 map 固化逻辑专家计数。"""
+        if (
+            diagnostic_export_path is not None
+            and not is_dummy
+            and not is_profile
+            and self._should_record_current_step(log_stats=log_stats)
+        ):
+            slot = int(self.expert_load_window_step)
+            for state in self.model_states.values():
+                key = id(state)
+                physical = state.expert_load_pass[
+                    :, : self.num_valid_physical_experts
+                ]
+                logical = torch.zeros(
+                    state.model.num_moe_layers,
+                    state.model.num_logical_experts,
+                    dtype=physical.dtype,
+                    device=physical.device,
+                )
+                mapping_tensor = state.physical_to_logical_map[
+                    :, : self.num_valid_physical_experts
+                ].long()
+                logical.scatter_add_(dim=-1, index=mapping_tensor, src=physical)
+                ring = record_time_logical_windows.get(key)
+                if ring is None:
+                    ring = torch.zeros(
+                        self.expert_load_window_size,
+                        state.model.num_moe_layers,
+                        state.model.num_logical_experts,
+                        dtype=physical.dtype,
+                        device=physical.device,
+                    )
+                    record_time_logical_windows[key] = ring
+                    record_time_generations[key] = [None] * self.expert_load_window_size
+                ring[slot].copy_(logical)
+                record_time_generations[key][slot] = last_control_generation
+        return original_step(
+            self, is_dummy=is_dummy, is_profile=is_profile, log_stats=log_stats
+        )
+
+    def _control_command() -> dict[str, object] | None:
+        if control_path is None or not control_path.exists():
+            return None
+        value = json.loads(control_path.read_text(encoding="utf-8"))
+        if value.get("action") not in {"apply", "rollback"}:
+            raise RuntimeError(f"unsupported placement control action: {value}")
+        if int(value.get("generation", 0)) < 1:
+            raise RuntimeError(f"invalid placement control generation: {value}")
+        return value
+
+    def _load_metrics(
+        self: object,
+    ) -> tuple[float, float, list[torch.Tensor], dict[str, object] | None]:
+        logical_windows = []
+        states = list(self.model_states.values())
+        for state in states:
+            physical = state.expert_load_window[:, :, : self.num_valid_physical_experts]
+            logical = torch.zeros(
+                self.expert_load_window_size,
+                state.model.num_moe_layers,
+                state.model.num_logical_experts,
+                dtype=physical.dtype,
+                device=physical.device,
+            )
+            logical.scatter_add_(
+                dim=-1,
+                index=state.physical_to_logical_map[
+                    :, : self.num_valid_physical_experts
+                ].unsqueeze(0).expand_as(physical).long(),
+                src=physical,
+            )
+            logical_windows.append(logical.sum(dim=0))
+        global_windows = self._allreduce_list(logical_windows)
+        rank_loads = None
+        layer_expert_cvs = []
+        ep_size = get_ep_group().device_group.size()
+        for state, logical in zip(states, global_windows):
+            logical_float = logical.float()
+            layer_means = logical_float.mean(dim=1)
+            valid_layers = layer_means > 0
+            if bool(valid_layers.any()):
+                layer_expert_cvs.append(
+                    logical_float.std(dim=1, unbiased=False)[valid_layers]
+                    / layer_means[valid_layers]
+                )
+            mapping = state.physical_to_logical_map[:, : self.num_valid_physical_experts].long()
+            counts = torch.zeros_like(logical)
+            counts.scatter_add_(1, mapping, torch.ones_like(mapping, dtype=logical.dtype))
+            per_physical = torch.gather(logical / counts.clamp_min(1), 1, mapping)
+            values = per_physical.reshape(logical.shape[0], ep_size, -1).sum(dim=(0, 2)).float()
+            rank_loads = values if rank_loads is None else rank_loads + values
+        expert_cv = (
+            float(torch.cat(layer_expert_cvs).median()) if layer_expert_cvs else 0.0
+        )
+        rank_cv = 0.0
+        if rank_loads is not None and float(rank_loads.mean()) > 0:
+            rank_cv = float(rank_loads.std(unbiased=False) / rank_loads.mean())
+        diagnostic: dict[str, object] | None = None
+        if diagnostic_export_path is not None:
+            record_time_local = []
+            current_map_hashes = []
+            mixed_slots = []
+            for state in states:
+                key = id(state)
+                ring = record_time_logical_windows.get(key)
+                if ring is None:
+                    ring = torch.zeros(
+                        self.expert_load_window_size,
+                        state.model.num_moe_layers,
+                        state.model.num_logical_experts,
+                        dtype=state.expert_load_window.dtype,
+                        device=state.expert_load_window.device,
+                    )
+                record_time_local.append(ring.sum(dim=0))
+                mapping_tensor = state.physical_to_logical_map[
+                    :, : self.num_valid_physical_experts
+                ]
+                current_hash = _mapping_sha256(mapping_tensor)
+                current_map_hashes.append(current_hash)
+                populated_generations = [
+                    value
+                    for value in record_time_generations.get(key, [])
+                    if value is not None
+                ]
+                mixed_slots.append(
+                    sum(value != last_control_generation for value in populated_generations)
+                )
+            record_time_global = self._allreduce_list(record_time_local)
+            tv_by_model = []
+            direct_expert_cvs = []
+            for legacy, direct in zip(global_windows, record_time_global):
+                legacy_float = legacy.float()
+                direct_float = direct.float()
+                totals = direct_float.sum(dim=1)
+                valid = totals > 0
+                tv = torch.zeros_like(totals)
+                tv[valid] = (
+                    0.5
+                    * (legacy_float - direct_float).abs().sum(dim=1)[valid]
+                    / totals[valid]
+                )
+                tv_by_model.append(tv)
+                means = direct_float.mean(dim=1)
+                valid_means = means > 0
+                direct_expert_cvs.append(
+                    direct_float.std(dim=1, unbiased=False)[valid_means]
+                    / means[valid_means]
+                )
+            diagnostic = {
+                "current_map_sha256": current_map_hashes,
+                "record_time_mismatched_slots": mixed_slots,
+                "legacy_vs_record_time_tv_by_model": [
+                    value.detach().cpu().tolist() for value in tv_by_model
+                ],
+                "record_time_expert_cv_layer_median": (
+                    float(torch.cat(direct_expert_cvs).median())
+                    if direct_expert_cvs
+                    else 0.0
+                ),
+                "legacy_reconstructed_models": [
+                    value.detach().cpu().tolist() for value in global_windows
+                ],
+                "record_time_logical_models": [
+                    value.detach().cpu().tolist() for value in record_time_global
+                ],
+            }
+        return expert_cv, rank_cv, global_windows, diagnostic
+
+    def _export_diagnostic(
+        diagnostic: dict[str, object] | None,
+        call: int,
+        generation: int,
+        action: str,
+        expert_cv: float,
+        rank_cv: float,
+    ) -> None:
+        if (
+            diagnostic_export_path is None
+            or diagnostic is None
+            or call % diagnostic_export_every
+        ):
+            return
+        if torch.distributed.is_initialized() and torch.distributed.get_rank() != 0:
+            return
+        record = {
+            "schema_version": "qtopomoe.eplb_route_stability_diagnostic.v1",
+            "call": call,
+            "captured_unix": time.time(),
+            "generation": generation,
+            "action": action,
+            "legacy_expert_cv_layer_median": expert_cv,
+            "rank_load_cv": rank_cv,
+            **diagnostic,
+        }
+        diagnostic_export_path.parent.mkdir(parents=True, exist_ok=True)
+        with diagnostic_export_path.open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n")
+
+    def _export_load_window(
+        logical_windows: list[torch.Tensor], call: int, expert_cv: float, rank_cv: float
+    ) -> None:
+        if load_export_path is None or call % load_export_every:
+            return
+        if torch.distributed.is_initialized() and torch.distributed.get_rank() != 0:
+            return
+        record = {
+            "schema_version": "qtopomoe.eplb_warm_load_window.v1",
+            "call": call,
+            "captured_unix": time.time(),
+            "expert_load_cv_layer_median": expert_cv,
+            "rank_load_cv": rank_cv,
+            "models": [window.detach().cpu().tolist() for window in logical_windows],
+        }
+        load_export_path.parent.mkdir(parents=True, exist_ok=True)
+        with load_export_path.open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n")
 
     def _supports_eplb(_self: object) -> bool:
         return True
+
+    def _get_expert_weights_with_nvfp4_aux(
+        self: object,
+    ) -> list[torch.Tensor]:
+        """把 Marlin NVFP4 的未注册全局尺度纳入 EPLB 原子迁移。"""
+        weights = list(original_get_expert_weights(self))
+        method = getattr(self.quant_method, "old_quant_method", self.quant_method)
+        if not isinstance(method, CompressedTensorsW4A4Nvfp4MoEMethod):
+            return weights
+        auxiliary = []
+        for name in ("w13_weight_scale_2", "w2_weight_scale_2"):
+            tensor = getattr(self, name, None)
+            if not isinstance(tensor, torch.Tensor):
+                raise RuntimeError(f"NVFP4 EPLB missing auxiliary tensor: {name}")
+            if tensor.ndim < 1 or int(tensor.shape[0]) != int(self.local_num_experts):
+                raise RuntimeError(
+                    f"NVFP4 EPLB auxiliary tensor shape mismatch: "
+                    f"{name}={tuple(tensor.shape)} local_experts={self.local_num_experts}"
+                )
+            if not tensor.is_contiguous():
+                raise RuntimeError(
+                    f"NVFP4 EPLB auxiliary tensor is not contiguous: {name}"
+                )
+            auxiliary.append(tensor.view(self.local_num_experts, -1))
+        weights.extend(auxiliary)
+        if not getattr(self, "_qtopomoe_nvfp4_aux_logged", False):
+            print(
+                "[QTOPOMOE_EPLB_NVFP4_AUX_WEIGHTS] "
+                f"count={len(auxiliary)} "
+                f"shapes={[tuple(value.shape) for value in auxiliary]}",
+                file=sys.stderr,
+                flush=True,
+            )
+            setattr(self, "_qtopomoe_nvfp4_aux_logged", True)
+        return weights
+
+    def _one_shot_rearrange(
+        self: object,
+        is_profile: bool = False,
+        rank_mapping: dict[int, int] | None = None,
+    ) -> torch.Tensor | None:
+        nonlocal last_control_generation, load_window_count
+        if is_profile or rank_mapping is not None:
+            return original_rearrange(self, is_profile=is_profile, rank_mapping=rank_mapping)
+        if control_path is not None:
+            load_window_count += 1
+            expert_cv, rank_cv, logical_windows, diagnostic = _load_metrics(self)
+            _export_load_window(
+                logical_windows, load_window_count, expert_cv, rank_cv
+            )
+            command = _control_command()
+            generation = int(command["generation"]) if command else 0
+            action = str(command["action"]) if command else "hold"
+            _export_diagnostic(
+                diagnostic,
+                load_window_count,
+                generation,
+                action,
+                expert_cv,
+                rank_cv,
+            )
+            print(
+                "[QTOPOMOE_EPLB_LOAD_WINDOW] "
+                f"call={load_window_count} cv={expert_cv:.8f} "
+                f"expert_cv={expert_cv:.8f} rank_cv={rank_cv:.8f} "
+                f"generation={generation} action={action}",
+                file=sys.stderr,
+                flush=True,
+            )
+            if command is None or generation <= last_control_generation:
+                return None
+            result = original_rearrange(self, is_profile=False, rank_mapping=None)
+            last_control_generation = generation
+            print(
+                "[QTOPOMOE_EPLB_CONTROL_COMMITTED] "
+                f"generation={generation} action={action} sha256={command['target_sha256']}",
+                file=sys.stderr,
+                flush=True,
+            )
+            return result
+        if activation_path is None:
+            return original_rearrange(self, is_profile=False, rank_mapping=None)
+        if not activation_path.exists():
+            if not getattr(self, "_qtopomoe_wait_logged", False):
+                print(
+                    "[QTOPOMOE_EPLB_ONE_SHOT_WAITING] "
+                    f"activation_file={activation_path}",
+                    file=sys.stderr,
+                    flush=True,
+                )
+                setattr(self, "_qtopomoe_wait_logged", True)
+            return None
+        if getattr(self, "_qtopomoe_one_shot_committed", False):
+            skipped = int(getattr(self, "_qtopomoe_skipped_rearrangements", 0)) + 1
+            setattr(self, "_qtopomoe_skipped_rearrangements", skipped)
+            if skipped == 1:
+                print(
+                    "[QTOPOMOE_EPLB_ONE_SHOT_SKIPPED] reason=already_committed",
+                    file=sys.stderr,
+                    flush=True,
+                )
+            return None
+        result = original_rearrange(self, is_profile=False, rank_mapping=None)
+        setattr(self, "_qtopomoe_one_shot_committed", True)
+        print(
+            "[QTOPOMOE_EPLB_ONE_SHOT_COMMITTED] "
+            f"call={invocation_count} sha256={actual_sha}",
+            file=sys.stderr,
+            flush=True,
+        )
+        return result
 
     def _fixed_rebalance(
         cls: type,
@@ -65,7 +427,42 @@ def _activate() -> None:
         if num_replicas % num_ranks:
             raise RuntimeError(f"{num_replicas=} is not divisible by {num_ranks=}")
         logical_experts = int(weight.shape[1])
-        if invocation_count <= defer_calls:
+        if control_path is not None:
+            command = _control_command()
+            if command is None:
+                return (
+                    old_global_expert_indices.detach().cpu().to(torch.int64)
+                    if old_global_expert_indices is not None
+                    else torch.arange(num_replicas, dtype=torch.int64).repeat(
+                        int(weight.shape[0]), 1
+                    )
+                )
+            action = str(command["action"])
+            generation = int(command["generation"])
+            target = (
+                frozen_map.clone()
+                if action == "apply"
+                else torch.arange(num_replicas, dtype=torch.int64).repeat(
+                    int(weight.shape[0]), 1
+                )
+            )
+            target_hash = _canonical_sha256(target.tolist())
+            if command.get("target_sha256") != target_hash:
+                raise RuntimeError(
+                    "placement control checksum mismatch: "
+                    f"{command.get('target_sha256')} != {target_hash}"
+                )
+            print(
+                "[QTOPOMOE_EPLB_PLAN_APPLIED] "
+                f"call={invocation_count} generation={generation} action={action} "
+                f"sha256={target_hash} shape={tuple(target.shape)}",
+                file=sys.stderr,
+                flush=True,
+            )
+            return target
+        activation_pending = activation_path is not None and not activation_path.exists()
+        call_pending = activation_path is None and invocation_count <= defer_calls
+        if activation_pending or call_pending:
             if old_global_expert_indices is not None:
                 deferred_map = old_global_expert_indices.detach().cpu().to(torch.int64)
             else:
@@ -74,11 +471,18 @@ def _activate() -> None:
                 )
             print(
                 "[QTOPOMOE_EPLB_PLAN_DEFERRED] "
-                f"call={invocation_count} defer_calls={defer_calls} shape={tuple(deferred_map.shape)}",
+                f"call={invocation_count} defer_calls={defer_calls} "
+                f"activation_file={activation_path} shape={tuple(deferred_map.shape)}",
                 file=sys.stderr,
                 flush=True,
             )
             return deferred_map
+        if activation_path is not None:
+            activation_hash = activation_path.read_text(encoding="utf-8").strip()
+            if activation_hash != actual_sha:
+                raise RuntimeError(
+                    f"placement activation checksum mismatch: {activation_hash} != {actual_sha}"
+                )
         for layer, row in enumerate(frozen_map):
             counts = torch.bincount(row, minlength=logical_experts)
             if row.min().item() < 0 or row.max().item() >= logical_experts:
@@ -95,10 +499,16 @@ def _activate() -> None:
         return frozen_map.clone()
 
     CompressedTensorsW4A4Nvfp4MoEMethod.supports_eplb = property(_supports_eplb)
+    RoutedExperts.get_expert_weights = _get_expert_weights_with_nvfp4_aux
     DefaultEplbPolicy.rebalance_experts = classmethod(_fixed_rebalance)
+    if diagnostic_export_path is not None:
+        EplbState.step = _capture_record_time_logical
+    EplbState.rearrange = _one_shot_rearrange
     print(
         "[QTOPOMOE_EPLB_PATCH_ACTIVE] native_migration=true "
-        f"plan_sha256={actual_sha}",
+        f"plan_sha256={actual_sha} activation_file={activation_path} "
+        f"control_file={control_path} load_export_path={load_export_path} "
+        f"diagnostic_export_path={diagnostic_export_path}",
         file=sys.stderr,
         flush=True,
     )

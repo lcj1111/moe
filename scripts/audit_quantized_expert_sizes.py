@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：读取 safetensors 元数据并统计量化专家的实际存储字节。
 """Read safetensors metadata and report exact routed-expert storage bytes."""
 from __future__ import annotations
 

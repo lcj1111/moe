@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：执行受校准清单保护的 Qwen3.6 MoE W4A16 后训练量化。
 """Run the guarded Qwen3.6 MoE W4A16 PTQ recipe.
 
 The script refuses to start unless a pinned calibration manifest contains the

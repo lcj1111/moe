@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：按冻结顺序运行 Phase 8 独立 selector Gate。
 set -euo pipefail
 
 # 在冻结 selector 后顺序执行 Phase 8 独立 Gate。脚本只终止自己启动的 incumbent

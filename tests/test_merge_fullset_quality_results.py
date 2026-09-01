@@ -1,3 +1,4 @@
+# 作用：验证基础轮与续跑结果的严格合并规则。
 import importlib.util
 import pathlib
 import unittest

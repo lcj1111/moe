@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：冻结基线模型、输入数据和服务 smoke 所需资产。
 set -euo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -134,8 +135,8 @@ else
   printf '{"status":"missing","path":"%s"}\n' "$seed_source" >"$out/data/sharegpt_seed_inventory.json"
 fi
 
-if [[ -f "$QTOPOMOE_PHASE0/nccl/formal5/formal5-statistics.csv" ]]; then
-  sha256sum "$QTOPOMOE_PHASE0/nccl/formal5/formal5-statistics.csv" \
+if [[ -f "$QTOPOMOE_ARTIFACTS/raw/20260807T120000Z_nccl_formal_p2p/nccl/statistics.json" ]]; then
+  sha256sum "$QTOPOMOE_ARTIFACTS/raw/20260807T120000Z_nccl_formal_p2p/nccl/statistics.json" \
     >"$out/hardware/phase0-reference.sha256"
 fi
 if [[ -f "$QTOPOMOE_ARTIFACTS/manifests/phase0_current.json" ]]; then

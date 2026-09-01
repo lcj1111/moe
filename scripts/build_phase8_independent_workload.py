@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：生成与训练参数指纹不重叠的 Phase 8 独立测试矩阵。
 """从训练矩阵的保守速率生成参数指纹不重叠的 Phase 8 独立测试矩阵。"""
 from __future__ import annotations
 

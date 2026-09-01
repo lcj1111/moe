@@ -215,6 +215,7 @@ def realizable_cached_tokens(input_tokens: int, rendered_common_prefix_tokens: i
 
 def one_request(base_url: str, model: str, input_tokens: int, output_tokens: int,
                 request_id: int, seed: int, timeout: float,
+                ignore_eos: bool = False,
                 prompt_text: str | None = None,
                 input_tokens_actual: int | None = None,
                 cache_salt: str | None = None,
@@ -232,6 +233,7 @@ def one_request(base_url: str, model: str, input_tokens: int, output_tokens: int
         "stream": True,
         "stream_options": {"include_usage": True},
         "seed": seed + request_id,
+        "ignore_eos": ignore_eos,
         "chat_template_kwargs": {"enable_thinking": False},
     }
     if cache_salt is not None:
@@ -306,6 +308,10 @@ def one_request(base_url: str, model: str, input_tokens: int, output_tokens: int
                               if cache_salt is not None else None),
         "output_tokens_requested": output_tokens,
         "output_tokens": generated,
+        "response_sha256": (
+            hashlib.sha256("".join(text_parts).encode("utf-8")).hexdigest()
+            if status == "ok" else None
+        ),
         "ttft_ms": ttft_ms,
         "e2e_ms": e2e_ms,
         "tpot_ms": tpot_ms,
@@ -520,7 +526,7 @@ def arrival_timing(records: list[dict[str, Any]], mode: str) -> dict[str, list[f
 def execute_requests(args: argparse.Namespace, prompts: list[dict[str, Any]]) -> list[dict[str, Any]]:
     epoch = time.perf_counter()
     common = (args.base_url, args.model, args.input_tokens, args.output_tokens,
-              args.seed, args.timeout)
+              args.seed, args.timeout, getattr(args, "ignore_eos", False))
 
     def submit(pool: concurrent.futures.ThreadPoolExecutor, request_id: int,
                scheduled: float,
@@ -531,7 +537,8 @@ def execute_requests(args: argparse.Namespace, prompts: list[dict[str, Any]]) ->
                      if submitted_override is None else submitted_override)
         return pool.submit(
             one_request, common[0], common[1], common[2], common[3], request_id,
-            common[4], common[5], prompt.get("text"), prompt.get("input_tokens_actual"),
+            common[4], common[5], common[6], prompt.get("text"),
+            prompt.get("input_tokens_actual"),
             prompt.get("cache_salt"), prompt.get("prompt_sha256"), epoch,
             scheduled, submitted)
 
@@ -573,6 +580,8 @@ def main() -> None:
     parser.add_argument("--model", required=True)
     parser.add_argument("--input-tokens", type=int, required=True)
     parser.add_argument("--output-tokens", type=int, required=True)
+    parser.add_argument("--ignore-eos", action="store_true",
+                        help="force every successful request to generate max_tokens")
     parser.add_argument("--concurrency", type=int, required=True)
     parser.add_argument("--requests", type=int, required=True)
     parser.add_argument("--seed", type=int, default=42)
@@ -638,7 +647,7 @@ def main() -> None:
         prewarm = prompt_plan["prewarm"]
         prewarm_record = one_request(
             args.base_url, args.model, args.input_tokens, 1, -1, args.seed,
-            args.timeout, prewarm["text"], prewarm["input_tokens_actual"],
+            args.timeout, False, prewarm["text"], prewarm["input_tokens_actual"],
             prewarm["cache_salt"])
         if prewarm_record["status"] != "ok":
             raise RuntimeError(f"prefix cache prewarm failed: {prewarm_record['error']}")
@@ -719,6 +728,7 @@ def main() -> None:
         "chat_template_sha256": prompt_plan["chat_template_sha256"],
         "unique_prompt_count": prompt_plan["unique_prompt_count"],
         "output_tokens_requested": args.output_tokens,
+        "ignore_eos": args.ignore_eos,
         "concurrency": args.concurrency,
         "requests": args.requests,
         "completed": len(good),

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：比较量化模型与 BF16 基线的质量摘要并执行质量门槛判断。
 """Compare a quantized quality summary with its BF16 reference."""
 
 from __future__ import annotations

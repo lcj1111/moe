@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：只读采集目标机器的 GPU、NUMA、P2P、NCCL 与软件环境证据。
 set -Eeuo pipefail
 
 # Read-only phase-0 collector for the 8xRTX 5090 Q-TopoMoE host.

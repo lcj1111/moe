@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：按映射和 collective 运行多轮正式 NCCL 测量。
 set -uo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：按冻结参数启动 vLLM 或 SGLang 推理服务。
 set -euo pipefail
 
 : "${MODEL_PATH:?MODEL_PATH is required}"

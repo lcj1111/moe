@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：分解 MoE 服务路径耗时并确定融合优化目标。
 """Profile MoE stage breakdown (Phase 5 Level 2 target selection).
 
 Measures wall time of the real components used by the serving path on the

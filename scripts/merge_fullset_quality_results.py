@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：严格合并 full-set 基础轮与截断续跑结果。
 """严格合并 full-set 基础轮与截断续跑结果，并生成可审计 Gate。"""
 
 from __future__ import annotations

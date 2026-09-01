@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：基准测试 Triton、WNA16 与 CUTLASS MoE kernel。
 """Benchmark MoE kernels (vLLM Triton/WNA16 / FlashInfer CUTLASS).
 
 ``m_bucket`` is the total token count (the flat ``num_tokens`` input to the

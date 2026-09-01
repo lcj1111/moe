@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：统计 Phase 1 已完成矩阵行并输出服务性能摘要。
 """Statistically summarize completed BF16/FP8 Phase 1 matrix rows.
 
 Rows are considered runnable/completed from ``failed`` and ``completed``;

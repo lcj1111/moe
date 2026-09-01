@@ -1,0 +1,44 @@
+{
+  "schema_version": "qtopomoe.phase8_route_stability_gate_policy.v2",
+  "status": "accepted",
+  "effective_date": "2026-08-25",
+  "说明": "当前正式路由稳定性政策。短、长轨迹的 placement excess TV p95 上限均为 1%，验证结果满足全部门槛。",
+  "验证证据": {
+    "diagnostic_gate_path": "/data/models/test/qtopomoe_phase8_route_stability_diagnostic_v2_20260824/diagnostic_gate.json",
+    "diagnostic_gate_sha256": "da129bd58dcd2fb45ab12cab852a0e8166ea28cf1ba9aac1602e8698c26678d0"
+  },
+  "当前有效门槛": {
+    "short_placement_excess_tv_p95_max": 0.01,
+    "long_placement_excess_tv_p95_max": 0.01,
+    "legacy_vs_record_time_tv_p95_max": 0.000001,
+    "mixed_generation_slots_max": 0,
+    "all_requests_completed_clean": true,
+    "quality_gate_required": "accepted"
+  },
+  "验证结果": {
+    "short_placement_excess_tv_p95": 0.0004503732423366928,
+    "short_within_1pct": true,
+    "long_placement_excess_tv_p95": 0.0071754774951163745,
+    "long_within_1pct": true,
+    "legacy_vs_record_time_steady_tv_p95": 0.0,
+    "legacy_vs_record_time_transition_tv_p95": 0.0,
+    "steady_mixed_generation_slots": 0,
+    "transition_mixed_generation_slots": 0,
+    "all_requests_completed_clean": true,
+    "quality_equivalence_gate": "accepted",
+    "current_route_stability_gate": "accepted"
+  },
+  "阶段结论与后续": {
+    "route_stability_stage_status": "completed_accepted",
+    "project_status": "in_progress",
+    "candidate_status": "accepted",
+    "production_deployment_performed": false,
+    "additional_route_diagnostics_required": false,
+    "downstream_experiments_required": true,
+    "next_steps": [
+      "有限 canary",
+      "trigger、cooldown、rollback 自动闭环验收"
+    ],
+    "说明": "本次只结束路由稳定性诊断阶段，不表示整个项目完成，也不表示已在生产流量中实际部署。"
+  }
+}

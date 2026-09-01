@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：用留族近邻基线评估 Phase 8 workload 选择效果。
 """用最简近邻策略对 Phase 8 正式矩阵做留族验证。
 
 选择器先严格匹配 prefix-cache 与到达模式，再按输入、输出、并发和冻结

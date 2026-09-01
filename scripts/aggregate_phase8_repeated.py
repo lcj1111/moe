@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：聚合 Phase 8 五次随机重复实验并执行 bootstrap Gate。
 """Gate and bootstrap the randomized five-repeat Phase 8 Pareto run."""
 from __future__ import annotations
 

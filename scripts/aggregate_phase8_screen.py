@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：审计并压缩 Phase 8 单轮候选筛选产物。
 """Audit and compact Phase 8 single-pass service-screen artifacts."""
 from __future__ import annotations
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：通过 vLLM 原生接口采集逐 token、逐层专家路由 ID。
 """Capture per-token MoE expert routing traces using vLLM's native
 ``enable_return_routed_experts`` mechanism.
 

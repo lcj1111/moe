@@ -1,70 +1,53 @@
 # Q-TopoMoE 文档索引
 
-这里区分三类内容：当前结论、复现说明和历史证据。第一次阅读只需要看“当前状态”
-和“执行入口”；按文件查数据时再使用数据清单。
+这里按“当前结论—实现说明—复现实验—生产边界”组织文档。首次阅读建议先看最终验收，
+再按需要进入代码或各阶段报告。
 
-## 当前状态
+## 最短阅读路径
 
-| 主题 | 状态 | 文档 |
+1. [项目 README](../README.md)：问题、架构、核心实现与量化结果。
+2. [Phase 8 最终验收](results/phase8_warm_placement_final_acceptance_20260825.md)：当前候选、canary 与自动闭环结果。
+3. [Release manifest](Q-TopoMoE_release_manifest_20260825.json)：推荐模型、候选、运行时补丁、策略和 SHA-256。
+4. [代码导读](Q-TopoMoE_代码导读.md)：请求、评测、selector、placement 与闭环控制的调用关系。
+5. [复现阅读指南](Q-TopoMoE_复现阅读指南.md)：环境、输入、证据顺序和最小复现路径。
+
+## 当前结论
+
+| 主题 | 已完成内容 | 权威入口 |
 |---|---|---|
-| BF16/FP8/NVFP4 full-set | 三格式均已完成基础轮、有限续跑、严格合并与共同分母比较 | [质量收尾](results/phase3_fullset_quality_closeout_20260812.md) |
-| Phase 7 在线迁移 | placement-plan、阻塞、恢复和 p99 Gate 已接受 | [阶段 7–8 正式收尾](results/phase7_phase8_formal_closeout_20260812.md) |
-| Phase 8 正式矩阵 | 四候选、108 cells、五重复聚合已接受 | [阶段 8 历史与结果](results/phase8_benchmark_history.md) |
-| Phase 8 selector | v3 训练 p95 regret 3.49%，既有 ≤10% Gate 已通过并冻结；独立 900 次 Gate 待完成 | [v3 训练 Gate 通过报告](results/phase8_selector_v3_training_gate_accepted_20260816.md) |
+| 硬件与通信 | 8 卡拓扑、NUMA、P2P 与 NCCL 成本 | [Phase 0 实测](Q-TopoMoE_gpu111_phase0实测分析.md) |
+| 服务与量化 | BF16/FP8 基线、W4A16 Triton、RedHatAI NVFP4 准入 | [Phase 1](results/phase1_service_baseline.md)、[Phase 2](results/phase2_quantization_quality.md) |
+| 全量质量与路由 | BF16/FP8/NVFP4 共同分母比较与 route trace | [质量收尾](results/phase3_fullset_quality_closeout_20260812.md)、[路由报告](results/phase3_route_and_official_eval.md) |
+| kernel 与多卡策略 | M-bucket、backend、TP/DP/EP、通信和迁移成本 | [Phase 4–7](results/phase4_to_phase7_engineering.md) |
+| 暖态 placement | 质量、路由稳定性、有限 canary 和自动回滚闭环 | [Phase 8 最终验收](results/phase8_warm_placement_final_acceptance_20260825.md) |
+| 部署边界 | 技术验收已完成，生产部署尚未执行 | [发布与生产部署清单](Q-TopoMoE_项目发布与生产部署清单_20260825.md) |
 
-正在运行的结果在完成 Gate 前仅表示进度，不表示最终准确率。
+## 实现与复现
 
-## 执行入口
-
-1. [项目接管与操作手册](Q-TopoMoE_项目接管与操作手册_20260813.md)：面向项目负责人的详细架构、模块实现、操作流程、故障树和接管演练。
-2. [项目执行全史与问题处置](Q-TopoMoE_项目执行全史与问题处置_20260813.md)：按时间说明完成顺序、阶段依赖、全部已记录问题及应对方式。
-3. [复现阅读指南](Q-TopoMoE_复现阅读指南.md)：依赖、冻结输入和验收顺序。
-4. [逐步执行 Runbook](Q-TopoMoE_逐步执行Runbook.md)：Phase 0–8 的操作步骤。
-5. [量化与 SM120 协同方案](Q-TopoMoE_量化与SM120算子协同优化执行方案.md)：总体技术路线和约束。
-6. [数据与结果清单](DATA_CATALOG.md)：每个跟踪产物的用途、复现约束和 SHA-256。
+| 文档 | 用途 |
+|---|---|
+| [代码导读](Q-TopoMoE_代码导读.md) | 从入口脚本定位到客户端、聚合器、选择器和运行时补丁 |
+| [复现阅读指南](Q-TopoMoE_复现阅读指南.md) | 确认环境、冻结输入、评测口径和证据优先级 |
+| [逐步执行 Runbook](Q-TopoMoE_逐步执行Runbook.md) | 按 Phase 0–8 执行并核对每一级准入条件 |
+| [总体技术方案](Q-TopoMoE_量化与SM120算子协同优化执行方案.md) | 理解量化、拓扑、kernel、路由与 placement 的依赖关系 |
 
 ## 阶段报告
 
-| 阶段 | 聚合报告 |
+| 阶段 | 报告 |
 |---|---|
-| Phase 0 | [gpu-111 拓扑与 P2P 合并实测](Q-TopoMoE_gpu111_phase0实测分析.md) |
+| Phase 0 | [gpu-111 拓扑与 P2P 实测](Q-TopoMoE_gpu111_phase0实测分析.md) |
 | Phase 1 | [BF16/FP8 服务基线](results/phase1_service_baseline.md) |
-| Phase 2 | [量化、canonical checkpoint 与质量 Gate](results/phase2_quantization_quality.md) |
-| Phase 3 | [route trace 与 official-like](results/phase3_route_and_official_eval.md)、[full-set 收尾](results/phase3_fullset_quality_closeout_20260812.md) |
+| Phase 2 | [量化、checkpoint 与质量检查](results/phase2_quantization_quality.md) |
+| Phase 3 | [route trace 与 official-like](results/phase3_route_and_official_eval.md)、[full-set 质量收尾](results/phase3_fullset_quality_closeout_20260812.md) |
 | Phase 4–7 | [kernel、融合、通信与 EPLB](results/phase4_to_phase7_engineering.md) |
-| Phase 7–8 | [在线迁移与四候选正式收尾](results/phase7_phase8_formal_closeout_20260812.md) |
-| Phase 8 | [基准测试与校准历史](results/phase8_benchmark_history.md) |
+| Phase 8 输入 | [正式矩阵与校准](results/phase8_benchmark_history.md) |
+| Phase 8 最终 | [暖态 placement 最终验收](results/phase8_warm_placement_final_acceptance_20260825.md) |
 
-Phase 8 selector 的数据隔离协议和命令见
-[selector 执行说明](results/phase8_selector_v2_execution.md)；最新训练结论见
-[v3 训练 Gate 通过报告](results/phase8_selector_v3_training_gate_accepted_20260816.md)。
+## 证据使用规则
 
-在线迁移的独立实验说明见[在线 placement-plan 与服务迁移实验](Q-TopoMoE_在线placement-plan与服务迁移实验_20260812.md)。
-
-## 交接与历史资料
-
-- [NVFP4 2026-08-09 交接快照](HANDOFF_20260809_NVFP4.md)：保留当时环境和故障背景；
-  文件顶部列出 2026-08-12 之后的权威状态，旧路径和旧提交号仅用于历史审计。
-- `archive/`：失败、被替代或仅供对照的机器可读结果。
-- 根目录下日期化 JSON：仍被脚本、报告或数据清单引用的稳定证据，不能只因文件多而移动。
-
-### 文件名阅读规则
-
-- `Q-TopoMoE_Phase<N>_<主题>_<日期>.json`：某次已冻结的机器结果或 Gate；日期越新不一定越权威，还要检查 `status` 和对应报告。
-- `*_launch_*.json`：启动计划或运行登记，不等于实验已通过。
-- `*_rejected_*.json`：保留的失败证据，不得作为候选准入结果。
-- `*_manifest.json`：来源、revision、样本或文件哈希；复现前应先验证。
-- `results/phase*.md`：面向阅读的阶段聚合结论，优先于逐个打开根目录 JSON。
-
-## 信息优先级
-
-同一事实出现多个版本时，按以下顺序判断：
-
-1. 最新日期的正式 Gate JSON及其输入哈希；
-2. `results/` 中对应阶段的最新收尾报告；
-3. Runbook 中的预注册门槛和流程；
-4. 日期化交接文档；
-5. `archive/` 中的历史结果。
-
-评测输入的来源、revision、样本索引、tokenizer/chat template 和 SHA-256 统一从
-[数据与结果清单](DATA_CATALOG.md)及 `configs/evaluation/` manifest 查找。
+1. 当前发布组合以 [Release manifest](Q-TopoMoE_release_manifest_20260825.json) 为入口。
+2. JSON 和 manifest 记录状态、输入身份与哈希；Markdown 负责解释，不替代机器结果。
+3. `/data/...`、`/home/...` 和 `artifacts/...` 是服务器或运行输出路径，不是 Git 文件。
+4. 大体积 JSONL、日志、模型和 trace 不入库；来源、冻结参数和关键哈希统一记录在
+   [Release manifest](Q-TopoMoE_release_manifest_20260825.json)及各阶段机器摘要中。
+5. 生产流量切换、扩量和长期容量验证属于独立部署工作，不得由技术验收结果直接推断。

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：将 W4A16 分组从 128 无损重排为兼容 TP8 的 64。
 """Lossless W4A16 block_size 128 -> 64 format transform.
 
 The canonical W4A16 checkpoint quantizes with GPTQ group (block) size 128

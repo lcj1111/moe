@@ -1,3 +1,4 @@
+# 作用：验证 selector 状态拟合、冻结和推理行为。
 import importlib.util
 import unittest
 from pathlib import Path

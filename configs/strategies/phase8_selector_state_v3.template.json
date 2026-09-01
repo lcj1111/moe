@@ -1,7 +1,7 @@
 {
   "schema_version": "qtopomoe.phase8_selector_config.v3",
   "status": "draft_not_fitted",
-  "说明": "v2 训练 Gate 失败后建立的新协议。规则只能读取决策时可观测字段；必须先通过训练 Gate，再冻结并读取独立测试集。",
+  "说明": "正式 selector 协议模板。规则只能读取决策时可观测字段；必须先通过训练 Gate，再冻结并读取独立测试集。",
   "selector": "telemetry_aware_regime_rules",
   "strict_match": [
     "arrival_mode"

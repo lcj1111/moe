@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：仅用训练侧数据拟合并冻结透明 selector 状态。
 """只使用训练 outcome 与决策前状态拟合并冻结透明 Phase 8 selector。"""
 from __future__ import annotations
 

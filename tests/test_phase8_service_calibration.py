@@ -1,3 +1,4 @@
+# 作用：验证服务修正模型的非负拟合与留族划分。
 import unittest
 
 from scripts.calibrate_phase8_service_model import (

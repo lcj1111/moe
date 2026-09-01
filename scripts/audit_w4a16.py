@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：审计 W4A16 compressed-tensors checkpoint 的覆盖完整性。
 """Static W4A16 compressed-tensors coverage audit."""
 from __future__ import annotations
 

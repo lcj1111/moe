@@ -1,0 +1,41 @@
+{
+  "schema_version": "qtopomoe.phase8_selector_gate_policy.v2",
+  "status": "accepted",
+  "effective_date": "2026-08-23",
+  "说明": "当前正式 selector 准入政策。独立集指标满足全部门槛，可进入有限 canary 与闭环验收。",
+  "准入门槛": {
+    "median_regret_pct_max": 5.0,
+    "p95_regret_pct_max": 12.0,
+    "decision_overhead_pct_p95_max_exclusive": 1.0,
+    "infeasible_misselection_rate_max": 0.0
+  },
+  "验证证据": {
+    "independent_gate_json": "docs/Q-TopoMoE_Phase8_selector_independent_gate_accepted_20260823.json",
+    "independent_gate_sha256": "9528f638ce93f30cbaa410e490875cb74415eb5d798ea82292a2b4ea37d654e8",
+    "frozen_selector_json": "docs/Q-TopoMoE_Phase8_selector_v3_frozen_20260816.json",
+    "repository_frozen_selector_sha256": "77836f21a37132c9fcd9eb8cb348b1890ae321905ad42d81a90cb696712beFB4",
+    "runtime_frozen_selector_sha256": "cb7e32c0b141d5867bb4247872704a7cd6b8689cc5eb305d258aac910c7078c4"
+  },
+  "独立集判定": {
+    "metrics": {
+      "median_regret_pct": 0.0,
+      "p95_regret_pct": 11.499972089014864,
+      "decision_overhead_pct_p95": 0.11399977199188943,
+      "infeasible_misselection_rate": 0.0,
+      "top1_accuracy": 0.7111111111111111
+    },
+    "gates": {
+      "median_regret": true,
+      "p95_regret": true,
+      "controller_overhead": true,
+      "infeasible_misselection": true,
+      "input_gates_all_accepted": true
+    },
+    "decision": "accepted"
+  },
+  "准入范围": {
+    "limited_canary_allowed": true,
+    "full_online_closed_loop_allowed": false,
+    "下一步": "执行有限canary；只有canary满足零失败、计划哈希一致、恢复p99不超过基线105%且rollback可用后，才验收trigger、cooldown和rollback自动闭环。"
+  }
+}

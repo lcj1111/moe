@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：把正式 NCCL 测量归一化为映射感知通信成本库。
 """Normalize formal NCCL statistics into mapping-aware communication costs."""
 from __future__ import annotations
 
@@ -39,7 +40,7 @@ def build(rows: list[dict], min_size_bytes: int = 1 << 20) -> dict:
                                 "min_size_bytes": min(p["size_bytes"] for p in items),
                                 "max_size_bytes": max(p["size_bytes"] for p in items)})
     return {"schema_version": "qtopomoe.communication_cost.v1",
-            "source": "artifacts/raw/20260804T040000Z_nccl_formal/nccl/statistics.json",
+            "source": "artifacts/raw/20260807T120000Z_nccl_formal_p2p/nccl/statistics.json",
             "metric_definition": "mean NCCL time_us; effective_us_per_gb is a descriptive rate, not a linear model",
             "points": points, "mapping_summary": mapping_summary}
 

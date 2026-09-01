@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：创建隔离的量化 Python 环境并安装固定依赖。
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

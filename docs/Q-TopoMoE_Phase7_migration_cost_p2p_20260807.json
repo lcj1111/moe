@@ -12,5 +12,5 @@
     "same_numa": 47.71,
     "cross_numa": 73.45
   },
-  "note": "P2P enabled; OLD same_numa=78.77 cross_numa=75.32 (P2P disabled)"
+  "note": "P2P enabled authoritative migration microbenchmark"
 }

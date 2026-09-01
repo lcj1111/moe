@@ -1,9 +1,0 @@
-{
-  "candidate_count": 5,
-  "kernel_measurement_count": 0,
-  "observation_count": 2,
-  "reason": "Phase 4 kernel DB is a checked-in empty template; real CUDA measurements are required.",
-  "rows": [],
-  "schema_version": "qtopomoe.phase8_replay.v1",
-  "status": "blocked_missing_kernel_measurements"
-}

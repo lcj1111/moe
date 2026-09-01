@@ -1,3 +1,4 @@
+# 作用：生成量化感知 placement 并实现在线控制迟滞策略。
 """Topology- and quantization-aware expert placement policy.
 
 This module intentionally stays above the serving runtime.  It produces an
@@ -262,7 +263,7 @@ class OnlineEPLBConfig:
     min_benefit_fraction: float = 0.05
     min_benefit_cost_ratio: float = 2.0
     min_residency_windows: int = 10
-    cooldown_windows: int = 20
+    cooldown_windows: int = 10
     rollback_regression_fraction: float = 0.05
     rollback_windows: int = 3
 
@@ -276,6 +277,8 @@ class ControllerDecision:
     consecutive_trigger_windows: int
     residency_windows: int
     cooldown_remaining: int
+    p99_ema_ms: float
+    rollback_reference_p99_ms: float | None
 
 
 class OnlineEPLBController:
@@ -288,6 +291,7 @@ class OnlineEPLBController:
         self.residency_windows = self.config.min_residency_windows
         self.cooldown_remaining = 0
         self.active_rebalance = False
+        self.p99_ema_ms: float | None = None
         self.pre_rebalance_p99_ms: float | None = None
         self.regression_windows = 0
 
@@ -308,13 +312,46 @@ class OnlineEPLBController:
         candidate_benefit_fraction: float = 0.0,
         candidate_benefit_us: float = 0.0,
         migration_cost_us: float = math.inf,
+        elapsed_ms: float = 0.0,
     ) -> ControllerDecision:
         cv = self._cv(loads)
+        return self.observe_cv(
+            cv=cv,
+            requests=requests,
+            elapsed_ms=elapsed_ms,
+            current_p99_ms=current_p99_ms,
+            candidate_benefit_fraction=candidate_benefit_fraction,
+            candidate_benefit_us=candidate_benefit_us,
+            migration_cost_us=migration_cost_us,
+        )
+
+    def observe_cv(
+        self,
+        cv: float,
+        requests: int,
+        current_p99_ms: float,
+        candidate_benefit_fraction: float = 0.0,
+        candidate_benefit_us: float = 0.0,
+        migration_cost_us: float = math.inf,
+        elapsed_ms: float = 0.0,
+    ) -> ControllerDecision:
+        """Consume a measured expert-load CV from a completed control window."""
+        if cv < 0 or elapsed_ms < 0:
+            raise ValueError("cv and elapsed_ms must be non-negative")
         self.ema_cv = cv if self.ema_cv is None else (
             self.config.ema_alpha * cv + (1 - self.config.ema_alpha) * self.ema_cv
         )
+        # 回滚基线必须来自迁移前的平滑值。若直接使用触发窗口的单点 p99，
+        # 正常抖动会被误判为连续退化；迁移生效后保持该基线冻结。
+        if not self.active_rebalance:
+            self.p99_ema_ms = current_p99_ms if self.p99_ema_ms is None else (
+                self.config.ema_alpha * current_p99_ms
+                + (1 - self.config.ema_alpha) * self.p99_ema_ms
+            )
         self.residency_windows += 1
-        self.cooldown_remaining = max(0, self.cooldown_remaining - 1)
+        cooldown_active = self.cooldown_remaining > 0
+        if cooldown_active:
+            self.cooldown_remaining -= 1
 
         if self.active_rebalance and self.pre_rebalance_p99_ms is not None:
             regressed = current_p99_ms > self.pre_rebalance_p99_ms * (
@@ -327,13 +364,17 @@ class OnlineEPLBController:
                 self.residency_windows = 0
                 self.cooldown_remaining = self.config.cooldown_windows
                 return self._decision("rollback", "p99 regression persisted", cv)
+            return self._decision("hold", "monitoring active rebalance", cv)
 
-        eligible_window = requests >= self.config.min_requests
+        eligible_window = (
+            requests >= self.config.min_requests
+            or elapsed_ms >= self.config.window_ms
+        )
         above_threshold = eligible_window and self.ema_cv > self.config.trigger_load_cv
         self.consecutive_trigger_windows = self.consecutive_trigger_windows + 1 if above_threshold else 0
         if not eligible_window:
             return self._decision("hold", "insufficient requests in window", cv)
-        if self.cooldown_remaining:
+        if cooldown_active:
             return self._decision("hold", "controller cooldown", cv)
         if self.residency_windows < self.config.min_residency_windows:
             return self._decision("hold", "minimum residency not reached", cv)
@@ -346,7 +387,7 @@ class OnlineEPLBController:
             return self._decision("hold", "benefit/cost ratio below threshold", cv)
 
         self.active_rebalance = True
-        self.pre_rebalance_p99_ms = current_p99_ms
+        self.pre_rebalance_p99_ms = float(self.p99_ema_ms or current_p99_ms)
         self.regression_windows = 0
         self.consecutive_trigger_windows = 0
         self.residency_windows = 0
@@ -362,4 +403,6 @@ class OnlineEPLBController:
             consecutive_trigger_windows=self.consecutive_trigger_windows,
             residency_windows=self.residency_windows,
             cooldown_remaining=self.cooldown_remaining,
+            p99_ema_ms=float(self.p99_ema_ms or 0.0),
+            rollback_reference_p99_ms=self.pre_rebalance_p99_ms,
         )

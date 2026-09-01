@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：加载项目环境变量和可选的本机覆盖配置。
 
 _qtopomoe_env_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=project.env

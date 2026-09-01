@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：解析 nccl-tests 日志并生成统计表。
 """Parse raw nccl-tests logs into summarized statistics.
 
 Reads ``all_reduce/all_gather/reduce_scatter/alltoall/sendrecv_*_r[1-5].log``

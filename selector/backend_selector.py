@@ -1,3 +1,4 @@
+# 作用：从有效实测记录中选择指定 M-bucket 的 kernel backend。
 """Phase 4 Level 1 backend selector.
 
 Picks the best measured kernel (cutlass/triton/flashinfer) for a given

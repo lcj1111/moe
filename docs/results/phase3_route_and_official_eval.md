@@ -1,19 +1,12 @@
 # 阶段 3：route trace 与 official-like 评测
 
-> 以下为按日期合并的历史报告。源内容已保留，仅规范化了行尾空格；SHA-256 按 UTF-8 Git blob（LF 换行）计算，机器可读产物保持原始路径以确保复现。
+本文合并 route trace、漂移分析、官方协议 full-set 和 NVFP4/EPLB 结果。旧拆分稿已经
+删除；当前机器证据从
+[BF16/W4A16 漂移 JSON](../Q-TopoMoE_Phase3_route_drift_bf16_vs_w4_20260806.json)、
+[BF16/NVFP4 漂移 JSON](../Q-TopoMoE_Phase3_route_drift_BF16_vs_NVFP4_20260809.json)和
+[三格式质量总结](../Q-TopoMoE_Phase3_BF16_FP8_NVFP4_质量总结_20260816.json)进入。
 
-## 源文件完整性
-
-| 原始文件 | UTF-8 字节数 | Git blob 的 SHA-256 |
-|---|---:|---|
-| `docs/Q-TopoMoE_Phase3_route_trace_full_drift_20260806.md` | 3687 | `A8A5394F3CB33B8316776F5F06AC55D6354AEEEF1BF5EFF011E6EEB8ADC2D268` |
-| `docs/Q-TopoMoE_Phase3c_full_set_official_protocol_20260806.md` | 5126 | `BCDDFFB2A6640878E88BC5930A3BE05701D8AECFD7F6910AF3DE81EC9A3F1EFC` |
-| `docs/Q-TopoMoE_Phase3c_full_official_W4_results_20260806.md` | 3043 | `E6206F2E4B03FC0F0A116A7FFA066F6A50C5F6CFFC0591C08E01106C2D6A673F` |
-| `docs/Q-TopoMoE_Phase3_NVFP4_route_and_Phase7_EPLB_20260809.md` | 5414 | `0E3BBA6B2AE986CEF97FAA1B43FF21BC10FFF8A173587F1EC239403ADB1D2E65` |
-
----
-
-## 源文件： `docs/Q-TopoMoE_Phase3_route_trace_full_drift_20260806.md`
+## 全量 route trace 与漂移
 
 # Q-TopoMoE Phase 3：全量 route trace 采集与漂移分析报告
 
@@ -43,7 +36,7 @@ seed=42、gen_tokens=16、TP4、GPU0-3，仅模型与 MoE backend 不同：
 `expert_service_time_us` 为 null**（vLLM 该机制不导出），因此本报告不含
 router-probability KL，也不伪造 kernel 延迟数据。
 
-采集脚本：`traces/capture_routes.py`；采集后自动生成
+采集脚本：`traces/capture_routes.py`；采集后在服务器输出目录自动生成
 `capture_manifest.json`（含每个 npy 的 SHA-256）与
 `expert_token_histogram.json`（M-bucket 分布）。
 
@@ -96,7 +89,7 @@ router-probability KL，也不伪造 kernel 延迟数据。
 
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase3c_full_set_official_protocol_20260806.md`
+## full-set 官方协议
 
 # Q-TopoMoE Phase 3c：full-set 官方协议冻结与计时 pilot
 
@@ -109,7 +102,7 @@ router-probability KL，也不伪造 kernel 延迟数据。
 
 ### MMLU-Pro（TIGER-AI-Lab/MMLU-Pro，NeurIPS 2024）
 
-- 官方脚本 `evaluate_from_api.py`：5-shot，每 category 取 validation 集的
+- MMLU-Pro 上游评测脚本（本仓库未收录）`evaluate_from_api.py`：5-shot，每 category 取 validation 集的
   CoT 示例（`cot_content`）。
 - Prompt 模板："The following are multiple choice questions (with answers)
   about {category}. Think step by step and then output the answer in the
@@ -129,10 +122,10 @@ router-probability KL，也不伪造 kernel 延迟数据。
 
 ### 与旧协议的区别
 
-上一版冻结（`full_set_official_v1.jsonl`）采用 Qwen3 chat 默认采样
+上一版冻结输入（服务器生成的大文件，不入 Git）`full_set_official_v1.jsonl` 采用 Qwen3 chat 默认采样
 （`enable_thinking=true, temperature=1.0, top_p=0.95, top_k=20,
 presence_penalty=1.5`），不是 benchmark 官方协议。新冻结
-（`full_set_official_protocol_v1.jsonl`）逐项对齐官方 harness。
+（同样不入 Git 的 `full_set_official_protocol_v1.jsonl`）逐项对齐官方 harness。
 
 ## 2. 官方协议冻结结果
 
@@ -212,7 +205,7 @@ port 8080，PID 见 gate 记录），释放全部 8 卡：
 
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase3c_full_official_W4_results_20260806.md`
+## W4A16 full-set 结果
 
 # Q-TopoMoE Phase 3c：W4A16 full-set 官方协议评测结果
 
@@ -279,7 +272,7 @@ advanced_mathematics 2 等）。响应尾部显示模型进入"最终猜测/自�
 
 ---
 
-## 源文件： `docs/Q-TopoMoE_Phase3_NVFP4_route_and_Phase7_EPLB_20260809.md`
+## NVFP4 route 与 EPLB
 
 # 阶段 3 NVFP4 路由 trace 与阶段 7 EPLB 检查点
 
@@ -342,6 +335,11 @@ trace 得到的实际 workload 混合比例为 M=1：0.007198，M=2048：0.89749
 - 预测跨 NUMA 字节数、dispatch cost、HBM 使用、迁移字节数和稳定的 plan SHA-256；
 - Runbook 在线状态机（500 ms/1000 requests、EMA 0.2、连续三个窗口 CV >0.25、benefit >=5%、benefit/cost >=2、residency 10、cooldown 20，连续三个 p99 回退超过 5% 窗口后回滚）。
 
-按实测输入生成的全域 plan 覆盖 10,240 个 expert；精确 expert bytes、已接受 route load、实测 kernel proxy、实测 EP8 HBM headroom 与实测 topology 均已绑定。八张 GPU 的 load span 小于 0.81 us，稳定 plan SHA-256 为 `d53bb6653abed0fe67163888dd838a8f2aef60d2d86968cc89f0c3d0430865d6`。在完成在线服务迁移的 block/recovery/p99 影响及 placement-plan application 验证前，整体 `formal_ready` 仍为 false。
+全量 route trace 覆盖 40 层、每层 256 个逻辑专家，可作为后续暖态 placement
+的负载输入。部署计划必须重新绑定当前通信成本、真实暖态窗口、专家大小和 HBM
+余量，并单独通过在线质量、p99、计划哈希和 rollback Gate。
 
-原生 vLLM EPLB admission cell 也在真实 TP8/EP8 world 上执行，但在模型构造阶段、尚未服务前失败：`NotImplementedError: EPLB is not supported CompressedTensorsW4A4Nvfp4MoEMethod.` 冻结的 vLLM 构建与当前 upstream main 对该 compressed-tensors NVFP4 method 都保持 EPLB disabled。历史 upstream 实现支持的是另一条 `ModelOptNvFp4FusedMoE` 路径，不能证明修改当前路径的 capability property 是安全的。因此项目不对 serving venv 做 hot-patch；静态 EP4/EP8 继续允许，原生 EPLB 与自定义运行时 plan 应用标记为 unavailable/pending，而不是报告为成功。
+冻结的 vLLM 对 compressed-tensors NVFP4 不提供原生 EPLB；其已实现路径面向另一种
+`ModelOptNvFp4FusedMoE` 方法，不能直接等价迁移。因此阶段 3 只确认静态 EP4/EP8 能力。
+当前动态 placement 使用项目自己的运行时补丁，并已在 Phase 8 完成 8-rank apply 与 rollback
+验收，最终边界见[Phase 8 最终验收](phase8_warm_placement_final_acceptance_20260825.md)。

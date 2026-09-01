@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：串联 checkpoint 审计、真实加载、服务 smoke 和质量准入。
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

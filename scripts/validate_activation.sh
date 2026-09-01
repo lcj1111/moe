@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 作用：验证激活后的路径、Python、CUDA 和 NCCL 配置。
 set -euo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

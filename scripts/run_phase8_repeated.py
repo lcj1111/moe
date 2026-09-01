@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 作用：按固定种子运行可续跑的 Phase 8 多轮服务实验。
 """Run seeded, resumable Phase 8 service repetitions on an idle GPU host."""
 from __future__ import annotations
 
