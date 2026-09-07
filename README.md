@@ -139,7 +139,7 @@ Windows PowerShell 将激活命令换为 `.venv\Scripts\Activate.ps1`；也可�
 `.venv\Scripts\python.exe` 执行上述 Python 命令。Linux 上安装依赖后可用
 `make check && make test` 完成同样的检查。
 
-checkpoint 测试需要 CPU PyTorch 和 safetensors，但不需要显卡或下载模型：
+checkpoint 测试需要 CPU PyTorch、safetensors 和 NumPy，但不需要显卡或下载模型：
 
 ```bash
 python -m pip install torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu

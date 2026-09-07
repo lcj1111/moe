@@ -3,3 +3,5 @@
 -r requirements-dev.txt
 torch==2.7.1
 safetensors==0.5.3
+# safetensors 的张量写入路径会运行时导入 NumPy，pip check 不会自动发现此项。
+numpy==2.2.6
