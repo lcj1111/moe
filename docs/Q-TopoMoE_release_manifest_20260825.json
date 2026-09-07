@@ -2,7 +2,10 @@
   "schema_version": "qtopomoe.release_manifest.v1",
   "release_name": "Q-TopoMoE Phase 8 暖态 placement 技术验收版",
   "release_tag": "qtopomoe-phase8-accepted-20260825",
-  "release_branch": "agent/sync-q-topomoe-project",
+  "release_branch": "main",
+  "historical_release_branch": "agent/sync-q-topomoe-project",
+  "maintenance_date": "2026-09-07",
+  "release_reference说明": "main 是当前维护入口；release_tag 保留 2026-08-25 技术验收快照。原分支名仅记录历史来源，已合并并删除。当前文档可修订，引用哈希同步更新；实验政策、候选和运行时补丁仍保持冻结内容。",
   "release_preparation_base_commit": "dc3ea5c028579143b3926ec402eadc18538e8529",
   "status": "technical_validation_completed_release_frozen",
   "date": "2026-08-25",
@@ -59,7 +62,7 @@
     },
     "final_report": {
       "path": "docs/results/phase8_warm_placement_final_acceptance_20260825.md",
-      "sha256": "7d56229db3af36cf9b507f33ddd576c58d24bf0d5b88ea9a4ef626fdd63896a3"
+      "sha256": "0e7f58db0c49e7ca93e43d9e754fa48596c4d97cc9836aac895cc8453978a992"
     }
   },
   "accepted_metrics": {
@@ -79,6 +82,8 @@
     "closed_loop_post_rollback_p99_ratio_to_baseline": 0.6160682721257995
   },
   "evidence_semantics": {
+    "metric_definitions说明": "closed_loop_decision_overhead_pct_p95 仅统计 observe_cv 调用耗时占对应窗口 wall_time_s 的比例 p95，不包含采集、求解和迁移。两项 recovery/post_rollback p99 比例是恢复检查，不是 placement 加速比。",
+    "policy_version说明": "selector 的 12% 政策在独立结果已知后采用，实际 p95 11.499972% 未达到最初 10% 目标；长轨迹 excess TV p95 0.717548% 满足后续 1% 政策，未达到最初 0.5% 目标。accepted 指修订政策下的技术验收。",
     "candidate_internal_status_is_generation_time_snapshot": true,
     "candidate_current_acceptance_is_defined_by_final_summary": true,
     "说明": "部署时必须同时核对候选文件哈希、map哈希、运行时补丁哈希和最终accepted摘要。"

@@ -52,6 +52,16 @@ class DocumentReferenceCheckTest(unittest.TestCase):
             self.assertEqual(len(errors), 1)
             self.assertIn("本地链接不存在", errors[0])
 
+    def test_local_dependencies_are_not_project_documents(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for name in (".venv", "third_party", ".git"):
+                (root / name).mkdir()
+                (root / name / "README.md").write_text(
+                    "[外部包内部链接](missing.md)", encoding="utf-8"
+                )
+            self.assertEqual(MODULE.check(root), [])
+
 
 if __name__ == "__main__":
     unittest.main()

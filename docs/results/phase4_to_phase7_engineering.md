@@ -172,7 +172,9 @@ prefill 类大 M 收益 2.4-8.6x；decode 类小 M（≤256）受 Triton 启动�
 | 16,384 | 1.174 ms | 0.691 ms | 1.70x |
 
 按真实 trace 的 token 加权 M 分布（2048 占 89.7%、8192 占 9.5%、1 占
-0.7%）：A=0.197ms、B=0.300ms，**B 慢 34.4%**。
+0.7%）：A=0.197ms、B=0.300ms。按表中取整后的耗时计算，
+**B 的耗时比 A 增加约 52.3%**，分母为 A：`(0.300 / 0.197 - 1) × 100%`。
+若比较相同工作量下耗时倒数对应的处理速率，降幅约为 34.3%；两种口径不能混用。
 
 **结论**：融合 kernel 只在 M≥8,192 快（1.7x），而真实负载主导的
 M=2,048 下 vLLM 现有组件更快（Triton 启动开销抵消融合收益）。相对
@@ -366,6 +368,7 @@ NCCL DB 从 P2P 正式矩阵归一化 `time_us` 实测点，覆盖 6 个 mapping
 `StrategyCandidate` 包含量化格式/checkpoint、TP/DP/EP、GPU 映射、EPLB、
 冗余 expert、kernel backend/config。`CostModel` 综合真实 M 分布计算、实测通信、
 route 不均衡与迁移成本；`evaluate()` 输出 top-1、median/p95 regret、控制器开销占
-预测 p99 的比例和无效配置率。Gate 为 median regret ≤5%、p95 ≤10%、
-controller overhead <1%；透明模型被证明确实不足前不引入 RL。正式结果、容量
+预测 p99 的比例和无效配置率。初始目标为 median regret ≤5%、p95 ≤10%、
+controller overhead <1%；后续运行政策采用 p95 ≤12%，不能据此声称达到原 10% 目标。
+正式结果、政策版本、容量
 冻结与校准历史见[阶段 8 基准与校准历史](phase8_benchmark_history.md)。

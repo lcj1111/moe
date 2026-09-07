@@ -66,3 +66,18 @@ W4A16 缺失 M-bucket 通过 packed-int4 Triton WNA16 路径补测，并经过�
 - 20 窗口、2,560 请求的 trigger/cooldown/apply/rollback 验收。
 
 完整关系由 [Release manifest](../Q-TopoMoE_release_manifest_20260825.json)冻结。
+
+## 准入政策版本
+
+selector 最初独立测试目标为 p95 regret ≤10%。独立集实际结果为
+11.499972%，未达到该目标；2026-08-23 在结果已知后采用
+[12% 运行政策](../../configs/strategies/phase8_selector_gate_policy_v2_20260823.json)。
+同一结果按该政策准入，不代表新的一轮盲测，也不改变冻结 selector 或观测数据。
+
+路由稳定性的 placement excess TV p95 上限由 0.5% 调整为
+[2026-08-25 的 1% 政策](../../configs/strategies/phase8_route_stability_gate_policy_v2_20260825.json)。
+短轨迹 0.045%、长轨迹 0.718%；长轨迹满足当前政策，但未达到原 0.5% 目标。
+这些阈值是本项目的运行取舍，不作为行业通用标准。
+
+当前 accepted 表示满足上述修订政策及相应验收要求。阶段性指标、性能优化收益和
+生产部署能力分别评价；后续更改候选或运行条件时应另行固定协议。

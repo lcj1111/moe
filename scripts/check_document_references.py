@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 import re
 import sys
@@ -42,12 +43,14 @@ ROOT_FILES = {"README.md", "Makefile"}
 
 
 def markdown_files(root: Path) -> list[Path]:
-    """返回仓库中的全部 Markdown 文件，忽略 Git 内部目录。"""
-    return sorted(
-        path
-        for path in root.rglob("*.md")
-        if ".git" not in path.relative_to(root).parts
-    )
+    """检查项目文档，不进入本机环境、第三方依赖或生成目录。"""
+    excluded = {".git", ".venv", ".runtime", ".cache", "third_party",
+                "artifacts", "build", "dist", "__pycache__", ".pytest_cache"}
+    files = []
+    for directory, subdirs, names in os.walk(root):
+        subdirs[:] = [name for name in subdirs if name not in excluded]
+        files.extend(Path(directory) / name for name in names if name.endswith(".md"))
+    return sorted(files)
 
 
 def normalize_link(raw: str) -> str | None:

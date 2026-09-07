@@ -95,8 +95,12 @@ Phase 8 的线上状态机在 [eplb_policy.py](../selector/eplb_policy.py)：
 ```bash
 python scripts/validate_configs.py
 python scripts/check_document_references.py
-python -m unittest discover -s tests
+python scripts/check_release_manifest.py
+python -m pytest --ignore=tests/test_canonicalize_qwen35_checkpoint.py -q
 ```
 
 涉及 CUDA、服务加载或多卡通信的改动还要在目标运行环境执行对应 smoke。单元测试通过不等于
 模型可加载，服务可启动也不等于质量或性能 Gate 已通过。
+
+先按 [README](../README.md#快速检查) 安装开发依赖。装齐 checkpoint 依赖后用
+`python -m pytest -q` 运行全部 CPU 测试。

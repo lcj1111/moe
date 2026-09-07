@@ -1,6 +1,6 @@
 # Q-TopoMoE 上手与复现阅读指南
 
-> 适用分支：`agent/sync-q-topomoe-project`
+> 适用分支：`main`；历史验收标签为 `qtopomoe-phase8-accepted-20260825`。
 > 按本页顺序阅读，可以先看懂项目，再复现 BF16/W4A16 质量评测、route trace
 > 采集与漂移分析以及 full-set 官方协议评测。
 
@@ -99,8 +99,9 @@ Phase 4/8 控制平面、M-bucket、selector 与 cost model 的说明已合并�
 | `env/qwen35_cleanroom.env` | cleanroom 的 vLLM/SGLang commit 与 venv 路径。 |
 | `env/local.env.example` | 本机个性化配置模板。 |
 | `env/check_env.sh` | 环境检查（目录、CUDA、依赖、模型）。 |
-| `env/requirements-lock/quant.txt` | 量化/评测环境依赖锁。 |
-| `Makefile` | 快捷入口：`make check`（校验）、`make snapshot`（环境快照）、`make tree`（目录树）。 |
+| [开发依赖](../requirements-dev.txt) / [checkpoint 测试依赖](../requirements-checkpoint.txt) | 普通电脑的 CPU 检查入口，不包含 GPU 服务环境。 |
+| 量化依赖快照 quant.txt | 运行 [create_quant_env.sh](../scripts/create_quant_env.sh) 后写入 env/requirements-lock/，不是仓库自带文件。 |
+| `Makefile` | `make check` 检查仓库，`make test` 跑轻量测试，`make check-gpu` 检查服务环境；另有快照和目录树命令。 |
 | `scripts/bootstrap_qwen35_cleanroom.sh` | 从源码构建 vLLM/SGLang cleanroom venv。 |
 | `scripts/create_quant_env.sh` | 创建量化评测 venv。 |
 | `scripts/snapshot_env.sh` | 保存环境快照到 artifacts。 |
@@ -178,14 +179,15 @@ Phase 4/8 控制平面、M-bucket、selector 与 cost model 的说明已合并�
 | `tests/test_quality_eval.py` | quality_eval 答案提取/评分单测。 |
 | `tests/test_canonicalize_qwen35_checkpoint.py` | checkpoint 规范化单测。 |
 | `tests/test_selector_and_workload.py` | selector 与 M-bucket workload 单测。 |
-| `scripts/validate_configs.py` | 配置文件 schema 校验（`make check` 调用）。 |
-| `scripts/check_document_references.py` | 检查文档链接和正文中的仓库路径，防止再次引用不存在的文件。 |
+| `scripts/validate_configs.py` | YAML/JSON 语法及顶层结构检查（不等同于各阶段完整 schema 验证）。 |
+| `scripts/check_document_references.py` | 检查文档本地路径；不验证外部 URL 或标题锚点。 |
+| `scripts/check_release_manifest.py` | 校验发布清单中的仓库文件及 selector 直接证据哈希，不验证服务器产物。 |
 
 ## 推荐的完整复现路径（最小动作集）
 
 ```bash
 # 1. 环境
-source env/activate.sh && make check
+source env/activate.sh && make check-gpu
 # 2. 服务质量 gate（BF16 示例）
 BACKEND=vllm MODEL_PATH=<bf16-snapshot> GPU_IDS=0,1,2,3 TP_SIZE=4 \
   PORT=31350 SERVED_NAME=qtopomoe-gate OUT_DIR=/data/models/test/qtopomoe_gate \

@@ -3,7 +3,7 @@
 [![技术验收](https://img.shields.io/badge/%E6%8A%80%E6%9C%AF%E9%AA%8C%E6%94%B6-Phase_0--8_accepted-2ea44f)](docs/Q-TopoMoE_release_manifest_20260825.json)
 [![GPU](https://img.shields.io/badge/GPU-8%C3%97RTX_5090-76B900?logo=nvidia&logoColor=white)](docs/Q-TopoMoE_gpu111_phase0实测分析.md)
 [![CUDA](https://img.shields.io/badge/CUDA-13.0_%7C_SM120-007ACC)](env/project.env)
-[![测试](https://img.shields.io/badge/%E6%9C%AC%E5%9C%B0%E6%B5%8B%E8%AF%95-86_passed-2ea44f)](tests/)
+[![CI](https://github.com/lcj1111/moe/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/lcj1111/moe/actions/workflows/ci.yml)
 
 Q-TopoMoE 是一套面向单机 8×RTX 5090 PCIe 服务器的量化 MoE 推理实验与运行控制方案。
 它围绕 Qwen3.6-35B-A3B 建立了从硬件测量、量化质量验证到专家放置和在线回滚的完整链路，
@@ -12,6 +12,8 @@ Q-TopoMoE 是一套面向单机 8×RTX 5090 PCIe 服务器的量化 MoE 推理�
 
 当前发布标记为 `qtopomoe-phase8-accepted-20260825`。Phase 0–8 的技术验证已经完成；
 生产流量切换、扩量和长期容量测试尚未执行。
+当前维护分支为 `main`，上述标签保留当时的验收快照；CI 验证当前代码的 CPU 逻辑和小型
+checkpoint 转换，不代表重跑 GPU 实验。
 
 ## 为什么需要这套方案
 
@@ -67,11 +69,14 @@ FP8 与 BF16 在当前协议下基本持平；NVFP4 的准确率下降低于项�
 | 有限 canary | 384/384 请求完成，0 失败 |
 | 计划提交 | 8/8 rank 提交相同 map 哈希 |
 | 自动闭环 | 20 个窗口、2,560 个请求，0 失败 |
-| 决策开销 p95 | 0.000102% |
-| 回滚后 p99 / 基线 | 61.61% |
+| 控制器 observe 调用开销 p95 / 窗口耗时 | 0.000102% |
+| 回滚后 p99 / 基线（恢复检查） | 61.61% |
 
 这些数值描述的是冻结模型、请求集和目标机器上的技术验收，不代表生产环境容量承诺。
 详细过程见 [Phase 8 最终验收](docs/results/phase8_warm_placement_final_acceptance_20260825.md)。
+恢复比例不作为 placement 加速比；控制器局部计时不包含观测采集、候选求解或迁移。
+selector 的独立集 p95 regret 为 11.50%，按后续 12% 政策准入；路由按后续 1% 政策准入。
+与原目标的关系见[政策口径说明](docs/results/phase8_benchmark_history.md#准入政策版本)。
 
 ## 系统流程
 
@@ -113,23 +118,47 @@ flowchart LR
 | [`configs/`](configs/) | 冻结实验计划、workload、策略和模型登记 |
 | [`tests/`](tests/) | 合并规则、selector、闭环、文档链接和客户端测试 |
 
-代码文件开头均附有中文作用说明；三个按字节哈希绑定历史实验的执行文件保持冻结内容，
+代码文件开头附有中文作用说明；三个按字节哈希绑定历史实验的执行文件保持冻结内容，
 其职责在[代码导读](docs/Q-TopoMoE_代码导读.md)中单独说明。
 
 ## 快速检查
 
-目标环境为 Linux、CUDA SM120 和单机 8×RTX 5090。仓库默认根目录为 `/data/moe`。
-如需覆盖模型和环境路径，先将 [env/local.env.example](env/local.env.example) 复制为本机配置。
+在仓库根目录，使用 Python 3.11–3.13 创建独立开发环境：
 
 ```bash
-cd /data/moe
-source env/activate.sh
-make check
-python -m unittest discover -s tests
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-dev.txt
+python scripts/validate_configs.py
+python scripts/check_document_references.py
+python scripts/check_release_manifest.py
+python -m pytest --ignore=tests/test_canonicalize_qwen35_checkpoint.py -q
 ```
 
-以上命令只检查环境、配置和测试，不会启动模型服务。正式实验前应先确认 GPU 进程、监听端口
-和输出目录，不能使用 `pkill python`、`killall` 等无法限定到本项目进程的清理命令。
+Windows PowerShell 将激活命令换为 `.venv\Scripts\Activate.ps1`；也可直接调用
+`.venv\Scripts\python.exe` 执行上述 Python 命令。Linux 上安装依赖后可用
+`make check && make test` 完成同样的检查。
+
+checkpoint 测试需要 CPU PyTorch 和 safetensors，但不需要显卡或下载模型：
+
+```bash
+python -m pip install torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu
+python -m pip install -r requirements-checkpoint.txt
+python -m pip check
+python -m pytest -q
+```
+
+pytest 同时收集 unittest 类和函数式测试。CI 在 Python 3.11–3.13 上执行轻量测试，
+另在 Python 3.12 上验证小型 checkpoint 的命名映射、张量一致性和重复写入保护。
+开发依赖文件固定直接依赖版本，不是原 GPU 环境的完整依赖锁。
+
+GPU 复现使用 Linux、CUDA SM120 和单机 8×RTX 5090。先阅读
+[环境与配置](docs/Q-TopoMoE_复现阅读指南.md#第-4-步环境与配置)，按
+[cleanroom 版本](env/qwen35_cleanroom.env)准备框架和模型；开发环境里的 CPU torch
+不能替代服务环境。再加载 `env/activate.sh` 并执行 `make check-gpu`。
+本机路径可通过 [env/local.env.example](env/local.env.example)覆盖。
+
+以上 CPU 检查不会启动模型服务。正式实验前应确认 GPU 进程、监听端口和输出目录。
 
 常用实验入口：
 
